@@ -22,6 +22,16 @@
     </item>
     
     <item>
+      <title>spring data elasticsearch日期类型冲突</title>
+      <link>https://duansheli.github.io/2019/04/08/spring-data-elasticsearch-error-date.html</link>
+      <pubDate>Mon, 08 Apr 2019 17:28:13 +0800</pubDate>
+      
+      <guid>https://duansheli.github.io/2019/04/08/spring-data-elasticsearch-error-date.html</guid>
+      <description>IllegalArgumentException 环境 spring-data-elasticsearch 3.1.6
+IllegalArgumentException: Mapper for [publishDate] conflicts with existing mapping in other types: [mapper [publishDate] has different [format] values</description>
+    </item>
+    
+    <item>
       <title>登录流程的本质</title>
       <link>https://duansheli.github.io/2019/04/08/login-nature.html</link>
       <pubDate>Mon, 08 Apr 2019 17:28:13 +0800</pubDate>
@@ -141,16 +151,6 @@ k8s=v1.12.6
 3个虚拟机节点=master,node1,node2
 系统镜像下载
  3. 安装系统环境  因为每个节点都需要安装docker kubeadm&amp;hellip;等软件 以及各种配置</description>
-    </item>
-    
-    <item>
-      <title>spring data elasticsearch日期类型冲突</title>
-      <link>https://duansheli.github.io/2019/04/08/spring-data-elasticsearch-error-date.html</link>
-      <pubDate>Tue, 01 Jan 2019 17:28:13 +0800</pubDate>
-      
-      <guid>https://duansheli.github.io/2019/04/08/spring-data-elasticsearch-error-date.html</guid>
-      <description>IllegalArgumentException 环境 spring-data-elasticsearch 3.1.6
-IllegalArgumentException: Mapper for [publishDate] conflicts with existing mapping in other types: [mapper [publishDate] has different [format] values</description>
     </item>
     
     <item>
