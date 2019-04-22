@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>spring-security on 断舍离的博客</title>
+    <link>https://duansheli.github.io/tags/spring-security/</link>
+    <description>Recent content in spring-security on 断舍离的博客</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>zh-CN</language>
+    <lastBuildDate>Tue, 09 Apr 2019 17:28:13 +0800</lastBuildDate>
+    
+	<atom:link href="https://duansheli.github.io/tags/spring-security/index.xml" rel="self" type="application/rss+xml" />
+    
+    
+    <item>
+      <title>使用spring security实现手机验证码登录</title>
+      <link>https://duansheli.github.io/2019/04/09/spring-security-login-by-mobile-code.html</link>
+      <pubDate>Tue, 09 Apr 2019 17:28:13 +0800</pubDate>
+      
+      <guid>https://duansheli.github.io/2019/04/09/spring-security-login-by-mobile-code.html</guid>
+      <description>目标 使用spring security添加两种登录方式 * 手机号，验证码登录 * 用户名 密码 图形验证码登录
+运行环境  win10-x64 jdk-v1.8 springboot-v2.1.4 springsecurity-5.1.5  环境搭建 新建maven项目 配置pom.xml依赖项</description>
+    </item>
+    
+  </channel>
+</rss>

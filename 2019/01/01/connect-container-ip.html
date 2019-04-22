@@ -1,0 +1,370 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+
+    <meta charset="utf-8">
+    <meta name="generator" content="Hugo 0.54.0" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <title>跨宿主机与docker容器通信 | 断舍离的博客</title>
+    <meta property="og:title" content="跨宿主机与docker容器通信 - 断舍离的博客">
+    <meta property="og:type" content="article">
+        
+    <meta property="article:published_time" content="2019-02-01T17:28:13&#43;08:00">
+        
+        
+    <meta property="article:modified_time" content="2019-02-01T17:28:13&#43;08:00">
+        
+    <meta name="Keywords" content="java,scala,spark,kubernetes">
+    <meta name="description" content="跨宿主机与docker容器通信">
+        
+    <meta name="author" content="断舍离">
+    <meta property="og:url" content="https://duansheli.github.io/2019/01/01/connect-container-ip.html">
+    <link rel="shortcut icon" href="/favicon.ico" type="image/x-icon">
+
+    <link rel="stylesheet" href="/css/normalize.css">
+    
+        <link rel="stylesheet" href="/css/prism.css">
+    
+    <link rel="stylesheet" href="/css/style.css">
+    <script type="text/javascript" src="//cdn.bootcss.com/jquery/3.2.1/jquery.min.js"></script>
+
+    
+
+
+    
+    
+</head>
+
+<body>
+<header id="header" class="clearfix">
+    <div class="container">
+        <div class="col-group">
+            <div class="site-name ">
+                
+                    <a id="logo" href="https://duansheli.github.io">
+                        断舍离的博客
+                    </a>
+                
+                <p class="description">java, scala, spark, kubernetes</p>
+            </div>
+            <div>
+                <nav id="nav-menu" class="clearfix">
+                    <a class="" href="https://duansheli.github.io">首页</a>
+                    
+                    <a  href="https://duansheli.github.io/archives/" title="归档">归档</a>
+                    
+                </nav>
+            </div>
+        </div>
+    </div>
+</header>
+
+
+<div id="body">
+    <div class="container">
+        <div class="col-group">
+
+            <div class="col-8" id="main">
+                <div class="res-cons">
+                    <article class="post">
+                        <header>
+                            <h1 class="post-title">跨宿主机与docker容器通信</h1>
+                        </header>
+                        <date class="post-meta meta-date">
+                            2019年2月1日
+                        </date>
+                        
+                        
+                        <div class="post-content">
+                            <p>有一些应用只需要1个端口就能访问<br />
+比如 nginx</p>
+
+<p>而有一些应用的搭建都是由多个节点搭建的<br />
+比如hadoop 当访问hdfs的时候 访问的不仅仅用port还会用ip<br />
+这时后端口映射就不那么好使了</p>
+
+<h1 id="直接与docker容器通信">直接与docker容器通信</h1>
+
+<h2 id="背景">背景</h2>
+
+<p>有一些应用只需要1个端口就能访问<br />
+比如 nginx</p>
+
+<p>而有一些应用的搭建都是由多个节点搭建的<br />
+比如hadoop 当访问hdfs的时候 访问的不仅仅用port还会用ip<br />
+这时后端口映射就不那么好使了</p>
+
+<h2 id="环境介绍">环境介绍</h2>
+
+<p>win10 开发环境<br />
+win10下通过虚拟机安装了ubuntu-16 网络为桥接<br />
+ubuntu-16中运行了docker</p>
+
+<p>win10-IP: 192.168.88.123<br />
+ubuntu-IP: 192.168.88.3</p>
+
+<h2 id="目标">目标</h2>
+
+<blockquote>
+<ul>
+<li><p>通常操作
+docker run -d &ndash;name nx -p 8080:80 nginx
+访问nginx可在win10浏览器打开 192.168.88.3:8080</p></li>
+
+<li><p>希望实现
+<code>
+&gt; ash-4.3# docker run -d --name nx nginx
+&gt; 077b5cdd75a5457a0a45c40acfafc4493d20e53eedda3c1304f944d19c147925
+&gt; ash-4.3# docker inspect -f {{.NetworkSettings.IPAddress}}  nx
+&gt; 172.17.0.6
+&gt;</code>
+&gt; 访问nginx可在win10浏览器打开 172.17.0.6
+&gt;
+&gt; * 事实上
+&gt; 在ubuntu内可以ping通<br />
+&gt; 但win10直接访问172.17.0.6是连不上的</p></li>
+</ul>
+
+<h2 id="方案1-配置路由">方案1-配置路由</h2>
+
+<pre><code>#在ubuntu中执行
+ash-4.3# docker run -d --name nx nginx
+077b5cdd75a5457a0a45c40acfafc4493d20e53eedda3c1304f944d19c147925
+ash-4.3# docker inspect -f {{.NetworkSettings.IPAddress}}  nx
+172.17.0.6
+</code></pre>
+
+<p>得到nginx的ip为 172.17.0.6 则在win10 为172.17.0.0添加路由</p>
+
+<pre><code>##在win10中执行
+route -p add 172.17.0.0/16  192.168.88.3
+##route -p add 172.17.0.0 mask 255.255.0.0 192.168.88.3 
+##route delete 172.17.0.0
+</code></pre>
+
+<h2 id="方案2-vpn">方案2-vpn</h2>
+
+<p>在 ubuntu中通过docker安装vpn-pptp</p>
+
+<p>```
+cat &gt; chap-secrets &lt;&lt; EOF</p>
+
+<h1 id="secrets-for-authentication-using-pap">Secrets for authentication using PAP</h1>
+
+<h1 id="client-server-secret-acceptable-local-ip-addresses">client    server      secret      acceptable local IP addresses</h1>
+
+<p>tom    *           123    *
+EOF</p>
+</blockquote>
+
+<p>docker run -d &ndash;privileged <br />
+&ndash;net=host &ndash;name pptp <br />
+-v <code>pwd</code>/chap-secrets:/etc/ppp/chap-secrets <br />
+mobtitude/vpn-pptp
+```</p>
+
+<p>ubuntu上装好代理后<br />
+在win10上连接上pptp的代理<br />
+vpn-IP 192.168.88.3<br />
+用户名 tom 密码 123</p>
+
+<h2 id="方案3">方案3</h2>
+
+<p>为容器分配和宿主机相同网段的ip<br />
+可考虑pipework  步骤不少就不写了<br />
+网上就能搜到</p>
+                        </div>
+
+                        
+
+
+                        
+
+<div class="post-archive">
+    <h2>See Also</h2>
+    <ul class="listing">
+        
+        <li><a href="/2019/01/15/docker-useful-cmd.html">docker常用操作</a></li>
+        
+        <li><a href="/2018/01/03/k8s-cluster-setup-03.html">k8s搭建集群3-异常解决</a></li>
+        
+        <li><a href="/2019/01/02/k8s-cluster-setup-02.html">k8s集群搭建-02</a></li>
+        
+        <li><a href="/2019/01/01/k8s-cluster-setup-01.html">k8s集群搭建-01</a></li>
+        
+        <li><a href="/2019/04/08/spring-data-elasticsearch-error-date.html">spring data elasticsearch日期类型冲突</a></li>
+        
+    </ul>
+</div>
+
+
+                        <div class="post-meta meta-tags">
+                            
+                            <ul class="clearfix">
+                                
+                                <li><a href="https://duansheli.github.io/tags/docker">docker</a></li>
+                                
+                            </ul>
+                            
+                        </div>
+                    </article>
+                    
+    
+
+    
+    
+                </div>
+            </div>
+            <div id="secondary">
+    <section class="widget">
+        <form id="search" action="//www.google.com/search" method="get" accept-charset="utf-8" target="_blank" _lpchecked="1">
+      
+      <input type="text" name="q" maxlength="20" placeholder="Search">
+      <input type="hidden" name="sitesearch" value="https://duansheli.github.io">
+      <button type="submit" class="submit icon-search"></button>
+</form>
+    </section>
+    
+    <section class="widget">
+        <h3 class="widget-title">最近文章</h3>
+<ul class="widget-list">
+    
+    <li>
+        <a href="https://duansheli.github.io/2019/04/09/spring-security-login-by-mobile-code.html" title="使用spring security实现手机验证码登录">使用spring security实现手机验证码登录</a>
+    </li>
+    
+    <li>
+        <a href="https://duansheli.github.io/2019/04/08/login-nature.html" title="登录流程的本质">登录流程的本质</a>
+    </li>
+    
+    <li>
+        <a href="https://duansheli.github.io/2019/04/06/zipkin-dubbo-tracing.html" title="通过zipkin对dubbo进行链路追踪">通过zipkin对dubbo进行链路追踪</a>
+    </li>
+    
+    <li>
+        <a href="https://duansheli.github.io/2019/03/02/spring-session-in-action.html" title="spring-session实现分布式会话">spring-session实现分布式会话</a>
+    </li>
+    
+    <li>
+        <a href="https://duansheli.github.io/2019/02/16/rocketmq-transaction.html" title="通过rocketmq实现分布式事务">通过rocketmq实现分布式事务</a>
+    </li>
+    
+    <li>
+        <a href="https://duansheli.github.io/2019/02/03/drone-ci-github-pages.html" title="drone持续集成-发布github pages">drone持续集成-发布github pages</a>
+    </li>
+    
+    <li>
+        <a href="https://duansheli.github.io/2019/01/01/connect-container-ip.html" title="跨宿主机与docker容器通信">跨宿主机与docker容器通信</a>
+    </li>
+    
+    <li>
+        <a href="https://duansheli.github.io/2019/01/15/docker-useful-cmd.html" title="docker常用操作">docker常用操作</a>
+    </li>
+    
+    <li>
+        <a href="https://duansheli.github.io/2018/01/03/k8s-cluster-setup-03.html" title="k8s搭建集群3-异常解决">k8s搭建集群3-异常解决</a>
+    </li>
+    
+    <li>
+        <a href="https://duansheli.github.io/2019/01/02/k8s-cluster-setup-02.html" title="k8s集群搭建-02">k8s集群搭建-02</a>
+    </li>
+    
+</ul>
+    </section>
+
+    
+
+    <section class="widget">
+        <h3 class="widget-title">分类</h3>
+<ul class="widget-list">
+    
+    <li>
+        <a href="https://duansheli.github.io/categories/k8s%E9%9B%86%E7%BE%A4/">k8s集群(3)</a>
+    </li>
+    
+</ul>
+    </section>
+
+    <section class="widget">
+        <h3 class="widget-title">标签</h3>
+<div class="tagcloud">
+    
+    <a href="https://duansheli.github.io/tags/docker/">docker</a>
+    
+    <a href="https://duansheli.github.io/tags/drone/">drone</a>
+    
+    <a href="https://duansheli.github.io/tags/dubbo/">dubbo</a>
+    
+    <a href="https://duansheli.github.io/tags/elasticsearch/">elasticsearch</a>
+    
+    <a href="https://duansheli.github.io/tags/k8s/">k8s</a>
+    
+    <a href="https://duansheli.github.io/tags/rocketmq/">rocketmq</a>
+    
+    <a href="https://duansheli.github.io/tags/session/">session</a>
+    
+    <a href="https://duansheli.github.io/tags/spring-boot/">spring-boot</a>
+    
+    <a href="https://duansheli.github.io/tags/spring-security/">spring-security</a>
+    
+    <a href="https://duansheli.github.io/tags/springboot/">springboot</a>
+    
+    <a href="https://duansheli.github.io/tags/zipkin/">zipkin</a>
+    
+    <a href="https://duansheli.github.io/tags/%E5%88%86%E5%B8%83%E5%BC%8F%E4%BA%8B%E5%8A%A1/">分布式事务</a>
+    
+    <a href="https://duansheli.github.io/tags/%E7%99%BB%E5%BD%95/">登录</a>
+    
+</div>
+    </section>
+
+    
+
+    <section class="widget">
+        <h3 class="widget-title">其它</h3>
+        <ul class="widget-list">
+            <li><a href="https://duansheli.github.io/index.xml">文章 RSS</a></li>
+        </ul>
+    </section>
+</div>
+        </div>
+    </div>
+</div>
+<footer id="footer">
+    <div class="container">
+        &copy; 2019 <a href="https://duansheli.github.io">断舍离的博客 By 断舍离</a>.
+        Powered by <a rel="nofollow noreferer noopener" href="https://gohugo.io" target="_blank">Hugo</a>.
+        <a href="https://www.flysnow.org/" target="_blank">Theme</a> based on <a href="https://github.com/rujews/maupassant-hugo" target="_blank">maupassant</a>.
+        
+    </div>
+</footer>
+
+
+    <script type="text/javascript">
+    
+    (function(){
+        $("pre code").parent().addClass("line-numbers")
+    }())
+
+    window.MathJax = {
+        tex2jax: {
+            inlineMath: [ ['$','$'] ],
+            processEscapes: true
+        }
+    };
+    </script>
+    <script type="text/javascript" src="/js/prism.js" async="true"></script>
+    <script src='https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/MathJax.js?config=TeX-MML-AM_CHTML' async></script>
+
+<a id="rocket" href="#top"></a>
+<script type="text/javascript" src="/js/totop.js?v=0.0.0" async=""></script>
+
+
+
+
+
+
+</body>
+</html>

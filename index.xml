@@ -1,0 +1,175 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>断舍离的博客</title>
+    <link>https://duansheli.github.io/</link>
+    <description>Recent content on 断舍离的博客</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>zh-CN</language>
+    <lastBuildDate>Tue, 09 Apr 2019 17:28:13 +0800</lastBuildDate>
+    
+	<atom:link href="https://duansheli.github.io/index.xml" rel="self" type="application/rss+xml" />
+    
+    
+    <item>
+      <title>使用spring security实现手机验证码登录</title>
+      <link>https://duansheli.github.io/2019/04/09/spring-security-login-by-mobile-code.html</link>
+      <pubDate>Tue, 09 Apr 2019 17:28:13 +0800</pubDate>
+      
+      <guid>https://duansheli.github.io/2019/04/09/spring-security-login-by-mobile-code.html</guid>
+      <description>目标 使用spring security添加两种登录方式 * 手机号，验证码登录 * 用户名 密码 图形验证码登录
+运行环境  win10-x64 jdk-v1.8 springboot-v2.1.4 springsecurity-5.1.5  环境搭建 新建maven项目 配置pom.xml依赖项</description>
+    </item>
+    
+    <item>
+      <title>登录流程的本质</title>
+      <link>https://duansheli.github.io/2019/04/08/login-nature.html</link>
+      <pubDate>Mon, 08 Apr 2019 17:28:13 +0800</pubDate>
+      
+      <guid>https://duansheli.github.io/2019/04/08/login-nature.html</guid>
+      <description>登录的本质  在登录页面 输入用户名与密码 后台核对无误后，将用户信息放入会话中 在访问需要登录的页面时，系统在会话中查找用户信息 找到了，就放行 没找到，将页面重定向到登录页面  Java代码如何实现 登录 针对 /login 请求 接收页面的表单信息，即用户名与密码
+核对无误， 则将用户信息放入会话
+request.getSession().setAttribute(&amp;ldquo;currentUser&amp;rdquo;,&amp;ldquo;tom&amp;rdquo;);
+登录成功</description>
+    </item>
+    
+    <item>
+      <title>通过zipkin对dubbo进行链路追踪</title>
+      <link>https://duansheli.github.io/2019/04/06/zipkin-dubbo-tracing.html</link>
+      <pubDate>Sat, 06 Apr 2019 17:28:13 +0800</pubDate>
+      
+      <guid>https://duansheli.github.io/2019/04/06/zipkin-dubbo-tracing.html</guid>
+      <description>&lt;p&gt;通过zipkin实现dubbo下的链路追踪&lt;/p&gt;</description>
+    </item>
+    
+    <item>
+      <title>spring-session实现分布式会话</title>
+      <link>https://duansheli.github.io/2019/03/02/spring-session-in-action.html</link>
+      <pubDate>Sat, 02 Mar 2019 17:28:13 +0800</pubDate>
+      
+      <guid>https://duansheli.github.io/2019/03/02/spring-session-in-action.html</guid>
+      <description>&lt;p&gt;通过spring session实现分布式会话&lt;br /&gt;
+集群下不会丢失会话 集中管理session&lt;/p&gt;</description>
+    </item>
+    
+    <item>
+      <title>通过rocketmq实现分布式事务</title>
+      <link>https://duansheli.github.io/2019/02/16/rocketmq-transaction.html</link>
+      <pubDate>Sat, 16 Feb 2019 17:28:13 +0800</pubDate>
+      
+      <guid>https://duansheli.github.io/2019/02/16/rocketmq-transaction.html</guid>
+      <description>通过rocketmq实现分布式事务 实现原理 通常说的分布式事务 一次请求-调用serviceA
+serviceA 中会调用serviceB，serviceC，serviceD 在serviceA ，serviceB，serviceC，serviceD中的事务要么一起成功
+只要有一个节点事务失败了， 其他的节点都会将事务回滚
+rocketmq的分布式事务 rocketmq的分布式事务与【通常说的分布式事务】有所不同
+它会做最大努力（重试）让所有节点一起成功， 不保证一定成功
+对于不成功的情况 应设置人工兜底补偿
+如:
+在美团外卖下单了，并不能一定收到外卖
+可能鱼没有了 或者送货人手不够（不保证一定成功）</description>
+    </item>
+    
+    <item>
+      <title>drone持续集成-发布github pages</title>
+      <link>https://duansheli.github.io/2019/02/03/drone-ci-github-pages.html</link>
+      <pubDate>Sun, 03 Feb 2019 17:28:13 +0800</pubDate>
+      
+      <guid>https://duansheli.github.io/2019/02/03/drone-ci-github-pages.html</guid>
+      <description>&lt;p&gt;docker持续集成-drone发布静态博客&lt;br /&gt;
+将hugo产生的静态页面推送到github&lt;br /&gt;
+并通知到钉钉群&lt;/p&gt;</description>
+    </item>
+    
+    <item>
+      <title>跨宿主机与docker容器通信</title>
+      <link>https://duansheli.github.io/2019/01/01/connect-container-ip.html</link>
+      <pubDate>Fri, 01 Feb 2019 17:28:13 +0800</pubDate>
+      
+      <guid>https://duansheli.github.io/2019/01/01/connect-container-ip.html</guid>
+      <description>&lt;p&gt;有一些应用只需要1个端口就能访问&lt;br /&gt;
+比如 nginx&lt;/p&gt;
+
+&lt;p&gt;而有一些应用的搭建都是由多个节点搭建的&lt;br /&gt;
+比如hadoop 当访问hdfs的时候 访问的不仅仅用port还会用ip&lt;br /&gt;
+这时后端口映射就不那么好使了&lt;/p&gt;</description>
+    </item>
+    
+    <item>
+      <title>docker常用操作</title>
+      <link>https://duansheli.github.io/2019/01/15/docker-useful-cmd.html</link>
+      <pubDate>Tue, 15 Jan 2019 17:28:13 +0800</pubDate>
+      
+      <guid>https://duansheli.github.io/2019/01/15/docker-useful-cmd.html</guid>
+      <description>docker常用操作 Dockerfile编写 编写一般不会一次就完成，常常会出错
+Sending build context to Docker daemon 5.902MB Step 1/10 : FROM docker:git as builder ---&amp;gt; 9be5c3cd302c Step 2/10 : RUN git clone https://github.</description>
+    </item>
+    
+    <item>
+      <title>k8s搭建集群3-异常解决</title>
+      <link>https://duansheli.github.io/2018/01/03/k8s-cluster-setup-03.html</link>
+      <pubDate>Thu, 03 Jan 2019 17:28:13 +0800</pubDate>
+      
+      <guid>https://duansheli.github.io/2018/01/03/k8s-cluster-setup-03.html</guid>
+      <description>出错恢复 没遇到报错可以跳过
+安装过程中可能有一些异常
+查看所有的pod分布情况 kubectl get pods -n kube-system -o wide -l k8s-app=kubernetes-dashboard  查看失败的镜像
+imageName=`kubectl describe -n kube-system pod -l k8s-app=kubernetes-dashboard | grep Image: | awk &#39;{print $2 }&#39; ` kubectl describe -n kube-system pod -l k8s-app=kubernetes-dashboard  某个pod的详情 kubectl describe pod -l k8s-app=kubernetes-dashboard -n kube-system  出错日志 kubectl logs `kubectl get pods -n kube-system -l k8s-app=kubernetes-dashboard -o name` -n kube-system  报错描述提到 addr cni0 failed to set bridge addr: &amp;ldquo;cni0&amp;rdquo; already has an IP address different from 10.</description>
+    </item>
+    
+    <item>
+      <title>k8s集群搭建-02</title>
+      <link>https://duansheli.github.io/2019/01/02/k8s-cluster-setup-02.html</link>
+      <pubDate>Wed, 02 Jan 2019 17:28:13 +0800</pubDate>
+      
+      <guid>https://duansheli.github.io/2019/01/02/k8s-cluster-setup-02.html</guid>
+      <description>&lt;p&gt;k8s集群好了 再添加一些相关的组件&lt;br /&gt;
+dashboard helm helm的webui&lt;/p&gt;</description>
+    </item>
+    
+    <item>
+      <title>k8s集群搭建-01</title>
+      <link>https://duansheli.github.io/2019/01/01/k8s-cluster-setup-01.html</link>
+      <pubDate>Tue, 01 Jan 2019 17:28:13 +0800</pubDate>
+      
+      <guid>https://duansheli.github.io/2019/01/01/k8s-cluster-setup-01.html</guid>
+      <description>1. 目标 通过虚拟机搭建一个kubernetes集群
+共3个节点基于ubuntu
+2. 组件安装规划  宿主机: win10 vmware-v15
+ubuntu=v16.04.1
+docker=v18.06
+k8s=v1.12.6
+3个虚拟机节点=master,node1,node2
+系统镜像下载
+ 3. 安装系统环境  因为每个节点都需要安装docker kubeadm&amp;hellip;等软件 以及各种配置</description>
+    </item>
+    
+    <item>
+      <title>spring data elasticsearch日期类型冲突</title>
+      <link>https://duansheli.github.io/2019/04/08/spring-data-elasticsearch-error-date.html</link>
+      <pubDate>Tue, 01 Jan 2019 17:28:13 +0800</pubDate>
+      
+      <guid>https://duansheli.github.io/2019/04/08/spring-data-elasticsearch-error-date.html</guid>
+      <description>IllegalArgumentException 环境 spring-data-elasticsearch 3.1.6
+IllegalArgumentException: Mapper for [publishDate] conflicts with existing mapping in other types: [mapper [publishDate] has different [format] values</description>
+    </item>
+    
+    <item>
+      <title>归档</title>
+      <link>https://duansheli.github.io/archives/</link>
+      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
+      
+      <guid>https://duansheli.github.io/archives/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>归档</title>
+      <link>https://duansheli.github.io/categories/</link>
+      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
+      
+      <guid>https://duansheli.github.io/categories/</guid>
+      <description> 404 </description>
+    </item>
+    
+  </channel>
+</rss>

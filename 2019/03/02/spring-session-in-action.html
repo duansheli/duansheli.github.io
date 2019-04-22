@@ -1,0 +1,449 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+
+    <meta charset="utf-8">
+    <meta name="generator" content="Hugo 0.54.0" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <title>spring-session实现分布式会话 | 断舍离的博客</title>
+    <meta property="og:title" content="spring-session实现分布式会话 - 断舍离的博客">
+    <meta property="og:type" content="article">
+        
+    <meta property="article:published_time" content="2019-03-02T17:28:13&#43;08:00">
+        
+        
+    <meta property="article:modified_time" content="2019-03-02T17:28:13&#43;08:00">
+        
+    <meta name="Keywords" content="java,scala,spark,kubernetes">
+    <meta name="description" content="spring-session实现分布式会话">
+        
+    <meta name="author" content="断舍离">
+    <meta property="og:url" content="https://duansheli.github.io/2019/03/02/spring-session-in-action.html">
+    <link rel="shortcut icon" href="/favicon.ico" type="image/x-icon">
+
+    <link rel="stylesheet" href="/css/normalize.css">
+    
+        <link rel="stylesheet" href="/css/prism.css">
+    
+    <link rel="stylesheet" href="/css/style.css">
+    <script type="text/javascript" src="//cdn.bootcss.com/jquery/3.2.1/jquery.min.js"></script>
+
+    
+
+
+    
+    
+</head>
+
+<body>
+<header id="header" class="clearfix">
+    <div class="container">
+        <div class="col-group">
+            <div class="site-name ">
+                
+                    <a id="logo" href="https://duansheli.github.io">
+                        断舍离的博客
+                    </a>
+                
+                <p class="description">java, scala, spark, kubernetes</p>
+            </div>
+            <div>
+                <nav id="nav-menu" class="clearfix">
+                    <a class="" href="https://duansheli.github.io">首页</a>
+                    
+                    <a  href="https://duansheli.github.io/archives/" title="归档">归档</a>
+                    
+                </nav>
+            </div>
+        </div>
+    </div>
+</header>
+
+
+<div id="body">
+    <div class="container">
+        <div class="col-group">
+
+            <div class="col-8" id="main">
+                <div class="res-cons">
+                    <article class="post">
+                        <header>
+                            <h1 class="post-title">spring-session实现分布式会话</h1>
+                        </header>
+                        <date class="post-meta meta-date">
+                            2019年3月2日
+                        </date>
+                        
+                        
+                        <div class="post-content">
+                            <p>通过spring session实现分布式会话<br />
+集群下不会丢失会话 集中管理session</p>
+
+<h1 id="目标">目标</h1>
+
+<p>通过spring session实现分布式会话<br />
+集群下不会丢失会话 集中管理session</p>
+
+<h1 id="场景">场景</h1>
+
+<p>一个Nginx(反向代理,负载均衡) -&gt; 用户服务被部署了3份(tomcat)<br />
+默认情况下,使用的session由tomcat的sessionManager提供<br />
+在负载均衡下， 用户A的登录会失效 因为其登录的session只存在于其中一个tomcat上<br />
+当连接到另一个tomcat时, tomcat发现没找到A的session(sessionId) 会给A新建一个session(同时重写cookie的sessionId)<br />
+请求每换了一个tomcat就会发送session新建的操作, 上次的session虽然还在之前的tomcat中, 但凭据(sessionId)已经丢失</p>
+
+<h2 id="解决方案">解决方案:</h2>
+
+<ul>
+<li>方案1: nginx的负载策略 ip-hash 可以保证某用户的请求会转发到相同的tomcat</li>
+<li>方案2: tomcat-cluster可以保证节点间的session共享</li>
+<li>方案3: 通过第三方session插件替换tomcat自带的sessionManager 如memcached-session-filter,memcached-session-manager</li>
+<li>方案4: spring-session将session进行集中管理 直接顶替</li>
+</ul>
+
+<h1 id="构建服务">构建服务</h1>
+
+<h2 id="启动redis">启动redis</h2>
+
+<pre><code>docker pull redis:4.0.14
+
+mkdir /usr/deepin &amp;&amp; cd /usr/deepin 
+echo &quot;requirepass pwd123&quot; &gt; redis.conf
+
+docker run -d --name redis -p 11223:6379 \
+-v `pwd`/redis.conf:/etc/myredis.conf \
+redis:4.0.14 redis-server /etc/myredis.conf --appendonly yes
+</code></pre>
+
+<h2 id="测试redis">测试redis</h2>
+
+<pre><code>docker exec -it redis
+
+#使用密码登录, 进行存取
+root@cfc7fffb424a:/data# redis-cli -a pwd123
+Warning: Using a password with '-a' option on the command line interface may not be safe.
+127.0.0.1:6379&gt; set name tom
+OK
+127.0.0.1:6379&gt; get name 
+&quot;tom&quot;
+</code></pre>
+
+<h2 id="spring-boot添加spring-session">spring boot添加spring  session</h2>
+
+<pre><code>#spring boot版本
+&lt;parent&gt;
+&lt;groupId&gt;org.springframework.boot&lt;/groupId&gt;
+&lt;artifactId&gt;spring-boot-starter-parent&lt;/artifactId&gt;
+&lt;version&gt;2.1.4.RELEASE&lt;/version&gt;
+&lt;relativePath/&gt;
+&lt;/parent&gt;
+</code></pre>
+
+<h3 id="spring-boot">spring boot</h3>
+
+<p>MyApp.java</p>
+
+<pre><code>@SpringBootApplication
+public class MyApp {
+    public static void main(String[] args) {
+        System.out.println(66);
+        SpringApplication.run(MyApp.class, args);
+    }
+}
+</code></pre>
+
+<h3 id="spring-session">spring session</h3>
+
+<p>pom.xml</p>
+
+<pre><code>&lt;dependency&gt;
+  &lt;groupId&gt;org.springframework.boot&lt;/groupId&gt;
+  &lt;artifactId&gt;spring-boot-starter-data-redis&lt;/artifactId&gt;
+  &lt;version&gt;2.1.4.RELEASE&lt;/version&gt;
+&lt;/dependency&gt;
+&lt;dependency&gt;
+  &lt;groupId&gt;org.springframework.session&lt;/groupId&gt;
+  &lt;artifactId&gt;spring-session-data-redis&lt;/artifactId&gt;
+  &lt;version&gt;2.1.4.RELEASE&lt;/version&gt;
+&lt;/dependency&gt;
+</code></pre>
+
+<p>RedisSessionConfig.java</p>
+
+<pre><code>@Configuration
+@EnableRedisHttpSession
+public class RedisSessionConfig {
+}
+</code></pre>
+
+<p>application.properties</p>
+
+<pre><code>server.port=8811
+spring.redis.host=192.168.88.3
+spring.redis.port=11223
+spring.redis.password=pwd123
+</code></pre>
+
+<h2 id="测试">测试</h2>
+
+<h3 id="添加测试类">添加测试类</h3>
+
+<blockquote>
+<pre><code>import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
+
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpSession;
+
+@RestController
+public class HelloController {
+  @RequestMapping(value = &quot;hello&quot;)
+  public String add(HttpServletRequest req) throws Exception {
+    String k = &quot;count&quot;;
+    int v = 0;
+    HttpSession session = req.getSession();
+    Object obj = session.getAttribute(k);
+    if(null != obj){
+      v = (int) obj;
+    }
+    v ++;
+    session.setAttribute(k, v);
+
+    StringBuilder sb = new StringBuilder(&quot;hello-&quot;);
+    sb.append(&quot;\n sid-&quot;+session.getId());
+    sb.append(&quot;\n num-&quot;+v);
+
+    return sb.toString();
+  }
+
+}
+</code></pre>
+
+<p>程序以8811端口启动
+浏览器每次访问 <a href="http://127.0.0.1:8822/hello">http://127.0.0.1:8822/hello</a> 数字会加1
+同时打印了sessionId</p>
+
+<p>修改下application.properties端口为8822
+启动第2个程序 同时不关闭上1个程序
+访问 <a href="http://127.0.0.1:8822/hello">http://127.0.0.1:8822/hello</a> 数字是接着上次的数字增加了</p>
+
+<pre><code>#查看redis的数据
+root@cfc7fffb424a:/data# redis-cli -a pwd123
+Warning: Using a password with '-a' option on the command line interface may not be safe.
+127.0.0.1:6379&gt; keys spring:session*
+1) &quot;spring:session:expirations:1554631680000&quot;
+2) &quot;spring:session:sessions:90546a74-7d5a-49cb-acba-40a79a078eb1&quot;
+3) &quot;spring:session:sessions:expires:90546a74-7d5a-49cb-acba-40a79a078eb1&quot;
+127.0.0.1:6379&gt; exit
+
+#清空数据
+root@cfc7fffb424a:/data# redis-cli -a pwd123 keys &quot;spring:session:*&quot; | xargs redis-cli -a pwd123 del
+Warning: Using a password with '-a' option on the command line interface may not be safe.
+Warning: Using a password with '-a' option on the command line interface may not be safe.
+(integer) 3
+</code></pre>
+
+<p>此时在浏览器中继续访问<br />
+可以发现之前的计数被清空了<br />
+另外登录时通常是将UserInfo对象放入session<br />
+而session是放在redis中 应注意序列化问题</p>
+</blockquote>
+                        </div>
+
+                        
+
+
+                        
+
+<div class="post-archive">
+    <h2>See Also</h2>
+    <ul class="listing">
+        
+        <li><a href="/2019/02/16/rocketmq-transaction.html">通过rocketmq实现分布式事务</a></li>
+        
+        <li><a href="/2019/02/03/drone-ci-github-pages.html">drone持续集成-发布github pages</a></li>
+        
+        <li><a href="/2019/01/01/connect-container-ip.html">跨宿主机与docker容器通信</a></li>
+        
+        <li><a href="/2019/01/15/docker-useful-cmd.html">docker常用操作</a></li>
+        
+        <li><a href="/2018/01/03/k8s-cluster-setup-03.html">k8s搭建集群3-异常解决</a></li>
+        
+    </ul>
+</div>
+
+
+                        <div class="post-meta meta-tags">
+                            
+                            <ul class="clearfix">
+                                
+                                <li><a href="https://duansheli.github.io/tags/session">session</a></li>
+                                
+                                <li><a href="https://duansheli.github.io/tags/springboot">springboot</a></li>
+                                
+                                <li><a href="https://duansheli.github.io/tags/%E7%99%BB%E5%BD%95">登录</a></li>
+                                
+                            </ul>
+                            
+                        </div>
+                    </article>
+                    
+    
+
+    
+    
+                </div>
+            </div>
+            <div id="secondary">
+    <section class="widget">
+        <form id="search" action="//www.google.com/search" method="get" accept-charset="utf-8" target="_blank" _lpchecked="1">
+      
+      <input type="text" name="q" maxlength="20" placeholder="Search">
+      <input type="hidden" name="sitesearch" value="https://duansheli.github.io">
+      <button type="submit" class="submit icon-search"></button>
+</form>
+    </section>
+    
+    <section class="widget">
+        <h3 class="widget-title">最近文章</h3>
+<ul class="widget-list">
+    
+    <li>
+        <a href="https://duansheli.github.io/2019/04/09/spring-security-login-by-mobile-code.html" title="使用spring security实现手机验证码登录">使用spring security实现手机验证码登录</a>
+    </li>
+    
+    <li>
+        <a href="https://duansheli.github.io/2019/04/08/login-nature.html" title="登录流程的本质">登录流程的本质</a>
+    </li>
+    
+    <li>
+        <a href="https://duansheli.github.io/2019/04/06/zipkin-dubbo-tracing.html" title="通过zipkin对dubbo进行链路追踪">通过zipkin对dubbo进行链路追踪</a>
+    </li>
+    
+    <li>
+        <a href="https://duansheli.github.io/2019/03/02/spring-session-in-action.html" title="spring-session实现分布式会话">spring-session实现分布式会话</a>
+    </li>
+    
+    <li>
+        <a href="https://duansheli.github.io/2019/02/16/rocketmq-transaction.html" title="通过rocketmq实现分布式事务">通过rocketmq实现分布式事务</a>
+    </li>
+    
+    <li>
+        <a href="https://duansheli.github.io/2019/02/03/drone-ci-github-pages.html" title="drone持续集成-发布github pages">drone持续集成-发布github pages</a>
+    </li>
+    
+    <li>
+        <a href="https://duansheli.github.io/2019/01/01/connect-container-ip.html" title="跨宿主机与docker容器通信">跨宿主机与docker容器通信</a>
+    </li>
+    
+    <li>
+        <a href="https://duansheli.github.io/2019/01/15/docker-useful-cmd.html" title="docker常用操作">docker常用操作</a>
+    </li>
+    
+    <li>
+        <a href="https://duansheli.github.io/2018/01/03/k8s-cluster-setup-03.html" title="k8s搭建集群3-异常解决">k8s搭建集群3-异常解决</a>
+    </li>
+    
+    <li>
+        <a href="https://duansheli.github.io/2019/01/02/k8s-cluster-setup-02.html" title="k8s集群搭建-02">k8s集群搭建-02</a>
+    </li>
+    
+</ul>
+    </section>
+
+    
+
+    <section class="widget">
+        <h3 class="widget-title">分类</h3>
+<ul class="widget-list">
+    
+    <li>
+        <a href="https://duansheli.github.io/categories/k8s%E9%9B%86%E7%BE%A4/">k8s集群(3)</a>
+    </li>
+    
+</ul>
+    </section>
+
+    <section class="widget">
+        <h3 class="widget-title">标签</h3>
+<div class="tagcloud">
+    
+    <a href="https://duansheli.github.io/tags/docker/">docker</a>
+    
+    <a href="https://duansheli.github.io/tags/drone/">drone</a>
+    
+    <a href="https://duansheli.github.io/tags/dubbo/">dubbo</a>
+    
+    <a href="https://duansheli.github.io/tags/elasticsearch/">elasticsearch</a>
+    
+    <a href="https://duansheli.github.io/tags/k8s/">k8s</a>
+    
+    <a href="https://duansheli.github.io/tags/rocketmq/">rocketmq</a>
+    
+    <a href="https://duansheli.github.io/tags/session/">session</a>
+    
+    <a href="https://duansheli.github.io/tags/spring-boot/">spring-boot</a>
+    
+    <a href="https://duansheli.github.io/tags/spring-security/">spring-security</a>
+    
+    <a href="https://duansheli.github.io/tags/springboot/">springboot</a>
+    
+    <a href="https://duansheli.github.io/tags/zipkin/">zipkin</a>
+    
+    <a href="https://duansheli.github.io/tags/%E5%88%86%E5%B8%83%E5%BC%8F%E4%BA%8B%E5%8A%A1/">分布式事务</a>
+    
+    <a href="https://duansheli.github.io/tags/%E7%99%BB%E5%BD%95/">登录</a>
+    
+</div>
+    </section>
+
+    
+
+    <section class="widget">
+        <h3 class="widget-title">其它</h3>
+        <ul class="widget-list">
+            <li><a href="https://duansheli.github.io/index.xml">文章 RSS</a></li>
+        </ul>
+    </section>
+</div>
+        </div>
+    </div>
+</div>
+<footer id="footer">
+    <div class="container">
+        &copy; 2019 <a href="https://duansheli.github.io">断舍离的博客 By 断舍离</a>.
+        Powered by <a rel="nofollow noreferer noopener" href="https://gohugo.io" target="_blank">Hugo</a>.
+        <a href="https://www.flysnow.org/" target="_blank">Theme</a> based on <a href="https://github.com/rujews/maupassant-hugo" target="_blank">maupassant</a>.
+        
+    </div>
+</footer>
+
+
+    <script type="text/javascript">
+    
+    (function(){
+        $("pre code").parent().addClass("line-numbers")
+    }())
+
+    window.MathJax = {
+        tex2jax: {
+            inlineMath: [ ['$','$'] ],
+            processEscapes: true
+        }
+    };
+    </script>
+    <script type="text/javascript" src="/js/prism.js" async="true"></script>
+    <script src='https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/MathJax.js?config=TeX-MML-AM_CHTML' async></script>
+
+<a id="rocket" href="#top"></a>
+<script type="text/javascript" src="/js/totop.js?v=0.0.0" async=""></script>
+
+
+
+
+
+
+</body>
+</html>

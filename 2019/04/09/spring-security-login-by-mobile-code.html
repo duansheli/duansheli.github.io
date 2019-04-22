@@ -1,0 +1,974 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+
+    <meta charset="utf-8">
+    <meta name="generator" content="Hugo 0.54.0" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <title>使用spring security实现手机验证码登录 | 断舍离的博客</title>
+    <meta property="og:title" content="使用spring security实现手机验证码登录 - 断舍离的博客">
+    <meta property="og:type" content="article">
+        
+    <meta property="article:published_time" content="2019-04-09T17:28:13&#43;08:00">
+        
+        
+    <meta property="article:modified_time" content="2019-04-09T17:28:13&#43;08:00">
+        
+    <meta name="Keywords" content="java,scala,spark,kubernetes">
+    <meta name="description" content="使用spring security实现手机验证码登录">
+        
+    <meta name="author" content="断舍离">
+    <meta property="og:url" content="https://duansheli.github.io/2019/04/09/spring-security-login-by-mobile-code.html">
+    <link rel="shortcut icon" href="/favicon.ico" type="image/x-icon">
+
+    <link rel="stylesheet" href="/css/normalize.css">
+    
+        <link rel="stylesheet" href="/css/prism.css">
+    
+    <link rel="stylesheet" href="/css/style.css">
+    <script type="text/javascript" src="//cdn.bootcss.com/jquery/3.2.1/jquery.min.js"></script>
+
+    
+
+
+    
+    
+</head>
+
+<body>
+<header id="header" class="clearfix">
+    <div class="container">
+        <div class="col-group">
+            <div class="site-name ">
+                
+                    <a id="logo" href="https://duansheli.github.io">
+                        断舍离的博客
+                    </a>
+                
+                <p class="description">java, scala, spark, kubernetes</p>
+            </div>
+            <div>
+                <nav id="nav-menu" class="clearfix">
+                    <a class="" href="https://duansheli.github.io">首页</a>
+                    
+                    <a  href="https://duansheli.github.io/archives/" title="归档">归档</a>
+                    
+                </nav>
+            </div>
+        </div>
+    </div>
+</header>
+
+
+<div id="body">
+    <div class="container">
+        <div class="col-group">
+
+            <div class="col-8" id="main">
+                <div class="res-cons">
+                    <article class="post">
+                        <header>
+                            <h1 class="post-title">使用spring security实现手机验证码登录</h1>
+                        </header>
+                        <date class="post-meta meta-date">
+                            2019年4月9日
+                        </date>
+                        
+                        
+                        <div class="post-content">
+                            
+
+<h1 id="目标">目标</h1>
+
+<p>使用spring security添加两种登录方式
+* 手机号，验证码登录
+* 用户名 密码 图形验证码登录</p>
+
+<h2 id="运行环境">运行环境</h2>
+
+<ul>
+<li>win10-x64</li>
+<li>jdk-v1.8</li>
+<li>springboot-v2.1.4</li>
+<li>springsecurity-5.1.5</li>
+</ul>
+
+<h2 id="环境搭建">环境搭建</h2>
+
+<p>新建maven项目 配置pom.xml依赖项</p>
+
+<pre><code>&lt;parent&gt;
+    &lt;groupId&gt;org.springframework.boot&lt;/groupId&gt;
+    &lt;artifactId&gt;spring-boot-starter-parent&lt;/artifactId&gt;
+    &lt;version&gt;2.1.4.RELEASE&lt;/version&gt;
+    &lt;relativePath/&gt;
+&lt;/parent&gt;
+
+&lt;dependencies&gt;
+    &lt;dependency&gt;
+        &lt;groupId&gt;org.springframework.boot&lt;/groupId&gt;
+        &lt;artifactId&gt;spring-boot-starter-web&lt;/artifactId&gt;
+    &lt;/dependency&gt;
+    &lt;!-- 引入freemarker包 --&gt;
+    &lt;dependency&gt;
+        &lt;groupId&gt;org.springframework.boot&lt;/groupId&gt;
+        &lt;artifactId&gt;spring-boot-starter-freemarker&lt;/artifactId&gt;
+    &lt;/dependency&gt;
+    &lt;!-- 引入spring-security包 --&gt;
+    &lt;dependency&gt;
+        &lt;groupId&gt;org.springframework.boot&lt;/groupId&gt;
+        &lt;artifactId&gt;spring-boot-starter-security&lt;/artifactId&gt;
+    &lt;/dependency&gt;
+    &lt;dependency&gt;
+        &lt;groupId&gt;org.springframework.security&lt;/groupId&gt;
+        &lt;artifactId&gt;spring-security-web&lt;/artifactId&gt;
+    &lt;/dependency&gt;
+    &lt;dependency&gt;
+        &lt;groupId&gt;org.springframework.security&lt;/groupId&gt;
+        &lt;artifactId&gt;spring-security-config&lt;/artifactId&gt;
+    &lt;/dependency&gt;
+&lt;/dependencies&gt;
+</code></pre>
+
+<p>application.properties</p>
+
+<pre><code>server.port=8822
+spring.application.name=hello-login
+#debug=true
+spring.freemarker.template-loader-path=classpath:/templates
+spring.freemarker.cache=false
+spring.freemarker.charset=UTF-8
+spring.freemarker.check-template-location=true
+spring.freemarker.content-type=text/html
+spring.freemarker.expose-request-attributes=false
+spring.freemarker.expose-session-attributes=false
+spring.freemarker.request-context-attribute=request
+spring.freemarker.suffix=.ftl
+</code></pre>
+
+<p>项目启动类 App_Main.java</p>
+
+<pre><code>import org.springframework.boot.SpringApplication;
+import org.springframework.boot.autoconfigure.SpringBootApplication;
+@SpringBootApplication
+public class App_Main {
+    public static void main(String[] args) {
+        SpringApplication.run(App_Main.class, args);
+    }
+}
+</code></pre>
+
+<h2 id="spring-security登录项">spring security登录项</h2>
+
+<p>登录选项分两种:<br />
+用户名密码登录-/loginByCode<br />
+手机验证码登录-/loginByPwd</p>
+
+<h2 id="查询用户信息">查询用户信息</h2>
+
+<p>用户登录的时候必然要去数据库查询用户信息<br />
+此处没有使用数据库， 直接代码写死了</p>
+
+<h3 id="db">Db</h3>
+
+<pre><code>import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.stereotype.Component;
+
+import java.util.HashMap;
+import java.util.Map;
+
+@Component
+public class Db {
+    Map&lt;String, UserDetails&gt; map = new HashMap();
+
+    public Db() {
+        MyUserDetail u1 = new MyUserDetail();
+        u1.setUsername(&quot;1381234001&quot;);
+        u1.setPassword(&quot;123&quot;);
+        u1.list.add(new MyRole(&quot;ROLE_pwd&quot;));
+        MyUserDetail u2 = new MyUserDetail();
+        u2.setUsername(&quot;tom&quot;);
+        u2.setPassword(&quot;123&quot;);
+        u2.list.add(new MyRole(&quot;ROLE_phone&quot;));
+
+        map.put(&quot;1381234001&quot;, u1);
+        map.put(&quot;tom&quot;, u2);
+    }
+
+    public UserDetails findUserByName(String userName) {
+        return map.get(userName);
+    }
+}
+</code></pre>
+
+<h3 id="myrole">MyRole</h3>
+
+<pre><code>import org.springframework.security.core.GrantedAuthority;
+import org.springframework.util.Assert;
+
+public class MyRole implements GrantedAuthority {
+    private final String role;
+
+    public MyRole(String role) {
+        Assert.hasText(role, &quot;A granted authority textual representation is required&quot;);
+        this.role = role;
+    }
+
+    public String getAuthority() {
+        return this.role;
+    }
+}
+</code></pre>
+
+<h3 id="myuserdetail">MyUserDetail</h3>
+
+<pre><code>import org.springframework.security.core.userdetails.UserDetails;
+
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.List;
+
+public class MyUserDetail implements UserDetails {
+    String username;
+    String password;
+    List&lt;MyRole&gt; list = new ArrayList&lt;&gt;();
+
+    public void setUsername(String username) {
+        this.username = username;
+    }
+
+    public void setPassword(String password) {
+        this.password = password;
+    }
+
+    @Override
+    public Collection&lt;MyRole&gt; getAuthorities() {
+        return list;
+    }
+
+    @Override
+    public String getPassword() {
+        return password;
+    }
+
+    @Override
+    public String getUsername() {
+        return username;
+    }
+
+    @Override
+    public boolean isAccountNonExpired() {
+        return true;
+    }
+
+    @Override
+    public boolean isAccountNonLocked() {
+        return true;
+    }
+
+    @Override
+    public boolean isCredentialsNonExpired() {
+        return true;
+    }
+
+    @Override
+    public boolean isEnabled() {
+        return true;
+    }
+}
+</code></pre>
+
+<h3 id="myuserdetailsservice">MyUserDetailsService</h3>
+
+<pre><code>import fluffy.mo.loginDb.Db;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.core.userdetails.UserDetailsService;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
+import org.springframework.stereotype.Component;
+
+@Component
+public class MyUserDetailsService implements UserDetailsService {
+   @Autowired
+   Db db;
+   @Override
+   public UserDetails loadUserByUsername(String userName) throws UsernameNotFoundException {
+      return db.findUserByName(userName);
+   }
+}
+</code></pre>
+
+<h3 id="自定义异常">自定义异常</h3>
+
+<pre><code>import org.springframework.security.core.AuthenticationException;
+
+public class UnSupportAuthenticationException extends AuthenticationException {
+    public UnSupportAuthenticationException(String explanation) {
+        super(explanation);
+    }
+}
+</code></pre>
+
+<h2 id="用户名密码登录">用户名密码登录</h2>
+
+<p>登录逻辑<br />
+* 定义一个PwdAuthenticationToken
+* 针对此登录添加一个filter<br />
+在filter中将登录参数封装成一个PwdAuthenticationToken
+* 定义一个AuthenticationProvider做两件事<br />
+查询出该用户的用户信息<br />
+核对用户信息</p>
+
+<h3 id="图形验证码">图形验证码</h3>
+
+<p>此处省略了图形验证码的功能<br />
+图形验证逻辑为:<br />
+检查用户是否存在<br />
+根据登录名tom 生成6位随机字符串846598<br />
+将其存入redis tom-846598<br />
+846598生成一个图片展示在前台<br />
+另外代码中要为该请求放行， 否则未登录的用户无法访问<br />
+http.antMatchers( &ldquo;/imgCode&rdquo;).permitAll()</p>
+
+<h3 id="pwdauthenticationtoken">PwdAuthenticationToken</h3>
+
+<pre><code>import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+
+public class PhoneCodeAuthenticationToken extends UsernamePasswordAuthenticationToken {
+    public PhoneCodeAuthenticationToken(String phone, String phoneCode) {
+        super(phone, phoneCode);
+    }
+}
+</code></pre>
+
+<h3 id="phonecodeauthenticationfilter">PhoneCodeAuthenticationFilter</h3>
+
+<pre><code>import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.authentication.AuthenticationServiceException;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.AuthenticationException;
+import org.springframework.security.web.authentication.AbstractAuthenticationProcessingFilter;
+import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
+
+import javax.servlet.ServletException;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+import java.io.IOException;
+
+public class PhoneCodeAuthenticationFilter extends AbstractAuthenticationProcessingFilter {
+
+    public PhoneCodeAuthenticationFilter(String matchPath, AuthenticationManager authenticationManager) {
+        super(new AntPathRequestMatcher(matchPath, &quot;POST&quot;));
+        super.setAuthenticationManager(authenticationManager);
+    }
+
+    @Override
+    public Authentication attemptAuthentication(HttpServletRequest request, HttpServletResponse httpServletResponse) throws AuthenticationException, IOException, ServletException {
+        if (!request.getMethod().equals(&quot;POST&quot;)) {
+            throw new AuthenticationServiceException(&quot;Authentication method not supported: &quot; + request.getMethod());
+        } else {
+            String phone = obtainUsername(request);
+            String pwd = obtainPassword(request);
+
+            UsernamePasswordAuthenticationToken authRequest = new PhoneCodeAuthenticationToken(phone,pwd);;
+            return this.getAuthenticationManager().authenticate(authRequest);
+        }
+    }
+
+    protected String obtainUsername(HttpServletRequest request) {
+        Object obj = request.getParameter(&quot;uname&quot;);
+        return null == obj ? &quot;&quot; : obj.toString().trim();
+    }
+
+    protected String obtainPassword(HttpServletRequest request) {
+        Object obj = request.getParameter(&quot;pwd&quot;);
+        return null == obj ? &quot;&quot; : obj.toString();
+    }
+}
+</code></pre>
+
+<h3 id="phonecodeauthenticationprovider">PhoneCodeAuthenticationProvider</h3>
+
+<pre><code>import fluffy.mo.login.MyUserDetailsService;
+import fluffy.mo.login.UnSupportAuthenticationException;
+import fluffy.mo.loginDb.MyUserDetail;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.authentication.dao.AbstractUserDetailsAuthenticationProvider;
+import org.springframework.security.core.AuthenticationException;
+import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.stereotype.Component;
+import org.springframework.util.StringUtils;
+
+@Component
+public class PhoneCodeAuthenticationProvider extends AbstractUserDetailsAuthenticationProvider {
+    @Autowired
+    MyUserDetailsService userDetailsService;
+    @Override
+    protected UserDetails retrieveUser(String username, UsernamePasswordAuthenticationToken authentication) throws AuthenticationException {
+        if (authentication instanceof PhoneCodeAuthenticationToken) {
+            // 查询用户
+            UserDetails userDetails = userDetailsService.loadUserByUsername(username);
+            return userDetails;
+        } else {
+            throw new UnSupportAuthenticationException(&quot;不支持的登录，仅支持手机验证码的登录&quot;);
+        }
+    }
+
+    @Override
+    protected void additionalAuthenticationChecks(UserDetails userDetails, UsernamePasswordAuthenticationToken authentication) throws AuthenticationException {
+        MyUserDetail detail = (MyUserDetail) userDetails;
+        System.out.println(&quot;核对手机验证码。。。&quot;);
+        // 去redis中查询验证码
+        if(StringUtils.isEmpty(&quot;&quot;)){
+            throw new UnSupportAuthenticationException(&quot;验证码不正确，请重新输入&quot;);
+        }
+        System.out.println(&quot;手机验证码正确&quot;);
+        detail.setPassword(null);
+    }
+}
+</code></pre>
+
+<h3 id="注册bean">注册bean</h3>
+
+<p>该filter不是注册到servlet容器上<br />
+而是添加到到filterchain中 filterchain会以filter身份注册到容器上</p>
+
+<pre><code>http.addFilterBefore(new PhoneCodeAuthenticationFilter(&quot;/loginByCode&quot;, authenticationManager),UsernamePasswordAuthenticationFilter.class)
+</code></pre>
+
+<p>该pwdAuthenticationProvider需要注册到authenticationManager中</p>
+
+<pre><code>auth.authenticationProvider(pwdAuthenticationProvider)
+</code></pre>
+
+<h2 id="手机验证码登录">手机验证码登录</h2>
+
+<p>手机验证码登录的流程和用户名密码登录流程类似<br />
+需要将生成的验证码保存到redis中 设置过期时间5分钟<br />
+AuthenticationProvider在检查时，就去redis中查询该验证码</p>
+
+<h3 id="phonecodeauthenticationtoken">PhoneCodeAuthenticationToken</h3>
+
+<pre><code>import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+
+public class PhoneCodeAuthenticationToken extends UsernamePasswordAuthenticationToken {
+    public PhoneCodeAuthenticationToken(String phone, String phoneCode) {
+        super(phone, phoneCode);
+    }
+}
+</code></pre>
+
+<h3 id="phonecodeauthenticationfilter-1">PhoneCodeAuthenticationFilter</h3>
+
+<pre><code>import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.authentication.AuthenticationServiceException;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.AuthenticationException;
+import org.springframework.security.web.authentication.AbstractAuthenticationProcessingFilter;
+import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
+
+import javax.servlet.ServletException;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+import java.io.IOException;
+
+public class PhoneCodeAuthenticationFilter extends AbstractAuthenticationProcessingFilter {
+
+    public PhoneCodeAuthenticationFilter(String matchPath, AuthenticationManager authenticationManager) {
+        super(new AntPathRequestMatcher(matchPath, &quot;POST&quot;));
+        super.setAuthenticationManager(authenticationManager);
+    }
+
+    @Override
+    public Authentication attemptAuthentication(HttpServletRequest request, HttpServletResponse httpServletResponse) throws AuthenticationException, IOException, ServletException {
+        if (!request.getMethod().equals(&quot;POST&quot;)) {
+            throw new AuthenticationServiceException(&quot;Authentication method not supported: &quot; + request.getMethod());
+        } else {
+            String phone = obtainUsername(request);
+            String pwd = obtainPassword(request);
+
+            UsernamePasswordAuthenticationToken authRequest = new PhoneCodeAuthenticationToken(phone,pwd);;
+            return this.getAuthenticationManager().authenticate(authRequest);
+        }
+    }
+
+    protected String obtainUsername(HttpServletRequest request) {
+        Object obj = request.getParameter(&quot;uname&quot;);
+        return null == obj ? &quot;&quot; : obj.toString().trim();
+    }
+
+    protected String obtainPassword(HttpServletRequest request) {
+        Object obj = request.getParameter(&quot;pwd&quot;);
+        return null == obj ? &quot;&quot; : obj.toString();
+    }
+}
+</code></pre>
+
+<h3 id="phonecodeauthenticationprovider-1">PhoneCodeAuthenticationProvider</h3>
+
+<pre><code>import fluffy.mo.login.MyUserDetailsService;
+import fluffy.mo.login.UnSupportAuthenticationException;
+import fluffy.mo.loginDb.MyUserDetail;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.authentication.dao.AbstractUserDetailsAuthenticationProvider;
+import org.springframework.security.core.AuthenticationException;
+import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.stereotype.Component;
+import org.springframework.util.StringUtils;
+
+@Component
+public class PhoneCodeAuthenticationProvider extends AbstractUserDetailsAuthenticationProvider {
+    @Autowired
+    MyUserDetailsService userDetailsService;
+    @Override
+    protected UserDetails retrieveUser(String username, UsernamePasswordAuthenticationToken authentication) throws AuthenticationException {
+        if (authentication instanceof PhoneCodeAuthenticationToken) {
+            // 查询用户
+            UserDetails userDetails = userDetailsService.loadUserByUsername(username);
+            return userDetails;
+        } else {
+            throw new UnSupportAuthenticationException(&quot;不支持的登录，仅支持手机验证码的登录&quot;);
+        }
+    }
+
+    @Override
+    protected void additionalAuthenticationChecks(UserDetails userDetails, UsernamePasswordAuthenticationToken authentication) throws AuthenticationException {
+        MyUserDetail detail = (MyUserDetail) userDetails;
+        System.out.println(&quot;核对手机验证码。。。&quot;);
+        // 去redis中查询验证码
+        if(StringUtils.isEmpty(&quot;&quot;)){
+            throw new UnSupportAuthenticationException(&quot;验证码不正确，请重新输入&quot;);
+        }
+        System.out.println(&quot;手机验证码正确&quot;);
+        detail.setPassword(null);
+    }
+}
+</code></pre>
+
+<h2 id="配置spring-secruity登录项">配置spring-secruity登录项</h2>
+
+<h3 id="securityconfig">SecurityConfig</h3>
+
+<pre><code>import fluffy.mo.login.phonecode.PhoneCodeAuthenticationFilter;
+import fluffy.mo.login.phonecode.PhoneCodeAuthenticationProvider;
+import fluffy.mo.login.pwd.PwdAuthenticationFilter;
+import fluffy.mo.login.pwd.PwdAuthenticationProvider;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Bean;
+import org.springframework.http.HttpMethod;
+import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
+import org.springframework.security.config.annotation.web.builders.HttpSecurity;
+import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
+import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
+import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
+
+@EnableWebSecurity()
+// 启用注解拦截
+@EnableGlobalMethodSecurity(prePostEnabled=true)
+public class SecurityConfig extends WebSecurityConfigurerAdapter {
+
+    @Override
+    protected void configure(HttpSecurity http) throws Exception {
+        AuthenticationManager authenticationManager = authenticationManager();
+        http
+                .addFilterBefore(new PhoneCodeAuthenticationFilter(&quot;/loginByCode&quot;, authenticationManager),UsernamePasswordAuthenticationFilter.class)
+                .addFilterBefore(new PwdAuthenticationFilter(&quot;/loginByPwd&quot;, authenticationManager),UsernamePasswordAuthenticationFilter.class)
+                .authorizeRequests()
+                .antMatchers( &quot;/login&quot;).permitAll()
+                .antMatchers(HttpMethod.POST, &quot;/loginBy*&quot;).permitAll()
+                .antMatchers(&quot;/role/*&quot;).access(&quot;authenticated and @authService.canAccess(request,authentication)&quot;)
+                .antMatchers(&quot;/**&quot;).authenticated()
+//                .and().csrf().disable().cors()
+                .and().formLogin().loginPage(&quot;/login&quot;)
+//                .failureForwardUrl(&quot;/login&quot;)
+                .and().logout().logoutUrl(&quot;/logout&quot;)
+        ;
+    }
+
+    @Autowired
+    public void configureGlobal(AuthenticationManagerBuilder auth, PhoneCodeAuthenticationProvider phoneProvider, PwdAuthenticationProvider pwdAuthenticationProvider) throws Exception {
+        auth.authenticationProvider(phoneProvider)
+                .authenticationProvider(pwdAuthenticationProvider);
+    }
+
+//    @Bean
+//    @Override
+//    public AuthenticationManager authenticationManagerBean() throws Exception {
+//        return super.authenticationManagerBean();
+//    }
+}
+</code></pre>
+
+<h3 id="authservice">AuthService</h3>
+
+<p>上一个文件SecurityConfig.java中以代码的形式， 声明了权限要求<br />
+同时也对&rdquo;/role/*&ldquo;声明了调用方法检查是否有权限调用</p>
+
+<pre><code>import fluffy.mo.loginDb.MyRole;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.Authentication;
+import org.springframework.stereotype.Component;
+
+import javax.servlet.http.HttpServletRequest;
+import java.util.*;
+import java.util.stream.Collectors;
+
+@Component
+public class AuthService {
+    Map&lt;String, List&gt; map = new HashMap&lt;&gt;();
+
+    public AuthService() {
+        map.put(&quot;/role/pwd&quot;,Arrays.asList(&quot;pwd&quot;,&quot;manager&quot;));
+        map.put(&quot;/role/pee&quot;,Arrays.asList(&quot;phone&quot;,&quot;admin&quot;));
+    }
+
+    public boolean canAccess(HttpServletRequest request, Authentication authentication) {
+        // 请求的uri
+        String requestURI = request.getRequestURI();
+        System.out.println(requestURI);
+        Object principal = authentication.getPrincipal();
+        if(principal == null || &quot;anonymousUser&quot;.equals(principal.toString())){
+            return false;
+        }
+        if(authentication instanceof UsernamePasswordAuthenticationToken){
+        // 该uri对应的角色是什么
+            List&lt;String&gt; list = map.get(requestURI);
+            if(null != list){
+                // 该用户是否有这个权限
+                List&lt;MyRole&gt; authorities = (List&lt;MyRole&gt;) authentication.getAuthorities();
+                List&lt;String&gt; collect = authorities.stream()
+                        .map(x-&gt; x.getAuthority().replace(&quot;ROLE_&quot;,&quot;&quot;))
+                        .collect(Collectors.toList());
+                // 取交集
+                collect.retainAll(list);
+                if(collect.size() &gt; 0){
+                    return true;
+                }
+            }
+            return false;
+        }
+        return true;
+    }
+
+}
+</code></pre>
+
+<h2 id="访问安全信息">访问安全信息</h2>
+
+<p>登录页面</p>
+
+<pre><code>@Controller
+public class LoginController {
+    @RequestMapping(&quot;login&quot;)
+    public String loginP() {
+        return &quot;login&quot;;
+    }
+    @RequestMapping(&quot;logout&quot;)
+    public String logout(HttpServletRequest req) {
+        req.getSession().invalidate();
+        return &quot;redirect:login&quot;;
+    }
+}
+</code></pre>
+
+<h3 id="resources-templates-login-ftl">resources\templates\login.ftl</h3>
+
+<pre><code>&lt;!DOCTYPE html&gt;
+&lt;html lang=&quot;en&quot;&gt;
+&lt;head&gt;
+    &lt;meta charset=&quot;UTF-8&quot;&gt;
+    &lt;title&gt;登录&lt;/title&gt;
+&lt;/head&gt;
+&lt;body&gt;
+&lt;br&gt;
+&lt;form id=&quot;loginForm&quot; action=&quot;/loginByCode&quot; method=&quot;post&quot;&gt;
+    &lt;table&gt;
+        &lt;tbody&gt;
+        &lt;tr&gt; &lt;td id=&quot;m1&quot;&gt;用户名&lt;/td&gt;&lt;td&gt;&lt;input name=&quot;uname&quot;&gt;&lt;/td&gt; &lt;/tr&gt;
+        &lt;tr&gt; &lt;td id=&quot;m2&quot;&gt;密码&lt;/td&gt;&lt;td&gt;&lt;input name=&quot;pwd&quot;&gt;&lt;/td&gt; &lt;/tr&gt;
+        &lt;input type=&quot;hidden&quot; name=&quot;${_csrf.parameterName}&quot; value=&quot;${_csrf.token}&quot;/&gt;
+        &lt;tr&gt; &lt;td&gt;&lt;input type=&quot;submit&quot; value=&quot;提交登录&quot;&gt;&lt;/td&gt; &lt;/tr&gt;
+        &lt;/tbody&gt;
+    &lt;/table&gt;
+&lt;/form&gt;
+&lt;br&gt;
+&lt;a href=&quot;#&quot; onclick=&quot;toPwd()&quot;&gt;用户名登录&lt;/a&gt;&lt;br&gt;
+&lt;a href=&quot;#&quot; onclick=&quot;toPhone()&quot;&gt;手机验证码登录&lt;/a&gt;
+&lt;/body&gt;
+&lt;script&gt;
+    var loginForm = document.getElementById(&quot;loginForm&quot;);
+    var m1 = document.getElementById(&quot;m1&quot;);
+    var m2 = document.getElementById(&quot;m2&quot;);
+    function toPwd() {
+        loginForm.action=&quot;loginByPwd&quot;
+        m1.innerText=&quot;用户名&quot;
+        m2.innerText=&quot;密码&quot;
+    }
+    function toPhone() {
+        loginForm.action=&quot;loginByPhone&quot;
+        m1.innerText=&quot;手机号&quot;
+        m2.innerText=&quot;验证码&quot;
+    }
+    toPwd();
+&lt;/script&gt;
+&lt;/html&gt;
+</code></pre>
+
+<h3 id="hellocontroller">HelloController</h3>
+
+<pre><code>import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
+
+@RestController
+public class HelloController {
+    @RequestMapping(&quot;hello&quot;)
+    public String hello() {
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        String name = authentication.getName();
+        System.out.println(&quot;已登录用户-&quot; + name);
+        return &quot;hello==&quot; + name;
+    }
+    @RequestMapping(&quot;hello2&quot;)
+    public String hello2() {
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        String name = authentication.getName();
+        System.out.println(&quot;已登录用户-&quot; + name);
+        return &quot;hello==&quot; + name;
+    }
+    @RequestMapping(&quot;/changePwd/{username}&quot;)
+    @PreAuthorize(&quot;#userId == authentication.principal.username or hasAuthority('admin')&quot;)
+    public String changePassword(@PathVariable(value = &quot;username&quot;) String userId) {
+        System.out.println(&quot;修改密码-&quot; + userId);
+        return &quot;success&quot; ;
+    }
+    @RequestMapping(&quot;/role/{name}&quot;)
+    public String hp(@PathVariable(value = &quot;name&quot;) String name) {
+        System.out.println(&quot;该用户-&quot; + name);
+        return &quot;logined==&quot; + name;
+    }
+
+}
+</code></pre>
+
+<h3 id="测试">测试</h3>
+
+<p>访问 <a href="http://127.0.0.1:8822/changePwd/tom">http://127.0.0.1:8822/changePwd/tom</a><br />
+由于没登录会跳到登录页面  127.0.0.1:8822/login<br />
+用tom/123登录后<br />
+会跳到 <a href="http://127.0.0.1:8822/changePwd/tom">http://127.0.0.1:8822/changePwd/tom</a><br />
+提示success<br />
+访问 <a href="http://127.0.0.1:8822/changePwd/peter">http://127.0.0.1:8822/changePwd/peter</a><br />
+提示无权限</p>
+
+<p>最后退出 <a href="http://127.0.0.1:8822/logout">http://127.0.0.1:8822/logout</a><br />
+访问 <a href="http://127.0.0.1:8822/changePwd/tom">http://127.0.0.1:8822/changePwd/tom</a><br />
+自动跳到登录页面</p>
+
+                        </div>
+
+                        
+
+
+                        
+
+<div class="post-archive">
+    <h2>See Also</h2>
+    <ul class="listing">
+        
+        <li><a href="/2019/04/08/login-nature.html">登录流程的本质</a></li>
+        
+        <li><a href="/2019/03/02/spring-session-in-action.html">spring-session实现分布式会话</a></li>
+        
+        <li><a href="/2019/04/06/zipkin-dubbo-tracing.html">通过zipkin对dubbo进行链路追踪</a></li>
+        
+        <li><a href="/2019/02/16/rocketmq-transaction.html">通过rocketmq实现分布式事务</a></li>
+        
+        <li><a href="/2019/02/03/drone-ci-github-pages.html">drone持续集成-发布github pages</a></li>
+        
+    </ul>
+</div>
+
+
+                        <div class="post-meta meta-tags">
+                            
+                            <ul class="clearfix">
+                                
+                                <li><a href="https://duansheli.github.io/tags/spring-boot">spring-boot</a></li>
+                                
+                                <li><a href="https://duansheli.github.io/tags/spring-security">spring-security</a></li>
+                                
+                                <li><a href="https://duansheli.github.io/tags/%E7%99%BB%E5%BD%95">登录</a></li>
+                                
+                            </ul>
+                            
+                        </div>
+                    </article>
+                    
+    
+
+    
+    
+                </div>
+            </div>
+            <div id="secondary">
+    <section class="widget">
+        <form id="search" action="//www.google.com/search" method="get" accept-charset="utf-8" target="_blank" _lpchecked="1">
+      
+      <input type="text" name="q" maxlength="20" placeholder="Search">
+      <input type="hidden" name="sitesearch" value="https://duansheli.github.io">
+      <button type="submit" class="submit icon-search"></button>
+</form>
+    </section>
+    
+    <section class="widget">
+        <h3 class="widget-title">最近文章</h3>
+<ul class="widget-list">
+    
+    <li>
+        <a href="https://duansheli.github.io/2019/04/09/spring-security-login-by-mobile-code.html" title="使用spring security实现手机验证码登录">使用spring security实现手机验证码登录</a>
+    </li>
+    
+    <li>
+        <a href="https://duansheli.github.io/2019/04/08/login-nature.html" title="登录流程的本质">登录流程的本质</a>
+    </li>
+    
+    <li>
+        <a href="https://duansheli.github.io/2019/04/06/zipkin-dubbo-tracing.html" title="通过zipkin对dubbo进行链路追踪">通过zipkin对dubbo进行链路追踪</a>
+    </li>
+    
+    <li>
+        <a href="https://duansheli.github.io/2019/03/02/spring-session-in-action.html" title="spring-session实现分布式会话">spring-session实现分布式会话</a>
+    </li>
+    
+    <li>
+        <a href="https://duansheli.github.io/2019/02/16/rocketmq-transaction.html" title="通过rocketmq实现分布式事务">通过rocketmq实现分布式事务</a>
+    </li>
+    
+    <li>
+        <a href="https://duansheli.github.io/2019/02/03/drone-ci-github-pages.html" title="drone持续集成-发布github pages">drone持续集成-发布github pages</a>
+    </li>
+    
+    <li>
+        <a href="https://duansheli.github.io/2019/01/01/connect-container-ip.html" title="跨宿主机与docker容器通信">跨宿主机与docker容器通信</a>
+    </li>
+    
+    <li>
+        <a href="https://duansheli.github.io/2019/01/15/docker-useful-cmd.html" title="docker常用操作">docker常用操作</a>
+    </li>
+    
+    <li>
+        <a href="https://duansheli.github.io/2018/01/03/k8s-cluster-setup-03.html" title="k8s搭建集群3-异常解决">k8s搭建集群3-异常解决</a>
+    </li>
+    
+    <li>
+        <a href="https://duansheli.github.io/2019/01/02/k8s-cluster-setup-02.html" title="k8s集群搭建-02">k8s集群搭建-02</a>
+    </li>
+    
+</ul>
+    </section>
+
+    
+
+    <section class="widget">
+        <h3 class="widget-title">分类</h3>
+<ul class="widget-list">
+    
+    <li>
+        <a href="https://duansheli.github.io/categories/k8s%E9%9B%86%E7%BE%A4/">k8s集群(3)</a>
+    </li>
+    
+</ul>
+    </section>
+
+    <section class="widget">
+        <h3 class="widget-title">标签</h3>
+<div class="tagcloud">
+    
+    <a href="https://duansheli.github.io/tags/docker/">docker</a>
+    
+    <a href="https://duansheli.github.io/tags/drone/">drone</a>
+    
+    <a href="https://duansheli.github.io/tags/dubbo/">dubbo</a>
+    
+    <a href="https://duansheli.github.io/tags/elasticsearch/">elasticsearch</a>
+    
+    <a href="https://duansheli.github.io/tags/k8s/">k8s</a>
+    
+    <a href="https://duansheli.github.io/tags/rocketmq/">rocketmq</a>
+    
+    <a href="https://duansheli.github.io/tags/session/">session</a>
+    
+    <a href="https://duansheli.github.io/tags/spring-boot/">spring-boot</a>
+    
+    <a href="https://duansheli.github.io/tags/spring-security/">spring-security</a>
+    
+    <a href="https://duansheli.github.io/tags/springboot/">springboot</a>
+    
+    <a href="https://duansheli.github.io/tags/zipkin/">zipkin</a>
+    
+    <a href="https://duansheli.github.io/tags/%E5%88%86%E5%B8%83%E5%BC%8F%E4%BA%8B%E5%8A%A1/">分布式事务</a>
+    
+    <a href="https://duansheli.github.io/tags/%E7%99%BB%E5%BD%95/">登录</a>
+    
+</div>
+    </section>
+
+    
+
+    <section class="widget">
+        <h3 class="widget-title">其它</h3>
+        <ul class="widget-list">
+            <li><a href="https://duansheli.github.io/index.xml">文章 RSS</a></li>
+        </ul>
+    </section>
+</div>
+        </div>
+    </div>
+</div>
+<footer id="footer">
+    <div class="container">
+        &copy; 2019 <a href="https://duansheli.github.io">断舍离的博客 By 断舍离</a>.
+        Powered by <a rel="nofollow noreferer noopener" href="https://gohugo.io" target="_blank">Hugo</a>.
+        <a href="https://www.flysnow.org/" target="_blank">Theme</a> based on <a href="https://github.com/rujews/maupassant-hugo" target="_blank">maupassant</a>.
+        
+    </div>
+</footer>
+
+
+    <script type="text/javascript">
+    
+    (function(){
+        $("pre code").parent().addClass("line-numbers")
+    }())
+
+    window.MathJax = {
+        tex2jax: {
+            inlineMath: [ ['$','$'] ],
+            processEscapes: true
+        }
+    };
+    </script>
+    <script type="text/javascript" src="/js/prism.js" async="true"></script>
+    <script src='https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/MathJax.js?config=TeX-MML-AM_CHTML' async></script>
+
+<a id="rocket" href="#top"></a>
+<script type="text/javascript" src="/js/totop.js?v=0.0.0" async=""></script>
+
+
+
+
+
+
+</body>
+</html>

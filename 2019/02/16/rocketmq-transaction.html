@@ -1,0 +1,739 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+
+    <meta charset="utf-8">
+    <meta name="generator" content="Hugo 0.54.0" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <title>通过rocketmq实现分布式事务 | 断舍离的博客</title>
+    <meta property="og:title" content="通过rocketmq实现分布式事务 - 断舍离的博客">
+    <meta property="og:type" content="article">
+        
+    <meta property="article:published_time" content="2019-02-16T17:28:13&#43;08:00">
+        
+        
+    <meta property="article:modified_time" content="2019-02-16T17:28:13&#43;08:00">
+        
+    <meta name="Keywords" content="java,scala,spark,kubernetes">
+    <meta name="description" content="通过rocketmq实现分布式事务">
+        
+    <meta name="author" content="断舍离">
+    <meta property="og:url" content="https://duansheli.github.io/2019/02/16/rocketmq-transaction.html">
+    <link rel="shortcut icon" href="/favicon.ico" type="image/x-icon">
+
+    <link rel="stylesheet" href="/css/normalize.css">
+    
+        <link rel="stylesheet" href="/css/prism.css">
+    
+    <link rel="stylesheet" href="/css/style.css">
+    <script type="text/javascript" src="//cdn.bootcss.com/jquery/3.2.1/jquery.min.js"></script>
+
+    
+
+
+    
+    
+</head>
+
+<body>
+<header id="header" class="clearfix">
+    <div class="container">
+        <div class="col-group">
+            <div class="site-name ">
+                
+                    <a id="logo" href="https://duansheli.github.io">
+                        断舍离的博客
+                    </a>
+                
+                <p class="description">java, scala, spark, kubernetes</p>
+            </div>
+            <div>
+                <nav id="nav-menu" class="clearfix">
+                    <a class="" href="https://duansheli.github.io">首页</a>
+                    
+                    <a  href="https://duansheli.github.io/archives/" title="归档">归档</a>
+                    
+                </nav>
+            </div>
+        </div>
+    </div>
+</header>
+
+
+<div id="body">
+    <div class="container">
+        <div class="col-group">
+
+            <div class="col-8" id="main">
+                <div class="res-cons">
+                    <article class="post">
+                        <header>
+                            <h1 class="post-title">通过rocketmq实现分布式事务</h1>
+                        </header>
+                        <date class="post-meta meta-date">
+                            2019年2月16日
+                        </date>
+                        
+                        
+                        <div class="post-content">
+                            
+
+<h1 id="通过rocketmq实现分布式事务">通过rocketmq实现分布式事务</h1>
+
+<h2 id="实现原理">实现原理</h2>
+
+<h3 id="通常说的分布式事务">通常说的分布式事务</h3>
+
+<p>一次请求-调用serviceA<br />
+serviceA 中会调用serviceB，serviceC，serviceD
+在serviceA ，serviceB，serviceC，serviceD中的事务要么一起成功<br />
+只要有一个节点事务失败了， 其他的节点都会将事务回滚</p>
+
+<h3 id="rocketmq的分布式事务">rocketmq的分布式事务</h3>
+
+<p>rocketmq的分布式事务与【通常说的分布式事务】有所不同<br />
+它会做最大努力（重试）让所有节点一起成功， 不保证一定成功<br />
+对于不成功的情况 应设置人工兜底补偿</p>
+
+<p>如:<br />
+在美团外卖下单了，并不能一定收到外卖<br />
+可能鱼没有了 或者送货人手不够（不保证一定成功）<br />
+这时商家会联系顾客换个菜 或退款</p>
+
+<h2 id="环境">环境</h2>
+
+<p>rocketmq安装在ubuntu的docker中<br />
+在win10下的idea中启动项目，访问mq
+* jdk- 1.8
+* spring boot- 2.1.4
+*  rocketmq- 4.4.0</p>
+
+<h2 id="流程描述">流程描述</h2>
+
+<blockquote>
+<p>访问web  127.0.0.1:8080/payed<br />
+表示某个订单完成支付<br />
+发送一个订单支付成功的事务消息<br />
+此时先在本地执行扣钱操作
+mq在扣钱完后，将消息被发给其他的服务节点<br />
+节点PointsConsumer 节点RepoConsumer在收到消息后进行相应的事务操作</p>
+
+<p>实际过程中消息可能会被重复消费 需开发人员注意幂等处理</p>
+</blockquote>
+
+<h2 id="rocketmq安装">rocketmq安装</h2>
+
+<pre><code>#端口情况 nameServer:9876, broker:{10911,10909}
+docker run -d --name mqnamesrv \
+rocketmqinc/rocketmq:4.4.0 sh mqnamesrv
+
+docker run -d --name mqbroker \
+--link mqnamesrv -e &quot;NAMESRV_ADDR=mqnamesrv:9876&quot; \
+rocketmqinc/rocketmq:4.4.0 sh mqbroker 
+
+#获得nameserver的ip
+docker inspect -f {{.NetworkSettings.IPAddress}} mqnamesrv
+172.17.0.3
+</code></pre>
+
+<blockquote>
+<p>为访问到虚拟机中docker中的mq<br />
+在windows中 添加路由<br />
+route -p add 172.17.0.0 mask 255.255.0.0 192.168.88.3<br />
+然后win10下,  ping下172.17.0.3看是否连通</p>
+</blockquote>
+
+<h1 id="代码篇">代码篇</h1>
+
+<h2 id="spring-boot-mq生产者">spring boot + mq生产者</h2>
+
+<p>关于mq生产者的3个主要配置<br />
+LocalOrderConsumer   MqConfig   ProduceConfig</p>
+
+<h3 id="pom-xml">pom.xml</h3>
+
+<pre><code>&lt;?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot;?&gt;
+&lt;project xmlns=&quot;http://maven.apache.org/POM/4.0.0&quot; xmlns:xsi=&quot;http://www.w3.org/2001/XMLSchema-instance&quot;
+         xsi:schemaLocation=&quot;http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd&quot;&gt;
+    &lt;modelVersion&gt;4.0.0&lt;/modelVersion&gt;
+
+    &lt;groupId&gt;com.fluffy&lt;/groupId&gt;
+    &lt;artifactId&gt;de-rocketmq-transaction&lt;/artifactId&gt;
+    &lt;version&gt;0.1&lt;/version&gt;
+    &lt;packaging&gt;jar&lt;/packaging&gt;
+
+    &lt;name&gt;de-rocketmq-transaction&lt;/name&gt;
+
+    &lt;parent&gt;
+        &lt;groupId&gt;org.springframework.boot&lt;/groupId&gt;
+        &lt;artifactId&gt;spring-boot-starter-parent&lt;/artifactId&gt;
+        &lt;version&gt;2.1.4.RELEASE&lt;/version&gt;
+        &lt;relativePath/&gt;
+    &lt;/parent&gt;
+
+    &lt;properties&gt;
+        &lt;project.build.sourceEncoding&gt;UTF-8&lt;/project.build.sourceEncoding&gt;
+        &lt;project.reporting.outputEncoding&gt;UTF-8&lt;/project.reporting.outputEncoding&gt;
+        &lt;java.version&gt;1.8&lt;/java.version&gt;
+        &lt;maven.compiler.source&gt;1.8&lt;/maven.compiler.source&gt;
+        &lt;maven.compiler.target&gt;1.8&lt;/maven.compiler.target&gt;
+    &lt;/properties&gt;
+
+    &lt;dependencies&gt;
+        &lt;dependency&gt;
+            &lt;groupId&gt;org.springframework.boot&lt;/groupId&gt;
+            &lt;artifactId&gt;spring-boot-starter-web&lt;/artifactId&gt;
+        &lt;/dependency&gt;
+        &lt;dependency&gt;
+            &lt;groupId&gt;org.projectlombok&lt;/groupId&gt;
+            &lt;artifactId&gt;lombok&lt;/artifactId&gt;
+        &lt;/dependency&gt;
+        &lt;dependency&gt;
+            &lt;groupId&gt;org.apache.rocketmq&lt;/groupId&gt;
+            &lt;artifactId&gt;rocketmq-client&lt;/artifactId&gt;
+            &lt;version&gt;4.4.0&lt;/version&gt;
+        &lt;/dependency&gt;
+    &lt;/dependencies&gt;
+&lt;/project&gt;
+</code></pre>
+
+<h3 id="application-properties">application.properties</h3>
+
+<pre><code>server.port=8080
+spring.application.name=mq-tran
+
+mq.groupName= ${spring.application.name}
+mq.namesrvAddr= 172.17.0.3:9876
+
+topic.orderPaySuccess=order2PaySuccess
+</code></pre>
+
+<h3 id="app-main-java">App_Main.java</h3>
+
+<pre><code>@SpringBootApplication
+public class App_Main {
+    public static void main(String[] args) {
+        SpringApplication.run(App_Main.class, args);
+    }
+}
+</code></pre>
+
+<h3 id="ordercontroller-java">OrderController.java</h3>
+
+<pre><code>@RestController
+@Log4j2
+public class OrderController {
+    @Value(&quot;${topic.orderPaySuccess}&quot;)
+    String orderTopic;
+    @Autowired
+    private TransactionMQProducer tsaProducer;
+
+    static int num = 0;
+    @RequestMapping(&quot;payed&quot;)
+    public String payed() throws Exception {
+        // 模拟订单数据
+        String orderNo = &quot;od-&quot; + num++;
+        // 处理消息时可能会用到
+        String param = &quot;productId=1234&amp;buyerId=101&quot;;
+
+        Message msg = new Message(orderTopic, &quot;tag1&quot;, orderNo, param.getBytes());
+        tsaProducer.setSendMsgTimeout(2000);
+        SendStatus status = tsaProducer
+                .sendMessageInTransaction(msg, null)
+                .getSendStatus();
+        return status.name();
+    }
+    @RequestMapping(&quot;hello&quot;)
+    public String hello() {
+        return &quot;hello-order&quot;;
+    }
+}
+</code></pre>
+
+<h3 id="localorderconsumer-java">LocalOrderConsumer.java</h3>
+
+<pre><code>import org.apache.rocketmq.client.producer.LocalTransactionState;
+import org.apache.rocketmq.client.producer.TransactionListener;
+import org.apache.rocketmq.common.message.Message;
+import org.apache.rocketmq.common.message.MessageExt;
+
+import java.util.concurrent.ConcurrentHashMap;
+import java.util.concurrent.atomic.AtomicInteger;
+
+/**
+ * 该服务执行成功则通知其他订阅者去消费
+ */
+public class LocalOrderConsumer implements TransactionListener {
+    private AtomicInteger transactionIndex = new AtomicInteger(0);
+    // 通常db是去重表 保证处理幂等
+    private ConcurrentHashMap&lt;String, Integer&gt; db = new ConcurrentHashMap&lt;&gt;();
+
+    @Override
+    public LocalTransactionState executeLocalTransaction(Message msg, Object arg) {
+        int value = transactionIndex.getAndIncrement();
+        int status = value % 3;
+        System.out.println(&quot;本地事务-处理订单-&quot; + msg.getKeys());
+        if (1 == status) {// 有三分之一机会付钱成功
+            System.out.println(&quot;本地事务-订单&quot; + msg.getKeys() + &quot;状态更新为成功&quot;);
+            System.out.println(&quot;本地事务-扣除冻结款-更新账户的余额&quot;);
+        } else if (2 == status) {
+            System.out.println(&quot;本地事务-库存不足，订单已取消&quot;);
+        }
+        db.put(msg.getTransactionId(), status);
+        return LocalTransactionState.UNKNOW;
+    }
+
+    // 当长时间没有得到是否处理的响应(成功或失败)
+    // 比如扣钱完毕 提交后 系统突然挂掉了，还没来得及通知mq
+    @Override
+    public LocalTransactionState checkLocalTransaction(MessageExt msg) {
+        // 此时检查
+        Integer status = db.get(msg.getTransactionId());
+        if (null != status) {
+            switch (status) {
+                case 0:
+                    return LocalTransactionState.UNKNOW;
+                case 1: // 支付成功, 消息
+                    return LocalTransactionState.COMMIT_MESSAGE;
+                case 2:
+                    return LocalTransactionState.ROLLBACK_MESSAGE;
+            }
+        }
+        return LocalTransactionState.COMMIT_MESSAGE;
+    }
+}
+</code></pre>
+
+<h3 id="mqconfig-java">MqConfig.java</h3>
+
+<pre><code>@ConfigurationProperties(prefix = &quot;mq&quot;)
+@Configuration
+public class MqConfig {
+    String namesrvAddr;
+    String groupName;
+
+    public String getNamesrvAddr() {
+        return namesrvAddr;
+    }
+
+    public void setNamesrvAddr(String namesrvAddr) {
+        this.namesrvAddr = namesrvAddr;
+    }
+
+    public String getGroupName() {
+        return groupName;
+    }
+
+    public void setGroupName(String groupName) {
+        this.groupName = groupName;
+    }
+}
+</code></pre>
+
+<h3 id="produceconfig-java">ProduceConfig.java</h3>
+
+<pre><code>import lombok.extern.log4j.Log4j2;
+import org.apache.rocketmq.client.producer.TransactionMQProducer;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.Configuration;
+
+import java.util.concurrent.ArrayBlockingQueue;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.ThreadPoolExecutor;
+import java.util.concurrent.TimeUnit;
+
+@Log4j2
+@Configuration
+public class ProduceConfig {
+    @Autowired
+    MqConfig mqConfig;
+
+    @Bean(&quot;tsaProducer&quot;)
+    public TransactionMQProducer transactionMQProducer() {
+        String producerGroup = mqConfig.getGroupName() + &quot;-tsa-consumer&quot;;
+        log.info(&quot;TransactionMQProducer 正在创建&quot;);
+        try {
+            TransactionMQProducer producer = new TransactionMQProducer(producerGroup);
+            ExecutorService executorService = new ThreadPoolExecutor(2, 4, 100, TimeUnit.SECONDS,
+                    new ArrayBlockingQueue&lt;Runnable&gt;(1 &lt;&lt; 8), (Runnable r) -&gt; {
+                Thread thread = new Thread(r);
+                thread.setName(&quot;mq-transaction-producer&quot;);
+                return thread;
+            });
+            producer.setNamesrvAddr(mqConfig.getNamesrvAddr());
+            producer.setExecutorService(executorService);
+            producer.setTransactionListener(new LocalOrderConsumer());
+            producer.start();
+            log.info(&quot;TransactionMQProducer 创建成功&quot;);
+            return producer;
+        } catch (Exception e) {
+            log.error(&quot;TransactionMQProducer 创建失败&quot;,e);
+            System.exit(-1);
+        }
+        return null;
+    }
+}
+</code></pre>
+
+<h2 id="消费者">消费者</h2>
+
+<p>消费者不一定与生产者在同一个节点<br />
+这里时demo就放在同一项目了</p>
+
+<h3 id="abstractconsumer-java">AbstractConsumer.java</h3>
+
+<pre><code>import fluffy.mo.transactionMQ.MqConfig;
+import lombok.extern.log4j.Log4j2;
+import org.apache.rocketmq.client.consumer.DefaultMQPushConsumer;
+import org.apache.rocketmq.client.consumer.listener.ConsumeConcurrentlyContext;
+import org.apache.rocketmq.client.consumer.listener.ConsumeConcurrentlyStatus;
+import org.apache.rocketmq.common.message.MessageExt;
+import org.apache.rocketmq.common.protocol.heartbeat.MessageModel;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Configuration;
+
+import java.util.List;
+
+@Configuration
+@Log4j2
+public abstract class AbstractConsumer {
+
+    @Autowired
+    MqConfig config;
+    String suffix;
+
+    public void setSuffix(String suffix) {
+        this.suffix = suffix;
+    }
+
+    // 开启消费者监听服务
+    public void listener(String topic, String tag) {
+        String producerGroup = config.getGroupName() +&quot;-&quot;+ suffix;
+        log.info(&quot;加载mq-&quot; + topic + &quot;:&quot; + tag + &quot;消费者&quot;);
+        try {
+            DefaultMQPushConsumer consumer = new DefaultMQPushConsumer(producerGroup);
+            consumer.setNamesrvAddr(config.getNamesrvAddr());
+            consumer.subscribe(topic, tag);
+            consumer.setConsumeMessageBatchMaxSize(1);//每次处理1条
+            consumer.setMaxReconsumeTimes(3);//消息最多重试3次
+            consumer.setConsumeThreadMin(4);
+            consumer.setConsumeThreadMax(1&lt;&lt;4);//并发处理的线程数
+            consumer.setMessageModel(MessageModel.CLUSTERING);
+            // 消费消息
+            consumer.registerMessageListener((List&lt;MessageExt&gt; msgs, ConsumeConcurrentlyContext context)
+                    -&gt; AbstractConsumer.this.handle(msgs));
+
+            consumer.start();
+            log.info(&quot;消费者mq连接成功&quot;);
+        } catch (Exception e) {
+            log.error(&quot;消费者mq连接失败&quot;, e);
+            System.exit(-1);
+        }
+    }
+
+    // 处理body的业务
+    public abstract ConsumeConcurrentlyStatus handle(List&lt;MessageExt&gt; msgs);
+
+}
+</code></pre>
+
+<h3 id="repoconsumer-java">RepoConsumer.java</h3>
+
+<pre><code>import org.apache.rocketmq.client.consumer.listener.ConsumeConcurrentlyStatus;
+import org.apache.rocketmq.common.message.MessageExt;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.context.ApplicationListener;
+import org.springframework.context.annotation.Configuration;
+import org.springframework.context.event.ContextRefreshedEvent;
+
+import java.util.List;
+import java.util.concurrent.atomic.AtomicBoolean;
+
+@Configuration
+public class RepoConsumer extends AbstractConsumer implements ApplicationListener&lt;ContextRefreshedEvent&gt; {
+    //    @Autowired
+//    RepoService repoService;
+    @Override
+    public ConsumeConcurrentlyStatus handle(List&lt;MessageExt&gt; msgs) {
+        MessageExt messageExt = msgs.get(0);
+        String keys = messageExt.getKeys();
+        try {
+            String orderNo = messageExt.getKeys();
+            System.out.println(&quot;远程服务2-开始拣货-&quot; + orderNo);
+            // repoService...拣货操作
+            return ConsumeConcurrentlyStatus.CONSUME_SUCCESS;
+        } catch (Exception e) {
+            // log.error(&quot;&quot;, e);
+        }
+
+        return ConsumeConcurrentlyStatus.RECONSUME_LATER;
+    }
+
+    @Value(&quot;${topic.orderPaySuccess}&quot;)
+    String orderTopic;
+    AtomicBoolean connected = new AtomicBoolean(false);
+    @Override
+    public void onApplicationEvent(ContextRefreshedEvent contextRefreshedEvent) {
+        if(connected.compareAndSet(false, true)){
+            super.setSuffix(&quot;repo&quot;);
+            super.listener(orderTopic, &quot;tag1&quot;);
+        }
+    }
+}
+</code></pre>
+
+<h3 id="pointsconsumer-java">PointsConsumer.java</h3>
+
+<pre><code>
+import org.apache.rocketmq.client.consumer.listener.ConsumeConcurrentlyStatus;
+import org.apache.rocketmq.common.message.MessageExt;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.context.ApplicationListener;
+import org.springframework.context.annotation.Configuration;
+import org.springframework.context.event.ContextRefreshedEvent;
+
+import java.util.List;
+import java.util.concurrent.atomic.AtomicBoolean;
+
+@Configuration
+public class PointsConsumer extends AbstractConsumer implements ApplicationListener&lt;ContextRefreshedEvent&gt; {
+//    @Autowired
+//    PointService pointService;
+
+    @Override
+    public ConsumeConcurrentlyStatus handle(List&lt;MessageExt&gt; msgs) {
+        MessageExt messageExt = msgs.get(0);
+        String keys = messageExt.getKeys();
+        try {
+            String orderNo = messageExt.getKeys();
+            System.out.println(&quot;远程服务1-增加积分-&quot; + orderNo);
+            // pointService...增加积分
+            return ConsumeConcurrentlyStatus.CONSUME_SUCCESS;
+        } catch (Exception e) {
+            // log.error(&quot;&quot;, e);
+        }
+        return ConsumeConcurrentlyStatus.RECONSUME_LATER;
+    }
+
+    @Value(&quot;${topic.orderPaySuccess}&quot;)
+    String orderTopic;
+    AtomicBoolean connected = new AtomicBoolean(false);
+
+    @Override
+    public void onApplicationEvent(ContextRefreshedEvent contextRefreshedEvent) {
+        if(connected.compareAndSet(false, true)){
+            super.setSuffix(&quot;point&quot;);
+            super.listener(orderTopic, &quot;tag1&quot;);
+        }
+    }
+}
+</code></pre>
+
+<h1 id="验证">验证</h1>
+
+<p>访问5次页面<br />
+127.0.0.1:8080/payed<br />
+控制台可看到序号 1,4会成功提交<br />
+稍等一会可看到<br />
+两个消费者 消费了订单1，4</p>
+
+<p>生产环境下 应注意消息消费的幂等处理</p>
+
+                        </div>
+
+                        
+
+
+                        
+
+<div class="post-archive">
+    <h2>See Also</h2>
+    <ul class="listing">
+        
+        <li><a href="/2019/02/03/drone-ci-github-pages.html">drone持续集成-发布github pages</a></li>
+        
+        <li><a href="/2019/01/01/connect-container-ip.html">跨宿主机与docker容器通信</a></li>
+        
+        <li><a href="/2019/01/15/docker-useful-cmd.html">docker常用操作</a></li>
+        
+        <li><a href="/2018/01/03/k8s-cluster-setup-03.html">k8s搭建集群3-异常解决</a></li>
+        
+        <li><a href="/2019/01/02/k8s-cluster-setup-02.html">k8s集群搭建-02</a></li>
+        
+    </ul>
+</div>
+
+
+                        <div class="post-meta meta-tags">
+                            
+                            <ul class="clearfix">
+                                
+                                <li><a href="https://duansheli.github.io/tags/%E5%88%86%E5%B8%83%E5%BC%8F%E4%BA%8B%E5%8A%A1">分布式事务</a></li>
+                                
+                                <li><a href="https://duansheli.github.io/tags/rocketmq">rocketmq</a></li>
+                                
+                            </ul>
+                            
+                        </div>
+                    </article>
+                    
+    
+
+    
+    
+                </div>
+            </div>
+            <div id="secondary">
+    <section class="widget">
+        <form id="search" action="//www.google.com/search" method="get" accept-charset="utf-8" target="_blank" _lpchecked="1">
+      
+      <input type="text" name="q" maxlength="20" placeholder="Search">
+      <input type="hidden" name="sitesearch" value="https://duansheli.github.io">
+      <button type="submit" class="submit icon-search"></button>
+</form>
+    </section>
+    
+    <section class="widget">
+        <h3 class="widget-title">最近文章</h3>
+<ul class="widget-list">
+    
+    <li>
+        <a href="https://duansheli.github.io/2019/04/09/spring-security-login-by-mobile-code.html" title="使用spring security实现手机验证码登录">使用spring security实现手机验证码登录</a>
+    </li>
+    
+    <li>
+        <a href="https://duansheli.github.io/2019/04/08/login-nature.html" title="登录流程的本质">登录流程的本质</a>
+    </li>
+    
+    <li>
+        <a href="https://duansheli.github.io/2019/04/06/zipkin-dubbo-tracing.html" title="通过zipkin对dubbo进行链路追踪">通过zipkin对dubbo进行链路追踪</a>
+    </li>
+    
+    <li>
+        <a href="https://duansheli.github.io/2019/03/02/spring-session-in-action.html" title="spring-session实现分布式会话">spring-session实现分布式会话</a>
+    </li>
+    
+    <li>
+        <a href="https://duansheli.github.io/2019/02/16/rocketmq-transaction.html" title="通过rocketmq实现分布式事务">通过rocketmq实现分布式事务</a>
+    </li>
+    
+    <li>
+        <a href="https://duansheli.github.io/2019/02/03/drone-ci-github-pages.html" title="drone持续集成-发布github pages">drone持续集成-发布github pages</a>
+    </li>
+    
+    <li>
+        <a href="https://duansheli.github.io/2019/01/01/connect-container-ip.html" title="跨宿主机与docker容器通信">跨宿主机与docker容器通信</a>
+    </li>
+    
+    <li>
+        <a href="https://duansheli.github.io/2019/01/15/docker-useful-cmd.html" title="docker常用操作">docker常用操作</a>
+    </li>
+    
+    <li>
+        <a href="https://duansheli.github.io/2018/01/03/k8s-cluster-setup-03.html" title="k8s搭建集群3-异常解决">k8s搭建集群3-异常解决</a>
+    </li>
+    
+    <li>
+        <a href="https://duansheli.github.io/2019/01/02/k8s-cluster-setup-02.html" title="k8s集群搭建-02">k8s集群搭建-02</a>
+    </li>
+    
+</ul>
+    </section>
+
+    
+
+    <section class="widget">
+        <h3 class="widget-title">分类</h3>
+<ul class="widget-list">
+    
+    <li>
+        <a href="https://duansheli.github.io/categories/k8s%E9%9B%86%E7%BE%A4/">k8s集群(3)</a>
+    </li>
+    
+</ul>
+    </section>
+
+    <section class="widget">
+        <h3 class="widget-title">标签</h3>
+<div class="tagcloud">
+    
+    <a href="https://duansheli.github.io/tags/docker/">docker</a>
+    
+    <a href="https://duansheli.github.io/tags/drone/">drone</a>
+    
+    <a href="https://duansheli.github.io/tags/dubbo/">dubbo</a>
+    
+    <a href="https://duansheli.github.io/tags/elasticsearch/">elasticsearch</a>
+    
+    <a href="https://duansheli.github.io/tags/k8s/">k8s</a>
+    
+    <a href="https://duansheli.github.io/tags/rocketmq/">rocketmq</a>
+    
+    <a href="https://duansheli.github.io/tags/session/">session</a>
+    
+    <a href="https://duansheli.github.io/tags/spring-boot/">spring-boot</a>
+    
+    <a href="https://duansheli.github.io/tags/spring-security/">spring-security</a>
+    
+    <a href="https://duansheli.github.io/tags/springboot/">springboot</a>
+    
+    <a href="https://duansheli.github.io/tags/zipkin/">zipkin</a>
+    
+    <a href="https://duansheli.github.io/tags/%E5%88%86%E5%B8%83%E5%BC%8F%E4%BA%8B%E5%8A%A1/">分布式事务</a>
+    
+    <a href="https://duansheli.github.io/tags/%E7%99%BB%E5%BD%95/">登录</a>
+    
+</div>
+    </section>
+
+    
+
+    <section class="widget">
+        <h3 class="widget-title">其它</h3>
+        <ul class="widget-list">
+            <li><a href="https://duansheli.github.io/index.xml">文章 RSS</a></li>
+        </ul>
+    </section>
+</div>
+        </div>
+    </div>
+</div>
+<footer id="footer">
+    <div class="container">
+        &copy; 2019 <a href="https://duansheli.github.io">断舍离的博客 By 断舍离</a>.
+        Powered by <a rel="nofollow noreferer noopener" href="https://gohugo.io" target="_blank">Hugo</a>.
+        <a href="https://www.flysnow.org/" target="_blank">Theme</a> based on <a href="https://github.com/rujews/maupassant-hugo" target="_blank">maupassant</a>.
+        
+    </div>
+</footer>
+
+
+    <script type="text/javascript">
+    
+    (function(){
+        $("pre code").parent().addClass("line-numbers")
+    }())
+
+    window.MathJax = {
+        tex2jax: {
+            inlineMath: [ ['$','$'] ],
+            processEscapes: true
+        }
+    };
+    </script>
+    <script type="text/javascript" src="/js/prism.js" async="true"></script>
+    <script src='https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/MathJax.js?config=TeX-MML-AM_CHTML' async></script>
+
+<a id="rocket" href="#top"></a>
+<script type="text/javascript" src="/js/totop.js?v=0.0.0" async=""></script>
+
+
+
+
+
+
+</body>
+</html>
