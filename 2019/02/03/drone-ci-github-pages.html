@@ -183,6 +183,15 @@ steps:
     - success
     - failure
 </code></pre>
+
+<p>关键参数（dingtalk_token，github的账户密码）都是在drone中以secret方式配置</p>
+
+<h1 id="7-测试">7. 测试</h1>
+
+<p>任意写篇文章 hello.md放入项目 blog-hugo\content\posts<br />
+提交到github上后 drone会自动进行编译静态博客， 并发布到github博客中<br />
+钉钉软件中可收到任务成功或失败的消息<br />
+然后访问博客查看新文章</p>
                         </div>
 
                         
