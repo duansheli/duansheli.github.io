@@ -80,18 +80,18 @@
                         <div class="post-content">
                             
 
-<h1 id="通过rocketmq实现分布式事务">通过rocketmq实现分布式事务</h1>
+<h1 id="1-通过rocketmq实现分布式事务">1. 通过rocketmq实现分布式事务</h1>
 
-<h2 id="实现原理">实现原理</h2>
+<h2 id="1-1-实现原理">1.1. 实现原理</h2>
 
-<h3 id="通常说的分布式事务">通常说的分布式事务</h3>
+<h3 id="1-1-1-通常说的分布式事务">1.1.1. 通常说的分布式事务</h3>
 
 <p>一次请求-调用serviceA<br />
-serviceA 中会调用serviceB，serviceC，serviceD
+serviceA 中会调用serviceB，serviceC，serviceD<br />
 在serviceA ，serviceB，serviceC，serviceD中的事务要么一起成功<br />
 只要有一个节点事务失败了， 其他的节点都会将事务回滚</p>
 
-<h3 id="rocketmq的分布式事务">rocketmq的分布式事务</h3>
+<h3 id="1-1-2-rocketmq的分布式事务">1.1.2. rocketmq的分布式事务</h3>
 
 <p>rocketmq的分布式事务与【通常说的分布式事务】有所不同<br />
 它会做最大努力（重试）让所有节点一起成功， 不保证一定成功<br />
@@ -102,15 +102,18 @@ serviceA 中会调用serviceB，serviceC，serviceD
 可能鱼没有了 或者送货人手不够（不保证一定成功）<br />
 这时商家会联系顾客换个菜 或退款</p>
 
-<h2 id="环境">环境</h2>
+<h2 id="1-2-环境">1.2. 环境</h2>
 
 <p>rocketmq安装在ubuntu的docker中<br />
-在win10下的idea中启动项目，访问mq
-* jdk- 1.8
-* spring boot- 2.1.4
-*  rocketmq- 4.4.0</p>
+在win10下的idea中启动项目，访问mq</p>
 
-<h2 id="流程描述">流程描述</h2>
+<ul>
+<li>jdk- 1.8</li>
+<li>spring boot- 2.1.4</li>
+<li>rocketmq- 4.4.0</li>
+</ul>
+
+<h2 id="1-3-流程描述">1.3. 流程描述</h2>
 
 <blockquote>
 <p>访问web  127.0.0.1:8080/payed<br />
@@ -123,7 +126,7 @@ mq在扣钱完后，将消息被发给其他的服务节点<br />
 <p>实际过程中消息可能会被重复消费 需开发人员注意幂等处理</p>
 </blockquote>
 
-<h2 id="rocketmq安装">rocketmq安装</h2>
+<h2 id="1-4-rocketmq安装">1.4. rocketmq安装</h2>
 
 <pre><code>#端口情况 nameServer:9876, broker:{10911,10909}
 docker run -d --name mqnamesrv \
@@ -145,14 +148,14 @@ route -p add 172.17.0.0 mask 255.255.0.0 192.168.88.3<br />
 然后win10下,  ping下172.17.0.3看是否连通</p>
 </blockquote>
 
-<h1 id="代码篇">代码篇</h1>
+<h1 id="2-代码篇">2. 代码篇</h1>
 
-<h2 id="spring-boot-mq生产者">spring boot + mq生产者</h2>
+<h2 id="2-1-spring-boot-mq生产者">2.1. spring boot + mq生产者</h2>
 
 <p>关于mq生产者的3个主要配置<br />
 LocalOrderConsumer   MqConfig   ProduceConfig</p>
 
-<h3 id="pom-xml">pom.xml</h3>
+<h3 id="2-1-1-pom-xml">2.1.1. pom.xml</h3>
 
 <pre><code>&lt;?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot;?&gt;
 &lt;project xmlns=&quot;http://maven.apache.org/POM/4.0.0&quot; xmlns:xsi=&quot;http://www.w3.org/2001/XMLSchema-instance&quot;
@@ -199,7 +202,7 @@ LocalOrderConsumer   MqConfig   ProduceConfig</p>
 &lt;/project&gt;
 </code></pre>
 
-<h3 id="application-properties">application.properties</h3>
+<h3 id="2-1-2-application-properties">2.1.2. application.properties</h3>
 
 <pre><code>server.port=8080
 spring.application.name=mq-tran
@@ -210,7 +213,7 @@ mq.namesrvAddr= 172.17.0.3:9876
 topic.orderPaySuccess=order2PaySuccess
 </code></pre>
 
-<h3 id="app-main-java">App_Main.java</h3>
+<h3 id="2-1-3-app-main-java">2.1.3. App_Main.java</h3>
 
 <pre><code>@SpringBootApplication
 public class App_Main {
@@ -220,7 +223,7 @@ public class App_Main {
 }
 </code></pre>
 
-<h3 id="ordercontroller-java">OrderController.java</h3>
+<h3 id="2-1-4-ordercontroller-java">2.1.4. OrderController.java</h3>
 
 <pre><code>@RestController
 @Log4j2
@@ -252,7 +255,7 @@ public class OrderController {
 }
 </code></pre>
 
-<h3 id="localorderconsumer-java">LocalOrderConsumer.java</h3>
+<h3 id="2-1-5-localorderconsumer-java">2.1.5. LocalOrderConsumer.java</h3>
 
 <pre><code>import org.apache.rocketmq.client.producer.LocalTransactionState;
 import org.apache.rocketmq.client.producer.TransactionListener;
@@ -306,7 +309,7 @@ public class LocalOrderConsumer implements TransactionListener {
 }
 </code></pre>
 
-<h3 id="mqconfig-java">MqConfig.java</h3>
+<h3 id="2-1-6-mqconfig-java">2.1.6. MqConfig.java</h3>
 
 <pre><code>@ConfigurationProperties(prefix = &quot;mq&quot;)
 @Configuration
@@ -332,7 +335,7 @@ public class MqConfig {
 }
 </code></pre>
 
-<h3 id="produceconfig-java">ProduceConfig.java</h3>
+<h3 id="2-1-7-produceconfig-java">2.1.7. ProduceConfig.java</h3>
 
 <pre><code>import lombok.extern.log4j.Log4j2;
 import org.apache.rocketmq.client.producer.TransactionMQProducer;
@@ -378,12 +381,12 @@ public class ProduceConfig {
 }
 </code></pre>
 
-<h2 id="消费者">消费者</h2>
+<h2 id="2-2-消费者">2.2. 消费者</h2>
 
 <p>消费者不一定与生产者在同一个节点<br />
 这里时demo就放在同一项目了</p>
 
-<h3 id="abstractconsumer-java">AbstractConsumer.java</h3>
+<h3 id="2-2-1-abstractconsumer-java">2.2.1. AbstractConsumer.java</h3>
 
 <pre><code>import fluffy.mo.transactionMQ.MqConfig;
 import lombok.extern.log4j.Log4j2;
@@ -440,7 +443,7 @@ public abstract class AbstractConsumer {
 }
 </code></pre>
 
-<h3 id="repoconsumer-java">RepoConsumer.java</h3>
+<h3 id="2-2-2-repoconsumer-java">2.2.2. RepoConsumer.java</h3>
 
 <pre><code>import org.apache.rocketmq.client.consumer.listener.ConsumeConcurrentlyStatus;
 import org.apache.rocketmq.common.message.MessageExt;
@@ -485,7 +488,7 @@ public class RepoConsumer extends AbstractConsumer implements ApplicationListene
 }
 </code></pre>
 
-<h3 id="pointsconsumer-java">PointsConsumer.java</h3>
+<h3 id="2-2-3-pointsconsumer-java">2.2.3. PointsConsumer.java</h3>
 
 <pre><code>
 import org.apache.rocketmq.client.consumer.listener.ConsumeConcurrentlyStatus;
@@ -532,7 +535,7 @@ public class PointsConsumer extends AbstractConsumer implements ApplicationListe
 }
 </code></pre>
 
-<h1 id="验证">验证</h1>
+<h1 id="3-验证">3. 验证</h1>
 
 <p>访问5次页面<br />
 127.0.0.1:8080/payed<br />

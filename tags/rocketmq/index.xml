@@ -17,15 +17,13 @@
       <pubDate>Sat, 16 Feb 2019 17:28:13 +0800</pubDate>
       
       <guid>https://duansheli.github.io/2019/02/16/rocketmq-transaction.html</guid>
-      <description>通过rocketmq实现分布式事务 实现原理 通常说的分布式事务 一次请求-调用serviceA
-serviceA 中会调用serviceB，serviceC，serviceD 在serviceA ，serviceB，serviceC，serviceD中的事务要么一起成功
+      <description>1. 通过rocketmq实现分布式事务 1.1. 实现原理 1.1.1. 通常说的分布式事务 一次请求-调用serviceA
+serviceA 中会调用serviceB，serviceC，serviceD
+在serviceA ，serviceB，serviceC，serviceD中的事务要么一起成功
 只要有一个节点事务失败了， 其他的节点都会将事务回滚
-rocketmq的分布式事务 rocketmq的分布式事务与【通常说的分布式事务】有所不同
+1.1.2. rocketmq的分布式事务 rocketmq的分布式事务与【通常说的分布式事务】有所不同
 它会做最大努力（重试）让所有节点一起成功， 不保证一定成功
-对于不成功的情况 应设置人工兜底补偿
-如:
-在美团外卖下单了，并不能一定收到外卖
-可能鱼没有了 或者送货人手不够（不保证一定成功）</description>
+对于不成功的情况 应设置人工兜底补偿</description>
     </item>
     
   </channel>
