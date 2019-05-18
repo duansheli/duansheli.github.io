@@ -66,7 +66,7 @@
                         <article class="post">
                             <header>
                                 <h1 class="post-title">
-                                    <a href="https://duansheli.github.io/2019/05/18/thinking-autoboxing-implicit.html" title="自动装箱拆箱在scala中的表现" >自动装箱拆箱在scala中的表现</a>
+                                    <a href="https://duansheli.github.io/2019/05/18/dind-build-image-with-cache.html" title="DinD模式下通过容器构建镜像-方案" >DinD模式下通过容器构建镜像-方案</a>
                                 </h1>
                             </header>
                             <date class="post-meta meta-date">
@@ -74,11 +74,29 @@
                             </date>
                             
                             <div class="post-content">
+                                <p>持续集成时，构建镜像后，通常会产生一些临时镜像<br />
+很不docker，一点也不绿色<br />
+使用DinD的方案可以解决该问题</p>……
+                            </div>
+                            <p class="readmore"><a href="https://duansheli.github.io/2019/05/18/dind-build-image-with-cache.html">阅读全文</a></p>
+                        </article>
+                    
+                        <article class="post">
+                            <header>
+                                <h1 class="post-title">
+                                    <a href="https://duansheli.github.io/2019/05/17/thinking-autoboxing-implicit.html" title="自动装箱拆箱在scala中的表现" >自动装箱拆箱在scala中的表现</a>
+                                </h1>
+                            </header>
+                            <date class="post-meta meta-date">
+                                2019年5月17日
+                            </date>
+                            
+                            <div class="post-content">
                                 <p>自动装箱拆箱是java中的概念<br />
 implicit是scala中的概念<br />
 都有变量包装的特性</p>……
                             </div>
-                            <p class="readmore"><a href="https://duansheli.github.io/2019/05/18/thinking-autoboxing-implicit.html">阅读全文</a></p>
+                            <p class="readmore"><a href="https://duansheli.github.io/2019/05/17/thinking-autoboxing-implicit.html">阅读全文</a></p>
                         </article>
                     
                         <article class="post">
@@ -228,23 +246,6 @@ serviceA 中会调用serviceB，serviceC，serviceD
                             <p class="readmore"><a href="https://duansheli.github.io/2019/01/01/connect-container-ip.html">阅读全文</a></p>
                         </article>
                     
-                        <article class="post">
-                            <header>
-                                <h1 class="post-title">
-                                    <a href="https://duansheli.github.io/2019/01/15/docker-useful-cmd.html" title="docker常用操作" >docker常用操作</a>
-                                </h1>
-                            </header>
-                            <date class="post-meta meta-date">
-                                2019年1月15日
-                            </date>
-                            
-                            <div class="post-content">
-                                docker常用操作 Dockerfile编写 编写一般不会一次就完成，常常会出错
-Sending build context to Docker daemon 5.902MB Step 1/10 : FROM docker:git as builder ---&gt; 9be5c3cd302c Step 2/10 : RUN git clone https://github.……
-                            </div>
-                            <p class="readmore"><a href="https://duansheli.github.io/2019/01/15/docker-useful-cmd.html">阅读全文</a></p>
-                        </article>
-                    
 
                     
 
@@ -289,7 +290,11 @@ Sending build context to Docker daemon 5.902MB Step 1/10 : FROM docker:git as bu
 <ul class="widget-list">
     
     <li>
-        <a href="https://duansheli.github.io/2019/05/18/thinking-autoboxing-implicit.html" title="自动装箱拆箱在scala中的表现">自动装箱拆箱在scala中的表现</a>
+        <a href="https://duansheli.github.io/2019/05/18/dind-build-image-with-cache.html" title="DinD模式下通过容器构建镜像-方案">DinD模式下通过容器构建镜像-方案</a>
+    </li>
+    
+    <li>
+        <a href="https://duansheli.github.io/2019/05/17/thinking-autoboxing-implicit.html" title="自动装箱拆箱在scala中的表现">自动装箱拆箱在scala中的表现</a>
     </li>
     
     <li>
@@ -322,10 +327,6 @@ Sending build context to Docker daemon 5.902MB Step 1/10 : FROM docker:git as bu
     
     <li>
         <a href="https://duansheli.github.io/2019/01/01/connect-container-ip.html" title="跨宿主机与docker容器通信">跨宿主机与docker容器通信</a>
-    </li>
-    
-    <li>
-        <a href="https://duansheli.github.io/2019/01/15/docker-useful-cmd.html" title="docker常用操作">docker常用操作</a>
     </li>
     
 </ul>

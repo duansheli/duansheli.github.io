@@ -12,11 +12,22 @@
     
     
     <item>
-      <title>自动装箱拆箱在scala中的表现</title>
-      <link>https://duansheli.github.io/2019/05/18/thinking-autoboxing-implicit.html</link>
+      <title>DinD模式下通过容器构建镜像-方案</title>
+      <link>https://duansheli.github.io/2019/05/18/dind-build-image-with-cache.html</link>
       <pubDate>Sat, 18 May 2019 17:28:13 +0800</pubDate>
       
-      <guid>https://duansheli.github.io/2019/05/18/thinking-autoboxing-implicit.html</guid>
+      <guid>https://duansheli.github.io/2019/05/18/dind-build-image-with-cache.html</guid>
+      <description>&lt;p&gt;持续集成时，构建镜像后，通常会产生一些临时镜像&lt;br /&gt;
+很不docker，一点也不绿色&lt;br /&gt;
+使用DinD的方案可以解决该问题&lt;/p&gt;</description>
+    </item>
+    
+    <item>
+      <title>自动装箱拆箱在scala中的表现</title>
+      <link>https://duansheli.github.io/2019/05/17/thinking-autoboxing-implicit.html</link>
+      <pubDate>Fri, 17 May 2019 17:28:13 +0800</pubDate>
+      
+      <guid>https://duansheli.github.io/2019/05/17/thinking-autoboxing-implicit.html</guid>
       <description>&lt;p&gt;自动装箱拆箱是java中的概念&lt;br /&gt;
 implicit是scala中的概念&lt;br /&gt;
 都有变量包装的特性&lt;/p&gt;</description>
