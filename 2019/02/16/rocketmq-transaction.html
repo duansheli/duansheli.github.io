@@ -128,7 +128,7 @@ mq在扣钱完后，将消息被发给其他的服务节点<br />
 
 <h2 id="1-4-rocketmq安装">1.4. rocketmq安装</h2>
 
-<pre><code>#端口情况 nameServer:9876, broker:{10911,10909}
+<pre><code class="language-bash">#端口情况 nameServer:9876, broker:{10911,10909}
 docker run -d --name mqnamesrv \
 rocketmqinc/rocketmq:4.4.0 sh mqnamesrv
 
@@ -157,7 +157,7 @@ LocalOrderConsumer   MqConfig   ProduceConfig</p>
 
 <h3 id="2-1-1-pom-xml">2.1.1. pom.xml</h3>
 
-<pre><code>&lt;?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot;?&gt;
+<pre><code class="language-xml">&lt;?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot;?&gt;
 &lt;project xmlns=&quot;http://maven.apache.org/POM/4.0.0&quot; xmlns:xsi=&quot;http://www.w3.org/2001/XMLSchema-instance&quot;
          xsi:schemaLocation=&quot;http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd&quot;&gt;
     &lt;modelVersion&gt;4.0.0&lt;/modelVersion&gt;
@@ -215,7 +215,7 @@ topic.orderPaySuccess=order2PaySuccess
 
 <h3 id="2-1-3-app-main-java">2.1.3. App_Main.java</h3>
 
-<pre><code>@SpringBootApplication
+<pre><code class="language-java">@SpringBootApplication
 public class App_Main {
     public static void main(String[] args) {
         SpringApplication.run(App_Main.class, args);
@@ -225,7 +225,7 @@ public class App_Main {
 
 <h3 id="2-1-4-ordercontroller-java">2.1.4. OrderController.java</h3>
 
-<pre><code>@RestController
+<pre><code class="language-java">@RestController
 @Log4j2
 public class OrderController {
     @Value(&quot;${topic.orderPaySuccess}&quot;)
@@ -257,7 +257,7 @@ public class OrderController {
 
 <h3 id="2-1-5-localorderconsumer-java">2.1.5. LocalOrderConsumer.java</h3>
 
-<pre><code>import org.apache.rocketmq.client.producer.LocalTransactionState;
+<pre><code class="language-java">import org.apache.rocketmq.client.producer.LocalTransactionState;
 import org.apache.rocketmq.client.producer.TransactionListener;
 import org.apache.rocketmq.common.message.Message;
 import org.apache.rocketmq.common.message.MessageExt;
@@ -311,7 +311,7 @@ public class LocalOrderConsumer implements TransactionListener {
 
 <h3 id="2-1-6-mqconfig-java">2.1.6. MqConfig.java</h3>
 
-<pre><code>@ConfigurationProperties(prefix = &quot;mq&quot;)
+<pre><code class="language-java">@ConfigurationProperties(prefix = &quot;mq&quot;)
 @Configuration
 public class MqConfig {
     String namesrvAddr;
@@ -337,7 +337,7 @@ public class MqConfig {
 
 <h3 id="2-1-7-produceconfig-java">2.1.7. ProduceConfig.java</h3>
 
-<pre><code>import lombok.extern.log4j.Log4j2;
+<pre><code class="language-java">import lombok.extern.log4j.Log4j2;
 import org.apache.rocketmq.client.producer.TransactionMQProducer;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
@@ -388,7 +388,7 @@ public class ProduceConfig {
 
 <h3 id="2-2-1-abstractconsumer-java">2.2.1. AbstractConsumer.java</h3>
 
-<pre><code>import fluffy.mo.transactionMQ.MqConfig;
+<pre><code class="language-java">import fluffy.mo.transactionMQ.MqConfig;
 import lombok.extern.log4j.Log4j2;
 import org.apache.rocketmq.client.consumer.DefaultMQPushConsumer;
 import org.apache.rocketmq.client.consumer.listener.ConsumeConcurrentlyContext;
@@ -445,7 +445,7 @@ public abstract class AbstractConsumer {
 
 <h3 id="2-2-2-repoconsumer-java">2.2.2. RepoConsumer.java</h3>
 
-<pre><code>import org.apache.rocketmq.client.consumer.listener.ConsumeConcurrentlyStatus;
+<pre><code class="language-java">import org.apache.rocketmq.client.consumer.listener.ConsumeConcurrentlyStatus;
 import org.apache.rocketmq.common.message.MessageExt;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.ApplicationListener;
@@ -490,8 +490,7 @@ public class RepoConsumer extends AbstractConsumer implements ApplicationListene
 
 <h3 id="2-2-3-pointsconsumer-java">2.2.3. PointsConsumer.java</h3>
 
-<pre><code>
-import org.apache.rocketmq.client.consumer.listener.ConsumeConcurrentlyStatus;
+<pre><code class="language-java">import org.apache.rocketmq.client.consumer.listener.ConsumeConcurrentlyStatus;
 import org.apache.rocketmq.common.message.MessageExt;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.ApplicationListener;
@@ -604,6 +603,10 @@ public class PointsConsumer extends AbstractConsumer implements ApplicationListe
 <ul class="widget-list">
     
     <li>
+        <a href="https://duansheli.github.io/2019/05/18/thinking-autoboxing-implicit.html" title="自动装箱拆箱在scala中的表现">自动装箱拆箱在scala中的表现</a>
+    </li>
+    
+    <li>
         <a href="https://duansheli.github.io/2019/04/09/spring-security-login-by-mobile-code.html" title="使用spring security实现手机验证码登录">使用spring security实现手机验证码登录</a>
     </li>
     
@@ -639,10 +642,6 @@ public class PointsConsumer extends AbstractConsumer implements ApplicationListe
         <a href="https://duansheli.github.io/2019/01/15/docker-useful-cmd.html" title="docker常用操作">docker常用操作</a>
     </li>
     
-    <li>
-        <a href="https://duansheli.github.io/2018/01/03/k8s-cluster-setup-03.html" title="k8s搭建集群3-异常解决">k8s搭建集群3-异常解决</a>
-    </li>
-    
 </ul>
     </section>
 
@@ -671,9 +670,13 @@ public class PointsConsumer extends AbstractConsumer implements ApplicationListe
     
     <a href="https://duansheli.github.io/tags/elasticsearch/">elasticsearch</a>
     
+    <a href="https://duansheli.github.io/tags/java/">java</a>
+    
     <a href="https://duansheli.github.io/tags/k8s/">k8s</a>
     
     <a href="https://duansheli.github.io/tags/rocketmq/">rocketmq</a>
+    
+    <a href="https://duansheli.github.io/tags/scala/">scala</a>
     
     <a href="https://duansheli.github.io/tags/session/">session</a>
     

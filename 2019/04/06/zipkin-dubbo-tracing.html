@@ -118,7 +118,7 @@ dubbo-265-zipkin为父工程
 
 <h2 id="项目结构整合">项目结构整合</h2>
 
-<pre><code>#父工程pom.xml
+<pre><code class="language-xml">&lt;!-- 父工程pom.xml --&gt;
 &lt;?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot;?&gt;
 &lt;project xmlns=&quot;http://maven.apache.org/POM/4.0.0&quot;
          xmlns:xsi=&quot;http://www.w3.org/2001/XMLSchema-instance&quot;
@@ -236,7 +236,7 @@ dubbo-265-zipkin为父工程
 <h3 id="dubbo-interfaces">dubbo-interfaces</h3>
 </blockquote>
 
-<pre><code>#dubbo-interfaces/pom.xml
+<pre><code class="language-xml">&lt;!-- dubbo-interfaces/pom.xml --&gt;
 &lt;?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot;?&gt;
 
 &lt;project xmlns=&quot;http://maven.apache.org/POM/4.0.0&quot;
@@ -256,7 +256,7 @@ dubbo-265-zipkin为父工程
 
 <h3 id="provider1与provider2的配置相同">provider1与provider2的配置相同</h3>
 
-<pre><code>#dubbo-provider1与dubbo-provider2的pom.xml
+<pre><code class="language-xml">&lt;!-- dubbo-provider1与dubbo-provider2的pom.xml --&gt;
 &lt;?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot;?&gt;
 &lt;project xmlns=&quot;http://maven.apache.org/POM/4.0.0&quot;
          xmlns:xsi=&quot;http://www.w3.org/2001/XMLSchema-instance&quot;
@@ -294,7 +294,7 @@ dubbo.registry.address = nacos://192.168.88.3:8848
 dubbo.provider.filter=tracing
 </code></pre>
 
-<pre><code>#zipkin配置类
+<pre><code class="language-java">//#zipkin配置类
 import brave.Tracing;
 import brave.context.slf4j.MDCScopeDecorator;
 import brave.propagation.CurrentTraceContext;
@@ -333,7 +333,7 @@ public class ConfigZpk {
 }
 </code></pre>
 
-<pre><code>#启动类
+<pre><code class="language-java">//#启动类
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.ConfigurableApplicationContext;
@@ -349,7 +349,7 @@ public class App_Main_pro1 {
 
 <h3 id="web与调用方">web与调用方</h3>
 
-<pre><code>#dubbo-consumer/pom.xml
+<pre><code class="language-xml">&lt;!-- dubbo-consumer/pom.xml --&gt;
 &lt;?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot;?&gt;
 &lt;project xmlns=&quot;http://maven.apache.org/POM/4.0.0&quot;
          xmlns:xsi=&quot;http://www.w3.org/2001/XMLSchema-instance&quot;
@@ -406,7 +406,7 @@ dubbo.registry.address = nacos://192.168.88.3:8848
 dubbo.provider.filter=tracing
 </code></pre>
 
-<pre><code>#启动类
+<pre><code class="language-java">//#启动类
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 @SpringBootApplication
@@ -417,7 +417,7 @@ public class App_Main_client {
 }
 </code></pre>
 
-<pre><code>#zipkin配置类
+<pre><code class="language-java">//#zipkin配置类
 import brave.Tracing;
 import brave.context.slf4j.MDCScopeDecorator;
 import brave.http.HttpTracing;
@@ -475,7 +475,7 @@ public class TraceAutoConfiguration{
 
 <h3 id="dubbo-interfaces中定义两个接口">dubbo-interfaces中定义两个接口</h3>
 
-<pre><code>public interface Hello1Service {
+<pre><code class="language-java">public interface Hello1Service {
     String sayHello11(String name);
     String sayHello12(String name);
 }
@@ -486,7 +486,7 @@ public interface Hello2Service {
 
 <h3 id="dubbo-provider">dubbo-provider</h3>
 
-<pre><code>import com.alibaba.dubbo.config.annotation.Reference;
+<pre><code class="language-java">import com.alibaba.dubbo.config.annotation.Reference;
 import com.alibaba.dubbo.config.annotation.Service;
 import fluffy.mo.interfaces.Hello2Service;
 import fluffy.mo.interfaces.Hello1Service;
@@ -516,7 +516,7 @@ public class Hello1ServiceImpl implements Hello1Service {
 
 <h3 id="dubbo-provider2">dubbo-provider2</h3>
 
-<pre><code>import com.alibaba.dubbo.config.annotation.Service;
+<pre><code class="language-java">import com.alibaba.dubbo.config.annotation.Service;
 import fluffy.mo.interfaces.Hello2Service;
 
 import java.util.concurrent.TimeUnit;
@@ -541,7 +541,7 @@ public class Hello2ServiceImpl implements Hello2Service {
 
 <h2 id="启动nacos与zipkin">启动nacos与zipkin</h2>
 
-<pre><code>#nacos
+<pre><code class="language-bash">#nacos
 curl -L https://github.com/nacos-group/nacos-docker/archive/0.9.0.tar.gz \
 | tar zxf
 cd nacos-docker-0.9.0/
@@ -625,6 +625,10 @@ dubbo-consumer</p>
 <ul class="widget-list">
     
     <li>
+        <a href="https://duansheli.github.io/2019/05/18/thinking-autoboxing-implicit.html" title="自动装箱拆箱在scala中的表现">自动装箱拆箱在scala中的表现</a>
+    </li>
+    
+    <li>
         <a href="https://duansheli.github.io/2019/04/09/spring-security-login-by-mobile-code.html" title="使用spring security实现手机验证码登录">使用spring security实现手机验证码登录</a>
     </li>
     
@@ -660,10 +664,6 @@ dubbo-consumer</p>
         <a href="https://duansheli.github.io/2019/01/15/docker-useful-cmd.html" title="docker常用操作">docker常用操作</a>
     </li>
     
-    <li>
-        <a href="https://duansheli.github.io/2018/01/03/k8s-cluster-setup-03.html" title="k8s搭建集群3-异常解决">k8s搭建集群3-异常解决</a>
-    </li>
-    
 </ul>
     </section>
 
@@ -692,9 +692,13 @@ dubbo-consumer</p>
     
     <a href="https://duansheli.github.io/tags/elasticsearch/">elasticsearch</a>
     
+    <a href="https://duansheli.github.io/tags/java/">java</a>
+    
     <a href="https://duansheli.github.io/tags/k8s/">k8s</a>
     
     <a href="https://duansheli.github.io/tags/rocketmq/">rocketmq</a>
+    
+    <a href="https://duansheli.github.io/tags/scala/">scala</a>
     
     <a href="https://duansheli.github.io/tags/session/">session</a>
     

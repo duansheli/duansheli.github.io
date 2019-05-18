@@ -6,10 +6,21 @@
     <description>Recent content on 断舍离的博客</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>zh-CN</language>
-    <lastBuildDate>Tue, 09 Apr 2019 17:28:13 +0800</lastBuildDate>
+    <lastBuildDate>Sat, 18 May 2019 17:28:13 +0800</lastBuildDate>
     
 	<atom:link href="https://duansheli.github.io/index.xml" rel="self" type="application/rss+xml" />
     
+    
+    <item>
+      <title>自动装箱拆箱在scala中的表现</title>
+      <link>https://duansheli.github.io/2019/05/18/thinking-autoboxing-implicit.html</link>
+      <pubDate>Sat, 18 May 2019 17:28:13 +0800</pubDate>
+      
+      <guid>https://duansheli.github.io/2019/05/18/thinking-autoboxing-implicit.html</guid>
+      <description>&lt;p&gt;自动装箱拆箱是java中的概念&lt;br /&gt;
+implicit是scala中的概念&lt;br /&gt;
+都有变量包装的特性&lt;/p&gt;</description>
+    </item>
     
     <item>
       <title>使用spring security实现手机验证码登录</title>

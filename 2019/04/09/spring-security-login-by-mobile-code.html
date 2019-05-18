@@ -99,7 +99,7 @@
 
 <p>新建maven项目 配置pom.xml依赖项</p>
 
-<pre><code>&lt;parent&gt;
+<pre><code class="language-xml">&lt;parent&gt;
     &lt;groupId&gt;org.springframework.boot&lt;/groupId&gt;
     &lt;artifactId&gt;spring-boot-starter-parent&lt;/artifactId&gt;
     &lt;version&gt;2.1.4.RELEASE&lt;/version&gt;
@@ -150,7 +150,7 @@ spring.freemarker.suffix=.ftl
 
 <p>项目启动类 App_Main.java</p>
 
-<pre><code>import org.springframework.boot.SpringApplication;
+<pre><code class="language-java">import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 @SpringBootApplication
 public class App_Main {
@@ -173,7 +173,7 @@ public class App_Main {
 
 <h3 id="db">Db</h3>
 
-<pre><code>import org.springframework.security.core.userdetails.UserDetails;
+<pre><code class="language-java">import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Component;
 
 import java.util.HashMap;
@@ -205,7 +205,7 @@ public class Db {
 
 <h3 id="myrole">MyRole</h3>
 
-<pre><code>import org.springframework.security.core.GrantedAuthority;
+<pre><code class="language-java">import org.springframework.security.core.GrantedAuthority;
 import org.springframework.util.Assert;
 
 public class MyRole implements GrantedAuthority {
@@ -224,7 +224,7 @@ public class MyRole implements GrantedAuthority {
 
 <h3 id="myuserdetail">MyUserDetail</h3>
 
-<pre><code>import org.springframework.security.core.userdetails.UserDetails;
+<pre><code class="language-java">import org.springframework.security.core.userdetails.UserDetails;
 
 import java.util.ArrayList;
 import java.util.Collection;
@@ -282,7 +282,7 @@ public class MyUserDetail implements UserDetails {
 
 <h3 id="myuserdetailsservice">MyUserDetailsService</h3>
 
-<pre><code>import fluffy.mo.loginDb.Db;
+<pre><code class="language-java">import fluffy.mo.loginDb.Db;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
@@ -302,7 +302,7 @@ public class MyUserDetailsService implements UserDetailsService {
 
 <h3 id="自定义异常">自定义异常</h3>
 
-<pre><code>import org.springframework.security.core.AuthenticationException;
+<pre><code class="language-java">import org.springframework.security.core.AuthenticationException;
 
 public class UnSupportAuthenticationException extends AuthenticationException {
     public UnSupportAuthenticationException(String explanation) {
@@ -334,7 +334,7 @@ http.antMatchers( &ldquo;/imgCode&rdquo;).permitAll()</p>
 
 <h3 id="pwdauthenticationtoken">PwdAuthenticationToken</h3>
 
-<pre><code>import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+<pre><code class="language-java">import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 
 public class PhoneCodeAuthenticationToken extends UsernamePasswordAuthenticationToken {
     public PhoneCodeAuthenticationToken(String phone, String phoneCode) {
@@ -345,7 +345,7 @@ public class PhoneCodeAuthenticationToken extends UsernamePasswordAuthentication
 
 <h3 id="phonecodeauthenticationfilter">PhoneCodeAuthenticationFilter</h3>
 
-<pre><code>import org.springframework.security.authentication.AuthenticationManager;
+<pre><code class="language-java">import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.AuthenticationServiceException;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
@@ -392,7 +392,7 @@ public class PhoneCodeAuthenticationFilter extends AbstractAuthenticationProcess
 
 <h3 id="phonecodeauthenticationprovider">PhoneCodeAuthenticationProvider</h3>
 
-<pre><code>import fluffy.mo.login.MyUserDetailsService;
+<pre><code class="language-java">import fluffy.mo.login.MyUserDetailsService;
 import fluffy.mo.login.UnSupportAuthenticationException;
 import fluffy.mo.loginDb.MyUserDetail;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -437,23 +437,22 @@ public class PhoneCodeAuthenticationProvider extends AbstractUserDetailsAuthenti
 <p>该filter不是注册到servlet容器上<br />
 而是添加到到filterchain中 filterchain会以filter身份注册到容器上</p>
 
-<pre><code>http.addFilterBefore(new PhoneCodeAuthenticationFilter(&quot;/loginByCode&quot;, authenticationManager),UsernamePasswordAuthenticationFilter.class)
+<pre><code class="language-java">http.addFilterBefore(new PhoneCodeAuthenticationFilter(&quot;/loginByCode&quot;, authenticationManager),UsernamePasswordAuthenticationFilter.class)
+```java
+该pwdAuthenticationProvider需要注册到authenticationManager中
 </code></pre>
 
-<p>该pwdAuthenticationProvider需要注册到authenticationManager中</p>
+<p>auth.authenticationProvider(pwdAuthenticationProvider)</p>
 
-<pre><code>auth.authenticationProvider(pwdAuthenticationProvider)
-</code></pre>
+<pre><code>
+## 手机验证码登录
+手机验证码登录的流程和用户名密码登录流程类似  
+需要将生成的验证码保存到redis中 设置过期时间5分钟  
+AuthenticationProvider在检查时，就去redis中查询该验证码  
 
-<h2 id="手机验证码登录">手机验证码登录</h2>
-
-<p>手机验证码登录的流程和用户名密码登录流程类似<br />
-需要将生成的验证码保存到redis中 设置过期时间5分钟<br />
-AuthenticationProvider在检查时，就去redis中查询该验证码</p>
-
-<h3 id="phonecodeauthenticationtoken">PhoneCodeAuthenticationToken</h3>
-
-<pre><code>import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+### PhoneCodeAuthenticationToken
+```java
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 
 public class PhoneCodeAuthenticationToken extends UsernamePasswordAuthenticationToken {
     public PhoneCodeAuthenticationToken(String phone, String phoneCode) {
@@ -464,7 +463,7 @@ public class PhoneCodeAuthenticationToken extends UsernamePasswordAuthentication
 
 <h3 id="phonecodeauthenticationfilter-1">PhoneCodeAuthenticationFilter</h3>
 
-<pre><code>import org.springframework.security.authentication.AuthenticationManager;
+<pre><code class="language-java">import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.AuthenticationServiceException;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
@@ -511,7 +510,7 @@ public class PhoneCodeAuthenticationFilter extends AbstractAuthenticationProcess
 
 <h3 id="phonecodeauthenticationprovider-1">PhoneCodeAuthenticationProvider</h3>
 
-<pre><code>import fluffy.mo.login.MyUserDetailsService;
+<pre><code class="language-java">import fluffy.mo.login.MyUserDetailsService;
 import fluffy.mo.login.UnSupportAuthenticationException;
 import fluffy.mo.loginDb.MyUserDetail;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -555,7 +554,7 @@ public class PhoneCodeAuthenticationProvider extends AbstractUserDetailsAuthenti
 
 <h3 id="securityconfig">SecurityConfig</h3>
 
-<pre><code>import fluffy.mo.login.phonecode.PhoneCodeAuthenticationFilter;
+<pre><code class="language-java">import fluffy.mo.login.phonecode.PhoneCodeAuthenticationFilter;
 import fluffy.mo.login.phonecode.PhoneCodeAuthenticationProvider;
 import fluffy.mo.login.pwd.PwdAuthenticationFilter;
 import fluffy.mo.login.pwd.PwdAuthenticationProvider;
@@ -611,7 +610,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 <p>上一个文件SecurityConfig.java中以代码的形式， 声明了权限要求<br />
 同时也对&rdquo;/role/*&ldquo;声明了调用方法检查是否有权限调用</p>
 
-<pre><code>import fluffy.mo.loginDb.MyRole;
+<pre><code class="language-java">import fluffy.mo.loginDb.MyRole;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Component;
@@ -664,7 +663,7 @@ public class AuthService {
 
 <p>登录页面</p>
 
-<pre><code>@Controller
+<pre><code class="language-java">@Controller
 public class LoginController {
     @RequestMapping(&quot;login&quot;)
     public String loginP() {
@@ -680,7 +679,7 @@ public class LoginController {
 
 <h3 id="resources-templates-login-ftl">resources\templates\login.ftl</h3>
 
-<pre><code>&lt;!DOCTYPE html&gt;
+<pre><code class="language-html">&lt;!DOCTYPE html&gt;
 &lt;html lang=&quot;en&quot;&gt;
 &lt;head&gt;
     &lt;meta charset=&quot;UTF-8&quot;&gt;
@@ -723,7 +722,7 @@ public class LoginController {
 
 <h3 id="hellocontroller">HelloController</h3>
 
-<pre><code>import org.springframework.security.access.prepost.PreAuthorize;
+<pre><code class="language-java">import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -836,6 +835,10 @@ public class HelloController {
 <ul class="widget-list">
     
     <li>
+        <a href="https://duansheli.github.io/2019/05/18/thinking-autoboxing-implicit.html" title="自动装箱拆箱在scala中的表现">自动装箱拆箱在scala中的表现</a>
+    </li>
+    
+    <li>
         <a href="https://duansheli.github.io/2019/04/09/spring-security-login-by-mobile-code.html" title="使用spring security实现手机验证码登录">使用spring security实现手机验证码登录</a>
     </li>
     
@@ -871,10 +874,6 @@ public class HelloController {
         <a href="https://duansheli.github.io/2019/01/15/docker-useful-cmd.html" title="docker常用操作">docker常用操作</a>
     </li>
     
-    <li>
-        <a href="https://duansheli.github.io/2018/01/03/k8s-cluster-setup-03.html" title="k8s搭建集群3-异常解决">k8s搭建集群3-异常解决</a>
-    </li>
-    
 </ul>
     </section>
 
@@ -903,9 +902,13 @@ public class HelloController {
     
     <a href="https://duansheli.github.io/tags/elasticsearch/">elasticsearch</a>
     
+    <a href="https://duansheli.github.io/tags/java/">java</a>
+    
     <a href="https://duansheli.github.io/tags/k8s/">k8s</a>
     
     <a href="https://duansheli.github.io/tags/rocketmq/">rocketmq</a>
+    
+    <a href="https://duansheli.github.io/tags/scala/">scala</a>
     
     <a href="https://duansheli.github.io/tags/session/">session</a>
     
