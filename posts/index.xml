@@ -50,7 +50,7 @@ implicit是scala中的概念&lt;br /&gt;
       
       <guid>https://duansheli.github.io/2019/04/08/spring-data-elasticsearch-error-date.html</guid>
       <description>IllegalArgumentException 环境 spring-data-elasticsearch 3.1.6
-IllegalArgumentException: Mapper for [publishDate] conflicts with existing mapping in other types: [mapper [publishDate] has different [format] values</description>
+java.lang.IllegalArgumentException: Mapper for [publishDate] conflicts with existing mapping in other types: [mapper [publishDate] has different [format] values</description>
     </item>
     
     <item>

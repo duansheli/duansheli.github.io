@@ -77,6 +77,25 @@
                         </date>
                         
                         
+                        
+                        <div class="clear">
+                            <div class="toc-article">
+                                <div class="toc-title">文章目录</div>
+                                <nav id="TableOfContents">
+<ul>
+<li>
+<ul>
+<li><a href="#1-环境介绍">1. 环境介绍</a></li>
+<li><a href="#2-目标">2. 目标</a></li>
+<li><a href="#3-方案1-配置路由">3. 方案1-配置路由</a></li>
+<li><a href="#4-方案2-vpn">4. 方案2-vpn</a></li>
+<li><a href="#5-方案3">5. 方案3</a></li>
+</ul></li>
+</ul>
+</nav>
+                            </div>
+                        </div>
+                        
                         <div class="post-content">
                             <p>有一些应用只需要1个端口就能访问<br />
 比如 nginx</p>
@@ -85,18 +104,7 @@
 比如hadoop 当访问hdfs的时候 访问的不仅仅用port还会用ip<br />
 这时后端口映射就不那么好使了</p>
 
-<h1 id="直接与docker容器通信">直接与docker容器通信</h1>
-
-<h2 id="背景">背景</h2>
-
-<p>有一些应用只需要1个端口就能访问<br />
-比如 nginx</p>
-
-<p>而有一些应用的搭建都是由多个节点搭建的<br />
-比如hadoop 当访问hdfs的时候 访问的不仅仅用port还会用ip<br />
-这时后端口映射就不那么好使了</p>
-
-<h2 id="环境介绍">环境介绍</h2>
+<h2 id="1-环境介绍">1. 环境介绍</h2>
 
 <p>win10 开发环境<br />
 win10下通过虚拟机安装了ubuntu-16 网络为桥接<br />
@@ -105,31 +113,31 @@ ubuntu-16中运行了docker</p>
 <p>win10-IP: 192.168.88.123<br />
 ubuntu-IP: 192.168.88.3</p>
 
-<h2 id="目标">目标</h2>
+<h2 id="2-目标">2. 目标</h2>
 
-<blockquote>
 <ul>
-<li><p>通常操作
+<li><p>通常操作<br />
 docker run -d &ndash;name nx -p 8080:80 nginx
 访问nginx可在win10浏览器打开 192.168.88.3:8080</p></li>
 
-<li><p>希望实现
-<code>
-&gt; ash-4.3# docker run -d --name nx nginx
-&gt; 077b5cdd75a5457a0a45c40acfafc4493d20e53eedda3c1304f944d19c147925
-&gt; ash-4.3# docker inspect -f {{.NetworkSettings.IPAddress}}  nx
-&gt; 172.17.0.6
-&gt;</code>
-&gt; 访问nginx可在win10浏览器打开 172.17.0.6
-&gt;
-&gt; * 事实上
-&gt; 在ubuntu内可以ping通<br />
-&gt; 但win10直接访问172.17.0.6是连不上的</p></li>
+<li><p>希望实现</p>
+
+<pre><code class="language-bash">ash-4.3# docker run -d --name nx nginx
+077b5cdd75a5457a0a45c40acfafc4493d20e53eedda3c1304f944d19c147925
+ash-4.3# docker inspect -f {{.NetworkSettings.IPAddress}}  nx
+172.17.0.6
+</code></pre>
+
+<p>访问nginx可在win10浏览器打开 172.17.0.6</p></li>
+
+<li><p>事实上<br />
+在ubuntu内可以ping通<br />
+但win10直接访问172.17.0.6是连不上的</p></li>
 </ul>
 
-<h2 id="方案1-配置路由">方案1-配置路由</h2>
+<h2 id="3-方案1-配置路由">3. 方案1-配置路由</h2>
 
-<pre><code>#在ubuntu中执行
+<pre><code class="language-bash">#在ubuntu中执行
 ash-4.3# docker run -d --name nx nginx
 077b5cdd75a5457a0a45c40acfafc4493d20e53eedda3c1304f944d19c147925
 ash-4.3# docker inspect -f {{.NetworkSettings.IPAddress}}  nx
@@ -138,43 +146,39 @@ ash-4.3# docker inspect -f {{.NetworkSettings.IPAddress}}  nx
 
 <p>得到nginx的ip为 172.17.0.6 则在win10 为172.17.0.0添加路由</p>
 
-<pre><code>##在win10中执行
+<pre><code class="language-bash">##在win10中执行
 route -p add 172.17.0.0/16  192.168.88.3
 ##route -p add 172.17.0.0 mask 255.255.0.0 192.168.88.3 
 ##route delete 172.17.0.0
 </code></pre>
 
-<h2 id="方案2-vpn">方案2-vpn</h2>
+<h2 id="4-方案2-vpn">4. 方案2-vpn</h2>
 
 <p>在 ubuntu中通过docker安装vpn-pptp</p>
 
-<p>```
-cat &gt; chap-secrets &lt;&lt; EOF</p>
+<pre><code class="language-bash">cat &gt; chap-secrets &lt;&lt; EOF
+# Secrets for authentication using PAP
+# client    server      secret      acceptable local IP addresses
+tom    *           123    *
+EOF
 
-<h1 id="secrets-for-authentication-using-pap">Secrets for authentication using PAP</h1>
-
-<h1 id="client-server-secret-acceptable-local-ip-addresses">client    server      secret      acceptable local IP addresses</h1>
-
-<p>tom    *           123    *
-EOF</p>
-</blockquote>
-
-<p>docker run -d &ndash;privileged <br />
-&ndash;net=host &ndash;name pptp <br />
--v <code>pwd</code>/chap-secrets:/etc/ppp/chap-secrets <br />
+docker run -d --privileged \
+--net=host --name pptp \
+-v `pwd`/chap-secrets:/etc/ppp/chap-secrets \
 mobtitude/vpn-pptp
-```</p>
+</code></pre>
 
-<p>ubuntu上装好代理后<br />
-在win10上连接上pptp的代理<br />
-vpn-IP 192.168.88.3<br />
-用户名 tom 密码 123</p>
+<pre><code>ubuntu上装好代理后  
+在win10上连接上pptp的代理  
+vpn-IP 192.168.88.3  
+用户名 tom 密码 123
+</code></pre>
 
-<h2 id="方案3">方案3</h2>
+<h2 id="5-方案3">5. 方案3</h2>
 
 <p>为容器分配和宿主机相同网段的ip<br />
-可考虑pipework  步骤不少就不写了<br />
-网上就能搜到</p>
+网上就能搜<code>pipework docker</code><br />
+步骤不少就不写了</p>
                         </div>
 
                         

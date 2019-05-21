@@ -77,6 +77,43 @@
                         </date>
                         
                         
+                        
+                        <div class="clear">
+                            <div class="toc-article">
+                                <div class="toc-title">文章目录</div>
+                                <nav id="TableOfContents">
+<ul>
+<li><a href="#通过zipkin对dubbo进行链路追踪">通过zipkin对dubbo进行链路追踪</a>
+<ul>
+<li><a href="#目标">目标</a></li>
+<li><a href="#环境">环境</a></li>
+<li><a href="#流程描述">流程描述</a></li>
+</ul></li>
+<li><a href="#代码篇">代码篇</a>
+<ul>
+<li><a href="#项目结构整合">项目结构整合</a>
+<ul>
+<li><a href="#dubbo-interfaces">dubbo-interfaces</a></li>
+<li><a href="#provider1与provider2的配置相同">provider1与provider2的配置相同</a></li>
+<li><a href="#web与调用方">web与调用方</a></li>
+</ul></li>
+<li><a href="#服务调用">服务调用</a>
+<ul>
+<li><a href="#dubbo-interfaces中定义两个接口">dubbo-interfaces中定义两个接口</a></li>
+<li><a href="#dubbo-provider">dubbo-provider</a></li>
+<li><a href="#dubbo-provider2">dubbo-provider2</a></li>
+</ul></li>
+</ul></li>
+<li><a href="#开始测试">开始测试</a>
+<ul>
+<li><a href="#启动nacos与zipkin">启动nacos与zipkin</a></li>
+<li><a href="#依次启动项目">依次启动项目</a></li>
+</ul></li>
+</ul>
+</nav>
+                            </div>
+                        </div>
+                        
                         <div class="post-content">
                             <p>通过zipkin实现dubbo下的链路追踪</p>
 
@@ -99,13 +136,11 @@
 
 <h2 id="流程描述">流程描述</h2>
 
-<blockquote>
 <p>dubbo将服务注册到nacos中
-前端用springboot接收请求 调用dubbo服务处理
-调用关系为 web-hello依次调用provider1-hello11，provider1-hello12<br />
-provider1-hello12则会调用provider2-hello2<br />
-然后通过zipkin的管理界面查看调用情况</p>
-</blockquote>
+   前端用springboot接收请求 调用dubbo服务处理
+   调用关系为 web-hello依次调用provider1-hello11，provider1-hello12<br />
+   provider1-hello12则会调用provider2-hello2<br />
+   然后通过zipkin的管理界面查看调用情况</p>
 
 <h1 id="代码篇">代码篇</h1>
 
@@ -558,14 +593,12 @@ docker run -d -p 9411:9411 openzipkin/zipkin
 dubbo-provider
 dubbo-consumer</p>
 
-<blockquote>
 <p>多次访问  <a href="http://127.0.0.1:18080/sayHello/test">http://127.0.0.1:18080/sayHello/test</a><br />
-成功返回 与 报错 次数是1比1</p>
+   成功返回 与 报错 次数是1比1</p>
 
 <p>访问zipkin查看调用链路<br />
-<a href="http://192.168.88.3:9411/zipkin/?serviceName=all&amp;spanName=all&amp;sortOrder=timestamp-desc&amp;limit=5">http://192.168.88.3:9411/zipkin/?serviceName=all&amp;spanName=all&amp;sortOrder=timestamp-desc&amp;limit=5</a><br />
-可以看到调用链为 http请求到provider1与provider2 关系为树形结构</p>
-</blockquote>
+   <a href="http://192.168.88.3:9411/zipkin/?serviceName=all&amp;spanName=all&amp;sortOrder=timestamp-desc&amp;limit=5">http://192.168.88.3:9411/zipkin/?serviceName=all&amp;spanName=all&amp;sortOrder=timestamp-desc&amp;limit=5</a><br />
+   可以看到调用链为 http请求到provider1与provider2 关系为树形结构</p>
                         </div>
 
                         

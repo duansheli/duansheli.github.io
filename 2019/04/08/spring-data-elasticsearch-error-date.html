@@ -77,14 +77,29 @@
                         </date>
                         
                         
+                        
+                        <div class="clear">
+                            <div class="toc-article">
+                                <div class="toc-title">文章目录</div>
+                                <nav id="TableOfContents">
+<ul>
+<li><a href="#illegalargumentexception">IllegalArgumentException</a>
+<ul>
+<li><a href="#原因">原因</a></li>
+<li><a href="#解决办法">解决办法</a></li>
+</ul></li>
+</ul>
+</nav>
+                            </div>
+                        </div>
+                        
                         <div class="post-content">
                             
 
 <h1 id="illegalargumentexception">IllegalArgumentException</h1>
 
-<p>环境 spring-data-elasticsearch 3.1.6</p>
-
-<p>IllegalArgumentException: Mapper for [publishDate] conflicts with existing mapping in other types:
+<p>环境 spring-data-elasticsearch 3.1.6<br />
+java.lang.IllegalArgumentException: Mapper for [publishDate] conflicts with existing mapping in other types:
 [mapper [publishDate] has different [format] values</p>
 
 <pre><code>org.springframework.beans.factory.BeanCreationException: Error creating bean with name 'app_Main': Injection of autowired dependencies failed; nested exception is java.lang.IllegalArgumentException: Mapper for [publishDate] conflicts with existing mapping in other types:
