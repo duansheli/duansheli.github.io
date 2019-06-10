@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>jdk on 断舍离的博客</title>
+    <link>//duansheli.github.io/tags/jdk/</link>
+    <description>Recent content in jdk on 断舍离的博客</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>zh-CN</language>
+    <lastBuildDate>Sat, 25 May 2019 17:28:13 +0800</lastBuildDate>
+    
+	<atom:link href="//duansheli.github.io/tags/jdk/index.xml" rel="self" type="application/rss+xml" />
+    
+    
+    <item>
+      <title>各类openjdk下载地址</title>
+      <link>//duansheli.github.io/2019/05/25/download-openjdk.html</link>
+      <pubDate>Sat, 25 May 2019 17:28:13 +0800</pubDate>
+      
+      <guid>//duansheli.github.io/2019/05/25/download-openjdk.html</guid>
+      <description>openjdk oracle原版 jdk https://github.com/frekele/oracle-java/releases https://github.com/veita/oracle-java-download https://www.oracle.com/technetwork/java/javase/downloads/jdk11-downloads-5066655.html 有一种 oracle版的openjdk http://jdk.java.net/archive/ oracle还有一个跨语言的通用虚拟机 GraalVM https://github.com/oracle/graal/releases 从java 8开始 oracle开始收费，虽然对个人免费， 但对企业是收费的，虽然不知道怎么收，但收费肯定是不菲的。 如果生产环境不用oracle的jdk，最好平时开发就别用oracle，改用openjdk  部分下载地址 https://mirrors.</description>
+    </item>
+    
+  </channel>
+</rss>

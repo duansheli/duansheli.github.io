@@ -2,20 +2,29 @@
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
     <title>Categories on 断舍离的博客</title>
-    <link>https://duansheli.github.io/categories/</link>
+    <link>//duansheli.github.io/categories/</link>
     <description>Recent content in Categories on 断舍离的博客</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>zh-CN</language>
     
-	<atom:link href="https://duansheli.github.io/categories/index.xml" rel="self" type="application/rss+xml" />
+	<atom:link href="//duansheli.github.io/categories/index.xml" rel="self" type="application/rss+xml" />
     
     
     <item>
+      <title>Java深入</title>
+      <link>//duansheli.github.io/categories/Java%E6%B7%B1%E5%85%A5/</link>
+      <pubDate>Sat, 14 Jul 2018 15:13:13 +0800</pubDate>
+      
+      <guid>//duansheli.github.io/categories/Java%E6%B7%B1%E5%85%A5/</guid>
+      <description></description>
+    </item>
+    
+    <item>
       <title>k8s集群</title>
-      <link>https://duansheli.github.io/categories/k8s%E9%9B%86%E7%BE%A4/</link>
+      <link>//duansheli.github.io/categories/k8s%E9%9B%86%E7%BE%A4/</link>
       <pubDate>Thu, 03 Jan 2019 17:28:13 +0800</pubDate>
       
-      <guid>https://duansheli.github.io/categories/k8s%E9%9B%86%E7%BE%A4/</guid>
+      <guid>//duansheli.github.io/categories/k8s%E9%9B%86%E7%BE%A4/</guid>
       <description></description>
     </item>
     

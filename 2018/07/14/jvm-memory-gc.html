@@ -1,0 +1,591 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+
+    <meta charset="utf-8">
+    <meta name="generator" content="Hugo 0.54.0" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <title>JVM的垃圾回收 | 断舍离的博客</title>
+    <meta property="og:title" content="JVM的垃圾回收 - 断舍离的博客">
+    <meta property="og:type" content="article">
+        
+    <meta property="article:published_time" content="2018-07-14T15:13:13&#43;08:00">
+        
+        
+    <meta property="article:modified_time" content="2018-07-14T15:13:13&#43;08:00">
+        
+    <meta name="Keywords" content="java,scala,spark,kubernetes">
+    <meta name="description" content="JVM的垃圾回收">
+        
+    <meta name="author" content="断舍离">
+    <meta property="og:url" content="//duansheli.github.io/2018/07/14/jvm-memory-gc.html">
+    <link rel="shortcut icon" href="/favicon.ico" type="image/x-icon">
+
+    <link rel="stylesheet" href="/css/normalize.css">
+    
+        <link rel="stylesheet" href="/css/prism.css">
+    
+    <link rel="stylesheet" href="/css/style.css">
+    <script type="text/javascript" src="//cdn.bootcss.com/jquery/3.2.1/jquery.min.js"></script>
+
+    
+
+
+    
+    
+</head>
+
+<body>
+<header id="header" class="clearfix">
+    <div class="container">
+        <div class="col-group">
+            <div class="site-name ">
+                
+                    <a id="logo" href="//duansheli.github.io">
+                        断舍离的博客
+                    </a>
+                
+                <p class="description">java, scala, spark, kubernetes</p>
+            </div>
+            <div>
+                <nav id="nav-menu" class="clearfix">
+                    <a class="" href="//duansheli.github.io">首页</a>
+                    
+                    <a  href="//duansheli.github.io/archives/" title="归档">归档</a>
+                    
+                </nav>
+            </div>
+        </div>
+    </div>
+</header>
+
+
+<div id="body">
+    <div class="container">
+        <div class="col-group">
+
+            <div class="col-8" id="main">
+                <div class="res-cons">
+                    <article class="post">
+                        <header>
+                            <h1 class="post-title">JVM的垃圾回收</h1>
+                        </header>
+                        <date class="post-meta meta-date">
+                            2018年7月14日
+                        </date>
+                        
+                        <div class="post-meta">
+                            <span>|</span>
+                            
+                                <span class="meta-category"><a href="//duansheli.github.io/categories/Java%E6%B7%B1%E5%85%A5">Java深入</a></span>
+                            
+                        </div>
+                        
+                        
+                        
+                        <div class="clear">
+                            <div class="toc-article">
+                                <div class="toc-title">文章目录</div>
+                                <nav id="TableOfContents">
+<ul>
+<li><a href="#jvm内存结构">JVM内存结构</a>
+<ul>
+<li><a href="#内存区域">内存区域</a></li>
+<li><a href="#执行引擎">执行引擎</a></li>
+<li><a href="#jdk-jre-jvm的区别">JDK, JRE, JVM的区别</a></li>
+</ul></li>
+<li><a href="#gc">gc</a>
+<ul>
+<li><a href="#回收逻辑">回收逻辑</a></li>
+<li><a href="#垃圾回收器">垃圾回收器</a>
+<ul>
+<li><a href="#参数配置">参数配置</a></li>
+</ul></li>
+</ul></li>
+</ul>
+</nav>
+                            </div>
+                        </div>
+                        
+                        <div class="post-content">
+                            
+
+<h1 id="jvm内存结构">JVM内存结构</h1>
+
+<p>JVM是java代码的运行环境， 用来加载 <code>.class</code>和jar文件 , 运行代码。</p>
+
+<h2 id="内存区域">内存区域</h2>
+
+<pre><code>+------------------------------------------------------+
+|                                                      |
+|   +-------------+        +---------------+           |
+|   | xxxA.class  |        |               |           |
+|   | xxxB.class  |  ----&gt; |  class loader | &lt;--+      |
+|   |     ...     |        |               |    |      |
+|   +-------------+        +---------------+    |      |
+|                                               v      |
+|  +------------------------------------------------+  |
+|  |                                                |  |
+|  | +--------+      +------------+ +-------------+ |  |
+|  | |  Heap  |      | JVM Stacks | | pc Register | |  |
+|  | +--------+      +------------+ +-------------+ |  |
+|  |                                                |  |
+|  | +--------------+    +----------------------+   |  |
+|  | | Method Area  |    | Native Method Stacks |   |  |
+|  | +--------------+    +----------------------+   |  |
+|  |                                                |  |
+|  +--------------Run-Time Data Areas---------------+  |
+|                                                      |
+|   ^           +-------------------------------+      |
+|   |           | native method interface (JNI) |      |
+|   |           +-------------------------------+      |
+|   |              ^                ^                  |
+|   |              |                |                  |
+|   |              |                |                  |
+|   v              v                v                  |
+|  +------------------+  +--------------------------+  |
+|  | execution engine |  | native method libraries  |  |
+|  +------------------+  +--------------------------+  |
+|                                                      |
++------------------------------------------------------+
+</code></pre>
+
+<p>内存区域与运行关系</p>
+
+<ul>
+<li>堆 Heap<br />
+圾回收的主要区域，又划分为新生代和老年代。</li>
+<li>方法区 Method Area<br />
+存放常量池、静态变量、类信息、JIT编译后的代码等数据。<br />
+方法区是虚拟机规范中的概念，而永久代(PermGen)是HotSpot版的方法区。
+HotSpot虚拟机从1.8开始取消了永久代，改为元空间(Metaspace)。</li>
+<li>本地方法栈 Native Method Stacks<br />
+类似于虚拟机栈</li>
+<li>虚拟机栈 Java Virtual Machine Stacks<br />
+每个线程都有，存放着局部变量表，返回值，栈帧等 。局部变量表: 基本数据类型与对象引用
+栈帧:方法之间的调用顺序以栈的方式保存。</li>
+<li>程序计数器 pc Register<br />
+pc (program counter)
+每个线程都有，记录着线程当前运行到哪行代码</li>
+<li>运行时常量池 Run-Time Constant Pool<br />
+属于方法区的一部分。</li>
+</ul>
+
+<p>参考 <a href="https://docs.oracle.com/javase/specs/jvms/se8/html/jvms-2.html#jvms-2.5">Java运行时数据区</a></p>
+
+<hr />
+
+<pre><code>+------------------------------------------------+ +------------------------------------------------+
+|                                                | |                                                |
+|                thread.1                        | |                thread.N                        |
+|                                                | |                                                |
++------------------------------------------------+ +------------------------------------------------+
+|                pc Register                     | |                pc Register                     |
+|                                                | |                                                |
++------------------------------------------------+ +------------------------------------------------+
+|                                                | |                                                |
+|  +-------------------+  +-------------------+  | |  +-------------------+  +-------------------+  |
+|  |                   |  |                   |  | |  |                   |  |                   |  |
+|  |    JVM Stacks     |  |   Native Method   |  | |  |    JVM Stacks     |  |   Native Method   |  |
+|  |                   |  |       Stacks      |  | |  |                   |  |       Stacks      |  |
+|  +-------------------+  +-------------------+  | |  +-------------------+  +-------------------+  |
+|  |                   |  |                   |  | |  |                   |  |                   |  |
+|  |                   |  |                   |  | |  |                   |  |                   |  |
+|  |     +     ^       |  |     +     ^       |  | |  |     +     ^       |  |     +     ^       |  |
+|  |     |     |       |  |     |     |       |  | |  |     |     |       |  |     |     |       |  |
+|  |     |     |       |  |     |     |       |  | |  |     |     |       |  |     |     |       |  |
+|  |     v     +       |  |     v     +       |  | |  |     v     +       |  |     v     +       |  |
+|  |                   |  |                   |  | |  |                   |  |                   |  |
+|  | +---------------+ |  | +---------------+ |  | |  | +---------------+ |  | +---------------+ |  |
+|  | |  stack frame  | |  | |  stack frame  | |  | |  | |  stack frame  | |  | |  stack frame  | |  |
+|  | +---------------+ |  | +---------------+ |  | |  | +---------------+ |  | +---------------+ |  |
+|  | |     ...       | |  | |     ...       | |  | |  | |     ...       | |  | |     ...       | |  |
+|  | +---------------+ |  | +---------------+ |  | |  | +---------------+ |  | +---------------+ |  |
+|  | |  stack frame  | |  | |  stack frame  | |  | |  | |  stack frame  | |  | |  stack frame  | |  |
+|  | +---------------+ |  | +---------------+ |  | |  | +---------------+ |  | +---------------+ |  |
+|  |                   |  |                   |  | |  |                   |  |                   |  |
+|  +-------------------+  +-------------------+  | |  +-------------------+  +-------------------+  |
+|                                                | |                                                |
+|                                                | |                                                |
++------------------------------------------------+ +------------------------------------------------+
+
++---------all-threads-share------------------------------------+   +--------------------------------+
+|                                                              |   |                                |
+|  +---method-area--------------+     +---heap--------------+  |   |                                |
+|  |                            |     |                     |  |   |      direct memory             |
+|  |  class(field, method, ...) |     |                     |  |   |                                |
+|  |                            |     |   obj's             |  |   |                                |
+|  +----------------------------+     |                     |  |   |                                |
+|  |  Run Time Constant Pool    |     |                     |  |   |                                |
+|  +----------------------------+     +---------------------+  |   |                                |
+|                                                              |   |                                |
++--------------------------------------------------------------+   +--------------------------------+
+</code></pre>
+
+<p>内存区域与线程关系</p>
+
+<ul>
+<li>如何查看常量池，如何查看运行时常量池<br />
+javap可查看一个类的常量池。<br />
+运行时常量池可通过对内存dump，使用分析工具进行查看对比。</li>
+</ul>
+
+<h2 id="执行引擎">执行引擎</h2>
+
+<pre><code>+----------Execution Engine----------+
+|                                    |
+| +-------------+  |---------------+ |
+| |             |  |               | |
+| | Interpreter |  | JIT Compiler  | |
+| |             |  |               | |
+| +-------------+  +---------------+ |
+|     +------------------------+     |
+|     |                        |     |
+|     |   Garbage Collection   |     |
+|     |                        |     |
+|     +------------------------+     |
+|                                    |
++------------------------------------+
+</code></pre>
+
+<ul>
+<li>解释器 Interpreter<br />
+将<code>.class</code>代码按顺序解释执行。<br />
+相同Java代码在不同平台下编译后的<code>.class</code>文件相同。
+但在运行<code>.class</code>代码时，还是要针对平台解释成不同的机器码的。</li>
+<li>JIT (Just In Time) Compiler<br />
+将部分热点代码直接编译成机器码，避免了反复通过Interpreter解释执行。</li>
+<li>垃圾回收 Garbage Collection<br />
+收集移除无用的对象，释放内存。</li>
+</ul>
+
+<h2 id="jdk-jre-jvm的区别">JDK, JRE, JVM的区别</h2>
+
+<pre><code>+-------------------------------------------------------------------------+
+|                                                              JDK        |
+|                                                                         |
+| +---------------------------------------------------+   +-------------+ |
+| |                                JRE                |   |             | |
+| | +----------------------+                          |   |             | |
+| | |                      | +----------------------- |   | development | |
+| | |        JVM           | |                      | |   | tools       | |
+| | |                      | | set of libraries and | |   | e.g :       | |
+| | | java virtual machine | | compiled class files | |   | jstack      | |
+| | |                      | |                      | |   | compiler    | |
+| | +----------------------+ +----------------------- |   |             | |
+| |                                                   |   |             | |
+| +---------------------------------------------------+   +-------------+ |
+|                                                                         |
+|                                                                         |
++-------------------------------------------------------------------------+
+</code></pre>
+
+<h1 id="gc">gc</h1>
+
+<p>gc(Garbage Collector) 垃圾回收器, 对内存中过期对象进行清理，为后续创建对象提供空间。<br />
+stw (stop the world) 指所有线程停止工作，垃圾回收器独掌大权，进行垃圾回收。</p>
+
+<pre><code>+-----heap+------------------------------------------+
+|                                                    |
+|  +------------+----+----+-----------------------+  |
+|  |            |    |    |                       |  |
+|  |   eden     | s0 | s1 |                       |  |
+|  |            |    |    |                       |  |
+|  +------------+----+----+-----------------------+  |
+|       young generation       old generation        |
+|                                                    |
+|        minor GC                 major GC           |
++----------------------------------------------------+
+</code></pre>
+
+<pre><code>垃圾回收主要是对位于堆中的对象进行回收，堆分成两部分：年轻代和老年代。
+minor GC是对年轻代gc，major GC是对老年代gc。full GC == minor GC + major GC。
+
+起初的垃圾回收，有年轻代和老年代的概念, 对年轻代gc频率高，对老年代gc频率低。 
+后来G1将新生代和老年代分成若干个region ，
+而ZGC则没有新生代和老年代的概念。
+</code></pre>
+
+<h2 id="回收逻辑">回收逻辑</h2>
+
+<pre><code>大部分对象刚创建的时候，JVM会放在Eden区域。
+当Eden区域中的对象达到一定的数目的时候，就会进行Minor GC。
+在完成垃圾回收后,存活的对象都会被送到某个Suvivor中，两个Suvivor区域总会有一个是空的（s0和s1交替）。
+年轻代中经历过了多次垃圾回收，还活着的对象就会转移到年老代中。
+当内存不足时，就会镜像full gc, 对整个堆进行垃圾回收。 
+</code></pre>
+
+<h2 id="垃圾回收器">垃圾回收器</h2>
+
+<ul>
+<li>ZGC</li>
+<li>G1(Garbage-First) 并发</li>
+<li>新生代 young generation
+
+<ul>
+<li>Serial 串行</li>
+<li>ParNew 并行</li>
+<li>Parallel Scavenge 并行</li>
+</ul></li>
+<li>老年代 old generation
+
+<ul>
+<li>Serial Old 串行</li>
+<li>Parallel Old</li>
+<li>CMS 并发</li>
+</ul></li>
+</ul>
+
+<p>Concurrent Mark Sweep (CMS) Collector</p>
+
+<pre><code>不同的垃圾回收器会有不同的参数类型配置
+在ZGC以前的gc调优有两个方向： 吞吐量优先，响应时间优先。面临着鱼和熊掌不可兼得的困扰。
+而ZGC是几乎无停顿的， 同时吞吐量也很高（比g1差点）。
+该特性早在Azul JDK的C4 垃圾回收器就有，只不过用户习惯了oracle的jdk。
+
+https://crowhawk.github.io/2017/08/15/jvm_3/
+https://crowhawk.github.io/tags/#JVM
+http://huzb.me/2019/02/21/CMS-G1%E5%92%8CZGC/
+</code></pre>
+
+<h3 id="参数配置">参数配置</h3>
+
+<pre><code>在启动JVM虚拟机时，可以通过一些参数设置选用哪个垃圾回收器，
+以及对该垃圾回收器，进行具体的配置。
+
+比如： -XX:+UseSerialGC   –XX:+UseG1GC 
+
+那么有哪些参数可以配置呢？
+可以到oracle的文档中找
+https://docs.oracle.com/en/java/javase/11/gctuning/
+https://docs.oracle.com/javase/8/docs/technotes/guides/vm/gctuning/
+</code></pre>
+
+                        </div>
+
+                        
+
+
+                        
+
+<div class="post-archive">
+    <h2>See Also</h2>
+    <ul class="listing">
+        
+        <li><a href="/2018/07/08/classloader-modifiers-exception.html">类加载器加载的类不能创建对象</a></li>
+        
+        <li><a href="/2018/06/27/classloader-spi.html">SPI与contextclassloader</a></li>
+        
+        <li><a href="/2018/06/21/classloader-start.html">类加载器使用</a></li>
+        
+        <li><a href="/2018/06/05/proxy-rpc-01.html">动态代理-rpc示例-01</a></li>
+        
+        <li><a href="/2018/06/05/proxy-rpc-02.html">动态代理-rpc示例-02</a></li>
+        
+    </ul>
+</div>
+
+
+                        <div class="post-meta meta-tags">
+                            
+                            <ul class="clearfix">
+                                
+                                <li><a href="//duansheli.github.io/tags/Java">Java</a></li>
+                                
+                                <li><a href="//duansheli.github.io/tags/gc">gc</a></li>
+                                
+                            </ul>
+                            
+                        </div>
+                    </article>
+                    
+    
+
+    
+    
+                </div>
+            </div>
+            <div id="secondary">
+    <section class="widget">
+        <form id="search" action="//www.google.com/search" method="get" accept-charset="utf-8" target="_blank" _lpchecked="1">
+      
+      <input type="text" name="q" maxlength="20" placeholder="Search">
+      <input type="hidden" name="sitesearch" value="//duansheli.github.io">
+      <button type="submit" class="submit icon-search"></button>
+</form>
+    </section>
+    
+    <section class="widget">
+        <h3 class="widget-title">最近文章</h3>
+<ul class="widget-list">
+    
+    <li>
+        <a href="//duansheli.github.io/2019/05/25/download-openjdk.html" title="各类openjdk下载地址">各类openjdk下载地址</a>
+    </li>
+    
+    <li>
+        <a href="//duansheli.github.io/2019/05/18/dind-build-image-with-cache.html" title="DinD模式下通过容器构建镜像-方案">DinD模式下通过容器构建镜像-方案</a>
+    </li>
+    
+    <li>
+        <a href="//duansheli.github.io/2019/05/17/thinking-autoboxing-implicit.html" title="自动装箱拆箱在scala中的表现">自动装箱拆箱在scala中的表现</a>
+    </li>
+    
+    <li>
+        <a href="//duansheli.github.io/2019/04/09/spring-security-login-by-mobile-code.html" title="使用spring security实现手机验证码登录">使用spring security实现手机验证码登录</a>
+    </li>
+    
+    <li>
+        <a href="//duansheli.github.io/2019/04/08/spring-data-elasticsearch-error-date.html" title="spring data elasticsearch日期类型冲突">spring data elasticsearch日期类型冲突</a>
+    </li>
+    
+    <li>
+        <a href="//duansheli.github.io/2019/04/08/login-nature.html" title="登录流程的本质">登录流程的本质</a>
+    </li>
+    
+    <li>
+        <a href="//duansheli.github.io/2019/04/06/zipkin-dubbo-tracing.html" title="通过zipkin对dubbo进行链路追踪">通过zipkin对dubbo进行链路追踪</a>
+    </li>
+    
+    <li>
+        <a href="//duansheli.github.io/2019/03/02/spring-session-in-action.html" title="spring-session实现分布式会话">spring-session实现分布式会话</a>
+    </li>
+    
+    <li>
+        <a href="//duansheli.github.io/2019/02/16/rocketmq-transaction.html" title="通过rocketmq实现分布式事务">通过rocketmq实现分布式事务</a>
+    </li>
+    
+    <li>
+        <a href="//duansheli.github.io/2019/02/03/drone-ci-github-pages.html" title="drone持续集成-发布github pages">drone持续集成-发布github pages</a>
+    </li>
+    
+</ul>
+    </section>
+
+    
+
+    <section class="widget">
+        <h3 class="widget-title">分类</h3>
+<ul class="widget-list">
+    
+    <li>
+        <a href="//duansheli.github.io/categories/Java%E6%B7%B1%E5%85%A5/">Java深入(8)</a>
+    </li>
+    
+    <li>
+        <a href="//duansheli.github.io/categories/k8s%E9%9B%86%E7%BE%A4/">k8s集群(3)</a>
+    </li>
+    
+</ul>
+    </section>
+
+    <section class="widget">
+        <h3 class="widget-title">标签</h3>
+<div class="tagcloud">
+    
+    <a href="//duansheli.github.io/tags/Java/">Java</a>
+    
+    <a href="//duansheli.github.io/tags/classloader/">classloader</a>
+    
+    <a href="//duansheli.github.io/tags/docker/">docker</a>
+    
+    <a href="//duansheli.github.io/tags/drone/">drone</a>
+    
+    <a href="//duansheli.github.io/tags/dubbo/">dubbo</a>
+    
+    <a href="//duansheli.github.io/tags/elasticsearch/">elasticsearch</a>
+    
+    <a href="//duansheli.github.io/tags/gc/">gc</a>
+    
+    <a href="//duansheli.github.io/tags/java/">java</a>
+    
+    <a href="//duansheli.github.io/tags/jdk/">jdk</a>
+    
+    <a href="//duansheli.github.io/tags/k8s/">k8s</a>
+    
+    <a href="//duansheli.github.io/tags/life/">life</a>
+    
+    <a href="//duansheli.github.io/tags/proxy/">proxy</a>
+    
+    <a href="//duansheli.github.io/tags/rocketmq/">rocketmq</a>
+    
+    <a href="//duansheli.github.io/tags/scala/">scala</a>
+    
+    <a href="//duansheli.github.io/tags/session/">session</a>
+    
+    <a href="//duansheli.github.io/tags/spring-boot/">spring-boot</a>
+    
+    <a href="//duansheli.github.io/tags/spring-security/">spring-security</a>
+    
+    <a href="//duansheli.github.io/tags/springboot/">springboot</a>
+    
+    <a href="//duansheli.github.io/tags/zipkin/">zipkin</a>
+    
+    <a href="//duansheli.github.io/tags/%E5%88%86%E5%B8%83%E5%BC%8F%E4%BA%8B%E5%8A%A1/">分布式事务</a>
+    
+    <a href="//duansheli.github.io/tags/%E7%99%BB%E5%BD%95/">登录</a>
+    
+</div>
+    </section>
+
+    
+
+    <section class="widget">
+        <h3 class="widget-title">其它</h3>
+        <ul class="widget-list">
+            <li><a href="//duansheli.github.io/index.xml">文章 RSS</a></li>
+        </ul>
+    </section>
+</div>
+        </div>
+    </div>
+</div>
+<footer id="footer">
+    <div class="container">
+        &copy; 2019 <a href="//duansheli.github.io">断舍离的博客 By 断舍离</a>.
+        Powered by <a rel="nofollow noreferer noopener" href="https://gohugo.io" target="_blank">Hugo</a>.
+        <a href="https://www.flysnow.org/" target="_blank">Theme</a> based on <a href="https://github.com/rujews/maupassant-hugo" target="_blank">maupassant</a>.
+        
+    </div>
+</footer>
+
+
+    <script type="text/javascript">
+    
+    (function(){
+        $("pre code").parent().addClass("line-numbers")
+    }())
+
+    window.MathJax = {
+        tex2jax: {
+            inlineMath: [ ['$','$'] ],
+            processEscapes: true
+        }
+    };
+    </script>
+    <script type="text/javascript" src="/js/prism.js" async="true"></script>
+    <script src='https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/MathJax.js?config=TeX-MML-AM_CHTML' async></script>
+
+<a id="rocket" href="#top"></a>
+<script type="text/javascript" src="/js/totop.js?v=0.0.0" async=""></script>
+
+<script type="application/javascript">
+var doNotTrack = false;
+if (!doNotTrack) {
+	window.ga=window.ga||function(){(ga.q=ga.q||[]).push(arguments)};ga.l=+new Date;
+	ga('create', 'GTM-NPJC8J2', 'auto');
+	
+	ga('send', 'pageview');
+}
+</script>
+<script async src='https://www.google-analytics.com/analytics.js'></script>
+
+
+
+
+
+
+</body>
+</html>

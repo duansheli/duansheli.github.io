@@ -1,0 +1,666 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+
+    <meta charset="utf-8">
+    <meta name="generator" content="Hugo 0.54.0" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <title>类加载器使用 | 断舍离的博客</title>
+    <meta property="og:title" content="类加载器使用 - 断舍离的博客">
+    <meta property="og:type" content="article">
+        
+    <meta property="article:published_time" content="2018-06-21T13:13:13&#43;08:00">
+        
+        
+    <meta property="article:modified_time" content="2018-06-21T13:13:13&#43;08:00">
+        
+    <meta name="Keywords" content="java,scala,spark,kubernetes">
+    <meta name="description" content="类加载器使用">
+        
+    <meta name="author" content="断舍离">
+    <meta property="og:url" content="//duansheli.github.io/2018/06/21/classloader-start.html">
+    <link rel="shortcut icon" href="/favicon.ico" type="image/x-icon">
+
+    <link rel="stylesheet" href="/css/normalize.css">
+    
+        <link rel="stylesheet" href="/css/prism.css">
+    
+    <link rel="stylesheet" href="/css/style.css">
+    <script type="text/javascript" src="//cdn.bootcss.com/jquery/3.2.1/jquery.min.js"></script>
+
+    
+
+
+    
+    
+</head>
+
+<body>
+<header id="header" class="clearfix">
+    <div class="container">
+        <div class="col-group">
+            <div class="site-name ">
+                
+                    <a id="logo" href="//duansheli.github.io">
+                        断舍离的博客
+                    </a>
+                
+                <p class="description">java, scala, spark, kubernetes</p>
+            </div>
+            <div>
+                <nav id="nav-menu" class="clearfix">
+                    <a class="" href="//duansheli.github.io">首页</a>
+                    
+                    <a  href="//duansheli.github.io/archives/" title="归档">归档</a>
+                    
+                </nav>
+            </div>
+        </div>
+    </div>
+</header>
+
+
+<div id="body">
+    <div class="container">
+        <div class="col-group">
+
+            <div class="col-8" id="main">
+                <div class="res-cons">
+                    <article class="post">
+                        <header>
+                            <h1 class="post-title">类加载器使用</h1>
+                        </header>
+                        <date class="post-meta meta-date">
+                            2018年6月21日
+                        </date>
+                        
+                        <div class="post-meta">
+                            <span>|</span>
+                            
+                                <span class="meta-category"><a href="//duansheli.github.io/categories/Java%E6%B7%B1%E5%85%A5">Java深入</a></span>
+                            
+                        </div>
+                        
+                        
+                        
+                        <div class="clear">
+                            <div class="toc-article">
+                                <div class="toc-title">文章目录</div>
+                                <nav id="TableOfContents">
+<ul>
+<li><a href="#类加载器">类加载器</a>
+<ul>
+<li><a href="#引入">引入</a></li>
+<li><a href="#方向">方向</a></li>
+<li><a href="#划重点">划重点</a></li>
+<li><a href="#类的加载方式有哪些">类的加载方式有哪些</a></li>
+<li><a href="#自定义类加载器-实例">自定义类加载器-实例</a></li>
+<li><a href="#自带类加载器与双亲委托">自带类加载器与双亲委托</a>
+<ul>
+<li><a href="#bootstrapclassloader">BootstrapClassloader</a></li>
+<li><a href="#extclassloader">ExtClassloader</a></li>
+<li><a href="#appclassloader">AppClassloader</a></li>
+<li><a href="#如何自定义类加载器">如何自定义类加载器</a></li>
+</ul></li>
+<li><a href="#contextclassloader">ContextClassLoader</a></li>
+<li><a href="#思考">思考</a>
+<ul>
+<li><a href="#能不能自己写个类叫java-lang-system">能不能自己写个类叫java.lang.System</a></li>
+<li><a href="#类名-class和getclass-的区别">类名.class和getClass()的区别</a></li>
+<li><a href="#contextclassloader-new-class-forname-自定义classloader-之间的关系">ContextClassLoader, new, Class.forName, 自定义ClassLoader  之间的关系</a></li>
+</ul></li>
+</ul></li>
+</ul>
+</nav>
+                            </div>
+                        </div>
+                        
+                        <div class="post-content">
+                            
+
+<h1 id="类加载器">类加载器</h1>
+
+<h2 id="引入">引入</h2>
+
+<pre><code>一般开发都不会接触classloader的概念，但程序的运行却是建立在classloader之上的
+为什么要有类加载器： java程序的启动首先就需要jvm去加载class
+而代码中的对象创建类调用【new Person(); Autil.currentTime();】  都需要class被jvm加载
+使用类的静态方法，或者创建对象前，需要先加载class
+而每个class必然由一个classloader加载
+</code></pre>
+
+<h2 id="方向">方向</h2>
+
+<pre><code>貌似类加载的事情不需要我们操心，虚拟机已经帮我们解决了
+那学这个能干嘛： 
+* 更了解虚拟机; 
+* 在复杂的生产环境可能遇到class找不到异常,了解这个有助于排查错误;
+* 自研服务/插件，动态加载代码;
+* tomcat的项目代码热部署，jsp热部署;
+* 各种热部署插件;
+* 软件破解;
+</code></pre>
+
+<h2 id="划重点">划重点</h2>
+
+<p>一个class在内存中只存一份，以及限定条件
+defineClass决定class的类加载器是谁
+线程上下文类加载器用于隐式传参
+一个对象的类由哪个类加载器去加载，取决于显示使用类或显示使用类加载器</p>
+
+<h2 id="类的加载方式有哪些">类的加载方式有哪些</h2>
+
+<p>也可以说类在哪些情况下会被加载</p>
+
+<ul>
+<li><p>以类名方式直接使用时必然会被加载</p>
+
+<pre><code>new A()
+B.hello()
+</code></pre></li>
+
+<li><p>Class.forName</p>
+
+<pre><code>Class.forName(&quot;com.mysql.jdbc.Driver&quot;)
+Class.forName(&quot;com.mysql.jdbc.Driver&quot;, false, myclassloader)
+</code></pre></li>
+
+<li><p>直接调用myclassloader.loadClass(&ldquo;xx.yy.Abc&rdquo;)<br />
+有些人的类加载器例子会这么写myclassloader.findClass(&ldquo;xx.yy.Abc&rdquo;)，有时会出问题。</p></li>
+</ul>
+
+<pre><code>MyClassloader c1 = new MyClassloader();
+MyClassloader c2 = new MyClassloader();
+Class cp1 = Class.forName(&quot;fluffy.mo.Person&quot;, false, c1); 
+Class cp2 = Class.forName(&quot;fluffy.mo.Person&quot;, false, c2); 
+</code></pre>
+
+<p>class在JVM中只能加载一份， 但此处cp1与cp2都会被加载，且二者内存地址不同。
+Person的class在JVM中分为 姓（某Classloader对象）和名（类全名 fluffy.mo.Person）
+此处二者加载的都是fluffy.mo.Person， 但二者姓不同，也就是c1和c2不同，所以冲突。</p>
+
+<blockquote>
+<p><strong><em>注意:</em></strong><br />
+类的加载，与类的加载器可能会有所误解。
+当一个Person类由classloaderA去加载时，classloaderA可能会通过父类委托给classloaderB。
+如果classloaderB成功的加载了Person类，则Person的类加载器其实是classloaderB，而不是classloaderA。</p>
+
+<p>判定Person类的类加载器是谁，
+并不是依据classloaderA或classloaderB 调用了findClass方法。
+而是看谁最终调用defineClass方法， 即调用defineClass方法的classloader才是Person类的类加载器。</p>
+</blockquote>
+
+<p>关于类加载器的详细介绍
+<a href="https://www.ibm.com/developerworks/cn/java/j-lo-classloader/index.html">https://www.ibm.com/developerworks/cn/java/j-lo-classloader/index.html</a></p>
+
+<h2 id="自定义类加载器-实例">自定义类加载器-实例</h2>
+
+<p>主要步骤
+* 继承ClassLoader
+* 重写findClass()方法
+* 调用defineClass()方法</p>
+
+<pre><code class="language-java">import java.io.*;
+
+class CustomClassLoader extends ClassLoader {
+    final String basePath;
+
+    public CustomClassLoader(String basePath) {
+        this.basePath = basePath;
+    }
+
+    @Override
+    protected Class&lt;?&gt; findClass(String name) throws ClassNotFoundException {
+        try {
+            byte[] result = getClassFromCustomPath(name);
+            if (result == null) {
+                throw new FileNotFoundException(name);
+            }
+            return defineClass(name, result, 0, result.length);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return super.findClass(name);
+    }
+
+    private byte[] getClassFromCustomPath(String name) throws Exception {
+        InputStream in = null;
+        ByteArrayOutputStream out = null;
+        String path = basePath + name.replace(&quot;.&quot;, &quot;/&quot;) + &quot;.class&quot;;
+        try {
+            in = new FileInputStream(path);
+            out = new ByteArrayOutputStream();
+            byte[] buffer = new byte[2048];
+            int len = 0;
+            while ((len = in.read(buffer)) != -1) {
+                out.write(buffer, 0, len);
+            }
+            return out.toByteArray();
+        } finally {
+            try {
+                in.close();
+                out.close();
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        }
+    }
+
+    public static void main(String[] args) throws Exception {
+        String myClassPath = &quot;E:/myprogram/myclasses/&quot;;
+        CustomClassLoader customClassLoader = new CustomClassLoader(myClassPath);
+        Class&lt;?&gt; clazz = Class.forName(&quot;fluffy.mo.Person&quot;, true, customClassLoader);
+        Object obj = clazz.newInstance();
+        System.out.println(obj.getClass().getClassLoader());
+    }
+}
+</code></pre>
+
+<h2 id="自带类加载器与双亲委托">自带类加载器与双亲委托</h2>
+
+<p>委托机制可实现类共享，保证内存中只出现一次class字节码。<br />
+sun.misc.Launcher.ExtClassLoader<br />
+sun.misc.Launcher.AppClassLoader</p>
+
+<pre><code>+----------------------+
+| BootstrapClassloader |
+|         +            |
+|         |            |
+|         v            |
+|    ExtClassloader    |
+|         +            |
+|         |            |
+|         v            |
+|    AppClassloader    |
+|         +            |
+|         |            |
+|         v            |
+|   UserClassLoader    |
++----------------------+
+</code></pre>
+
+<pre><code>某个类加载器在收到加载类的请求时，则先将加载类任务委托给父类加载器，层层向上请求。
+如果父类加载器可以完成类加载任务，就成功返回；在父类加载器加载失败时，才自己去加载。
+
+AppClassloader的父加载器为ExtClassloader
+ExtClassloader的父类加载器为BootstrapClassloader 显示为null （因为BootstrapClassLoader是使用C++写的，没有java类）
+
+委托机制是java程序默认的运行方式，但某些情况下我们的程序会不遵守该规则，比如tomcat加载的web应用。
+</code></pre>
+
+<h3 id="bootstrapclassloader">BootstrapClassloader</h3>
+
+<pre><code>该类c语言实现 主要用来加载java的核心jar包
+如rt.jar、resources.jar、jce.jar等
+</code></pre>
+
+<h3 id="extclassloader">ExtClassloader</h3>
+
+<pre><code>扩展类加载器 默认加载JAVA_HOME/jre/lib/ext/目下的所有jar包
+</code></pre>
+
+<h3 id="appclassloader">AppClassloader</h3>
+
+<pre><code>为ClassLoader.getSystemClassLoader() 用来加载classpath下的class和jar包
+</code></pre>
+
+<h3 id="如何自定义类加载器">如何自定义类加载器</h3>
+
+<p>通常来说是继承ClassLoader，重写findClass</p>
+
+<p>如果不想破坏双亲委派机制，则只需要重写findClass方法<br />
+如果想打破双亲委派机制，那么就重写整个loadClass方法</p>
+
+<h2 id="contextclassloader">ContextClassLoader</h2>
+
+<pre><code>线程的上下文类加载器： 每个线程都会有一个classloader的引用保存在context中
+java.lang.Thread有两个方法 getContextClassLoader() 和 setContextClassLoader(ClassLoader cl) 
+
+java程序启动时默认的ContextClassLoader为AppClassloader。
+当创建新线程时，新线程的ContextClassLoader会取当前线程的ContextClassLoader。
+
+用法为在某一个时刻为当前线程设置 contextClassLoader , 作为一个全局变量方便使用。 
+然后在必要的时候取出该类加载器使用。
+</code></pre>
+
+<h2 id="思考">思考</h2>
+
+<h3 id="能不能自己写个类叫java-lang-system">能不能自己写个类叫java.lang.System</h3>
+
+<p>写自然可以写，但不会被JVM加载。</p>
+
+<pre><code>按照双亲委托机制，JVM在加载该自定义System类前，会先找父加载器，
+最后找到`BootstrapClassloader`, `BootstrapClassloader`由c++编写，用于加载系统类，只会去特定位置加载Java核心库。
+这样JVM最终加载的是自带的`java.lang.System`, 而不是自己写的`java.lang.System`。
+
+那么可以自己写一个类加载器，并且绕开背双亲委托机制，直接加载自己的写的类呢。
+还是不行，因为自定义类加载器在加载class二进制文件后，还是要调用java.lang.ClassLoader#defineClass方法。
+深入源码发现其会调用preDefineClass方法，而java.lang.ClassLoader#preDefineClass方法拒绝加载以`java.`开头的类。
+</code></pre>
+
+<h3 id="类名-class和getclass-的区别">类名.class和getClass()的区别</h3>
+
+<pre><code class="language-java">class A{
+    public void test() throws Exception {
+        Class b1 = B.class;
+
+        // Class cc = Class.forName(&quot;B&quot;, false, myclassloader);
+        Class cc = Class.forName(&quot;B&quot;);
+        Object obj_x = cc.newInstance();
+        // Object obj_x = new B();
+        Class b2 = obj_x.getClass();
+
+        System.out.println(b1.equals(b2));
+    }
+}
+class B{
+}
+</code></pre>
+
+<pre><code>以代码举例说明
+类实例b1是直接以类名获取，其类加载器和代码所处位置有关， 也就是加载B的class时，会让A类加载器去加载。
+类实例b2是通过obj_x. getClass()使用方法是间接获取，obj_x对象的类加载器，其父类加载器可以动态化。
+b1是怎么加载的，直接看A的类加载器就行。
+b2是怎么加载的，要从对象obj_x向上找。 
+obj_x如果是new出来的，那也是看A的类加载器。
+obj_x如果是cc.newInstance()出来的，那b2和cc相同，找b2就是找cc。
+而cc从哪加载的，就要看使用的什么类加载器了。
+</code></pre>
+
+<h3 id="contextclassloader-new-class-forname-自定义classloader-之间的关系">ContextClassLoader, new, Class.forName, 自定义ClassLoader  之间的关系</h3>
+
+<pre><code>Person p1 = new Person();
+Class cp = p1.getClass();
+ClassLoader cdr = cp.getClassLoader();
+</code></pre>
+
+<p>以【Person的对象p1 与 p1的class对象】为例说明
+在创建p1对象前，JVM会先加载p1的class，即cp。
+而cp一定由某个类加载器加载，此处cdr为cp的类加载器。</p>
+
+<p>p1可以由两种方式被创建 new 和 .newInstance() 。
+当采用 new 创建的对象p1，p1的class对象cp的类的加载，会由
+而 cp.newInstance() 其实是两步 class对象cp被加载 与使用class对象cp创建对象p1 。
+这里只需要关心第一步，class对象cp是如何被加载，就足够了。</p>
+
+<p>cp可以由多种渠道获取。<br />
+cp最初一定是从类加载器获取的，但从出厂，到消费者手中，中间的过程可以很曲折。</p>
+
+<pre><code class="language-java">package fluffy.mo;
+
+public class Person {
+}
+class Test {
+    static Class cp;
+
+    static {
+        // v1版本
+        try {
+            Person p1 = new Person();
+            cp = p1.getClass();
+            cp = Person.class;
+            cp = Class.forName(&quot;fluffy.mo.Person&quot;);
+        } catch (ClassNotFoundException e) {
+            e.printStackTrace();
+        }
+        // v2版本
+        try {
+            ClassLoader cdr = null;
+            cp = Class.forName(&quot;fluffy.mo.Person&quot;, false, cdr);
+        } catch (ClassNotFoundException e) {
+            e.printStackTrace();
+        }
+        // v3版本
+        try {
+            // v3-before
+            ClassLoader cdrA = null;
+            Thread.currentThread().setContextClassLoader(cdrA);
+
+            // v3-body
+            ClassLoader cdr = Thread.currentThread().getContextClassLoader();
+            cp = Class.forName(&quot;fluffy.mo.Person&quot;, false, cdr);
+        } catch (ClassNotFoundException e) {
+            e.printStackTrace();
+        }
+    }
+}
+</code></pre>
+
+<pre><code>在v1版本下，没有显示指定用某个类加载器。
+代码写在Test中，则会找Test的类加载器去加载Person的class。
+
+在v2版本下，显示指定用某个ClassLoader，则自然是用我们指定的去加载Person的class。
+
+在v3版本下，对v2版本升级，代码分成两部分。 
+在某一时刻，将一个myClassloader放在了当前线程的context中。
+在必要的时候，从当前线程的context中取出该 classLoader为我们所用
+</code></pre>
+
+                        </div>
+
+                        
+
+
+                        
+
+<div class="post-archive">
+    <h2>See Also</h2>
+    <ul class="listing">
+        
+        <li><a href="/2018/04/02/reflect-start.html">反射使用</a></li>
+        
+        <li><a href="/2018/06/05/proxy-rpc-02.html">动态代理-rpc示例-02</a></li>
+        
+        <li><a href="/2018/06/05/proxy-rpc-01.html">动态代理-rpc示例-01</a></li>
+        
+        <li><a href="/2018/06/02/proxy-start.html">动态代理</a></li>
+        
+        <li><a href="/2018/06/05/check-credit.html">查查查-各类信用查询</a></li>
+        
+    </ul>
+</div>
+
+
+                        <div class="post-meta meta-tags">
+                            
+                            <ul class="clearfix">
+                                
+                                <li><a href="//duansheli.github.io/tags/Java">Java</a></li>
+                                
+                                <li><a href="//duansheli.github.io/tags/classloader">classloader</a></li>
+                                
+                            </ul>
+                            
+                        </div>
+                    </article>
+                    
+    
+
+    
+    
+                </div>
+            </div>
+            <div id="secondary">
+    <section class="widget">
+        <form id="search" action="//www.google.com/search" method="get" accept-charset="utf-8" target="_blank" _lpchecked="1">
+      
+      <input type="text" name="q" maxlength="20" placeholder="Search">
+      <input type="hidden" name="sitesearch" value="//duansheli.github.io">
+      <button type="submit" class="submit icon-search"></button>
+</form>
+    </section>
+    
+    <section class="widget">
+        <h3 class="widget-title">最近文章</h3>
+<ul class="widget-list">
+    
+    <li>
+        <a href="//duansheli.github.io/2019/05/25/download-openjdk.html" title="各类openjdk下载地址">各类openjdk下载地址</a>
+    </li>
+    
+    <li>
+        <a href="//duansheli.github.io/2019/05/18/dind-build-image-with-cache.html" title="DinD模式下通过容器构建镜像-方案">DinD模式下通过容器构建镜像-方案</a>
+    </li>
+    
+    <li>
+        <a href="//duansheli.github.io/2019/05/17/thinking-autoboxing-implicit.html" title="自动装箱拆箱在scala中的表现">自动装箱拆箱在scala中的表现</a>
+    </li>
+    
+    <li>
+        <a href="//duansheli.github.io/2019/04/09/spring-security-login-by-mobile-code.html" title="使用spring security实现手机验证码登录">使用spring security实现手机验证码登录</a>
+    </li>
+    
+    <li>
+        <a href="//duansheli.github.io/2019/04/08/spring-data-elasticsearch-error-date.html" title="spring data elasticsearch日期类型冲突">spring data elasticsearch日期类型冲突</a>
+    </li>
+    
+    <li>
+        <a href="//duansheli.github.io/2019/04/08/login-nature.html" title="登录流程的本质">登录流程的本质</a>
+    </li>
+    
+    <li>
+        <a href="//duansheli.github.io/2019/04/06/zipkin-dubbo-tracing.html" title="通过zipkin对dubbo进行链路追踪">通过zipkin对dubbo进行链路追踪</a>
+    </li>
+    
+    <li>
+        <a href="//duansheli.github.io/2019/03/02/spring-session-in-action.html" title="spring-session实现分布式会话">spring-session实现分布式会话</a>
+    </li>
+    
+    <li>
+        <a href="//duansheli.github.io/2019/02/16/rocketmq-transaction.html" title="通过rocketmq实现分布式事务">通过rocketmq实现分布式事务</a>
+    </li>
+    
+    <li>
+        <a href="//duansheli.github.io/2019/02/03/drone-ci-github-pages.html" title="drone持续集成-发布github pages">drone持续集成-发布github pages</a>
+    </li>
+    
+</ul>
+    </section>
+
+    
+
+    <section class="widget">
+        <h3 class="widget-title">分类</h3>
+<ul class="widget-list">
+    
+    <li>
+        <a href="//duansheli.github.io/categories/Java%E6%B7%B1%E5%85%A5/">Java深入(8)</a>
+    </li>
+    
+    <li>
+        <a href="//duansheli.github.io/categories/k8s%E9%9B%86%E7%BE%A4/">k8s集群(3)</a>
+    </li>
+    
+</ul>
+    </section>
+
+    <section class="widget">
+        <h3 class="widget-title">标签</h3>
+<div class="tagcloud">
+    
+    <a href="//duansheli.github.io/tags/Java/">Java</a>
+    
+    <a href="//duansheli.github.io/tags/classloader/">classloader</a>
+    
+    <a href="//duansheli.github.io/tags/docker/">docker</a>
+    
+    <a href="//duansheli.github.io/tags/drone/">drone</a>
+    
+    <a href="//duansheli.github.io/tags/dubbo/">dubbo</a>
+    
+    <a href="//duansheli.github.io/tags/elasticsearch/">elasticsearch</a>
+    
+    <a href="//duansheli.github.io/tags/gc/">gc</a>
+    
+    <a href="//duansheli.github.io/tags/java/">java</a>
+    
+    <a href="//duansheli.github.io/tags/jdk/">jdk</a>
+    
+    <a href="//duansheli.github.io/tags/k8s/">k8s</a>
+    
+    <a href="//duansheli.github.io/tags/life/">life</a>
+    
+    <a href="//duansheli.github.io/tags/proxy/">proxy</a>
+    
+    <a href="//duansheli.github.io/tags/rocketmq/">rocketmq</a>
+    
+    <a href="//duansheli.github.io/tags/scala/">scala</a>
+    
+    <a href="//duansheli.github.io/tags/session/">session</a>
+    
+    <a href="//duansheli.github.io/tags/spring-boot/">spring-boot</a>
+    
+    <a href="//duansheli.github.io/tags/spring-security/">spring-security</a>
+    
+    <a href="//duansheli.github.io/tags/springboot/">springboot</a>
+    
+    <a href="//duansheli.github.io/tags/zipkin/">zipkin</a>
+    
+    <a href="//duansheli.github.io/tags/%E5%88%86%E5%B8%83%E5%BC%8F%E4%BA%8B%E5%8A%A1/">分布式事务</a>
+    
+    <a href="//duansheli.github.io/tags/%E7%99%BB%E5%BD%95/">登录</a>
+    
+</div>
+    </section>
+
+    
+
+    <section class="widget">
+        <h3 class="widget-title">其它</h3>
+        <ul class="widget-list">
+            <li><a href="//duansheli.github.io/index.xml">文章 RSS</a></li>
+        </ul>
+    </section>
+</div>
+        </div>
+    </div>
+</div>
+<footer id="footer">
+    <div class="container">
+        &copy; 2019 <a href="//duansheli.github.io">断舍离的博客 By 断舍离</a>.
+        Powered by <a rel="nofollow noreferer noopener" href="https://gohugo.io" target="_blank">Hugo</a>.
+        <a href="https://www.flysnow.org/" target="_blank">Theme</a> based on <a href="https://github.com/rujews/maupassant-hugo" target="_blank">maupassant</a>.
+        
+    </div>
+</footer>
+
+
+    <script type="text/javascript">
+    
+    (function(){
+        $("pre code").parent().addClass("line-numbers")
+    }())
+
+    window.MathJax = {
+        tex2jax: {
+            inlineMath: [ ['$','$'] ],
+            processEscapes: true
+        }
+    };
+    </script>
+    <script type="text/javascript" src="/js/prism.js" async="true"></script>
+    <script src='https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/MathJax.js?config=TeX-MML-AM_CHTML' async></script>
+
+<a id="rocket" href="#top"></a>
+<script type="text/javascript" src="/js/totop.js?v=0.0.0" async=""></script>
+
+<script type="application/javascript">
+var doNotTrack = false;
+if (!doNotTrack) {
+	window.ga=window.ga||function(){(ga.q=ga.q||[]).push(arguments)};ga.l=+new Date;
+	ga('create', 'GTM-NPJC8J2', 'auto');
+	
+	ga('send', 'pageview');
+}
+</script>
+<script async src='https://www.google-analytics.com/analytics.js'></script>
+
+
+
+
+
+
+</body>
+</html>

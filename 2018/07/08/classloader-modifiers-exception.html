@@ -1,0 +1,468 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+
+    <meta charset="utf-8">
+    <meta name="generator" content="Hugo 0.54.0" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <title>类加载器加载的类不能创建对象 | 断舍离的博客</title>
+    <meta property="og:title" content="类加载器加载的类不能创建对象 - 断舍离的博客">
+    <meta property="og:type" content="article">
+        
+    <meta property="article:published_time" content="2018-07-08T15:13:13&#43;08:00">
+        
+        
+    <meta property="article:modified_time" content="2018-07-08T15:13:13&#43;08:00">
+        
+    <meta name="Keywords" content="java,scala,spark,kubernetes">
+    <meta name="description" content="类加载器加载的类不能创建对象">
+        
+    <meta name="author" content="断舍离">
+    <meta property="og:url" content="//duansheli.github.io/2018/07/08/classloader-modifiers-exception.html">
+    <link rel="shortcut icon" href="/favicon.ico" type="image/x-icon">
+
+    <link rel="stylesheet" href="/css/normalize.css">
+    
+        <link rel="stylesheet" href="/css/prism.css">
+    
+    <link rel="stylesheet" href="/css/style.css">
+    <script type="text/javascript" src="//cdn.bootcss.com/jquery/3.2.1/jquery.min.js"></script>
+
+    
+
+
+    
+    
+</head>
+
+<body>
+<header id="header" class="clearfix">
+    <div class="container">
+        <div class="col-group">
+            <div class="site-name ">
+                
+                    <a id="logo" href="//duansheli.github.io">
+                        断舍离的博客
+                    </a>
+                
+                <p class="description">java, scala, spark, kubernetes</p>
+            </div>
+            <div>
+                <nav id="nav-menu" class="clearfix">
+                    <a class="" href="//duansheli.github.io">首页</a>
+                    
+                    <a  href="//duansheli.github.io/archives/" title="归档">归档</a>
+                    
+                </nav>
+            </div>
+        </div>
+    </div>
+</header>
+
+
+<div id="body">
+    <div class="container">
+        <div class="col-group">
+
+            <div class="col-8" id="main">
+                <div class="res-cons">
+                    <article class="post">
+                        <header>
+                            <h1 class="post-title">类加载器加载的类不能创建对象</h1>
+                        </header>
+                        <date class="post-meta meta-date">
+                            2018年7月8日
+                        </date>
+                        
+                        <div class="post-meta">
+                            <span>|</span>
+                            
+                                <span class="meta-category"><a href="//duansheli.github.io/categories/Java%E6%B7%B1%E5%85%A5">Java深入</a></span>
+                            
+                        </div>
+                        
+                        
+                        
+                        <div class="clear">
+                            <div class="toc-article">
+                                <div class="toc-title">文章目录</div>
+                                <nav id="TableOfContents">
+<ul>
+<li><a href="#illegalaccessexception">IllegalAccessException</a>
+<ul>
+<li><a href="#异常信息">异常信息</a></li>
+<li><a href="#代码示例">代码示例</a></li>
+<li><a href="#原因">原因</a></li>
+</ul></li>
+</ul>
+</nav>
+                            </div>
+                        </div>
+                        
+                        <div class="post-content">
+                            
+
+<h1 id="illegalaccessexception">IllegalAccessException</h1>
+
+<h2 id="异常信息">异常信息</h2>
+
+<pre><code>Exception in thread &quot;main&quot; java.lang.IllegalAccessException: Class fluffy.mo.MyClassloader can not access a member of class fluffy.mo.Car with modifiers &quot;public&quot;
+    at sun.reflect.Reflection.ensureMemberAccess(Reflection.java:102)
+    at java.lang.reflect.AccessibleObject.slowCheckMemberAccess(AccessibleObject.java:296)
+    at java.lang.reflect.AccessibleObject.checkAccess(AccessibleObject.java:288)
+    at java.lang.reflect.Constructor.newInstance(Constructor.java:413)
+    at fluffy.mo.MyClassloader.test4(MyClassloader.java:91)
+    at fluffy.mo.MyClassloader.main(MyClassloader.java:68)
+</code></pre>
+
+<p>在使用反射创建对象时，被提示没权限</p>
+
+<h2 id="代码示例">代码示例</h2>
+
+<pre><code class="language-java">package fluffy.mo;
+public class Person{
+}
+</code></pre>
+
+<pre><code class="language-java">package fluffy.mo;
+
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.InputStream;
+import java.lang.reflect.Method;
+
+public class MyClassloader extends ClassLoader {
+
+    private byte[] getData(String name) throws Exception {
+        String path = getClass().getResource(&quot;/&quot;).getPath();
+        path = path + name.replace(&quot;.&quot;, &quot;/&quot;) + &quot;.class&quot;;
+        InputStream in = new FileInputStream(new File(path));
+        byte[] data = new byte[in.available()];
+        in.read(data);
+        in.close();
+        return data;
+    }
+
+    @Override
+    protected Class&lt;?&gt; findClass(String name) throws ClassNotFoundException {
+        byte[] data = null;
+        try {
+            data = this.getData(name);
+
+        } catch (Exception e) {
+            e.printStackTrace();
+            throw new ClassNotFoundException();
+
+        }
+        Class&lt;?&gt; aClass = defineClass(name, data, 0, data.length);
+        return aClass;
+    }
+
+    static void test1() throws Exception {
+        MyClassloader c1 = new MyClassloader();
+        String name = &quot;fluffy.mo.Person&quot;;
+
+        Class pCls = c1.findClass(name);
+        Person p1 = new Person();
+        Object p2 = pCls.getConstructor().newInstance();
+        // Person p3  = (Person)p2;
+        // 强转报错，虽然二者都是Person对象，但二者的类加载器不同
+        System.out.println(&quot;test1-done&quot;);
+    }
+
+    public static void main(String[] args) throws Exception {
+        // 加载类的时候没有调用 loadClass 方法， 而是 findClass
+        // 否则会有父类委托，导致每次都由AppClassLoader加载
+        test1();
+
+        Class carCls = null;
+        Car car1 = new Car();
+        String carName = &quot;fluffy.mo.Car&quot;;
+
+        // 方式一
+        carCls = Class.forName(carName);
+        carCls.newInstance();
+        // carCls.getConstructor().newInstance();
+
+        // 方式二
+        carCls = Class.forName(carName, true, new MyClassloader());
+        carCls.getConstructor().newInstance();
+
+        // 方式三
+        MyClassloader classloader1 = new MyClassloader();
+        carCls = classloader1.findClass(carName);
+        // test4(carCls); // error
+
+        // 方式四： 为了解决方式三的报错
+        Class classUtil = classloader1.findClass(&quot;fluffy.mo.MyClassloader&quot;);
+        ClassLoader classloaderObj = (ClassLoader) classUtil.newInstance();
+        // classloader1与
+        // classloader1的类文件由AppClassloader加载，而classloaderObj的类文件由classloader1加载
+        Method[] methods = classUtil.getMethods();
+        for (Method method : methods) {
+            if (&quot;test4&quot;.equals(method.getName())) {
+                method.invoke(classloaderObj, carCls);
+            }
+        }
+
+        System.out.println(&quot;test-66-done&quot;);
+    }
+
+    public static void test4(Class carCls) throws Exception {
+        Object p2 = carCls.getConstructor().newInstance();
+        System.out.println(p2.getClass().getClassLoader());
+        System.out.println(p2);
+    }
+
+}
+
+// 在没有显示声明空构造函数的情况下，通过反射创建实例也会有不同的结果
+class Car {
+    static {
+        System.out.println(&quot;init car&quot;);
+    }
+
+    public Car() {
+    }
+}
+</code></pre>
+
+<h2 id="原因">原因</h2>
+
+<pre><code>由于Car没有声明public导致在反射创建对象时，存在权限问题。
+为何方式四的carCls.getConstructor().newInstance()不报错，方式三报错呢
+因为方式四在创建Car对象时，test方法和Car类二者在同一个包名下，有权限访问
+方式三，test4方法的类由AppClassloader加载， carCls由classloader1加载,虽然二者包名相同,但隔着类加载器
+方式三的问题也可以给Car加上public 声明解决
+
+方式二是为啥成功了，因为方式二其实走的loadClass方法，会进行父类委托，返回的class其实是由AppClassloader加载的
+</code></pre>
+
+                        </div>
+
+                        
+
+
+                        
+
+<div class="post-archive">
+    <h2>See Also</h2>
+    <ul class="listing">
+        
+        <li><a href="/2018/06/27/classloader-spi.html">SPI与contextclassloader</a></li>
+        
+        <li><a href="/2018/06/21/classloader-start.html">类加载器使用</a></li>
+        
+        <li><a href="/2018/04/02/reflect-start.html">反射使用</a></li>
+        
+        <li><a href="/2018/06/05/proxy-rpc-01.html">动态代理-rpc示例-01</a></li>
+        
+        <li><a href="/2018/06/05/proxy-rpc-02.html">动态代理-rpc示例-02</a></li>
+        
+    </ul>
+</div>
+
+
+                        <div class="post-meta meta-tags">
+                            
+                            <ul class="clearfix">
+                                
+                                <li><a href="//duansheli.github.io/tags/Java">Java</a></li>
+                                
+                                <li><a href="//duansheli.github.io/tags/classloader">classloader</a></li>
+                                
+                            </ul>
+                            
+                        </div>
+                    </article>
+                    
+    
+
+    
+    
+                </div>
+            </div>
+            <div id="secondary">
+    <section class="widget">
+        <form id="search" action="//www.google.com/search" method="get" accept-charset="utf-8" target="_blank" _lpchecked="1">
+      
+      <input type="text" name="q" maxlength="20" placeholder="Search">
+      <input type="hidden" name="sitesearch" value="//duansheli.github.io">
+      <button type="submit" class="submit icon-search"></button>
+</form>
+    </section>
+    
+    <section class="widget">
+        <h3 class="widget-title">最近文章</h3>
+<ul class="widget-list">
+    
+    <li>
+        <a href="//duansheli.github.io/2019/05/25/download-openjdk.html" title="各类openjdk下载地址">各类openjdk下载地址</a>
+    </li>
+    
+    <li>
+        <a href="//duansheli.github.io/2019/05/18/dind-build-image-with-cache.html" title="DinD模式下通过容器构建镜像-方案">DinD模式下通过容器构建镜像-方案</a>
+    </li>
+    
+    <li>
+        <a href="//duansheli.github.io/2019/05/17/thinking-autoboxing-implicit.html" title="自动装箱拆箱在scala中的表现">自动装箱拆箱在scala中的表现</a>
+    </li>
+    
+    <li>
+        <a href="//duansheli.github.io/2019/04/09/spring-security-login-by-mobile-code.html" title="使用spring security实现手机验证码登录">使用spring security实现手机验证码登录</a>
+    </li>
+    
+    <li>
+        <a href="//duansheli.github.io/2019/04/08/spring-data-elasticsearch-error-date.html" title="spring data elasticsearch日期类型冲突">spring data elasticsearch日期类型冲突</a>
+    </li>
+    
+    <li>
+        <a href="//duansheli.github.io/2019/04/08/login-nature.html" title="登录流程的本质">登录流程的本质</a>
+    </li>
+    
+    <li>
+        <a href="//duansheli.github.io/2019/04/06/zipkin-dubbo-tracing.html" title="通过zipkin对dubbo进行链路追踪">通过zipkin对dubbo进行链路追踪</a>
+    </li>
+    
+    <li>
+        <a href="//duansheli.github.io/2019/03/02/spring-session-in-action.html" title="spring-session实现分布式会话">spring-session实现分布式会话</a>
+    </li>
+    
+    <li>
+        <a href="//duansheli.github.io/2019/02/16/rocketmq-transaction.html" title="通过rocketmq实现分布式事务">通过rocketmq实现分布式事务</a>
+    </li>
+    
+    <li>
+        <a href="//duansheli.github.io/2019/02/03/drone-ci-github-pages.html" title="drone持续集成-发布github pages">drone持续集成-发布github pages</a>
+    </li>
+    
+</ul>
+    </section>
+
+    
+
+    <section class="widget">
+        <h3 class="widget-title">分类</h3>
+<ul class="widget-list">
+    
+    <li>
+        <a href="//duansheli.github.io/categories/Java%E6%B7%B1%E5%85%A5/">Java深入(8)</a>
+    </li>
+    
+    <li>
+        <a href="//duansheli.github.io/categories/k8s%E9%9B%86%E7%BE%A4/">k8s集群(3)</a>
+    </li>
+    
+</ul>
+    </section>
+
+    <section class="widget">
+        <h3 class="widget-title">标签</h3>
+<div class="tagcloud">
+    
+    <a href="//duansheli.github.io/tags/Java/">Java</a>
+    
+    <a href="//duansheli.github.io/tags/classloader/">classloader</a>
+    
+    <a href="//duansheli.github.io/tags/docker/">docker</a>
+    
+    <a href="//duansheli.github.io/tags/drone/">drone</a>
+    
+    <a href="//duansheli.github.io/tags/dubbo/">dubbo</a>
+    
+    <a href="//duansheli.github.io/tags/elasticsearch/">elasticsearch</a>
+    
+    <a href="//duansheli.github.io/tags/gc/">gc</a>
+    
+    <a href="//duansheli.github.io/tags/java/">java</a>
+    
+    <a href="//duansheli.github.io/tags/jdk/">jdk</a>
+    
+    <a href="//duansheli.github.io/tags/k8s/">k8s</a>
+    
+    <a href="//duansheli.github.io/tags/life/">life</a>
+    
+    <a href="//duansheli.github.io/tags/proxy/">proxy</a>
+    
+    <a href="//duansheli.github.io/tags/rocketmq/">rocketmq</a>
+    
+    <a href="//duansheli.github.io/tags/scala/">scala</a>
+    
+    <a href="//duansheli.github.io/tags/session/">session</a>
+    
+    <a href="//duansheli.github.io/tags/spring-boot/">spring-boot</a>
+    
+    <a href="//duansheli.github.io/tags/spring-security/">spring-security</a>
+    
+    <a href="//duansheli.github.io/tags/springboot/">springboot</a>
+    
+    <a href="//duansheli.github.io/tags/zipkin/">zipkin</a>
+    
+    <a href="//duansheli.github.io/tags/%E5%88%86%E5%B8%83%E5%BC%8F%E4%BA%8B%E5%8A%A1/">分布式事务</a>
+    
+    <a href="//duansheli.github.io/tags/%E7%99%BB%E5%BD%95/">登录</a>
+    
+</div>
+    </section>
+
+    
+
+    <section class="widget">
+        <h3 class="widget-title">其它</h3>
+        <ul class="widget-list">
+            <li><a href="//duansheli.github.io/index.xml">文章 RSS</a></li>
+        </ul>
+    </section>
+</div>
+        </div>
+    </div>
+</div>
+<footer id="footer">
+    <div class="container">
+        &copy; 2019 <a href="//duansheli.github.io">断舍离的博客 By 断舍离</a>.
+        Powered by <a rel="nofollow noreferer noopener" href="https://gohugo.io" target="_blank">Hugo</a>.
+        <a href="https://www.flysnow.org/" target="_blank">Theme</a> based on <a href="https://github.com/rujews/maupassant-hugo" target="_blank">maupassant</a>.
+        
+    </div>
+</footer>
+
+
+    <script type="text/javascript">
+    
+    (function(){
+        $("pre code").parent().addClass("line-numbers")
+    }())
+
+    window.MathJax = {
+        tex2jax: {
+            inlineMath: [ ['$','$'] ],
+            processEscapes: true
+        }
+    };
+    </script>
+    <script type="text/javascript" src="/js/prism.js" async="true"></script>
+    <script src='https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/MathJax.js?config=TeX-MML-AM_CHTML' async></script>
+
+<a id="rocket" href="#top"></a>
+<script type="text/javascript" src="/js/totop.js?v=0.0.0" async=""></script>
+
+<script type="application/javascript">
+var doNotTrack = false;
+if (!doNotTrack) {
+	window.ga=window.ga||function(){(ga.q=ga.q||[]).push(arguments)};ga.l=+new Date;
+	ga('create', 'GTM-NPJC8J2', 'auto');
+	
+	ga('send', 'pageview');
+}
+</script>
+<script async src='https://www.google-analytics.com/analytics.js'></script>
+
+
+
+
+
+
+</body>
+</html>
