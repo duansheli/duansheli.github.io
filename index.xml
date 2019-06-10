@@ -6,10 +6,40 @@
     <description>Recent content on 断舍离的博客</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>zh-CN</language>
-    <lastBuildDate>Sat, 25 May 2019 17:28:13 +0800</lastBuildDate>
+    <lastBuildDate>Wed, 05 Jun 2019 16:13:13 +0800</lastBuildDate>
     
 	<atom:link href="//duansheli.github.io/index.xml" rel="self" type="application/rss+xml" />
     
+    
+    <item>
+      <title>查查查-各类信用查询</title>
+      <link>//duansheli.github.io/2019/06/05/check-credit.html</link>
+      <pubDate>Wed, 05 Jun 2019 16:13:13 +0800</pubDate>
+      
+      <guid>//duansheli.github.io/2019/06/05/check-credit.html</guid>
+      <description>中国执行信息公开网
+可以查到一个人的失信记录
+http://zxgk.court.gov.cn
+ 全国标准信息公共服务平台
+每个行业接触到的各种标准，包括行业标准、团体标准、国外标准，已废止的、现行的、即将实施的都能查到。
+http://www.std.gov.cn
+ 征信中心（银行一般规定：一个月不要查询超过三次） 用来查询自己的个人信用记录，违约、延迟还款和查询是否存在不良记录。
+https://ipcrs.pbccrc.org.cn/
+ 中国法律法规资讯网 http://www.86148.com/
+ 全国企业信用信息公示系统 全国企业信用信息公示系统
+毕业学生找工作不知道公司靠不靠谱，可以上这里查询是不是正规公司。
+http://gsxt.saic.gov.cn/</description>
+    </item>
+    
+    <item>
+      <title>休闲娱乐</title>
+      <link>//duansheli.github.io/2019/06/05/relax.html</link>
+      <pubDate>Thu, 30 May 2019 13:13:13 +0800</pubDate>
+      
+      <guid>//duansheli.github.io/2019/06/05/relax.html</guid>
+      <description>小河淌水-颅内高潮 https://weibo.com/tv/v/Hl5d8en8D?fid=1034:4350248915771690 https://dig.chouti.com/link/25184166 小河淌水-龚琳娜-歌手第三季-第10期：第76分钟开始 https://www.mgtv.com/b/327378/5314401.html https://www.mgtv.com/b/327378/5314351.html https://y.qq.com/n/yqq/song/002ogMAd2lR6sT.html 小河淌水-龚琳娜-全能星战-第二期第80分钟开始 https://www.iqiyi.com/v_19rrh8hi14.html https://y.qq.com/n/yqq/song/004ezdyr3O6GTp.html  图片-解压 https://www.flickr.com/explore
+点开图片，单张图片全屏观看，切换图片用键盘左右键。</description>
+    </item>
     
     <item>
       <title>各类openjdk下载地址</title>
@@ -223,26 +253,6 @@ SPI概念 SPI（Service Provider Interface）是JDK内置的一种提供服务�
     </item>
     
     <item>
-      <title>查查查-各类信用查询</title>
-      <link>//duansheli.github.io/2018/06/05/check-credit.html</link>
-      <pubDate>Tue, 05 Jun 2018 16:13:13 +0800</pubDate>
-      
-      <guid>//duansheli.github.io/2018/06/05/check-credit.html</guid>
-      <description>中国执行信息公开网
-可以查到一个人的失信记录
-http://zxgk.court.gov.cn
- 全国标准信息公共服务平台
-每个行业接触到的各种标准，包括行业标准、团体标准、国外标准，已废止的、现行的、即将实施的都能查到。
-http://www.std.gov.cn
- 征信中心（银行一般规定：一个月不要查询超过三次） 用来查询自己的个人信用记录，违约、延迟还款和查询是否存在不良记录。
-https://ipcrs.pbccrc.org.cn/
- 中国法律法规资讯网 http://www.86148.com/
- 全国企业信用信息公示系统 全国企业信用信息公示系统
-毕业学生找工作不知道公司靠不靠谱，可以上这里查询是不是正规公司。
-http://gsxt.saic.gov.cn/</description>
-    </item>
-    
-    <item>
       <title>动态代理-rpc示例-01</title>
       <link>//duansheli.github.io/2018/06/05/proxy-rpc-01.html</link>
       <pubDate>Tue, 05 Jun 2018 13:13:13 +0800</pubDate>
@@ -270,16 +280,6 @@ Rpc大致思路 定义一个接口HelloService 放在iface.jar中 应用P中引�
       <guid>//duansheli.github.io/2018/06/02/proxy-start.html</guid>
       <description>目标 通过代码示例了解动态代理语法
 示例代码 import java.lang.reflect.InvocationHandler; import java.lang.reflect.Method; import java.lang.reflect.Proxy; public class Demo { interface MyMath1 { public Integer sum(Integer a, Integer b); } static class MyMathImpl implements MyMath1 { @Override public Integer sum(Integer a, Integer b) { return a + b; } } public static void main(String[] args) { MyMath1 tg = new MyMathImpl(); // 创建对象代理 MyMath1 math = (MyMath1) Proxy.</description>
-    </item>
-    
-    <item>
-      <title>休闲娱乐</title>
-      <link>//duansheli.github.io/2018/06/05/relax.html</link>
-      <pubDate>Wed, 30 May 2018 13:13:13 +0800</pubDate>
-      
-      <guid>//duansheli.github.io/2018/06/05/relax.html</guid>
-      <description>小河淌水-颅内高潮 https://weibo.com/tv/v/Hl5d8en8D?fid=1034:4350248915771690 https://dig.chouti.com/link/25184166 小河淌水-龚琳娜-歌手第三季-第10期：第76分钟开始 https://www.mgtv.com/b/327378/5314401.html https://www.mgtv.com/b/327378/5314351.html https://y.qq.com/n/yqq/song/002ogMAd2lR6sT.html 小河淌水-龚琳娜-全能星战-第二期第80分钟开始 https://www.iqiyi.com/v_19rrh8hi14.html https://y.qq.com/n/yqq/song/004ezdyr3O6GTp.html  图片-解压 https://www.flickr.com/explore
-点开图片，单张图片全屏观看，切换图片用键盘左右键。</description>
     </item>
     
     <item>

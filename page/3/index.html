@@ -66,6 +66,29 @@
                         <article class="post">
                             <header>
                                 <h1 class="post-title">
+                                    <a href="//duansheli.github.io/2018/06/21/classloader-start.html" title="类加载器使用" >类加载器使用</a>
+                                </h1>
+                            </header>
+                            <date class="post-meta meta-date">
+                                2018年6月21日
+                            </date>
+                            
+                            <div class="post-meta">
+                                <span>|</span>
+                                
+                                <span class="meta-category"><a href="//duansheli.github.io/categories/Java%E6%B7%B1%E5%85%A5">Java深入</a></span>
+                                
+                            </div>
+                            
+                            <div class="post-content">
+                                类加载器 引入 一般开发都不会接触classloader的概念，但程序的运行却是建立在classloader之上的 为什么要有类加载器： java程序的启动首先就需要jvm去加载class 而代码中的对象创建类调用【new Person(); Autil.currentTime();】 都需要class被jvm加载 使用类的静态方法，或者创建对象前，需要先加载class 而每个class必然由一个classloader加载  方向 貌似类加载的事情不需要我们操心，虚拟机已经帮我们解决了 那学这个能干嘛： * 更了解虚拟机; * 在复杂的生产环境可能遇到class找不到异常,了解这个有助于排查错误; * 自研服务/插件，动态加载代码; * tomcat的项目代码热部署，jsp热部署; * 各种热部署插件; * 软件破解;  划重点 一个class在内存中只存一份，以及限定条件 defineClass决定class的类加载器是谁 线程上下文类加载器用于隐式传参 一个对象的类由哪个类加载器去加载，取决于显示使用类或显示使用类加载器……
+                            </div>
+                            <p class="readmore"><a href="//duansheli.github.io/2018/06/21/classloader-start.html">阅读全文</a></p>
+                        </article>
+                    
+                        <article class="post">
+                            <header>
+                                <h1 class="post-title">
                                     <a href="//duansheli.github.io/2018/06/05/proxy-rpc-01.html" title="动态代理-rpc示例-01" >动态代理-rpc示例-01</a>
                                 </h1>
                             </header>
@@ -133,23 +156,6 @@ Rpc大致思路 定义一个接口HelloService 放在iface.jar中 应用P中引�
 示例代码 import java.lang.reflect.InvocationHandler; import java.lang.reflect.Method; import java.lang.reflect.Proxy; public class Demo { interface MyMath1 { public Integer sum(Integer a, Integer b); } static class MyMathImpl implements MyMath1 { @Override public Integer sum(Integer a, Integer b) { return a + b; } } public static void main(String[] args) { MyMath1 tg = new MyMathImpl(); // 创建对象代理 MyMath1 math = (MyMath1) Proxy.……
                             </div>
                             <p class="readmore"><a href="//duansheli.github.io/2018/06/02/proxy-start.html">阅读全文</a></p>
-                        </article>
-                    
-                        <article class="post">
-                            <header>
-                                <h1 class="post-title">
-                                    <a href="//duansheli.github.io/2018/06/05/relax.html" title="休闲娱乐" >休闲娱乐</a>
-                                </h1>
-                            </header>
-                            <date class="post-meta meta-date">
-                                2018年5月30日
-                            </date>
-                            
-                            <div class="post-content">
-                                小河淌水-颅内高潮 https://weibo.com/tv/v/Hl5d8en8D?fid=1034:4350248915771690 https://dig.chouti.com/link/25184166 小河淌水-龚琳娜-歌手第三季-第10期：第76分钟开始 https://www.mgtv.com/b/327378/5314401.html https://www.mgtv.com/b/327378/5314351.html https://y.qq.com/n/yqq/song/002ogMAd2lR6sT.html 小河淌水-龚琳娜-全能星战-第二期第80分钟开始 https://www.iqiyi.com/v_19rrh8hi14.html https://y.qq.com/n/yqq/song/004ezdyr3O6GTp.html  图片-解压 https://www.flickr.com/explore
-点开图片，单张图片全屏观看，切换图片用键盘左右键。……
-                            </div>
-                            <p class="readmore"><a href="//duansheli.github.io/2018/06/05/relax.html">阅读全文</a></p>
                         </article>
                     
                         <article class="post">
@@ -279,6 +285,14 @@ http://download-origin.cdn.mozilla.net/pub/devedition/releases/ http://ftp.mozil
 <ul class="widget-list">
     
     <li>
+        <a href="//duansheli.github.io/2019/06/05/check-credit.html" title="查查查-各类信用查询">查查查-各类信用查询</a>
+    </li>
+    
+    <li>
+        <a href="//duansheli.github.io/2019/06/05/relax.html" title="休闲娱乐">休闲娱乐</a>
+    </li>
+    
+    <li>
         <a href="//duansheli.github.io/2019/05/25/download-openjdk.html" title="各类openjdk下载地址">各类openjdk下载地址</a>
     </li>
     
@@ -308,14 +322,6 @@ http://download-origin.cdn.mozilla.net/pub/devedition/releases/ http://ftp.mozil
     
     <li>
         <a href="//duansheli.github.io/2019/03/02/spring-session-in-action.html" title="spring-session实现分布式会话">spring-session实现分布式会话</a>
-    </li>
-    
-    <li>
-        <a href="//duansheli.github.io/2019/02/16/rocketmq-transaction.html" title="通过rocketmq实现分布式事务">通过rocketmq实现分布式事务</a>
-    </li>
-    
-    <li>
-        <a href="//duansheli.github.io/2019/02/03/drone-ci-github-pages.html" title="drone持续集成-发布github pages">drone持续集成-发布github pages</a>
     </li>
     
 </ul>

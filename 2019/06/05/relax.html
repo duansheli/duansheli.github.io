@@ -7,20 +7,20 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1">
 
-    <title>DinD模式下通过容器构建镜像-方案 | 断舍离的博客</title>
-    <meta property="og:title" content="DinD模式下通过容器构建镜像-方案 - 断舍离的博客">
+    <title>休闲娱乐 | 断舍离的博客</title>
+    <meta property="og:title" content="休闲娱乐 - 断舍离的博客">
     <meta property="og:type" content="article">
         
-    <meta property="article:published_time" content="2019-05-18T17:28:13&#43;08:00">
+    <meta property="article:published_time" content="2019-05-30T13:13:13&#43;08:00">
         
         
-    <meta property="article:modified_time" content="2019-05-18T17:28:13&#43;08:00">
+    <meta property="article:modified_time" content="2019-05-30T13:13:13&#43;08:00">
         
     <meta name="Keywords" content="java,scala,spark,kubernetes">
-    <meta name="description" content="DinD模式下通过容器构建镜像-方案">
+    <meta name="description" content="休闲娱乐">
         
     <meta name="author" content="断舍离">
-    <meta property="og:url" content="//duansheli.github.io/2019/05/18/dind-build-image-with-cache.html">
+    <meta property="og:url" content="//duansheli.github.io/2019/06/05/relax.html">
     <link rel="shortcut icon" href="/favicon.ico" type="image/x-icon">
 
     <link rel="stylesheet" href="/css/normalize.css">
@@ -70,10 +70,10 @@
                 <div class="res-cons">
                     <article class="post">
                         <header>
-                            <h1 class="post-title">DinD模式下通过容器构建镜像-方案</h1>
+                            <h1 class="post-title">休闲娱乐</h1>
                         </header>
                         <date class="post-meta meta-date">
-                            2019年5月18日
+                            2019年5月30日
                         </date>
                         
                         
@@ -83,122 +83,36 @@
                                 <div class="toc-title">文章目录</div>
                                 <nav id="TableOfContents">
 <ul>
-<li><a href="#1-手动构建的流程">1. 手动构建的流程</a></li>
-<li><a href="#2-容器内构建镜像-两种方式">2. 容器内构建镜像-两种方式</a></li>
-<li><a href="#3-更好的方案">3. 更好的方案</a>
-<ul>
-<li><a href="#3-1-要点">3.1. 要点</a></li>
-</ul></li>
+<li><a href="#小河淌水-颅内高潮">小河淌水-颅内高潮</a></li>
+<li><a href="#图片-解压">图片-解压</a></li>
 </ul>
 </nav>
                             </div>
                         </div>
                         
                         <div class="post-content">
-                            <p>持续集成时，构建镜像后，通常会产生一些临时镜像<br />
-很不docker，一点也不绿色<br />
-使用DinD的方案可以解决该问题</p>
+                            
 
-<h1 id="1-手动构建的流程">1. 手动构建的流程</h1>
+<h1 id="小河淌水-颅内高潮">小河淌水-颅内高潮</h1>
 
-<ul>
-<li>代码提交到git仓库中</li>
-<li>在宿主机git pull最新代码</li>
-<li>通过docker build 使用Dockerfile进行多阶段构建
+<pre><code>https://weibo.com/tv/v/Hl5d8en8D?fid=1034:4350248915771690
+https://dig.chouti.com/link/25184166
 
-<ul>
-<li>编译(*.java -&gt; .class -&gt; jar包, *.go -&gt; 可执行文件)</li>
-<li>使用上一步生成的文件构建镜像</li>
-</ul></li>
-<li>将构建好的镜像推送到镜像私服</li>
-<li>在服务器上将容器替换成最新镜像运行</li>
-</ul>
-
-<p>在采用多阶段构建时，会产生中间镜像，一个tag为none的镜像。<br />
-而N个构建任务则导致N个tag为none的镜像 另外from的镜像通常也占磁盘空间<br />
-使用<code>docker image</code>可看到这些无用的镜像</p>
-
-<p>容器的一个特色就是能绿色的运行软件<br />
-既然用了docker 自然希望构建的步骤也在容器中执行</p>
-
-<h1 id="2-容器内构建镜像-两种方式">2. 容器内构建镜像-两种方式</h1>
-
-<p>docker是一个c/s架构的程序
-* docker-daemon 类似于mysql-server
-* docker-client 类似于mysql-client</p>
-
-<p>DinD (Docker in Docker)</p>
-
-<pre><code>在该容器内的cmd-docker类似普通的容器服务
-运行 docker images 显示空 就好像一个全新的系统
-docker run --privileged --name some-docker -d docker:stable-dind
+小河淌水-龚琳娜-歌手第三季-第10期：第76分钟开始
+https://www.mgtv.com/b/327378/5314401.html
+https://www.mgtv.com/b/327378/5314351.html
+https://y.qq.com/n/yqq/song/002ogMAd2lR6sT.html
+小河淌水-龚琳娜-全能星战-第二期第80分钟开始
+https://www.iqiyi.com/v_19rrh8hi14.html
+https://y.qq.com/n/yqq/song/004ezdyr3O6GTp.html
 </code></pre>
 
-<p>DooD (Docker-outside-of-Docker)</p>
+<h1 id="图片-解压">图片-解压</h1>
 
-<pre><code>在该容器内的cmd(docker ...)调用的是宿主机的docker-daemon
-如运行 docker images 显示的就是宿主机的镜像列表
-docker run -v /var/run/docker.sock:/var/run/docker.sock ...
-</code></pre>
+<p><a href="https://www.flickr.com/explore">https://www.flickr.com/explore</a></p>
 
-<p>采用DooD的方案较简单<br />
-缺点:<br />
-由于<code>docker build</code>实际上还是连的宿主机的 docker-daemon<br />
-宿主机最终还是会有这些tag为none的镜像 并没有达到绿色的目的<br />
-此时考虑下DinD则比较绿色</p>
+<p>点开图片，单张图片全屏观看，切换图片用键盘左右键。</p>
 
-<p>使用DinD
-缺点:<br />
-由于每次都是启动一个新的容器去构建镜像 ， 新的容器意味着其环境下没有任何的镜像<br />
-如果有N个任务都是<code>from amazoncorretto:8u212</code> 这一镜像 则每次任务都是重新拉取镜像<br />
-这种情况下的确绿色了，但重复下载镜像很浪费时间</p>
-
-<h1 id="3-更好的方案">3. 更好的方案</h1>
-
-<p>单独创建一个容器运行 docker-deamon 开放2375端口
-所有的构建任务执行docker命令（docker ps, docker pull&hellip;）时都会被发送到此容器内执行
-这样既可以绿色运行，也能使用镜像的缓存</p>
-
-<pre><code>容器交互图
-+-------------------------------------------+
-|  host-node                                |
-|                                           |
-|                                           |
-|  +-------------------------------+        |
-|  |                               |        |
-|  | container: docker-deamon      |        |
-|  |  dind-mode                    |        |
-|  +-------------------------------+        |
-|                                           |
-|                 ^      ^      ^           |
-|                 |      |      |           |
-|                 |      |      |           |
-|  +--------------+---+  |      |           |
-|  | container: task1 |  |      |           |
-|  +------------------+  |      |           |
-|                        |      |           |
-|       +----------------+-+    |           |
-|       | container: task2 |    |           |
-|       +------------------+    |           |
-|                               |           |
-|               +---------------+--+        |
-|               | container: task3 |        |
-|               +------------------+        |
-|                                           |
-+-------------------------------------------+
-</code></pre>
-
-<p>每次执行构建任务时，依然是在一个新的容器（taskN）中进行构建镜像<br />
-只不过容器task-N中运行的<code>docker build</code>命令，会被发送到docker-deamon容器中执行</p>
-
-<h2 id="3-1-要点">3.1. 要点</h2>
-
-<ul>
-<li>给docker-deamon配置镜像加速器</li>
-<li>给docker-deamon开放2375端口 以提供外部访问服务</li>
-<li>执行构建任务的容器(task) 的docker需要配置<code>export DOCKER_HOST=&quot;tcp://192.168.6.7:2375&quot;</code> 以让其连接docker-deamon容器</li>
-<li>如果docker-deamon部署在k8s上， 还可考虑设置多个pod 应对并发的构建任务</li>
-</ul>
                         </div>
 
                         
@@ -210,15 +124,15 @@ docker run -v /var/run/docker.sock:/var/run/docker.sock ...
     <h2>See Also</h2>
     <ul class="listing">
         
-        <li><a href="/2019/02/03/drone-ci-github-pages.html">drone持续集成-发布github pages</a></li>
+        <li><a href="/2018/03/17/dev-browser.html">dev-浏览器</a></li>
         
-        <li><a href="/2019/01/01/connect-container-ip.html">跨宿主机与docker容器通信</a></li>
+        <li><a href="/2019/05/25/download-openjdk.html">各类openjdk下载地址</a></li>
         
-        <li><a href="/2019/01/15/docker-useful-cmd.html">docker常用操作</a></li>
+        <li><a href="/2019/05/18/dind-build-image-with-cache.html">DinD模式下通过容器构建镜像-方案</a></li>
         
-        <li><a href="/2018/01/03/k8s-cluster-setup-03.html">k8s搭建集群3-异常解决</a></li>
+        <li><a href="/2019/05/17/thinking-autoboxing-implicit.html">自动装箱拆箱在scala中的表现</a></li>
         
-        <li><a href="/2019/01/02/k8s-cluster-setup-02.html">k8s集群搭建-02</a></li>
+        <li><a href="/2019/04/09/spring-security-login-by-mobile-code.html">使用spring security实现手机验证码登录</a></li>
         
     </ul>
 </div>
@@ -228,7 +142,7 @@ docker run -v /var/run/docker.sock:/var/run/docker.sock ...
                             
                             <ul class="clearfix">
                                 
-                                <li><a href="//duansheli.github.io/tags/docker">docker</a></li>
+                                <li><a href="//duansheli.github.io/tags/life">life</a></li>
                                 
                             </ul>
                             

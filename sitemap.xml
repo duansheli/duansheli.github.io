@@ -3,6 +3,16 @@
   xmlns:xhtml="http://www.w3.org/1999/xhtml">
   
   <url>
+    <loc>//duansheli.github.io/2019/06/05/check-credit.html</loc>
+    <lastmod>2019-06-05T16:13:13+08:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>//duansheli.github.io/2019/06/05/relax.html</loc>
+    <lastmod>2019-05-30T13:13:13+08:00</lastmod>
+  </url>
+  
+  <url>
     <loc>//duansheli.github.io/2019/05/25/download-openjdk.html</loc>
     <lastmod>2019-05-25T17:28:13+08:00</lastmod>
   </url>
@@ -98,11 +108,6 @@
   </url>
   
   <url>
-    <loc>//duansheli.github.io/2018/06/05/check-credit.html</loc>
-    <lastmod>2018-06-05T16:13:13+08:00</lastmod>
-  </url>
-  
-  <url>
     <loc>//duansheli.github.io/2018/06/05/proxy-rpc-01.html</loc>
     <lastmod>2018-06-05T13:13:13+08:00</lastmod>
   </url>
@@ -115,11 +120,6 @@
   <url>
     <loc>//duansheli.github.io/2018/06/02/proxy-start.html</loc>
     <lastmod>2018-06-02T13:13:13+08:00</lastmod>
-  </url>
-  
-  <url>
-    <loc>//duansheli.github.io/2018/06/05/relax.html</loc>
-    <lastmod>2018-05-30T13:13:13+08:00</lastmod>
   </url>
   
   <url>
@@ -151,7 +151,7 @@
   
   <url>
     <loc>//duansheli.github.io/posts/</loc>
-    <lastmod>2019-05-25T17:28:13+08:00</lastmod>
+    <lastmod>2019-06-05T16:13:13+08:00</lastmod>
     <priority>0</priority>
   </url>
   
@@ -223,7 +223,7 @@
   
   <url>
     <loc>//duansheli.github.io/tags/life/</loc>
-    <lastmod>2018-06-05T16:13:13+08:00</lastmod>
+    <lastmod>2019-06-05T16:13:13+08:00</lastmod>
     <priority>0</priority>
   </url>
   
@@ -291,7 +291,7 @@
   
   <url>
     <loc>//duansheli.github.io/</loc>
-    <lastmod>2019-05-25T17:28:13+08:00</lastmod>
+    <lastmod>2019-06-05T16:13:13+08:00</lastmod>
     <priority>0</priority>
   </url>
   
