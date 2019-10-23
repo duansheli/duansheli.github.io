@@ -1,22 +1,90 @@
-<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
     <title>断舍离的博客</title>
-    <link>//duansheli.github.io/</link>
+    <link>/duansheli.github.io/</link>
     <description>Recent content on 断舍离的博客</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>zh-CN</language>
-    <lastBuildDate>Wed, 05 Jun 2019 16:13:13 +0800</lastBuildDate>
+    <lastBuildDate>Thu, 12 Sep 2019 13:13:13 +0800</lastBuildDate>
     
-	<atom:link href="//duansheli.github.io/index.xml" rel="self" type="application/rss+xml" />
+	<atom:link href="/duansheli.github.io/index.xml" rel="self" type="application/rss+xml" />
     
     
     <item>
+      <title>浏览器启用dns-over-https(DoH)</title>
+      <link>/duansheli.github.io/2019/09/12/doh.html</link>
+      <pubDate>Thu, 12 Sep 2019 13:13:13 +0800</pubDate>
+      
+      <guid>/duansheli.github.io/2019/09/12/doh.html</guid>
+      <description>firefox chrome://flags Secure DNS lookups. 启用该选项 重启浏览器  chrome chrome://flags Secure DNS lookups. 启用该选项 重启浏览器  修改chrome快捷方式的参数 增加以下参数 --enable-features=&amp;quot;dns-over-https&amp;lt;DoHTrial&amp;quot; --force-fieldtrials=&amp;quot;DoHTrial/Group1&amp;quot; --force-fieldtrial-params=&amp;quot;DoHTrial.</description>
+    </item>
+    
+    <item>
+      <title>docker的复制文件操作</title>
+      <link>/duansheli.github.io/2019/09/09/docker-cp.html</link>
+      <pubDate>Mon, 09 Sep 2019 17:28:13 +0800</pubDate>
+      
+      <guid>/duansheli.github.io/2019/09/09/docker-cp.html</guid>
+      <description>&lt;p&gt;容器与宿主机之间的文件复制示例&lt;/p&gt;</description>
+    </item>
+    
+    <item>
+      <title>使用hashids创建短链服务</title>
+      <link>/duansheli.github.io/2019/09/03/hashids-usage.html</link>
+      <pubDate>Tue, 03 Sep 2019 17:28:13 +0800</pubDate>
+      
+      <guid>/duansheli.github.io/2019/09/03/hashids-usage.html</guid>
+      <description>&lt;p&gt;简单的方案是使用uuid生成， 但太长且数据库检索效率低。&lt;br /&gt;
+本次使用hashIds的方案 简单 安全。&lt;/p&gt;</description>
+    </item>
+    
+    <item>
+      <title>给文章加水印-零宽字符</title>
+      <link>/duansheli.github.io/2019/09/07/zero-width.html</link>
+      <pubDate>Tue, 03 Sep 2019 17:28:13 +0800</pubDate>
+      
+      <guid>/duansheli.github.io/2019/09/07/zero-width.html</guid>
+      <description>简述 一般的防盗图手段 给图片加水印 高级点则是隐形水印 阿里查到泄露内网截图的员工 美团和大众点评的盗图官司 最近了解到针对文本的水印技术：零宽字符  示例 加密的文本
+tom‍‌‌‌​‍‌‍‍​‍‌‌‌‍​‍‌‌​‌‌‍​‌‍​‍‌​‌‌‌​‌‌‌‌​‌​‌‍‌‌​‌‌cat  解密后
+by duansheli  项目源码 https://github.com/rover95/morse-encrypt 在线服务 http://morse.</description>
+    </item>
+    
+    <item>
+      <title>激活码的生成</title>
+      <link>/duansheli.github.io/2019/08/16/hashids-usage.html</link>
+      <pubDate>Fri, 16 Aug 2019 17:28:13 +0800</pubDate>
+      
+      <guid>/duansheli.github.io/2019/08/16/hashids-usage.html</guid>
+      <description>&lt;p&gt;简单的方案是使用uuid生成， 但太长且数据库检索效率低。&lt;br /&gt;
+本次使用hashIds的方案 简单 安全。&lt;/p&gt;</description>
+    </item>
+    
+    <item>
+      <title>mysql物理备份与还原示例</title>
+      <link>/duansheli.github.io/2019/08/02/k8s-cluster-setup-02.html</link>
+      <pubDate>Fri, 02 Aug 2019 17:28:13 +0800</pubDate>
+      
+      <guid>/duansheli.github.io/2019/08/02/k8s-cluster-setup-02.html</guid>
+      <description>主要流程 1. 先建库建表 插入测试数据 2. 以物理方式备份数据 --数据备份完毕 3. 创建新的mysql-server 然后建库建表 移除表空间 4.停止mysql服务 将备份的数据还原 重新载入表空间 --数据还原完毕 ubuntu 中通过docker 运行mysql  测试过程 数据准备 两个sql脚本 一个是建表 一个是测试数据</description>
+    </item>
+    
+    <item>
+      <title>使用jstack分析线程-示例</title>
+      <link>/duansheli.github.io/2019/02/10/jstack-demo.html</link>
+      <pubDate>Mon, 10 Jun 2019 17:28:13 +0800</pubDate>
+      
+      <guid>/duansheli.github.io/2019/02/10/jstack-demo.html</guid>
+      <description>1. 使用jstack分析线程-示例 通过两个demo来学习如何使用jstack
+1.1. 死锁 1.1.1. 死锁示例代码 import java.util.concurrent.TimeUnit; import java.util.concurrent.locks.LockSupport; import java.util.concurrent.locks.ReentrantLock; class DeadLockDemo { public static void main(String[] args) throws Exception { dead1(); dead2(); System.</description>
+    </item>
+    
+    <item>
       <title>查查查-各类信用查询</title>
-      <link>//duansheli.github.io/2019/06/05/check-credit.html</link>
+      <link>/duansheli.github.io/2019/06/05/check-credit.html</link>
       <pubDate>Wed, 05 Jun 2019 16:13:13 +0800</pubDate>
       
-      <guid>//duansheli.github.io/2019/06/05/check-credit.html</guid>
+      <guid>/duansheli.github.io/2019/06/05/check-credit.html</guid>
       <description>中国执行信息公开网
 可以查到一个人的失信记录
 http://zxgk.court.gov.cn
@@ -33,29 +101,29 @@ http://gsxt.saic.gov.cn/</description>
     
     <item>
       <title>休闲娱乐</title>
-      <link>//duansheli.github.io/2019/06/05/relax.html</link>
+      <link>/duansheli.github.io/2019/06/05/relax.html</link>
       <pubDate>Thu, 30 May 2019 13:13:13 +0800</pubDate>
       
-      <guid>//duansheli.github.io/2019/06/05/relax.html</guid>
+      <guid>/duansheli.github.io/2019/06/05/relax.html</guid>
       <description>小河淌水-颅内高潮 https://weibo.com/tv/v/Hl5d8en8D?fid=1034:4350248915771690 https://dig.chouti.com/link/25184166 小河淌水-龚琳娜-歌手第三季-第10期：第76分钟开始 https://www.mgtv.com/b/327378/5314401.html https://www.mgtv.com/b/327378/5314351.html https://y.qq.com/n/yqq/song/002ogMAd2lR6sT.html 小河淌水-龚琳娜-全能星战-第二期第80分钟开始 https://www.iqiyi.com/v_19rrh8hi14.html https://y.qq.com/n/yqq/song/004ezdyr3O6GTp.html  图片-解压 https://www.flickr.com/explore
 点开图片，单张图片全屏观看，切换图片用键盘左右键。</description>
     </item>
     
     <item>
       <title>各类openjdk下载地址</title>
-      <link>//duansheli.github.io/2019/05/25/download-openjdk.html</link>
+      <link>/duansheli.github.io/2019/05/25/download-openjdk.html</link>
       <pubDate>Sat, 25 May 2019 17:28:13 +0800</pubDate>
       
-      <guid>//duansheli.github.io/2019/05/25/download-openjdk.html</guid>
-      <description>openjdk oracle原版 jdk https://github.com/frekele/oracle-java/releases https://github.com/veita/oracle-java-download https://www.oracle.com/technetwork/java/javase/downloads/jdk11-downloads-5066655.html 有一种 oracle版的openjdk http://jdk.java.net/archive/ oracle还有一个跨语言的通用虚拟机 GraalVM https://github.com/oracle/graal/releases 从java 8开始 oracle开始收费，虽然对个人免费， 但对企业是收费的，虽然不知道怎么收，但收费肯定是不菲的。 如果生产环境不用oracle的jdk，最好平时开发就别用oracle，改用openjdk  部分下载地址 https://mirrors.</description>
+      <guid>/duansheli.github.io/2019/05/25/download-openjdk.html</guid>
+      <description>openjdk oracle原版 jdk 之前在可通过命令从官网下载，现在行不通了，必须用oracle账号登录才能下载。 https://github.com/frekele/oracle-java/releases https://github.com/ZachCheung/oracle-java-downloads https://www.oracle.com/technetwork/java/javase/downloads/jdk11-downloads-5066655.html 有一种 oracle版的openjdk http://jdk.java.net/archive/ oracle还有一个跨语言的通用虚拟机 GraalVM https://github.com/oracle/graal/releases 从java 8开始 oracle开始收费，虽然对个人免费， 但对企业是收费的，虽然不知道怎么收，但收费肯定是不菲的。 如果生产环境不用oracle的jdk，最好平时开发就别用oracle，改用openjdk  部分下载地址 没整明白算是哪个厂商的openjdk https://mirrors.</description>
     </item>
     
     <item>
       <title>DinD模式下通过容器构建镜像-方案</title>
-      <link>//duansheli.github.io/2019/05/18/dind-build-image-with-cache.html</link>
+      <link>/duansheli.github.io/2019/05/18/dind-build-image-with-cache.html</link>
       <pubDate>Sat, 18 May 2019 17:28:13 +0800</pubDate>
       
-      <guid>//duansheli.github.io/2019/05/18/dind-build-image-with-cache.html</guid>
+      <guid>/duansheli.github.io/2019/05/18/dind-build-image-with-cache.html</guid>
       <description>&lt;p&gt;持续集成时，构建镜像后，通常会产生一些临时镜像&lt;br /&gt;
 很不docker，一点也不绿色&lt;br /&gt;
 使用DinD的方案可以解决该问题&lt;/p&gt;</description>
@@ -63,41 +131,41 @@ http://gsxt.saic.gov.cn/</description>
     
     <item>
       <title>自动装箱拆箱在scala中的表现</title>
-      <link>//duansheli.github.io/2019/05/17/thinking-autoboxing-implicit.html</link>
+      <link>/duansheli.github.io/2019/05/17/thinking-autoboxing-implicit.html</link>
       <pubDate>Fri, 17 May 2019 17:28:13 +0800</pubDate>
       
-      <guid>//duansheli.github.io/2019/05/17/thinking-autoboxing-implicit.html</guid>
+      <guid>/duansheli.github.io/2019/05/17/thinking-autoboxing-implicit.html</guid>
       <description>&lt;p&gt;自动装箱拆箱是java中的概念&lt;br /&gt;
 implicit是scala中的概念&lt;br /&gt;
 都有变量包装的特性&lt;/p&gt;</description>
     </item>
     
     <item>
-      <title>使用spring security实现手机验证码登录</title>
-      <link>//duansheli.github.io/2019/04/09/spring-security-login-by-mobile-code.html</link>
-      <pubDate>Tue, 09 Apr 2019 17:28:13 +0800</pubDate>
-      
-      <guid>//duansheli.github.io/2019/04/09/spring-security-login-by-mobile-code.html</guid>
-      <description>目标 使用spring security添加两种登录方式 * 手机号，验证码登录 * 用户名 密码 图形验证码登录
-运行环境  win10-x64 jdk-v1.8 springboot-v2.1.4 springsecurity-5.1.5  环境搭建 新建maven项目 配置pom.xml依赖项</description>
-    </item>
-    
-    <item>
       <title>spring data elasticsearch日期类型冲突</title>
-      <link>//duansheli.github.io/2019/04/08/spring-data-elasticsearch-error-date.html</link>
-      <pubDate>Mon, 08 Apr 2019 17:28:13 +0800</pubDate>
+      <link>/duansheli.github.io/2019/05/10/spring-data-elasticsearch-error-date.html</link>
+      <pubDate>Fri, 10 May 2019 17:28:13 +0800</pubDate>
       
-      <guid>//duansheli.github.io/2019/04/08/spring-data-elasticsearch-error-date.html</guid>
+      <guid>/duansheli.github.io/2019/05/10/spring-data-elasticsearch-error-date.html</guid>
       <description>IllegalArgumentException 环境 spring-data-elasticsearch 3.1.6
 java.lang.IllegalArgumentException: Mapper for [publishDate] conflicts with existing mapping in other types: [mapper [publishDate] has different [format] values</description>
     </item>
     
     <item>
+      <title>使用spring security实现手机验证码登录</title>
+      <link>/duansheli.github.io/2019/04/09/spring-security-login-by-mobile-code.html</link>
+      <pubDate>Tue, 09 Apr 2019 17:28:13 +0800</pubDate>
+      
+      <guid>/duansheli.github.io/2019/04/09/spring-security-login-by-mobile-code.html</guid>
+      <description>目标 使用spring security添加两种登录方式 * 手机号，验证码登录 * 用户名 密码 图形验证码登录
+运行环境  win10-x64 jdk-v1.8 springboot-v2.1.4 springsecurity-5.1.5  环境搭建 新建maven项目 配置pom.xml依赖项</description>
+    </item>
+    
+    <item>
       <title>登录流程的本质</title>
-      <link>//duansheli.github.io/2019/04/08/login-nature.html</link>
+      <link>/duansheli.github.io/2019/04/08/login-nature.html</link>
       <pubDate>Mon, 08 Apr 2019 17:28:13 +0800</pubDate>
       
-      <guid>//duansheli.github.io/2019/04/08/login-nature.html</guid>
+      <guid>/duansheli.github.io/2019/04/08/login-nature.html</guid>
       <description>登录的本质  在登录页面 输入用户名与密码 后台核对无误后，将用户信息放入会话中 在访问需要登录的页面时，系统在会话中查找用户信息 找到了，就放行 没找到，将页面重定向到登录页面  Java代码如何实现 登录 针对 /login 请求 接收页面的表单信息，即用户名与密码
 核对无误， 则将用户信息放入会话
 request.getSession().setAttribute(&amp;ldquo;currentUser&amp;rdquo;,&amp;ldquo;tom&amp;rdquo;);
@@ -106,29 +174,29 @@ request.getSession().setAttribute(&amp;ldquo;currentUser&amp;rdquo;,&amp;ldquo;t
     
     <item>
       <title>通过zipkin对dubbo进行链路追踪</title>
-      <link>//duansheli.github.io/2019/04/06/zipkin-dubbo-tracing.html</link>
+      <link>/duansheli.github.io/2019/04/06/zipkin-dubbo-tracing.html</link>
       <pubDate>Sat, 06 Apr 2019 17:28:13 +0800</pubDate>
       
-      <guid>//duansheli.github.io/2019/04/06/zipkin-dubbo-tracing.html</guid>
+      <guid>/duansheli.github.io/2019/04/06/zipkin-dubbo-tracing.html</guid>
       <description>&lt;p&gt;通过zipkin实现dubbo下的链路追踪&lt;/p&gt;</description>
     </item>
     
     <item>
       <title>spring-session实现分布式会话</title>
-      <link>//duansheli.github.io/2019/03/02/spring-session-in-action.html</link>
+      <link>/duansheli.github.io/2019/03/02/spring-session-in-action.html</link>
       <pubDate>Sat, 02 Mar 2019 17:28:13 +0800</pubDate>
       
-      <guid>//duansheli.github.io/2019/03/02/spring-session-in-action.html</guid>
+      <guid>/duansheli.github.io/2019/03/02/spring-session-in-action.html</guid>
       <description>&lt;p&gt;通过spring session实现分布式会话&lt;br /&gt;
 集群下不会丢失会话 集中管理session&lt;/p&gt;</description>
     </item>
     
     <item>
       <title>通过rocketmq实现分布式事务</title>
-      <link>//duansheli.github.io/2019/02/16/rocketmq-transaction.html</link>
+      <link>/duansheli.github.io/2019/02/16/rocketmq-transaction.html</link>
       <pubDate>Sat, 16 Feb 2019 17:28:13 +0800</pubDate>
       
-      <guid>//duansheli.github.io/2019/02/16/rocketmq-transaction.html</guid>
+      <guid>/duansheli.github.io/2019/02/16/rocketmq-transaction.html</guid>
       <description>1. 通过rocketmq实现分布式事务 1.1. 实现原理 1.1.1. 通常说的分布式事务 一次请求-调用serviceA
 serviceA 中会调用serviceB，serviceC，serviceD
 在serviceA ，serviceB，serviceC，serviceD中的事务要么一起成功
@@ -140,10 +208,10 @@ serviceA 中会调用serviceB，serviceC，serviceD
     
     <item>
       <title>drone持续集成-发布github pages</title>
-      <link>//duansheli.github.io/2019/02/03/drone-ci-github-pages.html</link>
+      <link>/duansheli.github.io/2019/02/03/drone-ci-github-pages.html</link>
       <pubDate>Sun, 03 Feb 2019 17:28:13 +0800</pubDate>
       
-      <guid>//duansheli.github.io/2019/02/03/drone-ci-github-pages.html</guid>
+      <guid>/duansheli.github.io/2019/02/03/drone-ci-github-pages.html</guid>
       <description>&lt;p&gt;docker持续集成-drone发布静态博客&lt;br /&gt;
 将hugo产生的静态页面推送到github&lt;br /&gt;
 并通知到钉钉群&lt;/p&gt;</description>
@@ -151,10 +219,10 @@ serviceA 中会调用serviceB，serviceC，serviceD
     
     <item>
       <title>跨宿主机与docker容器通信</title>
-      <link>//duansheli.github.io/2019/01/01/connect-container-ip.html</link>
+      <link>/duansheli.github.io/2019/01/01/connect-container-ip.html</link>
       <pubDate>Fri, 01 Feb 2019 17:28:13 +0800</pubDate>
       
-      <guid>//duansheli.github.io/2019/01/01/connect-container-ip.html</guid>
+      <guid>/duansheli.github.io/2019/01/01/connect-container-ip.html</guid>
       <description>&lt;p&gt;有一些应用只需要1个端口就能访问&lt;br /&gt;
 比如 nginx&lt;/p&gt;
 
@@ -165,20 +233,20 @@ serviceA 中会调用serviceB，serviceC，serviceD
     
     <item>
       <title>docker常用操作</title>
-      <link>//duansheli.github.io/2019/01/15/docker-useful-cmd.html</link>
+      <link>/duansheli.github.io/2019/01/15/docker-useful-cmd.html</link>
       <pubDate>Tue, 15 Jan 2019 17:28:13 +0800</pubDate>
       
-      <guid>//duansheli.github.io/2019/01/15/docker-useful-cmd.html</guid>
+      <guid>/duansheli.github.io/2019/01/15/docker-useful-cmd.html</guid>
       <description>docker常用操作 Dockerfile编写 编写一般不会一次就完成，常常会出错
 Sending build context to Docker daemon 5.902MB Step 1/10 : FROM docker:git as builder ---&amp;gt; 9be5c3cd302c Step 2/10 : RUN git clone https://github.</description>
     </item>
     
     <item>
       <title>k8s搭建集群3-异常解决</title>
-      <link>//duansheli.github.io/2018/01/03/k8s-cluster-setup-03.html</link>
+      <link>/duansheli.github.io/2018/01/03/k8s-cluster-setup-03.html</link>
       <pubDate>Thu, 03 Jan 2019 17:28:13 +0800</pubDate>
       
-      <guid>//duansheli.github.io/2018/01/03/k8s-cluster-setup-03.html</guid>
+      <guid>/duansheli.github.io/2018/01/03/k8s-cluster-setup-03.html</guid>
       <description>出错恢复 没遇到报错可以跳过
 安装过程中可能有一些异常
 查看所有的pod分布情况 kubectl get pods -n kube-system -o wide -l k8s-app=kubernetes-dashboard  查看失败的镜像
@@ -187,20 +255,20 @@ imageName=`kubectl describe -n kube-system pod -l k8s-app=kubernetes-dashboard |
     
     <item>
       <title>k8s集群搭建-02</title>
-      <link>//duansheli.github.io/2019/01/02/k8s-cluster-setup-02.html</link>
+      <link>/duansheli.github.io/2019/01/02/k8s-cluster-setup-02.html</link>
       <pubDate>Wed, 02 Jan 2019 17:28:13 +0800</pubDate>
       
-      <guid>//duansheli.github.io/2019/01/02/k8s-cluster-setup-02.html</guid>
+      <guid>/duansheli.github.io/2019/01/02/k8s-cluster-setup-02.html</guid>
       <description>&lt;p&gt;k8s集群好了 再添加一些相关的组件&lt;br /&gt;
 dashboard helm helm的webui&lt;/p&gt;</description>
     </item>
     
     <item>
       <title>k8s集群搭建-01</title>
-      <link>//duansheli.github.io/2019/01/01/k8s-cluster-setup-01.html</link>
+      <link>/duansheli.github.io/2019/01/01/k8s-cluster-setup-01.html</link>
       <pubDate>Tue, 01 Jan 2019 17:28:13 +0800</pubDate>
       
-      <guid>//duansheli.github.io/2019/01/01/k8s-cluster-setup-01.html</guid>
+      <guid>/duansheli.github.io/2019/01/01/k8s-cluster-setup-01.html</guid>
       <description>1. 目标 通过虚拟机搭建一个kubernetes集群
 共3个节点基于ubuntu
 2. 组件安装规划  宿主机: win10 vmware-v15
@@ -214,29 +282,29 @@ k8s=v1.12.6
     
     <item>
       <title>JVM的垃圾回收</title>
-      <link>//duansheli.github.io/2018/07/14/jvm-memory-gc.html</link>
+      <link>/duansheli.github.io/2018/07/14/jvm-memory-gc.html</link>
       <pubDate>Sat, 14 Jul 2018 15:13:13 +0800</pubDate>
       
-      <guid>//duansheli.github.io/2018/07/14/jvm-memory-gc.html</guid>
+      <guid>/duansheli.github.io/2018/07/14/jvm-memory-gc.html</guid>
       <description>JVM内存结构 JVM是java代码的运行环境， 用来加载 .class和jar文件 , 运行代码。
 内存区域 +------------------------------------------------------+ | | | +-------------+ +---------------+ | | | xxxA.class | | | | | | xxxB.</description>
     </item>
     
     <item>
       <title>类加载器加载的类不能创建对象</title>
-      <link>//duansheli.github.io/2018/07/08/classloader-modifiers-exception.html</link>
+      <link>/duansheli.github.io/2018/07/08/classloader-modifiers-exception.html</link>
       <pubDate>Sun, 08 Jul 2018 15:13:13 +0800</pubDate>
       
-      <guid>//duansheli.github.io/2018/07/08/classloader-modifiers-exception.html</guid>
+      <guid>/duansheli.github.io/2018/07/08/classloader-modifiers-exception.html</guid>
       <description>IllegalAccessException 异常信息 Exception in thread &amp;quot;main&amp;quot; java.lang.IllegalAccessException: Class fluffy.mo.MyClassloader can not access a member of class fluffy.mo.Car with modifiers &amp;quot;public&amp;quot; at sun.</description>
     </item>
     
     <item>
       <title>SPI与contextclassloader</title>
-      <link>//duansheli.github.io/2018/06/27/classloader-spi.html</link>
+      <link>/duansheli.github.io/2018/06/27/classloader-spi.html</link>
       <pubDate>Wed, 27 Jun 2018 14:13:13 +0800</pubDate>
       
-      <guid>//duansheli.github.io/2018/06/27/classloader-spi.html</guid>
+      <guid>/duansheli.github.io/2018/06/27/classloader-spi.html</guid>
       <description>目标 通过SPI学习setContextClassLoader，getContextClassLoader的用法
 SPI概念 SPI（Service Provider Interface）是JDK内置的一种提供服务发现的机制。 也可以看成是一种服务注册或者ioc
 自定义SPI方式
@@ -245,49 +313,49 @@ SPI概念 SPI（Service Provider Interface）是JDK内置的一种提供服务�
     
     <item>
       <title>类加载器使用</title>
-      <link>//duansheli.github.io/2018/06/21/classloader-start.html</link>
+      <link>/duansheli.github.io/2018/06/21/classloader-start.html</link>
       <pubDate>Thu, 21 Jun 2018 13:13:13 +0800</pubDate>
       
-      <guid>//duansheli.github.io/2018/06/21/classloader-start.html</guid>
+      <guid>/duansheli.github.io/2018/06/21/classloader-start.html</guid>
       <description>类加载器 引入 一般开发都不会接触classloader的概念，但程序的运行却是建立在classloader之上的 为什么要有类加载器： java程序的启动首先就需要jvm去加载class 而代码中的对象创建类调用【new Person(); Autil.currentTime();】 都需要class被jvm加载 使用类的静态方法，或者创建对象前，需要先加载class 而每个class必然由一个classloader加载  方向 貌似类加载的事情不需要我们操心，虚拟机已经帮我们解决了 那学这个能干嘛： * 更了解虚拟机; * 在复杂的生产环境可能遇到class找不到异常,了解这个有助于排查错误; * 自研服务/插件，动态加载代码; * tomcat的项目代码热部署，jsp热部署; * 各种热部署插件; * 软件破解;  划重点 一个class在内存中只存一份，以及限定条件 defineClass决定class的类加载器是谁 线程上下文类加载器用于隐式传参 一个对象的类由哪个类加载器去加载，取决于显示使用类或显示使用类加载器</description>
     </item>
     
     <item>
       <title>动态代理-rpc示例-01</title>
-      <link>//duansheli.github.io/2018/06/05/proxy-rpc-01.html</link>
+      <link>/duansheli.github.io/2018/06/05/proxy-rpc-01.html</link>
       <pubDate>Tue, 05 Jun 2018 13:13:13 +0800</pubDate>
       
-      <guid>//duansheli.github.io/2018/06/05/proxy-rpc-01.html</guid>
+      <guid>/duansheli.github.io/2018/06/05/proxy-rpc-01.html</guid>
       <description>目标 写个简单的rpc 调用
 Rpc大致思路 定义一个接口HelloService 放在iface.jar中 应用P中引用iface.jar 实现接口HelloService进行处理任务 注册bean到spring中 应用C中, 通过spring获取HelloService的实例phService 调用phService.echo(xxx)方法，获得返回结果 应用P运行在1个jvm中 应用C运行在另1个jvm中 phService实质为一个代理对象 该代理对象通过把调用的参数封装，序列化后，通过网络传输给应用P 应用P根据收到参数后，调用处理接口相应的实现类，并将结果回传给应用C端 最终代理对象返回收到的运行结果  序列化-知识点补充 进行RPC调用必然要涉及对方法参数的序列化。 序列化框架有很多， 如protobuf、thrift、hession等 dubbo的rpc是支持多种序列化方式，如Java原生、Kryo、webservice等 spring cloud的http调用也算一种序列化方式 有了序列化工具，不仅仅是跨JVM的方法调用，还能跨语言调用。 本次示例使用java原生序列化  初版代码 所用到包 import java.</description>
     </item>
     
     <item>
       <title>动态代理-rpc示例-02</title>
-      <link>//duansheli.github.io/2018/06/05/proxy-rpc-02.html</link>
+      <link>/duansheli.github.io/2018/06/05/proxy-rpc-02.html</link>
       <pubDate>Tue, 05 Jun 2018 13:13:13 +0800</pubDate>
       
-      <guid>//duansheli.github.io/2018/06/05/proxy-rpc-02.html</guid>
+      <guid>/duansheli.github.io/2018/06/05/proxy-rpc-02.html</guid>
       <description>上个版本的代码看着比较生肉，与平时开发时的写法差别较大。 接下来这版，加入了动态代理后
 动态代理-guava版 import com.google.common.reflect.Reflection; class DemoGuava { interface MyMath1 { public Integer sum(Integer a, Integer b); } static class MyMathImpl implements MyMath1 { @Override public Integer sum(Integer a, Integer b) { return a + b; } } public static void main(String[] args) { MyMath1 tg = new MyMathImpl(); // 创建对象代理 MyMath1 math = (MyMath1) Reflection.</description>
     </item>
     
     <item>
       <title>动态代理</title>
-      <link>//duansheli.github.io/2018/06/02/proxy-start.html</link>
+      <link>/duansheli.github.io/2018/06/02/proxy-start.html</link>
       <pubDate>Sat, 02 Jun 2018 13:13:13 +0800</pubDate>
       
-      <guid>//duansheli.github.io/2018/06/02/proxy-start.html</guid>
+      <guid>/duansheli.github.io/2018/06/02/proxy-start.html</guid>
       <description>目标 通过代码示例了解动态代理语法
 示例代码 import java.lang.reflect.InvocationHandler; import java.lang.reflect.Method; import java.lang.reflect.Proxy; public class Demo { interface MyMath1 { public Integer sum(Integer a, Integer b); } static class MyMathImpl implements MyMath1 { @Override public Integer sum(Integer a, Integer b) { return a + b; } } public static void main(String[] args) { MyMath1 tg = new MyMathImpl(); // 创建对象代理 MyMath1 math = (MyMath1) Proxy.</description>
     </item>
     
     <item>
       <title>反射使用</title>
-      <link>//duansheli.github.io/2018/04/02/reflect-start.html</link>
+      <link>/duansheli.github.io/2018/04/02/reflect-start.html</link>
       <pubDate>Mon, 02 Apr 2018 13:13:13 +0800</pubDate>
       
-      <guid>//duansheli.github.io/2018/04/02/reflect-start.html</guid>
+      <guid>/duansheli.github.io/2018/04/02/reflect-start.html</guid>
       <description>反射介绍 可以不直接new 对象，或调用方法。 用另一种创建某个对象（字符串的方式），或调用某个对象的方法（字符串的方式）。 反射这种间接调用效率肯定是不如直接调用的。
 程序不知道具体要创建接口的哪个实现类， 在启动时，通过读取配置文件才知道要创建那个实现类。
 先学习语法，然后可以通过结合动态代理加深理解。
@@ -298,10 +366,10 @@ Rpc大致思路 定义一个接口HelloService 放在iface.jar中 应用P中引�
     
     <item>
       <title>dev-浏览器</title>
-      <link>//duansheli.github.io/2018/03/17/dev-browser.html</link>
+      <link>/duansheli.github.io/2018/03/17/dev-browser.html</link>
       <pubDate>Sat, 17 Mar 2018 13:13:13 +0800</pubDate>
       
-      <guid>//duansheli.github.io/2018/03/17/dev-browser.html</guid>
+      <guid>/duansheli.github.io/2018/03/17/dev-browser.html</guid>
       <description>平时主要用 firefox 和 chrome
 firefox 首选 http://download-origin.cdn.mozilla.net/pub/devedition/releases/
 选则版本-32或64位-语言 比如 http://download-origin.cdn.mozilla.net/pub/devedition/releases/58.0b1/win64/zh-CN/ 下载Firefox Setup 58.0b1.exe后， 修改后缀为zip后解压core文件夹  更多
@@ -310,19 +378,19 @@ http://download-origin.cdn.mozilla.net/pub/devedition/releases/ http://ftp.mozil
     
     <item>
       <title>归档</title>
-      <link>//duansheli.github.io/archives/</link>
+      <link>/duansheli.github.io/archives/</link>
       <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
       
-      <guid>//duansheli.github.io/archives/</guid>
+      <guid>/duansheli.github.io/archives/</guid>
       <description></description>
     </item>
     
     <item>
       <title>归档</title>
-      <link>//duansheli.github.io/categories/</link>
+      <link>/duansheli.github.io/categories/</link>
       <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
       
-      <guid>//duansheli.github.io/categories/</guid>
+      <guid>/duansheli.github.io/categories/</guid>
       <description> 404 </description>
     </item>
     

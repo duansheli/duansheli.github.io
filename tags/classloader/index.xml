@@ -1,31 +1,31 @@
-<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
     <title>classloader on 断舍离的博客</title>
-    <link>//duansheli.github.io/tags/classloader/</link>
+    <link>/duansheli.github.io/tags/classloader/</link>
     <description>Recent content in classloader on 断舍离的博客</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>zh-CN</language>
     <lastBuildDate>Sun, 08 Jul 2018 15:13:13 +0800</lastBuildDate>
     
-	<atom:link href="//duansheli.github.io/tags/classloader/index.xml" rel="self" type="application/rss+xml" />
+	<atom:link href="/duansheli.github.io/tags/classloader/index.xml" rel="self" type="application/rss+xml" />
     
     
     <item>
       <title>类加载器加载的类不能创建对象</title>
-      <link>//duansheli.github.io/2018/07/08/classloader-modifiers-exception.html</link>
+      <link>/duansheli.github.io/2018/07/08/classloader-modifiers-exception.html</link>
       <pubDate>Sun, 08 Jul 2018 15:13:13 +0800</pubDate>
       
-      <guid>//duansheli.github.io/2018/07/08/classloader-modifiers-exception.html</guid>
+      <guid>/duansheli.github.io/2018/07/08/classloader-modifiers-exception.html</guid>
       <description>IllegalAccessException 异常信息 Exception in thread &amp;quot;main&amp;quot; java.lang.IllegalAccessException: Class fluffy.mo.MyClassloader can not access a member of class fluffy.mo.Car with modifiers &amp;quot;public&amp;quot; at sun.</description>
     </item>
     
     <item>
       <title>SPI与contextclassloader</title>
-      <link>//duansheli.github.io/2018/06/27/classloader-spi.html</link>
+      <link>/duansheli.github.io/2018/06/27/classloader-spi.html</link>
       <pubDate>Wed, 27 Jun 2018 14:13:13 +0800</pubDate>
       
-      <guid>//duansheli.github.io/2018/06/27/classloader-spi.html</guid>
+      <guid>/duansheli.github.io/2018/06/27/classloader-spi.html</guid>
       <description>目标 通过SPI学习setContextClassLoader，getContextClassLoader的用法
 SPI概念 SPI（Service Provider Interface）是JDK内置的一种提供服务发现的机制。 也可以看成是一种服务注册或者ioc
 自定义SPI方式
@@ -34,19 +34,19 @@ SPI概念 SPI（Service Provider Interface）是JDK内置的一种提供服务�
     
     <item>
       <title>类加载器使用</title>
-      <link>//duansheli.github.io/2018/06/21/classloader-start.html</link>
+      <link>/duansheli.github.io/2018/06/21/classloader-start.html</link>
       <pubDate>Thu, 21 Jun 2018 13:13:13 +0800</pubDate>
       
-      <guid>//duansheli.github.io/2018/06/21/classloader-start.html</guid>
+      <guid>/duansheli.github.io/2018/06/21/classloader-start.html</guid>
       <description>类加载器 引入 一般开发都不会接触classloader的概念，但程序的运行却是建立在classloader之上的 为什么要有类加载器： java程序的启动首先就需要jvm去加载class 而代码中的对象创建类调用【new Person(); Autil.currentTime();】 都需要class被jvm加载 使用类的静态方法，或者创建对象前，需要先加载class 而每个class必然由一个classloader加载  方向 貌似类加载的事情不需要我们操心，虚拟机已经帮我们解决了 那学这个能干嘛： * 更了解虚拟机; * 在复杂的生产环境可能遇到class找不到异常,了解这个有助于排查错误; * 自研服务/插件，动态加载代码; * tomcat的项目代码热部署，jsp热部署; * 各种热部署插件; * 软件破解;  划重点 一个class在内存中只存一份，以及限定条件 defineClass决定class的类加载器是谁 线程上下文类加载器用于隐式传参 一个对象的类由哪个类加载器去加载，取决于显示使用类或显示使用类加载器</description>
     </item>
     
     <item>
       <title>反射使用</title>
-      <link>//duansheli.github.io/2018/04/02/reflect-start.html</link>
+      <link>/duansheli.github.io/2018/04/02/reflect-start.html</link>
       <pubDate>Mon, 02 Apr 2018 13:13:13 +0800</pubDate>
       
-      <guid>//duansheli.github.io/2018/04/02/reflect-start.html</guid>
+      <guid>/duansheli.github.io/2018/04/02/reflect-start.html</guid>
       <description>反射介绍 可以不直接new 对象，或调用方法。 用另一种创建某个对象（字符串的方式），或调用某个对象的方法（字符串的方式）。 反射这种间接调用效率肯定是不如直接调用的。
 程序不知道具体要创建接口的哪个实现类， 在启动时，通过读取配置文件才知道要创建那个实现类。
 先学习语法，然后可以通过结合动态代理加深理解。

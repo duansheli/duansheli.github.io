@@ -1,0 +1,498 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+
+    <meta charset="utf-8">
+    <meta name="generator" content="Hugo 0.59.0" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <title>激活码的生成 | 断舍离的博客</title>
+    <meta property="og:title" content="激活码的生成 - 断舍离的博客">
+    <meta property="og:type" content="article">
+        
+    <meta property="article:published_time" content="2019-08-16T17:28:13&#43;08:00">
+        
+        
+    <meta property="article:modified_time" content="2019-08-16T17:28:13&#43;08:00">
+        
+    <meta name="Keywords" content="java,scala,spark,kubernetes">
+    <meta name="description" content="激活码的生成">
+        
+    <meta name="author" content="断舍离">
+    <meta property="og:url" content="/duansheli.github.io/2019/08/16/hashids-usage.html">
+    <link rel="shortcut icon" href="/favicon.ico" type="image/x-icon">
+
+    <link rel="stylesheet" href="/duansheli.github.io/css/normalize.css">
+    
+        <link rel="stylesheet" href="/duansheli.github.io/css/prism.css">
+    
+    <link rel="stylesheet" href="/duansheli.github.io/css/style.css">
+    <script type="text/javascript" src="//cdnjs.cloudflare.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+
+    
+
+
+    
+    
+</head>
+
+<body>
+<header id="header" class="clearfix">
+    <div class="container">
+        <div class="col-group">
+            <div class="site-name ">
+                
+                    <a id="logo" href="/duansheli.github.io">
+                        断舍离的博客
+                    </a>
+                
+                <p class="description">java, scala, spark, kubernetes</p>
+            </div>
+            <div>
+                <nav id="nav-menu" class="clearfix">
+                    <a class="" href="/duansheli.github.io">首页</a>
+                    
+                    <a  href="/duansheli.github.io/archives/" title="归档">归档</a>
+                    
+                </nav>
+            </div>
+        </div>
+    </div>
+</header>
+
+
+<div id="body">
+        
+        <div id="virtual_toc_list" style="display: none">
+            <nav id="TableOfContents">
+<ul>
+<li><a href="#简述">简述</a></li>
+<li><a href="#代码">代码</a></li>
+</ul>
+</nav>
+        </div>
+        <div id="float_toc_div" style="margin: 10px;border: 1px solid gray;z-index:99999;display: none;">
+            <header style="background-color: #f3f3f3;color: black;border-bottom: 1px solid gray;padding: 10px 10px 10px 10px;">
+                <strong id="toc_btn_open" style="color: black;font-size: large;">目录</strong>
+                <strong id="toc_btn_close" style="color: black;font-size: large;float: right">╳</strong>
+            </header>
+            <div id="toc_list" style="background-color: #f3f3f3;color: black;padding: 10px;">
+        
+            </div>
+        </div>
+        <style type="text/css">
+            #float_toc_div {
+                position: fixed;
+                display: none;
+                 
+                height: auto;
+                font-size: 13px;
+            }
+        
+            #toc_list a:hover,
+            #toc_list a:active {
+                color: #ba3925;
+            }
+        </style>
+        <script>
+            window.onload = function () {
+                let tocNavElem = document.getElementById("TableOfContents");
+                let floatTocDivElem = document.getElementById("float_toc_div");
+                let tocListElem = floatTocDivElem.getElementsByTagName('div')[0];
+                let colGroupElem = document.getElementById("body").getElementsByClassName("col-group")[0]
+                let floatTocWidth = (document.body.clientWidth - colGroupElem.offsetWidth) / 2 - 16;
+                var useFloatToc = false;
+
+                if (floatTocWidth >= 100) {
+                    useFloatToc = true;
+                    document.getElementById("toc_list").appendChild(tocNavElem);
+                    floatTocDivElem.style.display = 'block';
+                    floatTocDivElem.style.width = floatTocWidth + 'px';
+                    top();
+                    floatTocDivElem.style.left = '0px';
+
+                    function top() {
+                        if (document.getElementsByClassName('container')[0].offsetWidth <= 720) {
+                            floatTocDivElem.style.top = '0px';
+                        } else {
+                            floatTocDivElem.style.top = window.innerHeight / 9 + 'px';
+                        }
+                    }
+
+                    function ishide() {
+                        if (document.getElementsByClassName('container')[0].offsetWidth <= 720) {
+                            floatTocDivElem.style.top = '0px';
+                        } else {
+                            floatTocDivElem.style.display = 'block';
+                        }
+                    }
+
+                    window.onscroll = function () {
+                        ishide();
+                        if ((document.documentElement.scrollTop != 0) && (floatTocDivElem.style.display == 'block')) {
+                            top();
+                        }
+                    };
+
+                    window.onresize = function () {
+                        ishide();
+                    }
+
+                    document.getElementById("toc_btn_open").addEventListener('click', function () {
+                        switch (tocListElem.style.display) {
+                            case "none":
+                                document.getElementById("toc_btn_close").style.display = "";
+                                tocListElem.style.display = "";
+                                floatTocDivElem.getElementsByTagName("header")[0].style.borderBottom = "1px solid gray";
+                                break;
+                            default:
+                                break;
+                        }
+                    }, false);
+
+                    document.getElementById("toc_btn_close").addEventListener('click', function () {
+                        switch (tocListElem.style.display) {
+                            case "":
+                                document.getElementById("toc_btn_close").style.display = "none";
+                                tocListElem.style.display = "none";
+                                floatTocDivElem.getElementsByTagName("header")[0].style.borderBottom = "";
+                                break;
+                            default:
+                                break;
+                        }
+                    }, false);
+                } else {
+                    let fixedTocElem = document.getElementsByClassName("toc-article")[0];
+                    fixedTocElem.appendChild(tocNavElem);
+                    fixedTocElem.parentElement.style.display = "";
+                }
+                document.getElementById("virtual_toc_list").remove();
+            };   
+        </script>
+        
+    <div class="container">
+        <div class="col-group">
+
+            <div class="col-8" id="main">
+                <div class="res-cons">
+                    <article class="post">
+                        <header>
+                            <h1 class="post-title">激活码的生成</h1>
+                        </header>
+                        <date class="post-meta meta-date">
+                            2019年8月16日
+                        </date>
+                        
+                        
+                        
+                        <div class="clear" style="display: none">
+                            <div class="toc-article">
+                                <div class="toc-title">文章目录</div>
+                            </div>
+                        </div>
+                        
+                        <div class="post-content">
+                            <p>简单的方案是使用uuid生成， 但太长且数据库检索效率低。<br />
+本次使用hashIds的方案 简单 安全。</p>
+
+<h1 id="简述">简述</h1>
+
+<p>简单的方案是使用uuid生成， 但太长且数据库检索效率低。<br />
+本次使用hashIds的方案 简单 安全。</p>
+
+<p>激活码也算一种发号器， 但直接用序号没有安全可言。</p>
+
+<h1 id="代码">代码</h1>
+
+<p>maven坐标</p>
+
+<pre><code class="language-xml">&lt;dependency&gt;
+    &lt;groupId&gt;org.hashids&lt;/groupId&gt;
+    &lt;artifactId&gt;hashids&lt;/artifactId&gt;
+    &lt;version&gt;1.0.3&lt;/version&gt;
+&lt;/dependency&gt;
+</code></pre>
+
+<p>代码</p>
+
+<pre><code class="language-java">import org.hashids.Hashids;
+
+public class GenerateIdDemo {
+  public static void main(String[] args) { //
+    // 这里的盐应当无规律，提高安全性
+    String salt = &quot;this is my salt&quot;;
+    int minHashLength = 5 ; // 加密后的字符串长度最少为5
+    // 通过自定义哈希字母 剔除易混字符1il、0o
+    String alphabet = &quot;abcdefghjkmnpqrstuvwxyzABCDEFGHJKMNPQRSTUVWXYZ23456789&quot;;
+    Hashids hashids = new Hashids(salt, minHashLength, alphabet);
+    int standard = 1; // 表明激活码是标准版还是加强版
+    int pro = 2;
+    int cloud = 3;
+
+    // 用来生成激活码
+    // 激活码 有状态(是否过期、是否使用过、绑定的机器码) 应当存到数据库中
+    System.out.println(&quot;---- 生成激活码&quot;);
+    System.out.println(hashids.encode(standard, 1));
+    System.out.println(hashids.encode(standard, 2));
+    System.out.println(hashids.encode(standard, 3));
+
+    System.out.println(hashids.encode(pro, 1));
+    System.out.println(hashids.encode(pro, 2));
+    System.out.println(hashids.encode(pro, 3));
+
+    String proCode03 = hashids.encode(cloud, 1);
+    // 激活时 先解析 再去数据库核对是否被使用
+    long[] decode = hashids.decode(proCode03);
+    System.out.println(&quot;使用激活码--授权版本-&quot;+decode[0] + &quot; 序号-&quot; + decode[1]);
+
+      // 加密文章序号
+    // 通常文章的访问链接类似 www.xxxblog.com/s/1.html 加密后可以变成 wvG5b.html
+    System.out.println(&quot;---- 对文章id加密&quot;);
+    System.out.println(hashids.encode(11));
+    System.out.println(hashids.encode(12));
+    // 加密时也可以带上作者的id
+    int authorId = 61;
+    System.out.println(hashids.encode(authorId, 11));
+    System.out.println(hashids.encode(authorId, 12));
+  }
+}
+</code></pre>
+                        </div>
+
+                        
+
+
+                        
+
+<div class="post-archive">
+    <h2>See Also</h2>
+    <ul class="listing">
+        
+        <li><a href="/duansheli.github.io/2019/08/02/k8s-cluster-setup-02.html">mysql物理备份与还原示例</a></li>
+        
+        <li><a href="/duansheli.github.io/2019/02/10/jstack-demo.html">使用jstack分析线程-示例</a></li>
+        
+        <li><a href="/duansheli.github.io/2019/06/05/check-credit.html">查查查-各类信用查询</a></li>
+        
+        <li><a href="/duansheli.github.io/2019/06/05/relax.html">休闲娱乐</a></li>
+        
+        <li><a href="/duansheli.github.io/2019/05/25/download-openjdk.html">各类openjdk下载地址</a></li>
+        
+    </ul>
+</div>
+
+
+                        <div class="post-meta meta-tags">
+                            
+                            <ul class="clearfix">
+                                
+                                <li><a href="/tags/id">id</a></li>
+                                
+                                <li><a href="/tags/hashids">hashids</a></li>
+                                
+                            </ul>
+                            
+                        </div>
+                    </article>
+                    
+    
+
+    
+    
+                </div>
+            </div>
+            <div id="secondary">
+    <section class="widget">
+        <form id="search" action="//www.google.com/search" method="get" accept-charset="utf-8" target="_blank" _lpchecked="1">
+      
+      <input type="text" name="q" maxlength="20" placeholder="Search">
+      <input type="hidden" name="sitesearch" value="/duansheli.github.io">
+      <button type="submit" class="submit icon-search"></button>
+</form>
+    </section>
+    
+    <section class="widget">
+        <h3 class="widget-title">最近文章</h3>
+<ul class="widget-list">
+    
+    <li>
+        <a href="/duansheli.github.io/2019/09/12/doh.html" title="浏览器启用dns-over-https(DoH)">浏览器启用dns-over-https(DoH)</a>
+    </li>
+    
+    <li>
+        <a href="/duansheli.github.io/2019/09/09/docker-cp.html" title="docker的复制文件操作">docker的复制文件操作</a>
+    </li>
+    
+    <li>
+        <a href="/duansheli.github.io/2019/09/03/hashids-usage.html" title="使用hashids创建短链服务">使用hashids创建短链服务</a>
+    </li>
+    
+    <li>
+        <a href="/duansheli.github.io/2019/09/07/zero-width.html" title="给文章加水印-零宽字符">给文章加水印-零宽字符</a>
+    </li>
+    
+    <li>
+        <a href="/duansheli.github.io/2019/08/16/hashids-usage.html" title="激活码的生成">激活码的生成</a>
+    </li>
+    
+    <li>
+        <a href="/duansheli.github.io/2019/08/02/k8s-cluster-setup-02.html" title="mysql物理备份与还原示例">mysql物理备份与还原示例</a>
+    </li>
+    
+    <li>
+        <a href="/duansheli.github.io/2019/02/10/jstack-demo.html" title="使用jstack分析线程-示例">使用jstack分析线程-示例</a>
+    </li>
+    
+    <li>
+        <a href="/duansheli.github.io/2019/06/05/check-credit.html" title="查查查-各类信用查询">查查查-各类信用查询</a>
+    </li>
+    
+    <li>
+        <a href="/duansheli.github.io/2019/06/05/relax.html" title="休闲娱乐">休闲娱乐</a>
+    </li>
+    
+    <li>
+        <a href="/duansheli.github.io/2019/05/25/download-openjdk.html" title="各类openjdk下载地址">各类openjdk下载地址</a>
+    </li>
+    
+</ul>
+    </section>
+
+    
+
+    <section class="widget">
+        <h3 class="widget-title">分类</h3>
+<ul class="widget-list">
+    
+    <li>
+        <a href="/categories/Java%E6%B7%B1%E5%85%A5/">Java深入(8)</a>
+    </li>
+    
+    <li>
+        <a href="/categories/k8s%E9%9B%86%E7%BE%A4/">k8s集群(3)</a>
+    </li>
+    
+</ul>
+    </section>
+
+    <section class="widget">
+        <h3 class="widget-title">标签</h3>
+<div class="tagcloud">
+    
+    <a href="/tags/Java/">Java</a>
+    
+    <a href="/tags/classloader/">classloader</a>
+    
+    <a href="/tags/docker/">docker</a>
+    
+    <a href="/tags/drone/">drone</a>
+    
+    <a href="/tags/dubbo/">dubbo</a>
+    
+    <a href="/tags/elasticsearch/">elasticsearch</a>
+    
+    <a href="/tags/gc/">gc</a>
+    
+    <a href="/tags/hashids/">hashids</a>
+    
+    <a href="/tags/id/">id</a>
+    
+    <a href="/tags/java/">java</a>
+    
+    <a href="/tags/jdk/">jdk</a>
+    
+    <a href="/tags/jvm/">jvm</a>
+    
+    <a href="/tags/k8s/">k8s</a>
+    
+    <a href="/tags/life/">life</a>
+    
+    <a href="/tags/mysql/">mysql</a>
+    
+    <a href="/tags/proxy/">proxy</a>
+    
+    <a href="/tags/rocketmq/">rocketmq</a>
+    
+    <a href="/tags/route/">route</a>
+    
+    <a href="/tags/scala/">scala</a>
+    
+    <a href="/tags/session/">session</a>
+    
+    <a href="/tags/spring-boot/">spring-boot</a>
+    
+    <a href="/tags/spring-security/">spring-security</a>
+    
+    <a href="/tags/springboot/">springboot</a>
+    
+    <a href="/tags/zipkin/">zipkin</a>
+    
+    <a href="/tags/%E5%88%86%E5%B8%83%E5%BC%8F%E4%BA%8B%E5%8A%A1/">分布式事务</a>
+    
+    <a href="/tags/%E7%99%BB%E5%BD%95/">登录</a>
+    
+</div>
+    </section>
+
+    
+
+    <section class="widget">
+        <h3 class="widget-title">其它</h3>
+        <ul class="widget-list">
+            <li><a href="/duansheli.github.io/index.xml">文章 RSS</a></li>
+        </ul>
+    </section>
+</div>
+        </div>
+    </div>
+</div>
+<footer id="footer">
+    <div class="container">
+        &copy; 2019 <a href="/duansheli.github.io">断舍离的博客 By 断舍离</a>.
+        Powered by <a rel="nofollow noreferer noopener" href="https://gohugo.io" target="_blank">Hugo</a>.
+        <a href="https://www.flysnow.org/" target="_blank">Theme</a> based on <a href="https://github.com/rujews/maupassant-hugo" target="_blank">maupassant</a>.
+        
+    </div>
+</footer>
+
+
+    
+    <script type="text/javascript">
+        
+        (function () {
+            $("pre code").parent().addClass("line-numbers")
+        }());
+
+        window.MathJax = {
+            tex2jax: {
+                inlineMath: [['$', '$']],
+                processEscapes: true
+                }
+            };
+    </script>
+    <script type="text/javascript" src="/duansheli.github.io/js/prism.js" async="true"></script>
+    <script src='https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/MathJax.js?config=TeX-MML-AM_CHTML' async></script>
+
+
+<a id="rocket" href="#top"></a>
+<script type="text/javascript" src="/duansheli.github.io/js/totop.js?v=0.0.0" async=""></script>
+
+<script type="application/javascript">
+var doNotTrack = false;
+if (!doNotTrack) {
+	window.ga=window.ga||function(){(ga.q=ga.q||[]).push(arguments)};ga.l=+new Date;
+	ga('create', 'GTM-NPJC8J2', 'auto');
+	
+	ga('send', 'pageview');
+}
+</script>
+<script async src='https://www.google-analytics.com/analytics.js'></script>
+
+
+
+
+
+
+</body>
+</html>

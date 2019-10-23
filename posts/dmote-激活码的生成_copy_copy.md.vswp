@@ -1,0 +1,53 @@
+vnote_backup_file_826537664 P:/sapp-cache/jg-sync/我的坚果云/note_mnk/flvffy-jote/java/分布式系统/dmote-激活码的生成_copy_copy.md
+---
+title: "给文章加水印-零宽字符"
+date: 2019-09-03T17:28:13+08:00
+draft: false
+toc: true
+
+tags: ["id","hashids"]
+url: /2019/09/07/zero-width.html
+---
+
+# 简述
+
+    一般的防盗图手段 给图片加水印
+    高级点则是隐形水印
+    阿里查到泄露内网截图的员工
+    美团和大众点评的盗图官司
+    
+    最近了解到针对文本的水印技术：零宽字符
+
+# 示例
+
+加密的文本
+```
+tom‍‌‌‌​‍‌‍‍​‍‌‌‌‍​‍‌‌​‌‌‍​‌‍​‍‌​‌‌‌​‌‌‌‌​‌​‌‍‌‌​‌‌cat
+```
+解密后
+
+```
+by duansheli
+```
+
+    项目源码  
+    https://github.com/rover95/morse-encrypt
+    在线服务  
+    http://morse.rovelast.com
+
+# 本质
+    先将待隐藏的字符串 变为2进制 如(10111)
+    然后将1、0依次替换为 零宽字符(0变成U+200B，1变成U+200C，最后以U+200D分隔)
+    就得到了人眼看不见的零宽字符
+    
+    零宽字符可用来发车- 磁力链、番号等
+    有网友用零宽字符来隐藏代码- https://www.cnblogs.com/52cik/p/js-hide-code.html
+    在论坛上把自己的用户名使用零宽字符处理，可让用户名看起来和别人相同，伪造身份（不过一般都限制为英文数字）
+
+# 其他
+    常见的零宽度字符的unicode码  
+    U+200B，U+200C，U+200D，U+200E，U+200F，U+FEFF
+    
+    参考
+    https://juejin.im/post/5b87a6e26fb9a019b953ee8b
+    https://www.ziti163.com/uni/2000-206F.shtml

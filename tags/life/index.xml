@@ -1,22 +1,22 @@
-<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
     <title>life on 断舍离的博客</title>
-    <link>//duansheli.github.io/tags/life/</link>
+    <link>/duansheli.github.io/tags/life/</link>
     <description>Recent content in life on 断舍离的博客</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>zh-CN</language>
     <lastBuildDate>Wed, 05 Jun 2019 16:13:13 +0800</lastBuildDate>
     
-	<atom:link href="//duansheli.github.io/tags/life/index.xml" rel="self" type="application/rss+xml" />
+	<atom:link href="/duansheli.github.io/tags/life/index.xml" rel="self" type="application/rss+xml" />
     
     
     <item>
       <title>查查查-各类信用查询</title>
-      <link>//duansheli.github.io/2019/06/05/check-credit.html</link>
+      <link>/duansheli.github.io/2019/06/05/check-credit.html</link>
       <pubDate>Wed, 05 Jun 2019 16:13:13 +0800</pubDate>
       
-      <guid>//duansheli.github.io/2019/06/05/check-credit.html</guid>
+      <guid>/duansheli.github.io/2019/06/05/check-credit.html</guid>
       <description>中国执行信息公开网
 可以查到一个人的失信记录
 http://zxgk.court.gov.cn
@@ -33,20 +33,20 @@ http://gsxt.saic.gov.cn/</description>
     
     <item>
       <title>休闲娱乐</title>
-      <link>//duansheli.github.io/2019/06/05/relax.html</link>
+      <link>/duansheli.github.io/2019/06/05/relax.html</link>
       <pubDate>Thu, 30 May 2019 13:13:13 +0800</pubDate>
       
-      <guid>//duansheli.github.io/2019/06/05/relax.html</guid>
+      <guid>/duansheli.github.io/2019/06/05/relax.html</guid>
       <description>小河淌水-颅内高潮 https://weibo.com/tv/v/Hl5d8en8D?fid=1034:4350248915771690 https://dig.chouti.com/link/25184166 小河淌水-龚琳娜-歌手第三季-第10期：第76分钟开始 https://www.mgtv.com/b/327378/5314401.html https://www.mgtv.com/b/327378/5314351.html https://y.qq.com/n/yqq/song/002ogMAd2lR6sT.html 小河淌水-龚琳娜-全能星战-第二期第80分钟开始 https://www.iqiyi.com/v_19rrh8hi14.html https://y.qq.com/n/yqq/song/004ezdyr3O6GTp.html  图片-解压 https://www.flickr.com/explore
 点开图片，单张图片全屏观看，切换图片用键盘左右键。</description>
     </item>
     
     <item>
       <title>dev-浏览器</title>
-      <link>//duansheli.github.io/2018/03/17/dev-browser.html</link>
+      <link>/duansheli.github.io/2018/03/17/dev-browser.html</link>
       <pubDate>Sat, 17 Mar 2018 13:13:13 +0800</pubDate>
       
-      <guid>//duansheli.github.io/2018/03/17/dev-browser.html</guid>
+      <guid>/duansheli.github.io/2018/03/17/dev-browser.html</guid>
       <description>平时主要用 firefox 和 chrome
 firefox 首选 http://download-origin.cdn.mozilla.net/pub/devedition/releases/
 选则版本-32或64位-语言 比如 http://download-origin.cdn.mozilla.net/pub/devedition/releases/58.0b1/win64/zh-CN/ 下载Firefox Setup 58.0b1.exe后， 修改后缀为zip后解压core文件夹  更多
