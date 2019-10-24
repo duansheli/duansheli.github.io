@@ -2,41 +2,41 @@
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
     <title>proxy on 断舍离的博客</title>
-    <link>/duansheli.github.io/tags/proxy/</link>
+    <link>https://duansheli.github.io/tags/proxy/</link>
     <description>Recent content in proxy on 断舍离的博客</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>zh-CN</language>
     <lastBuildDate>Tue, 05 Jun 2018 13:13:13 +0800</lastBuildDate>
     
-	<atom:link href="/duansheli.github.io/tags/proxy/index.xml" rel="self" type="application/rss+xml" />
+	<atom:link href="https://duansheli.github.io/tags/proxy/index.xml" rel="self" type="application/rss+xml" />
     
     
     <item>
       <title>动态代理-rpc示例-01</title>
-      <link>/duansheli.github.io/2018/06/05/proxy-rpc-01.html</link>
+      <link>https://duansheli.github.io/2018/06/05/proxy-rpc-01.html</link>
       <pubDate>Tue, 05 Jun 2018 13:13:13 +0800</pubDate>
       
-      <guid>/duansheli.github.io/2018/06/05/proxy-rpc-01.html</guid>
+      <guid>https://duansheli.github.io/2018/06/05/proxy-rpc-01.html</guid>
       <description>目标 写个简单的rpc 调用
 Rpc大致思路 定义一个接口HelloService 放在iface.jar中 应用P中引用iface.jar 实现接口HelloService进行处理任务 注册bean到spring中 应用C中, 通过spring获取HelloService的实例phService 调用phService.echo(xxx)方法，获得返回结果 应用P运行在1个jvm中 应用C运行在另1个jvm中 phService实质为一个代理对象 该代理对象通过把调用的参数封装，序列化后，通过网络传输给应用P 应用P根据收到参数后，调用处理接口相应的实现类，并将结果回传给应用C端 最终代理对象返回收到的运行结果  序列化-知识点补充 进行RPC调用必然要涉及对方法参数的序列化。 序列化框架有很多， 如protobuf、thrift、hession等 dubbo的rpc是支持多种序列化方式，如Java原生、Kryo、webservice等 spring cloud的http调用也算一种序列化方式 有了序列化工具，不仅仅是跨JVM的方法调用，还能跨语言调用。 本次示例使用java原生序列化  初版代码 所用到包 import java.</description>
     </item>
     
     <item>
       <title>动态代理-rpc示例-02</title>
-      <link>/duansheli.github.io/2018/06/05/proxy-rpc-02.html</link>
+      <link>https://duansheli.github.io/2018/06/05/proxy-rpc-02.html</link>
       <pubDate>Tue, 05 Jun 2018 13:13:13 +0800</pubDate>
       
-      <guid>/duansheli.github.io/2018/06/05/proxy-rpc-02.html</guid>
+      <guid>https://duansheli.github.io/2018/06/05/proxy-rpc-02.html</guid>
       <description>上个版本的代码看着比较生肉，与平时开发时的写法差别较大。 接下来这版，加入了动态代理后
 动态代理-guava版 import com.google.common.reflect.Reflection; class DemoGuava { interface MyMath1 { public Integer sum(Integer a, Integer b); } static class MyMathImpl implements MyMath1 { @Override public Integer sum(Integer a, Integer b) { return a + b; } } public static void main(String[] args) { MyMath1 tg = new MyMathImpl(); // 创建对象代理 MyMath1 math = (MyMath1) Reflection.</description>
     </item>
     
     <item>
       <title>动态代理</title>
-      <link>/duansheli.github.io/2018/06/02/proxy-start.html</link>
+      <link>https://duansheli.github.io/2018/06/02/proxy-start.html</link>
       <pubDate>Sat, 02 Jun 2018 13:13:13 +0800</pubDate>
       
-      <guid>/duansheli.github.io/2018/06/02/proxy-start.html</guid>
+      <guid>https://duansheli.github.io/2018/06/02/proxy-start.html</guid>
       <description>目标 通过代码示例了解动态代理语法
 示例代码 import java.lang.reflect.InvocationHandler; import java.lang.reflect.Method; import java.lang.reflect.Proxy; public class Demo { interface MyMath1 { public Integer sum(Integer a, Integer b); } static class MyMathImpl implements MyMath1 { @Override public Integer sum(Integer a, Integer b) { return a + b; } } public static void main(String[] args) { MyMath1 tg = new MyMathImpl(); // 创建对象代理 MyMath1 math = (MyMath1) Proxy.</description>
     </item>

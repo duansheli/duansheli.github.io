@@ -2,30 +2,30 @@
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
     <title>docker on 断舍离的博客</title>
-    <link>/duansheli.github.io/tags/docker/</link>
+    <link>https://duansheli.github.io/tags/docker/</link>
     <description>Recent content in docker on 断舍离的博客</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>zh-CN</language>
     <lastBuildDate>Sun, 02 Jun 2019 17:28:13 +0800</lastBuildDate>
     
-	<atom:link href="/duansheli.github.io/tags/docker/index.xml" rel="self" type="application/rss+xml" />
+	<atom:link href="https://duansheli.github.io/tags/docker/index.xml" rel="self" type="application/rss+xml" />
     
     
     <item>
       <title>docker的复制文件操作</title>
-      <link>/duansheli.github.io/2019/09/09/docker-cp.html</link>
+      <link>https://duansheli.github.io/2019/09/09/docker-cp.html</link>
       <pubDate>Sun, 02 Jun 2019 17:28:13 +0800</pubDate>
       
-      <guid>/duansheli.github.io/2019/09/09/docker-cp.html</guid>
+      <guid>https://duansheli.github.io/2019/09/09/docker-cp.html</guid>
       <description>&lt;p&gt;容器与宿主机之间的文件复制示例&lt;/p&gt;</description>
     </item>
     
     <item>
       <title>DinD模式下通过容器构建镜像-方案</title>
-      <link>/duansheli.github.io/2019/05/18/dind-build-image-with-cache.html</link>
+      <link>https://duansheli.github.io/2019/05/18/dind-build-image-with-cache.html</link>
       <pubDate>Sat, 18 May 2019 17:28:13 +0800</pubDate>
       
-      <guid>/duansheli.github.io/2019/05/18/dind-build-image-with-cache.html</guid>
+      <guid>https://duansheli.github.io/2019/05/18/dind-build-image-with-cache.html</guid>
       <description>&lt;p&gt;持续集成时，构建镜像后，通常会产生一些临时镜像&lt;br /&gt;
 很不docker，一点也不绿色&lt;br /&gt;
 使用DinD的方案可以解决该问题&lt;/p&gt;</description>
@@ -33,10 +33,10 @@
     
     <item>
       <title>drone持续集成-发布github pages</title>
-      <link>/duansheli.github.io/2019/02/03/drone-ci-github-pages.html</link>
+      <link>https://duansheli.github.io/2019/02/03/drone-ci-github-pages.html</link>
       <pubDate>Sun, 03 Feb 2019 17:28:13 +0800</pubDate>
       
-      <guid>/duansheli.github.io/2019/02/03/drone-ci-github-pages.html</guid>
+      <guid>https://duansheli.github.io/2019/02/03/drone-ci-github-pages.html</guid>
       <description>&lt;p&gt;docker持续集成-drone发布静态博客&lt;br /&gt;
 将hugo产生的静态页面推送到github&lt;br /&gt;
 并通知到钉钉群&lt;/p&gt;</description>
@@ -44,10 +44,10 @@
     
     <item>
       <title>跨宿主机与docker容器通信</title>
-      <link>/duansheli.github.io/2019/01/01/connect-container-ip.html</link>
+      <link>https://duansheli.github.io/2019/01/01/connect-container-ip.html</link>
       <pubDate>Fri, 01 Feb 2019 17:28:13 +0800</pubDate>
       
-      <guid>/duansheli.github.io/2019/01/01/connect-container-ip.html</guid>
+      <guid>https://duansheli.github.io/2019/01/01/connect-container-ip.html</guid>
       <description>&lt;p&gt;有一些应用只需要1个端口就能访问&lt;br /&gt;
 比如 nginx&lt;/p&gt;
 
@@ -58,20 +58,20 @@
     
     <item>
       <title>docker常用操作</title>
-      <link>/duansheli.github.io/2019/01/15/docker-useful-cmd.html</link>
+      <link>https://duansheli.github.io/2019/01/15/docker-useful-cmd.html</link>
       <pubDate>Tue, 15 Jan 2019 17:28:13 +0800</pubDate>
       
-      <guid>/duansheli.github.io/2019/01/15/docker-useful-cmd.html</guid>
+      <guid>https://duansheli.github.io/2019/01/15/docker-useful-cmd.html</guid>
       <description>docker常用操作 Dockerfile编写 编写一般不会一次就完成，常常会出错
 Sending build context to Docker daemon 5.902MB Step 1/10 : FROM docker:git as builder ---&amp;gt; 9be5c3cd302c Step 2/10 : RUN git clone https://github.</description>
     </item>
     
     <item>
       <title>k8s搭建集群3-异常解决</title>
-      <link>/duansheli.github.io/2018/01/03/k8s-cluster-setup-03.html</link>
+      <link>https://duansheli.github.io/2018/01/03/k8s-cluster-setup-03.html</link>
       <pubDate>Thu, 03 Jan 2019 17:28:13 +0800</pubDate>
       
-      <guid>/duansheli.github.io/2018/01/03/k8s-cluster-setup-03.html</guid>
+      <guid>https://duansheli.github.io/2018/01/03/k8s-cluster-setup-03.html</guid>
       <description>出错恢复 没遇到报错可以跳过
 安装过程中可能有一些异常
 查看所有的pod分布情况 kubectl get pods -n kube-system -o wide -l k8s-app=kubernetes-dashboard  查看失败的镜像
@@ -80,20 +80,20 @@ imageName=`kubectl describe -n kube-system pod -l k8s-app=kubernetes-dashboard |
     
     <item>
       <title>k8s集群搭建-02</title>
-      <link>/duansheli.github.io/2019/01/02/k8s-cluster-setup-02.html</link>
+      <link>https://duansheli.github.io/2019/01/02/k8s-cluster-setup-02.html</link>
       <pubDate>Wed, 02 Jan 2019 17:28:13 +0800</pubDate>
       
-      <guid>/duansheli.github.io/2019/01/02/k8s-cluster-setup-02.html</guid>
+      <guid>https://duansheli.github.io/2019/01/02/k8s-cluster-setup-02.html</guid>
       <description>&lt;p&gt;k8s集群好了 再添加一些相关的组件&lt;br /&gt;
 dashboard helm helm的webui&lt;/p&gt;</description>
     </item>
     
     <item>
       <title>k8s集群搭建-01</title>
-      <link>/duansheli.github.io/2019/01/01/k8s-cluster-setup-01.html</link>
+      <link>https://duansheli.github.io/2019/01/01/k8s-cluster-setup-01.html</link>
       <pubDate>Tue, 01 Jan 2019 17:28:13 +0800</pubDate>
       
-      <guid>/duansheli.github.io/2019/01/01/k8s-cluster-setup-01.html</guid>
+      <guid>https://duansheli.github.io/2019/01/01/k8s-cluster-setup-01.html</guid>
       <description>1. 目标 通过虚拟机搭建一个kubernetes集群
 共3个节点基于ubuntu
 2. 组件安装规划  宿主机: win10 vmware-v15

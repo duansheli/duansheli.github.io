@@ -2,31 +2,31 @@
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
     <title>id on 断舍离的博客</title>
-    <link>/duansheli.github.io/tags/id/</link>
+    <link>https://duansheli.github.io/tags/id/</link>
     <description>Recent content in id on 断舍离的博客</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>zh-CN</language>
     <lastBuildDate>Tue, 03 Sep 2019 17:28:13 +0800</lastBuildDate>
     
-	<atom:link href="/duansheli.github.io/tags/id/index.xml" rel="self" type="application/rss+xml" />
+	<atom:link href="https://duansheli.github.io/tags/id/index.xml" rel="self" type="application/rss+xml" />
     
     
     <item>
       <title>使用hashids创建短链服务</title>
-      <link>/duansheli.github.io/2019/09/03/hashids-usage.html</link>
+      <link>https://duansheli.github.io/2019/09/03/hashids-usage.html</link>
       <pubDate>Tue, 03 Sep 2019 17:28:13 +0800</pubDate>
       
-      <guid>/duansheli.github.io/2019/09/03/hashids-usage.html</guid>
+      <guid>https://duansheli.github.io/2019/09/03/hashids-usage.html</guid>
       <description>&lt;p&gt;简单的方案是使用uuid生成， 但太长且数据库检索效率低。&lt;br /&gt;
 本次使用hashIds的方案 简单 安全。&lt;/p&gt;</description>
     </item>
     
     <item>
       <title>给文章加水印-零宽字符</title>
-      <link>/duansheli.github.io/2019/09/07/zero-width.html</link>
+      <link>https://duansheli.github.io/2019/09/07/zero-width.html</link>
       <pubDate>Tue, 03 Sep 2019 17:28:13 +0800</pubDate>
       
-      <guid>/duansheli.github.io/2019/09/07/zero-width.html</guid>
+      <guid>https://duansheli.github.io/2019/09/07/zero-width.html</guid>
       <description>简述 一般的防盗图手段 给图片加水印 高级点则是隐形水印 阿里查到泄露内网截图的员工 美团和大众点评的盗图官司 最近了解到针对文本的水印技术：零宽字符  示例 加密的文本
 tom‍‌‌‌​‍‌‍‍​‍‌‌‌‍​‍‌‌​‌‌‍​‌‍​‍‌​‌‌‌​‌‌‌‌​‌​‌‍‌‌​‌‌cat  解密后
 by duansheli  项目源码 https://github.com/rover95/morse-encrypt 在线服务 http://morse.</description>
@@ -34,10 +34,10 @@ by duansheli  项目源码 https://github.com/rover95/morse-encrypt 在线服务
     
     <item>
       <title>激活码的生成</title>
-      <link>/duansheli.github.io/2019/08/16/hashids-usage.html</link>
+      <link>https://duansheli.github.io/2019/08/16/hashids-usage.html</link>
       <pubDate>Fri, 16 Aug 2019 17:28:13 +0800</pubDate>
       
-      <guid>/duansheli.github.io/2019/08/16/hashids-usage.html</guid>
+      <guid>https://duansheli.github.io/2019/08/16/hashids-usage.html</guid>
       <description>&lt;p&gt;简单的方案是使用uuid生成， 但太长且数据库检索效率低。&lt;br /&gt;
 本次使用hashIds的方案 简单 安全。&lt;/p&gt;</description>
     </item>

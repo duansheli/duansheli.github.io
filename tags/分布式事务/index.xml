@@ -2,21 +2,21 @@
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
     <title>分布式事务 on 断舍离的博客</title>
-    <link>/duansheli.github.io/tags/%E5%88%86%E5%B8%83%E5%BC%8F%E4%BA%8B%E5%8A%A1/</link>
+    <link>https://duansheli.github.io/tags/%E5%88%86%E5%B8%83%E5%BC%8F%E4%BA%8B%E5%8A%A1/</link>
     <description>Recent content in 分布式事务 on 断舍离的博客</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>zh-CN</language>
     <lastBuildDate>Sat, 16 Feb 2019 17:28:13 +0800</lastBuildDate>
     
-	<atom:link href="/duansheli.github.io/tags/%E5%88%86%E5%B8%83%E5%BC%8F%E4%BA%8B%E5%8A%A1/index.xml" rel="self" type="application/rss+xml" />
+	<atom:link href="https://duansheli.github.io/tags/%E5%88%86%E5%B8%83%E5%BC%8F%E4%BA%8B%E5%8A%A1/index.xml" rel="self" type="application/rss+xml" />
     
     
     <item>
       <title>通过rocketmq实现分布式事务</title>
-      <link>/duansheli.github.io/2019/02/16/rocketmq-transaction.html</link>
+      <link>https://duansheli.github.io/2019/02/16/rocketmq-transaction.html</link>
       <pubDate>Sat, 16 Feb 2019 17:28:13 +0800</pubDate>
       
-      <guid>/duansheli.github.io/2019/02/16/rocketmq-transaction.html</guid>
+      <guid>https://duansheli.github.io/2019/02/16/rocketmq-transaction.html</guid>
       <description>1. 通过rocketmq实现分布式事务 1.1. 实现原理 1.1.1. 通常说的分布式事务 一次请求-调用serviceA
 serviceA 中会调用serviceB，serviceC，serviceD
 在serviceA ，serviceB，serviceC，serviceD中的事务要么一起成功
