@@ -7,20 +7,20 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1">
 
-    <title>给文章加水印-零宽字符 | 断舍离的博客</title>
-    <meta property="og:title" content="给文章加水印-零宽字符 - 断舍离的博客">
+    <title>使用drools的规则管理平台-01 | 断舍离的博客</title>
+    <meta property="og:title" content="使用drools的规则管理平台-01 - 断舍离的博客">
     <meta property="og:type" content="article">
         
-    <meta property="article:published_time" content="2019-09-03T17:28:13&#43;08:00">
+    <meta property="article:published_time" content="2019-10-27T17:28:13&#43;08:00">
         
         
-    <meta property="article:modified_time" content="2019-09-03T17:28:13&#43;08:00">
+    <meta property="article:modified_time" content="2019-10-27T17:28:13&#43;08:00">
         
     <meta name="Keywords" content="java,scala,spark,kubernetes">
-    <meta name="description" content="给文章加水印-零宽字符">
+    <meta name="description" content="使用drools的规则管理平台-01">
         
     <meta name="author" content="断舍离">
-    <meta property="og:url" content="https://duansheli.github.io/2019/09/07/zero-width.html">
+    <meta property="og:url" content="https://duansheli.github.io/2019/10/27/update-rule-by-scanner.html">
     <link rel="shortcut icon" href="/favicon.ico" type="image/x-icon">
 
     <link rel="stylesheet" href="/css/normalize.css">
@@ -67,10 +67,23 @@
         <div id="virtual_toc_list" style="display: none">
             <nav id="TableOfContents">
 <ul>
-<li><a href="#简述">简述</a></li>
-<li><a href="#示例">示例</a></li>
-<li><a href="#本质">本质</a></li>
-<li><a href="#其他">其他</a></li>
+<li><a href="#简述">简述</a>
+<ul>
+<li><a href="#执行脚本">执行脚本</a></li>
+<li><a href="#执行脚本-整理">执行脚本-整理</a></li>
+</ul></li>
+<li><a href="#使用规则管理平台">使用规则管理平台</a>
+<ul>
+<li><a href="#创建工程">创建工程</a></li>
+<li><a href="#创建规则">创建规则</a></li>
+<li><a href="#创建测试">创建测试</a></li>
+</ul></li>
+<li><a href="#工程的构建部署">工程的构建部署</a>
+<ul>
+<li><a href="#构建">构建</a></li>
+<li><a href="#部署">部署</a></li>
+<li><a href="#远程调用">远程调用</a></li>
+</ul></li>
 </ul>
 </nav>
         </div>
@@ -180,10 +193,10 @@
                 <div class="res-cons">
                     <article class="post">
                         <header>
-                            <h1 class="post-title">给文章加水印-零宽字符</h1>
+                            <h1 class="post-title">使用drools的规则管理平台-01</h1>
                         </header>
                         <date class="post-meta meta-date">
-                            2019年9月3日
+                            2019年10月27日
                         </date>
                         
                         
@@ -199,52 +212,309 @@
 
 <h1 id="简述">简述</h1>
 
-<pre><code>一般的防盗图手段 给图片加水印
-高级点则是隐形水印
-阿里查到泄露内网截图的员工
-美团和大众点评的盗图官司
+<p>drools的BRMS(业务规则管理系统)<br />
+起先叫 guvnor
+然后叫 drools-workbench<br />
+从7.18版本开始叫 Business Central Workbench</p>
 
-最近了解到针对文本的水印技术：零宽字符
+<p>Business-Central Workbench == Drools Workbench +  jBPM Workbench<br />
+drools-workbench 用来管理规则<br />
+kie-server 则是运行规则的容器服务</p>
+
+<p>老版本Workbench 有提供支持tomcat的war包
+新版本只支持部署到wildfly中 ， 还好有docker镜像，不用为wildfly的配置而分心。</p>
+
+<p>docker镜像有两种<code>jboss/business-central-workbench-showcase</code> 、<code>jboss/business-central-workbench</code>
+带 showcase 的已经配好一些默认账户了， 可直接使用（用于生产的话，还是应当单独配的）。</p>
+
+<p>drools版本为 7.28.0.Final</p>
+
+<h2 id="执行脚本">执行脚本</h2>
+
+<p>把启动内存调大点 同时设置git绑定0.0.0.0网络</p>
+
+<pre><code class="language-bash">root@sharezx:/mnt#
+root@sharezx:/mnt# jopts=&quot; -Xms2048m -Xmx2048m -XX:MetaspaceSize=256M -XX:MaxMetaspaceSize=512m -Djava.net.preferIPv4Stack=true -Dfile.encoding=UTF-8 -Dorg.uberfire.nio.git.ssh.host=0.0.0.0 &quot;
+root@sharezx:/mnt#
+root@sharezx:/mnt# docker run -p 8080:8080 -p 8001:8001 -e JAVA_OPTS=&quot;$jopts&quot; -d --name drwb jboss/business-central-workbench-showcase:7.28.0.Final
+e2fc905553936b8ff88033d677568fbd8b8167dc1efe2f85d3ca465b4ca82739
+root@sharezx:/mnt#
+root@sharezx:/mnt#
+root@sharezx:/mnt#
+root@sharezx:/mnt# docker logs -f drwb
+Running business-central workbench on JBoss Wildfly...
+JAVA_OPTS already set in environment; overriding default settings with values:  -Xms2048m -Xmx2048m -XX:MetaspaceSize=256M -XX:MaxMetaspaceSize=512m -Djava.net.preferIPv4Stack=true -Dfile.encoding=UTF-8 -Dorg.uberfire.nio.git.ssh.host=0.0.0.0
+=========================================================================
+
+  JBoss Bootstrap Environment
+
+  JBOSS_HOME: /opt/jboss/wildfly
+
+  JAVA: /usr/lib/jvm/java/bin/java
+
+  JAVA_OPTS:  -server  -Xms2048m -Xmx2048m -XX:MetaspaceSize=256M -XX:MaxMetaspaceSize=512m -Djava.net.preferIPv4Stack=true -Dfile.encoding=UTF-8 -Dorg.uberfire.nio.git.ssh.host=0.0.0.0
+
+=========================================================================
+
+08:45:37,948 INFO  [org.jboss.modules] (main) JBoss Modules version 1.8.6.Final
+08:45:39,524 INFO  [org.jboss.msc] (main) JBoss MSC version 1.4.3.Final
+08:45:39,555 INFO  [org.jboss.threads] (main) JBoss Threads version 2.3.2.Final
+
+。。。
+略去
+。。。
+08:47:09,102 INFO  [org.jboss.as] (Controller Boot Thread) WFLYSRV0060: Http management interface listening on http://127.0.0.1:9990/management
+08:47:09,102 INFO  [org.jboss.as] (Controller Boot Thread) WFLYSRV0051: Admin console listening on http://127.0.0.1:9990
+08:47:09,102 INFO  [org.jboss.as] (Controller Boot Thread) WFLYSRV0025: WildFly Full 14.0.1.Final (WildFly Core 6.0.2.Final) started in 92704ms - Started 860 of 1043 services (326 services are lazy, passive or on-demand)
+08:47:29,341 INFO  [org.kie.workbench.common.screens.datasource.management.util.ServiceUtil] (pool-17-thread-1) Getting reference to managed bean: WildflyDataSourceProvider
+08:47:29,372 INFO  [org.kie.workbench.common.screens.datasource.management.util.ServiceUtil] (pool-17-thread-1) Getting reference to managed bean: WildflyDriverProvider
+08:47:30,627 INFO  [org.kie.workbench.common.screens.datasource.management.backend.DataSourceManagementBootstrap] (pool-17-thread-1) Initialize deployments task finished successfully.
 </code></pre>
 
-<h1 id="示例">示例</h1>
+<p>在看到 successfully 时，说明启动完成<br />
+ctrl + c 退出日志查看</p>
 
-<p>加密的文本</p>
+<p>接着启动kie-server<br />
+这个启动比较快就不看日志了 稍等一会<br />
+curl 可看到数据正确返回</p>
 
-<pre><code>tom‍‌‌‌​‍‌‍‍​‍‌‌‌‍​‍‌‌​‌‌‍​‌‍​‍‌​‌‌‌​‌‌‌‌​‌​‌‍‌‌​‌‌cat
+<pre><code class="language-bash">root@sharezx:/mnt# docker run -p 8180:8080 -d --name kwb --link drwb:kie_wb jboss/kie-server-showcase:7.18.0.Final
+978bee953f4fcc5a8bfdfae449d2ed3ea26f1525eed0c761f0d953cc5611bc35
+root@sharezx:/mnt#
+root@sharezx:/mnt# curl -u admin:admin http://192.168.88.3:8180/kie-server/services/rest/server/
+&lt;?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot; standalone=&quot;yes&quot;?&gt;
+&lt;response type=&quot;SUCCESS&quot; msg=&quot;Kie Server info&quot;&gt;
+    &lt;kie-server-info&gt;
+        &lt;capabilities&gt;KieServer&lt;/capabilities&gt;
+        &lt;capabilities&gt;BRM&lt;/capabilities&gt;
+        &lt;capabilities&gt;BPM&lt;/capabilities&gt;
+        &lt;capabilities&gt;CaseMgmt&lt;/capabilities&gt;
+        &lt;capabilities&gt;BPM-UI&lt;/capabilities&gt;
+        &lt;capabilities&gt;BRP&lt;/capabilities&gt;
+        &lt;capabilities&gt;DMN&lt;/capabilities&gt;
+        &lt;capabilities&gt;Swagger&lt;/capabilities&gt;
+        &lt;location&gt;http://172.17.0.4:8080/kie-server/services/rest/server&lt;/location&gt;
+        &lt;messages&gt;
+            &lt;content&gt;Server KieServerInfo{serverId='kie-server-978bee953f4f', version='7.18.0.Final', name='kie-server-978bee953f4f', location='http://172.17.0.4:8080/kie-server/services/rest/server', capabilities=[KieServer, BRM, BPM, CaseMgmt, BPM-UI, BRP, DMN, Swagger]', messages=null', mode=DEVELOPMENT}started successfully at Mon Nov 25 08:56:02 UTC 2019&lt;/content&gt;
+            &lt;severity&gt;INFO&lt;/severity&gt;
+            &lt;timestamp&gt;2019-10-28T08:56:02.443Z&lt;/timestamp&gt;
+        &lt;/messages&gt;
+        &lt;mode&gt;DEVELOPMENT&lt;/mode&gt;
+        &lt;name&gt;kie-server-978bee953f4f&lt;/name&gt;
+        &lt;id&gt;kie-server-978bee953f4f&lt;/id&gt;
+        &lt;version&gt;7.18.0.Final&lt;/version&gt;
+    &lt;/kie-server-info&gt;
+&lt;/response&gt;
+root@sharezx:/mnt#
 </code></pre>
 
-<p>解密后</p>
+<h2 id="执行脚本-整理">执行脚本-整理</h2>
 
-<pre><code>by duansheli
+<pre><code>docker pull jboss/business-central-workbench-showcase:7.28.0.Final
+docker pull jboss/kie-server-showcase:7.28.0.Final
+
+
+jopts=&quot; -Xms2048m -Xmx2048m -XX:MetaspaceSize=256M -XX:MaxMetaspaceSize=512m -Djava.net.preferIPv4Stack=true -Dfile.encoding=UTF-8 -Dorg.uberfire.nio.git.ssh.host=0.0.0.0 &quot;
+
+
+docker run -p 8080:8080 -p 8001:8001 -e JAVA_OPTS=&quot;$jopts&quot; -d --name drwb jboss/business-central-workbench-showcase:7.28.0.Final
+docker logs -f drwb
+
+
+docker run -p 8180:8080 -d --name kwb --link drwb:kie_wb jboss/kie-server-showcase:7.18.0.Final
+curl -u admin:admin http://192.168.88.3:8180/kie-server/services/rest/server/
 </code></pre>
 
-<pre><code>项目源码  
-https://github.com/rover95/morse-encrypt
-在线服务  
-http://morse.rovelast.com
+<p>web面板的账号</p>
+
+<pre><code>USER        PASSWORD    ROLE
+*********************************************
+admin       admin       admin,analyst,kiemgmt
+krisv       krisv       admin,analyst
+john        john        analyst,Accounting,PM
+sales-rep   sales-rep   analyst,sales
+katy        katy        analyst,HR
+jack        jack        analyst,IT
 </code></pre>
 
-<h1 id="本质">本质</h1>
+<h1 id="使用规则管理平台">使用规则管理平台</h1>
 
-<pre><code>先将待隐藏的字符串 变为2进制 如(10111)
-然后将1、0依次替换为 零宽字符(0变成U+200B，1变成U+200C，最后以U+200D分隔)
-就得到了人眼看不见的零宽字符
+<p>访问管理平台
+<a href="http://192.168.88.3:8080/business-central/">http://192.168.88.3:8080/business-central/</a></p>
 
-零宽字符可用来发车- 磁力链、番号等
-有网友用零宽字符来隐藏代码- https://www.cnblogs.com/52cik/p/js-hide-code.html
-在论坛上把自己的用户名使用零宽字符处理，可让用户名看起来和别人相同，伪造身份（不过一般都限制为英文数字）
+<p>输入账户 密码 admin admin
+点击  design
+点击默认空间 MySpace</p>
+
+<h2 id="创建工程">创建工程</h2>
+
+<p>点击创建 右侧的 Add Project
+创建 demo01 工程</p>
+
+<h2 id="创建规则">创建规则</h2>
+
+<ul>
+<li>先创建fact<br />
+点击 Add Asset
+选择 数据对象
+名称为 Person 软件包默认 com.myspace.demo01
+点击 确定</li>
+</ul>
+
+<p>进入 Person的编辑界面
+点击 添加字段
+设置 id = age 类型为 Integer
+点击 创建</p>
+
+<p>fact编辑完毕
+点击右上方的 保存 按钮
+在保存按钮的最右侧有个叉叉 ，点击叉叉 回到工程目录</p>
+
+<ul>
+<li>创建drl规则文件<br />
+点击 Add Asset
+选择 DRL文件
+名称为 hello
+点击 确定</li>
+</ul>
+
+<p>设置规则内容为</p>
+
+<pre><code>package com.myspace.demo01;
+
+rule &quot;hello&quot;
+when 
+  ps: Person()
+then
+  ps.setAge(22);
+end
 </code></pre>
 
-<h1 id="其他">其他</h1>
+<p>然后同上一步一样<br />
+保存 点叉叉</p>
 
-<pre><code>常见的零宽度字符的unicode码  
-U+200B，U+200C，U+200D，U+200E，U+200F，U+FEFF
+<h2 id="创建测试">创建测试</h2>
 
-参考
-https://juejin.im/post/5b87a6e26fb9a019b953ee8b
-https://www.ziti163.com/uni/2000-206F.shtml
+<p>点击 Add Asset
+选择 Test Scenario(Legacy)
+名称为 test01
+点击 确定</p>
+
+<p>点击 GIEVN 弹出对话框
+填写事实名称为 <code>p</code> 再点旁边的添加</p>
+
+<p>点击 EXPECT 弹出对话框
+点击第二行 事实值 p 右侧的 添加 按钮</p>
+
+<p>然后可以看到 <code>Person 'p' 有下列值</code>
+点击这段文字 弹出对话框
+选择age 按确定</p>
+
+<p>在新出现的 <code>age 等于</code>后面输入框中填入 5
+点击右上方的 运行测试场景
+可以看到出现了爆红的警告 并且提示实际结果为22</p>
+
+<p>调整期望结果为22 再次运行 则通过
+点击保存 和 叉叉
+至此 测试结束</p>
+
+<h1 id="工程的构建部署">工程的构建部署</h1>
+
+<p>在工程标题 demo01下面
+有个 资产 选项
+ 资产的最右侧 点击 设置</p>
+
+<p>可看到 General Settings
+ 下面有个git 的url 为 <code>ssh://0.0.0.0:8001/MySpace/demo01</code>
+这就是该项目的git仓库地址</p>
+
+<p>如果clone到本地 可发现该项目就是个maven项目</p>
+
+<pre><code>git clone http://admin:admin@192.168.88.3:8080/business-central/git/MySpace/demo01
 </code></pre>
+
+<h2 id="构建">构建</h2>
+
+<p>继续看管理平台的工程<br />
+点击构建旁的下拉箭头，点击 <code>Build &amp; Install</code> 提示成功后
+点击右上角问号❓和药箱之间的 设置 按钮
+点击 Artifacts</p>
+
+<p>可以看到刚刚的项目已经构建发布到其maven仓库了</p>
+
+<h2 id="部署">部署</h2>
+
+<p>回到demo01项目页面
+点击 部署
+在提示 部署成功后
+点击左上方Menu菜单旁的下拉箭头
+选择 部署一栏的 执行服务器</p>
+
+<p>可以看到
+kie-server-978bee953f4f 是kie-server的一个节点
+也就是最开始启动的 kwb 容器</p>
+
+<p>第二列  DEPLOYMENT UNITS 下方
+可看到之前的部署单元 demo01_1.0.0-SNAPSHOT</p>
+
+<p>通过http请求也能查询到部署单元</p>
+
+<pre><code>curl -H &quot;Content-Type:application/json&quot; -u admin:admin http://192.168.88.3:8180/kie-server/services/rest/server/containers
+</code></pre>
+
+<h2 id="远程调用">远程调用</h2>
+
+<p>发起请求</p>
+
+<pre><code>curl -H &quot;Content-Type:application/json&quot; -u admin:admin -X POST --data '{
+  &quot;lookup&quot; : null,
+  &quot;commands&quot; : [ {
+    &quot;insert&quot; : {
+      &quot;object&quot; : {&quot;com.myspace.demo01.Person&quot;:{&quot;age&quot; : null}},
+      &quot;out-identifier&quot; : &quot;p&quot;,
+      &quot;return-object&quot; : true,
+      &quot;entry-point&quot; : &quot;DEFAULT&quot;,
+      &quot;disconnected&quot; : false
+    }
+  }, {
+    &quot;fire-all-rules&quot; : {
+      &quot;max&quot; : -1,
+      &quot;out-identifier&quot; : null
+    }
+  }, {
+    &quot;dispose&quot; : { }
+  } ]
+}'  'http://192.168.88.3:8180/kie-server/services/rest/server/containers/instances/demo01'
+
+
+</code></pre>
+
+<p>响应结果为</p>
+
+<pre><code>{
+  &quot;type&quot; : &quot;SUCCESS&quot;,
+  &quot;msg&quot; : &quot;Container demo01 successfully called.&quot;,
+  &quot;result&quot; : {
+    &quot;execution-results&quot; : {
+      &quot;results&quot; : [ {
+        &quot;value&quot; : {&quot;com.myspace.demo01.Person&quot;:{
+  &quot;age&quot; : 22
+}},
+        &quot;key&quot; : &quot;p&quot;
+      } ],
+      &quot;facts&quot; : [ {
+        &quot;value&quot; : {&quot;org.drools.core.common.DefaultFactHandle&quot;:{
+  &quot;external-form&quot; : &quot;0:1:1922407796:1922407796:1:DEFAULT:NON_TRAIT:com.myspace.demo01.Person&quot;
+}},
+        &quot;key&quot; : &quot;p&quot;
+      } ]
+    }
+  }
+}
+</code></pre>
+
+<p>可以看到person的age 被更新成了 22
+测试成功</p>
 
                         </div>
 
@@ -257,15 +527,15 @@ https://www.ziti163.com/uni/2000-206F.shtml
     <h2>See Also</h2>
     <ul class="listing">
         
+        <li><a href="/2019/10/26/update-rule-by-scanner.html">自定义动态更新drools规则</a></li>
+        
+        <li><a href="/2019/09/12/doh.html">浏览器启用dns-over-https(DoH)</a></li>
+        
+        <li><a href="/2019/09/11/kotlin-null-check.html">kotlin空指针校验</a></li>
+        
         <li><a href="/2019/09/03/hashids-usage.html">使用hashids创建短链服务</a></li>
         
-        <li><a href="/2019/08/16/hashids-usage.html">激活码的生成</a></li>
-        
-        <li><a href="/2019/08/02/k8s-cluster-setup-02.html">mysql物理备份与还原示例</a></li>
-        
-        <li><a href="/2019/07/06/check-credit.html">github搜开源项目技巧</a></li>
-        
-        <li><a href="/2019/07/06/check-credit.html">Github 最简单的认证方式 - Access Token[转]</a></li>
+        <li><a href="/2019/09/07/zero-width.html">给文章加水印-零宽字符</a></li>
         
     </ul>
 </div>
@@ -275,9 +545,7 @@ https://www.ziti163.com/uni/2000-206F.shtml
                             
                             <ul class="clearfix">
                                 
-                                <li><a href="https://duansheli.github.io/tags/id">id</a></li>
-                                
-                                <li><a href="https://duansheli.github.io/tags/hashids">hashids</a></li>
+                                <li><a href="https://duansheli.github.io/tags/drools">drools</a></li>
                                 
                             </ul>
                             
