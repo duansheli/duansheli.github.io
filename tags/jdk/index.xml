@@ -20,5 +20,15 @@
       <description>openjdk oracle原版 jdk 之前在可通过命令从官网下载，现在行不通了，必须用oracle账号登录才能下载。 https://github.com/frekele/oracle-java/releases https://github.com/ZachCheung/oracle-java-downloads https://www.oracle.com/technetwork/java/javase/downloads/jdk11-downloads-5066655.html 有一种 oracle版的openjdk http://jdk.java.net/archive/ oracle还有一个跨语言的通用虚拟机 GraalVM https://github.com/oracle/graal/releases 从java 8开始 oracle开始收费，虽然对个人免费， 但对企业是收费的，虽然不知道怎么收，但收费肯定是不菲的。 如果生产环境不用oracle的jdk，最好平时开发就别用oracle，改用openjdk  部分下载地址 没整明白算是哪个厂商的openjdk https://mirrors.</description>
     </item>
     
+    <item>
+      <title>kotlin空指针校验</title>
+      <link>https://duansheli.github.io/2019/09/11/kotlin-null-check.html</link>
+      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
+      
+      <guid>https://duansheli.github.io/2019/09/11/kotlin-null-check.html</guid>
+      <description>kotlin空指针校验 类型的说明 变量声明方式 val a: String=&amp;quot;tom&amp;quot; 通常会写成val a = &amp;quot;tom&amp;quot; 但还有另一种 val a: String?=&amp;quot;tom&amp;quot; 表示非空类型
+fun test1() { val a1 = 2; // val a2 = ss as String // 抛出转换失败的异常 val a2 = a1 as?</description>
+    </item>
+    
   </channel>
 </rss>

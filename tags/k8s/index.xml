@@ -6,10 +6,27 @@
     <description>Recent content in k8s on 断舍离的博客</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>zh-CN</language>
-    <lastBuildDate>Thu, 03 Jan 2019 17:28:13 +0800</lastBuildDate>
+    <lastBuildDate>Thu, 27 Jun 2019 17:28:13 +0800</lastBuildDate>
     
 	<atom:link href="https://duansheli.github.io/tags/k8s/index.xml" rel="self" type="application/rss+xml" />
     
+    
+    <item>
+      <title>k8s-外部访问ingress</title>
+      <link>https://duansheli.github.io/2019/06/27/k8s-ingress-controller.html</link>
+      <pubDate>Thu, 27 Jun 2019 17:28:13 +0800</pubDate>
+      
+      <guid>https://duansheli.github.io/2019/06/27/k8s-ingress-controller.html</guid>
+      <description>对外暴露服务 通常使用ingress作为前置入口 那如何配置 ingress-controller 与外界通信？
+LoadBalancer 如果有云厂商的LoadBalancer， 那自然方便
+各云厂商的实现可能有所不同
+但使用后效果 应该都是高可用的vip入口
+其他方案 如果是自建的k8s集群
+或者云厂商没有LoadBalancer
+又或者不想用云厂商的LoadBalancer
+那这个时候整，之间nodePort么
+自建-LoadBalance 基于开源项目自建 LoadBalance</description>
+    </item>
     
     <item>
       <title>k8s搭建集群3-异常解决</title>

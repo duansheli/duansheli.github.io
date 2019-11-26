@@ -67,6 +67,170 @@
                         <article class="post">
                             <header>
                                 <h1 class="post-title">
+                                    <a href="https://duansheli.github.io/2019/04/09/spring-security-login-by-mobile-code.html" title="使用spring security实现手机验证码登录" >使用spring security实现手机验证码登录</a>
+                                </h1>
+                            </header>
+                            <date class="post-meta meta-date">
+                                2019年4月9日
+                            </date>
+                            
+                            <div class="post-content">
+                                目标 使用spring security添加两种登录方式 * 手机号，验证码登录 * 用户名 密码 图形验证码登录
+运行环境  win10-x64 jdk-v1.8 springboot-v2.1.4 springsecurity-5.1.5  环境搭建 新建maven项目 配置pom.xml依赖项……
+                            </div>
+                            <p class="readmore"><a href="https://duansheli.github.io/2019/04/09/spring-security-login-by-mobile-code.html">阅读全文</a></p>
+                        </article>
+                    
+                    
+		    
+                        <article class="post">
+                            <header>
+                                <h1 class="post-title">
+                                    <a href="https://duansheli.github.io/2019/04/08/login-nature.html" title="登录流程的本质" >登录流程的本质</a>
+                                </h1>
+                            </header>
+                            <date class="post-meta meta-date">
+                                2019年4月8日
+                            </date>
+                            
+                            <div class="post-content">
+                                登录的本质  在登录页面 输入用户名与密码 后台核对无误后，将用户信息放入会话中 在访问需要登录的页面时，系统在会话中查找用户信息 找到了，就放行 没找到，将页面重定向到登录页面  Java代码如何实现 登录 针对 /login 请求 接收页面的表单信息，即用户名与密码
+核对无误， 则将用户信息放入会话
+request.getSession().setAttribute(&ldquo;currentUser&rdquo;,&ldquo;tom&rdquo;);
+登录成功……
+                            </div>
+                            <p class="readmore"><a href="https://duansheli.github.io/2019/04/08/login-nature.html">阅读全文</a></p>
+                        </article>
+                    
+                    
+		    
+                        <article class="post">
+                            <header>
+                                <h1 class="post-title">
+                                    <a href="https://duansheli.github.io/2019/04/06/zipkin-dubbo-tracing.html" title="通过zipkin对dubbo进行链路追踪" >通过zipkin对dubbo进行链路追踪</a>
+                                </h1>
+                            </header>
+                            <date class="post-meta meta-date">
+                                2019年4月6日
+                            </date>
+                            
+                            <div class="post-content">
+                                <p>通过zipkin实现dubbo下的链路追踪</p>……
+                            </div>
+                            <p class="readmore"><a href="https://duansheli.github.io/2019/04/06/zipkin-dubbo-tracing.html">阅读全文</a></p>
+                        </article>
+                    
+                    
+		    
+                        <article class="post">
+                            <header>
+                                <h1 class="post-title">
+                                    <a href="https://duansheli.github.io/2019/03/02/spring-session-in-action.html" title="spring-session实现分布式会话" >spring-session实现分布式会话</a>
+                                </h1>
+                            </header>
+                            <date class="post-meta meta-date">
+                                2019年3月2日
+                            </date>
+                            
+                            <div class="post-content">
+                                <p>通过spring session实现分布式会话<br />
+集群下不会丢失会话 集中管理session</p>……
+                            </div>
+                            <p class="readmore"><a href="https://duansheli.github.io/2019/03/02/spring-session-in-action.html">阅读全文</a></p>
+                        </article>
+                    
+                    
+		    
+                        <article class="post">
+                            <header>
+                                <h1 class="post-title">
+                                    <a href="https://duansheli.github.io/2019/08/22/cloudflare-ddns.html" title="cloudflare设置ddns" >cloudflare设置ddns</a>
+                                </h1>
+                            </header>
+                            <date class="post-meta meta-date">
+                                2019年2月22日
+                            </date>
+                            
+                            <div class="post-content">
+                                主要流程 最终目的是 让 movie.aaabbb.com 能解析成家中的公网ip
+最终的api为
+curl -X PUT &quot;https://api.cloudflare.com/client/v4/zones/$tzone_id/dns_records/$trecord_id&quot; \ -H &quot;X-Auth-Email: $auth_email&quot; \ -H &quot;X-Auth-Key: $auth_key&quot; \ -H &quot;Content-Type: application/json&quot; \ --data '{&quot;type&quot;:&quot;A&quot;,&quot;name&quot;:&quot;file.……
+                            </div>
+                            <p class="readmore"><a href="https://duansheli.github.io/2019/08/22/cloudflare-ddns.html">阅读全文</a></p>
+                        </article>
+                    
+                    
+		    
+                        <article class="post">
+                            <header>
+                                <h1 class="post-title">
+                                    <a href="https://duansheli.github.io/2019/02/16/rocketmq-transaction.html" title="通过rocketmq实现分布式事务" >通过rocketmq实现分布式事务</a>
+                                </h1>
+                            </header>
+                            <date class="post-meta meta-date">
+                                2019年2月16日
+                            </date>
+                            
+                            <div class="post-content">
+                                1. 通过rocketmq实现分布式事务 1.1. 实现原理 1.1.1. 通常说的分布式事务 一次请求-调用serviceA
+serviceA 中会调用serviceB，serviceC，serviceD
+在serviceA ，serviceB，serviceC，serviceD中的事务要么一起成功
+只要有一个节点事务失败了， 其他的节点都会将事务回滚
+1.1.2. rocketmq的分布式事务 rocketmq的分布式事务与【通常说的分布式事务】有所不同
+它会做最大努力（重试）让所有节点一起成功， 不保证一定成功
+对于不成功的情况 应设置人工兜底补偿……
+                            </div>
+                            <p class="readmore"><a href="https://duansheli.github.io/2019/02/16/rocketmq-transaction.html">阅读全文</a></p>
+                        </article>
+                    
+                    
+		    
+                        <article class="post">
+                            <header>
+                                <h1 class="post-title">
+                                    <a href="https://duansheli.github.io/2019/02/03/drone-ci-github-pages.html" title="drone持续集成-发布github pages" >drone持续集成-发布github pages</a>
+                                </h1>
+                            </header>
+                            <date class="post-meta meta-date">
+                                2019年2月3日
+                            </date>
+                            
+                            <div class="post-content">
+                                <p>docker持续集成-drone发布静态博客<br />
+将hugo产生的静态页面推送到github<br />
+并通知到钉钉群</p>……
+                            </div>
+                            <p class="readmore"><a href="https://duansheli.github.io/2019/02/03/drone-ci-github-pages.html">阅读全文</a></p>
+                        </article>
+                    
+                    
+		    
+                        <article class="post">
+                            <header>
+                                <h1 class="post-title">
+                                    <a href="https://duansheli.github.io/2019/01/01/connect-container-ip.html" title="跨宿主机与docker容器通信" >跨宿主机与docker容器通信</a>
+                                </h1>
+                            </header>
+                            <date class="post-meta meta-date">
+                                2019年2月1日
+                            </date>
+                            
+                            <div class="post-content">
+                                <p>有一些应用只需要1个端口就能访问<br />
+比如 nginx</p>
+
+<p>而有一些应用的搭建都是由多个节点搭建的<br />
+比如hadoop 当访问hdfs的时候 访问的不仅仅用port还会用ip<br />
+这时后端口映射就不那么好使了</p>……
+                            </div>
+                            <p class="readmore"><a href="https://duansheli.github.io/2019/01/01/connect-container-ip.html">阅读全文</a></p>
+                        </article>
+                    
+                    
+		    
+                        <article class="post">
+                            <header>
+                                <h1 class="post-title">
                                     <a href="https://duansheli.github.io/2019/01/15/docker-useful-cmd.html" title="docker常用操作" >docker常用操作</a>
                                 </h1>
                             </header>
@@ -110,221 +274,6 @@ imageName=`kubectl describe -n kube-system pod -l k8s-app=kubernetes-dashboard |
                         </article>
                     
                     
-		    
-                        <article class="post">
-                            <header>
-                                <h1 class="post-title">
-                                    <a href="https://duansheli.github.io/2019/01/02/k8s-cluster-setup-02.html" title="k8s集群搭建-02" >k8s集群搭建-02</a>
-                                </h1>
-                            </header>
-                            <date class="post-meta meta-date">
-                                2019年1月2日
-                            </date>
-                            
-                            <div class="post-meta">
-                                <span>|</span>
-                                
-                                <span class="meta-category"><a href="https://duansheli.github.io/categories/k8s%E9%9B%86%E7%BE%A4">k8s集群</a></span>
-                                
-                            </div>
-                            
-                            <div class="post-content">
-                                <p>k8s集群好了 再添加一些相关的组件<br />
-dashboard helm helm的webui</p>……
-                            </div>
-                            <p class="readmore"><a href="https://duansheli.github.io/2019/01/02/k8s-cluster-setup-02.html">阅读全文</a></p>
-                        </article>
-                    
-                    
-		    
-                        <article class="post">
-                            <header>
-                                <h1 class="post-title">
-                                    <a href="https://duansheli.github.io/2019/01/01/k8s-cluster-setup-01.html" title="k8s集群搭建-01" >k8s集群搭建-01</a>
-                                </h1>
-                            </header>
-                            <date class="post-meta meta-date">
-                                2019年1月1日
-                            </date>
-                            
-                            <div class="post-meta">
-                                <span>|</span>
-                                
-                                <span class="meta-category"><a href="https://duansheli.github.io/categories/k8s%E9%9B%86%E7%BE%A4">k8s集群</a></span>
-                                
-                            </div>
-                            
-                            <div class="post-content">
-                                1. 目标 通过虚拟机搭建一个kubernetes集群
-共3个节点基于ubuntu
-2. 组件安装规划  宿主机: win10 vmware-v15
-ubuntu=v16.04.1
-docker=v18.06
-k8s=v1.12.6
-3个虚拟机节点=master,node1,node2
-系统镜像下载
- 3. 安装系统环境  因为每个节点都需要安装docker kubeadm&hellip;等软件 以及各种配置……
-                            </div>
-                            <p class="readmore"><a href="https://duansheli.github.io/2019/01/01/k8s-cluster-setup-01.html">阅读全文</a></p>
-                        </article>
-                    
-                    
-		    
-                        <article class="post">
-                            <header>
-                                <h1 class="post-title">
-                                    <a href="https://duansheli.github.io/2018/07/14/jvm-memory-gc.html" title="JVM的垃圾回收" >JVM的垃圾回收</a>
-                                </h1>
-                            </header>
-                            <date class="post-meta meta-date">
-                                2018年7月14日
-                            </date>
-                            
-                            <div class="post-meta">
-                                <span>|</span>
-                                
-                                <span class="meta-category"><a href="https://duansheli.github.io/categories/Java%E6%B7%B1%E5%85%A5">Java深入</a></span>
-                                
-                            </div>
-                            
-                            <div class="post-content">
-                                JVM内存结构 JVM是java代码的运行环境， 用来加载 .class和jar文件 , 运行代码。
-内存区域 +------------------------------------------------------+ | | | +-------------+ +---------------+ | | | xxxA.class | | | | | | xxxB.……
-                            </div>
-                            <p class="readmore"><a href="https://duansheli.github.io/2018/07/14/jvm-memory-gc.html">阅读全文</a></p>
-                        </article>
-                    
-                    
-		    
-                        <article class="post">
-                            <header>
-                                <h1 class="post-title">
-                                    <a href="https://duansheli.github.io/2018/07/08/classloader-modifiers-exception.html" title="类加载器加载的类不能创建对象" >类加载器加载的类不能创建对象</a>
-                                </h1>
-                            </header>
-                            <date class="post-meta meta-date">
-                                2018年7月8日
-                            </date>
-                            
-                            <div class="post-meta">
-                                <span>|</span>
-                                
-                                <span class="meta-category"><a href="https://duansheli.github.io/categories/Java%E6%B7%B1%E5%85%A5">Java深入</a></span>
-                                
-                            </div>
-                            
-                            <div class="post-content">
-                                IllegalAccessException 异常信息 Exception in thread &quot;main&quot; java.lang.IllegalAccessException: Class fluffy.mo.MyClassloader can not access a member of class fluffy.mo.Car with modifiers &quot;public&quot; at sun.……
-                            </div>
-                            <p class="readmore"><a href="https://duansheli.github.io/2018/07/08/classloader-modifiers-exception.html">阅读全文</a></p>
-                        </article>
-                    
-                    
-		    
-                        <article class="post">
-                            <header>
-                                <h1 class="post-title">
-                                    <a href="https://duansheli.github.io/2018/06/27/classloader-spi.html" title="SPI与contextclassloader" >SPI与contextclassloader</a>
-                                </h1>
-                            </header>
-                            <date class="post-meta meta-date">
-                                2018年6月27日
-                            </date>
-                            
-                            <div class="post-meta">
-                                <span>|</span>
-                                
-                                <span class="meta-category"><a href="https://duansheli.github.io/categories/Java%E6%B7%B1%E5%85%A5">Java深入</a></span>
-                                
-                            </div>
-                            
-                            <div class="post-content">
-                                目标 通过SPI学习setContextClassLoader，getContextClassLoader的用法
-SPI概念 SPI（Service Provider Interface）是JDK内置的一种提供服务发现的机制。 也可以看成是一种服务注册或者ioc
-自定义SPI方式
- 定义一个接口 fluffy.mo.CarPlugin 定义两个实现类 fluffy.mo.RedCar、 fluffy.mo.BlueCar 配置文件 【META-INF/services/文件名=接口全名】 &gt; META-INF/services/fluffy.mo.CarPlugin &gt;  &gt; fluffy.……
-                            </div>
-                            <p class="readmore"><a href="https://duansheli.github.io/2018/06/27/classloader-spi.html">阅读全文</a></p>
-                        </article>
-                    
-                    
-		    
-                        <article class="post">
-                            <header>
-                                <h1 class="post-title">
-                                    <a href="https://duansheli.github.io/2018/06/21/classloader-start.html" title="类加载器使用" >类加载器使用</a>
-                                </h1>
-                            </header>
-                            <date class="post-meta meta-date">
-                                2018年6月21日
-                            </date>
-                            
-                            <div class="post-meta">
-                                <span>|</span>
-                                
-                                <span class="meta-category"><a href="https://duansheli.github.io/categories/Java%E6%B7%B1%E5%85%A5">Java深入</a></span>
-                                
-                            </div>
-                            
-                            <div class="post-content">
-                                类加载器 引入 一般开发都不会接触classloader的概念，但程序的运行却是建立在classloader之上的 为什么要有类加载器： java程序的启动首先就需要jvm去加载class 而代码中的对象创建类调用【new Person(); Autil.currentTime();】 都需要class被jvm加载 使用类的静态方法，或者创建对象前，需要先加载class 而每个class必然由一个classloader加载  方向 貌似类加载的事情不需要我们操心，虚拟机已经帮我们解决了 那学这个能干嘛： * 更了解虚拟机; * 在复杂的生产环境可能遇到class找不到异常,了解这个有助于排查错误; * 自研服务/插件，动态加载代码; * tomcat的项目代码热部署，jsp热部署; * 各种热部署插件; * 软件破解;  划重点 一个class在内存中只存一份，以及限定条件 defineClass决定class的类加载器是谁 线程上下文类加载器用于隐式传参 一个对象的类由哪个类加载器去加载，取决于显示使用类或显示使用类加载器……
-                            </div>
-                            <p class="readmore"><a href="https://duansheli.github.io/2018/06/21/classloader-start.html">阅读全文</a></p>
-                        </article>
-                    
-                    
-		    
-                        <article class="post">
-                            <header>
-                                <h1 class="post-title">
-                                    <a href="https://duansheli.github.io/2018/06/05/proxy-rpc-01.html" title="动态代理-rpc示例-01" >动态代理-rpc示例-01</a>
-                                </h1>
-                            </header>
-                            <date class="post-meta meta-date">
-                                2018年6月5日
-                            </date>
-                            
-                            <div class="post-meta">
-                                <span>|</span>
-                                
-                                <span class="meta-category"><a href="https://duansheli.github.io/categories/Java%E6%B7%B1%E5%85%A5">Java深入</a></span>
-                                
-                            </div>
-                            
-                            <div class="post-content">
-                                目标 写个简单的rpc 调用
-Rpc大致思路 定义一个接口HelloService 放在iface.jar中 应用P中引用iface.jar 实现接口HelloService进行处理任务 注册bean到spring中 应用C中, 通过spring获取HelloService的实例phService 调用phService.echo(xxx)方法，获得返回结果 应用P运行在1个jvm中 应用C运行在另1个jvm中 phService实质为一个代理对象 该代理对象通过把调用的参数封装，序列化后，通过网络传输给应用P 应用P根据收到参数后，调用处理接口相应的实现类，并将结果回传给应用C端 最终代理对象返回收到的运行结果  序列化-知识点补充 进行RPC调用必然要涉及对方法参数的序列化。 序列化框架有很多， 如protobuf、thrift、hession等 dubbo的rpc是支持多种序列化方式，如Java原生、Kryo、webservice等 spring cloud的http调用也算一种序列化方式 有了序列化工具，不仅仅是跨JVM的方法调用，还能跨语言调用。 本次示例使用java原生序列化  初版代码 所用到包 import java.……
-                            </div>
-                            <p class="readmore"><a href="https://duansheli.github.io/2018/06/05/proxy-rpc-01.html">阅读全文</a></p>
-                        </article>
-                    
-                    
-		    
-                        <article class="post">
-                            <header>
-                                <h1 class="post-title">
-                                    <a href="https://duansheli.github.io/2018/06/05/proxy-rpc-02.html" title="动态代理-rpc示例-02" >动态代理-rpc示例-02</a>
-                                </h1>
-                            </header>
-                            <date class="post-meta meta-date">
-                                2018年6月5日
-                            </date>
-                            
-                            <div class="post-meta">
-                                <span>|</span>
-                                
-                                <span class="meta-category"><a href="https://duansheli.github.io/categories/Java%E6%B7%B1%E5%85%A5">Java深入</a></span>
-                                
-                            </div>
-                            
-                            <div class="post-content">
-                                上个版本的代码看着比较生肉，与平时开发时的写法差别较大。 接下来这版，加入了动态代理后
-动态代理-guava版 import com.google.common.reflect.Reflection; class DemoGuava { interface MyMath1 { public Integer sum(Integer a, Integer b); } static class MyMathImpl implements MyMath1 { @Override public Integer sum(Integer a, Integer b) { return a + b; } } public static void main(String[] args) { MyMath1 tg = new MyMathImpl(); // 创建对象代理 MyMath1 math = (MyMath1) Reflection.……
-                            </div>
-                            <p class="readmore"><a href="https://duansheli.github.io/2018/06/05/proxy-rpc-02.html">阅读全文</a></p>
-                        </article>
-                    
-                    
                     
 
 
@@ -351,6 +300,10 @@ Rpc大致思路 定义一个接口HelloService 放在iface.jar中 应用P中引�
     
     <li >
         <a href="https://duansheli.github.io/page/4/">4</a>
+    </li>
+    
+    <li >
+        <a href="https://duansheli.github.io/page/5/">5</a>
     </li>
     
 
@@ -381,6 +334,22 @@ Rpc大致思路 定义一个接口HelloService 放在iface.jar中 应用P中引�
 <ul class="widget-list">
     
     <li>
+        <a href="https://duansheli.github.io/2019/11/12/doh.html" title="群晖两步验证的关闭">群晖两步验证的关闭</a>
+    </li>
+    
+    <li>
+        <a href="https://duansheli.github.io/2019/10/28/update-rule-by-scanner.html" title="使用drools的规则管理平台-01">使用drools的规则管理平台-01</a>
+    </li>
+    
+    <li>
+        <a href="https://duansheli.github.io/2019/10/28/update-rule-by-scanner.html" title="使用drools的规则管理平台-02">使用drools的规则管理平台-02</a>
+    </li>
+    
+    <li>
+        <a href="https://duansheli.github.io/2019/10/26/update-rule-by-scanner.html" title="自定义动态更新drools规则">自定义动态更新drools规则</a>
+    </li>
+    
+    <li>
         <a href="https://duansheli.github.io/2019/09/12/doh.html" title="浏览器启用dns-over-https(DoH)">浏览器启用dns-over-https(DoH)</a>
     </li>
     
@@ -401,23 +370,7 @@ Rpc大致思路 定义一个接口HelloService 放在iface.jar中 应用P中引�
     </li>
     
     <li>
-        <a href="https://duansheli.github.io/2019/02/10/jstack-demo.html" title="使用jstack分析线程-示例">使用jstack分析线程-示例</a>
-    </li>
-    
-    <li>
-        <a href="https://duansheli.github.io/2019/06/05/check-credit.html" title="查查查-各类信用查询">查查查-各类信用查询</a>
-    </li>
-    
-    <li>
-        <a href="https://duansheli.github.io/2019/09/09/docker-cp.html" title="docker的复制文件操作">docker的复制文件操作</a>
-    </li>
-    
-    <li>
-        <a href="https://duansheli.github.io/2019/06/05/relax.html" title="休闲娱乐">休闲娱乐</a>
-    </li>
-    
-    <li>
-        <a href="https://duansheli.github.io/2019/05/25/download-openjdk.html" title="各类openjdk下载地址">各类openjdk下载地址</a>
+        <a href="https://duansheli.github.io/2019/07/06/check-credit.html" title="Github 最简单的认证方式 - Access Token[转]">Github 最简单的认证方式 - Access Token[转]</a>
     </li>
     
 </ul>
@@ -434,7 +387,7 @@ Rpc大致思路 定义一个接口HelloService 放在iface.jar中 应用P中引�
     </li>
     
     <li>
-        <a href="https://duansheli.github.io/categories/k8s%E9%9B%86%E7%BE%A4/">k8s集群(3)</a>
+        <a href="https://duansheli.github.io/categories/k8s%E9%9B%86%E7%BE%A4/">k8s集群(4)</a>
     </li>
     
 </ul>
@@ -452,11 +405,15 @@ Rpc大致思路 定义一个接口HelloService 放在iface.jar中 应用P中引�
     
     <a href="https://duansheli.github.io/tags/drone/">drone</a>
     
+    <a href="https://duansheli.github.io/tags/drools/">drools</a>
+    
     <a href="https://duansheli.github.io/tags/dubbo/">dubbo</a>
     
     <a href="https://duansheli.github.io/tags/elasticsearch/">elasticsearch</a>
     
     <a href="https://duansheli.github.io/tags/gc/">gc</a>
+    
+    <a href="https://duansheli.github.io/tags/git/">git</a>
     
     <a href="https://duansheli.github.io/tags/hashids/">hashids</a>
     
@@ -493,6 +450,8 @@ Rpc大致思路 定义一个接口HelloService 放在iface.jar中 应用P中引�
     <a href="https://duansheli.github.io/tags/zipkin/">zipkin</a>
     
     <a href="https://duansheli.github.io/tags/%E5%88%86%E5%B8%83%E5%BC%8F%E4%BA%8B%E5%8A%A1/">分布式事务</a>
+    
+    <a href="https://duansheli.github.io/tags/%E6%8C%81%E7%BB%AD%E9%9B%86%E6%88%90/">持续集成</a>
     
     <a href="https://duansheli.github.io/tags/%E7%99%BB%E5%BD%95/">登录</a>
     

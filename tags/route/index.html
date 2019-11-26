@@ -76,6 +76,24 @@
                         <article class="post">
                             <header>
                                 <h1 class="post-title">
+                                    <a href="https://duansheli.github.io/2019/11/12/doh.html">群晖两步验证的关闭</a>
+                                </h1>
+                            </header>
+                            <date class="post-meta meta-date">
+                                2019年11月12日
+                            </date>
+                            
+                            <div class="post-content">
+                                家里的网络用的是软路由拨号的，软路由装在群晖的虚拟机里 突然断网了 于是登上软路由看看是咋了， 发现访问不了 估计死机了，那就重启下虚拟机好了，访问群晖时发现二次验证的软件不在身边 找软件找半天，突然想起来重启群晖主机，虚拟机一样重启
+群晖主机的关闭  可以在web管理界面关机，但目前无法登录 可以直接按住开机键等一会就关机了 虽然web界面无法访问，但ssh可以连上 shutdown命令关机  web界面的登录 虽然重启主机解决了网络问题 但登录问题咋整 网上搜了下
+官方的解决方案是 用回形针轻按住 RESET 按钮约 4 秒 , 然后重新配置账户 https://www.……
+                                <p class="readmore"><a href="https://duansheli.github.io/2019/11/12/doh.html">阅读全文</a></p>
+                            </div>
+                        </article>
+                    
+                        <article class="post">
+                            <header>
+                                <h1 class="post-title">
                                     <a href="https://duansheli.github.io/2019/09/12/doh.html">浏览器启用dns-over-https(DoH)</a>
                                 </h1>
                             </header>
@@ -86,6 +104,24 @@
                             <div class="post-content">
                                 firefox chrome://flags Secure DNS lookups. 启用该选项 重启浏览器  chrome chrome://flags Secure DNS lookups. 启用该选项 重启浏览器  修改chrome快捷方式的参数 增加以下参数 --enable-features=&quot;dns-over-https&lt;DoHTrial&quot; --force-fieldtrials=&quot;DoHTrial/Group1&quot; --force-fieldtrial-params=&quot;DoHTrial.……
                                 <p class="readmore"><a href="https://duansheli.github.io/2019/09/12/doh.html">阅读全文</a></p>
+                            </div>
+                        </article>
+                    
+                        <article class="post">
+                            <header>
+                                <h1 class="post-title">
+                                    <a href="https://duansheli.github.io/2019/08/22/cloudflare-ddns.html">cloudflare设置ddns</a>
+                                </h1>
+                            </header>
+                            <date class="post-meta meta-date">
+                                2019年2月22日
+                            </date>
+                            
+                            <div class="post-content">
+                                主要流程 最终目的是 让 movie.aaabbb.com 能解析成家中的公网ip
+最终的api为
+curl -X PUT &quot;https://api.cloudflare.com/client/v4/zones/$tzone_id/dns_records/$trecord_id&quot; \ -H &quot;X-Auth-Email: $auth_email&quot; \ -H &quot;X-Auth-Key: $auth_key&quot; \ -H &quot;Content-Type: application/json&quot; \ --data '{&quot;type&quot;:&quot;A&quot;,&quot;name&quot;:&quot;file.……
+                                <p class="readmore"><a href="https://duansheli.github.io/2019/08/22/cloudflare-ddns.html">阅读全文</a></p>
                             </div>
                         </article>
                     
@@ -114,6 +150,22 @@
 <ul class="widget-list">
     
     <li>
+        <a href="https://duansheli.github.io/2019/11/12/doh.html" title="群晖两步验证的关闭">群晖两步验证的关闭</a>
+    </li>
+    
+    <li>
+        <a href="https://duansheli.github.io/2019/10/28/update-rule-by-scanner.html" title="使用drools的规则管理平台-01">使用drools的规则管理平台-01</a>
+    </li>
+    
+    <li>
+        <a href="https://duansheli.github.io/2019/10/28/update-rule-by-scanner.html" title="使用drools的规则管理平台-02">使用drools的规则管理平台-02</a>
+    </li>
+    
+    <li>
+        <a href="https://duansheli.github.io/2019/10/26/update-rule-by-scanner.html" title="自定义动态更新drools规则">自定义动态更新drools规则</a>
+    </li>
+    
+    <li>
         <a href="https://duansheli.github.io/2019/09/12/doh.html" title="浏览器启用dns-over-https(DoH)">浏览器启用dns-over-https(DoH)</a>
     </li>
     
@@ -134,23 +186,7 @@
     </li>
     
     <li>
-        <a href="https://duansheli.github.io/2019/02/10/jstack-demo.html" title="使用jstack分析线程-示例">使用jstack分析线程-示例</a>
-    </li>
-    
-    <li>
-        <a href="https://duansheli.github.io/2019/06/05/check-credit.html" title="查查查-各类信用查询">查查查-各类信用查询</a>
-    </li>
-    
-    <li>
-        <a href="https://duansheli.github.io/2019/09/09/docker-cp.html" title="docker的复制文件操作">docker的复制文件操作</a>
-    </li>
-    
-    <li>
-        <a href="https://duansheli.github.io/2019/06/05/relax.html" title="休闲娱乐">休闲娱乐</a>
-    </li>
-    
-    <li>
-        <a href="https://duansheli.github.io/2019/05/25/download-openjdk.html" title="各类openjdk下载地址">各类openjdk下载地址</a>
+        <a href="https://duansheli.github.io/2019/07/06/check-credit.html" title="Github 最简单的认证方式 - Access Token[转]">Github 最简单的认证方式 - Access Token[转]</a>
     </li>
     
 </ul>
@@ -167,7 +203,7 @@
     </li>
     
     <li>
-        <a href="https://duansheli.github.io/categories/k8s%E9%9B%86%E7%BE%A4/">k8s集群(3)</a>
+        <a href="https://duansheli.github.io/categories/k8s%E9%9B%86%E7%BE%A4/">k8s集群(4)</a>
     </li>
     
 </ul>
@@ -185,11 +221,15 @@
     
     <a href="https://duansheli.github.io/tags/drone/">drone</a>
     
+    <a href="https://duansheli.github.io/tags/drools/">drools</a>
+    
     <a href="https://duansheli.github.io/tags/dubbo/">dubbo</a>
     
     <a href="https://duansheli.github.io/tags/elasticsearch/">elasticsearch</a>
     
     <a href="https://duansheli.github.io/tags/gc/">gc</a>
+    
+    <a href="https://duansheli.github.io/tags/git/">git</a>
     
     <a href="https://duansheli.github.io/tags/hashids/">hashids</a>
     
@@ -226,6 +266,8 @@
     <a href="https://duansheli.github.io/tags/zipkin/">zipkin</a>
     
     <a href="https://duansheli.github.io/tags/%E5%88%86%E5%B8%83%E5%BC%8F%E4%BA%8B%E5%8A%A1/">分布式事务</a>
+    
+    <a href="https://duansheli.github.io/tags/%E6%8C%81%E7%BB%AD%E9%9B%86%E6%88%90/">持续集成</a>
     
     <a href="https://duansheli.github.io/tags/%E7%99%BB%E5%BD%95/">登录</a>
     

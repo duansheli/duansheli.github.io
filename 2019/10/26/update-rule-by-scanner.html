@@ -1,0 +1,824 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+
+    <meta charset="utf-8">
+    <meta name="generator" content="Hugo 0.59.0" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <title>自定义动态更新drools规则 | 断舍离的博客</title>
+    <meta property="og:title" content="自定义动态更新drools规则 - 断舍离的博客">
+    <meta property="og:type" content="article">
+        
+    <meta property="article:published_time" content="2019-10-26T17:28:13&#43;08:00">
+        
+        
+    <meta property="article:modified_time" content="2019-10-26T17:28:13&#43;08:00">
+        
+    <meta name="Keywords" content="java,scala,spark,kubernetes">
+    <meta name="description" content="自定义动态更新drools规则">
+        
+    <meta name="author" content="断舍离">
+    <meta property="og:url" content="https://duansheli.github.io/2019/10/26/update-rule-by-scanner.html">
+    <link rel="shortcut icon" href="/favicon.ico" type="image/x-icon">
+
+    <link rel="stylesheet" href="/css/normalize.css">
+    
+        <link rel="stylesheet" href="/css/prism.css">
+    
+    <link rel="stylesheet" href="/css/style.css">
+    <script type="text/javascript" src="//cdnjs.cloudflare.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+
+    
+
+
+    
+    
+</head>
+
+<body>
+<header id="header" class="clearfix">
+    <div class="container">
+        <div class="col-group">
+            <div class="site-name ">
+                
+                    <a id="logo" href="https://duansheli.github.io">
+                        断舍离的博客
+                    </a>
+                
+                <p class="description">java, scala, spark, kubernetes</p>
+            </div>
+            <div>
+                <nav id="nav-menu" class="clearfix">
+                    <a class="" href="https://duansheli.github.io">首页</a>
+                    
+                    <a  href="https://duansheli.github.io/archives/" title="归档">归档</a>
+                    
+                </nav>
+            </div>
+        </div>
+    </div>
+</header>
+
+
+<div id="body">
+        
+        <div id="virtual_toc_list" style="display: none">
+            <nav id="TableOfContents">
+<ul>
+<li><a href="#简述">简述</a></li>
+<li><a href="#准备kjar工程">准备kjar工程</a>
+<ul>
+<li><a href="#打包成kjar">打包成kjar</a></li>
+<li><a href="#测试流程">测试流程</a></li>
+</ul></li>
+<li><a href="#调用待测规则">调用待测规则</a></li>
+<li><a href="#分析-kiefilesystemscannerimpl">分析 KieFileSystemScannerImpl</a></li>
+<li><a href="#自定义kiescanner">自定义KieScanner</a>
+<ul>
+<li><a href="#运行自定义检测类的逻辑">运行自定义检测类的逻辑</a></li>
+</ul></li>
+</ul>
+</nav>
+        </div>
+        <div id="float_toc_div" style="margin: 10px;border: 1px solid gray;z-index:99999;display: none;">
+            <header style="background-color: #f3f3f3;color: black;border-bottom: 1px solid gray;padding: 10px 10px 10px 10px;">
+                <strong id="toc_btn_open" style="color: black;font-size: large;">目录</strong>
+                <strong id="toc_btn_close" style="color: black;font-size: large;float: right">╳</strong>
+            </header>
+            <div id="toc_list" style="background-color: #f3f3f3;color: black;padding: 10px;">
+        
+            </div>
+        </div>
+        <style type="text/css">
+            #float_toc_div {
+                position: fixed;
+                display: none;
+                 
+                height: auto;
+                font-size: 13px;
+            }
+        
+            #toc_list a:hover,
+            #toc_list a:active {
+                color: #ba3925;
+            }
+        </style>
+        <script>
+            window.onload = function () {
+                let tocNavElem = document.getElementById("TableOfContents");
+                let floatTocDivElem = document.getElementById("float_toc_div");
+                let tocListElem = floatTocDivElem.getElementsByTagName('div')[0];
+                let colGroupElem = document.getElementById("body").getElementsByClassName("col-group")[0]
+                let floatTocWidth = (document.body.clientWidth - colGroupElem.offsetWidth) / 2 - 16;
+                var useFloatToc = false;
+
+                if (floatTocWidth >= 100) {
+                    useFloatToc = true;
+                    document.getElementById("toc_list").appendChild(tocNavElem);
+                    floatTocDivElem.style.display = 'block';
+                    floatTocDivElem.style.width = floatTocWidth + 'px';
+                    top();
+                    floatTocDivElem.style.left = '0px';
+
+                    function top() {
+                        if (document.getElementsByClassName('container')[0].offsetWidth <= 720) {
+                            floatTocDivElem.style.top = '0px';
+                        } else {
+                            floatTocDivElem.style.top = window.innerHeight / 9 + 'px';
+                        }
+                    }
+
+                    function ishide() {
+                        if (document.getElementsByClassName('container')[0].offsetWidth <= 720) {
+                            floatTocDivElem.style.top = '0px';
+                        } else {
+                            floatTocDivElem.style.display = 'block';
+                        }
+                    }
+
+                    window.onscroll = function () {
+                        ishide();
+                        if ((document.documentElement.scrollTop != 0) && (floatTocDivElem.style.display == 'block')) {
+                            top();
+                        }
+                    };
+
+                    window.onresize = function () {
+                        ishide();
+                    }
+
+                    document.getElementById("toc_btn_open").addEventListener('click', function () {
+                        switch (tocListElem.style.display) {
+                            case "none":
+                                document.getElementById("toc_btn_close").style.display = "";
+                                tocListElem.style.display = "";
+                                floatTocDivElem.getElementsByTagName("header")[0].style.borderBottom = "1px solid gray";
+                                break;
+                            default:
+                                break;
+                        }
+                    }, false);
+
+                    document.getElementById("toc_btn_close").addEventListener('click', function () {
+                        switch (tocListElem.style.display) {
+                            case "":
+                                document.getElementById("toc_btn_close").style.display = "none";
+                                tocListElem.style.display = "none";
+                                floatTocDivElem.getElementsByTagName("header")[0].style.borderBottom = "";
+                                break;
+                            default:
+                                break;
+                        }
+                    }, false);
+                } else {
+                    let fixedTocElem = document.getElementsByClassName("toc-article")[0];
+                    fixedTocElem.appendChild(tocNavElem);
+                    fixedTocElem.parentElement.style.display = "";
+                }
+                document.getElementById("virtual_toc_list").remove();
+            };   
+        </script>
+        
+    <div class="container">
+        <div class="col-group">
+
+            <div class="col-8" id="main">
+                <div class="res-cons">
+                    <article class="post">
+                        <header>
+                            <h1 class="post-title">自定义动态更新drools规则</h1>
+                        </header>
+                        <date class="post-meta meta-date">
+                            2019年10月26日
+                        </date>
+                        
+                        
+                        
+                        <div class="clear" style="display: none">
+                            <div class="toc-article">
+                                <div class="toc-title">文章目录</div>
+                            </div>
+                        </div>
+                        
+                        <div class="post-content">
+                            
+
+<h1 id="简述">简述</h1>
+
+<p>scanner有两个实现 KieRepositoryScannerImpl KieFileSystemScannerImpl
+二者区别为 一个是从文件夹检查更新， 一个是从maven仓库检查更新</p>
+
+<p>下面以 KieFileSystemScannerImpl 为例进行演示从文件夹获取更新
+然后分析过程 最后自定义一个 KieScanner</p>
+
+<h1 id="准备kjar工程">准备kjar工程</h1>
+
+<p>其实就是个maven项目 存放着规则文件</p>
+
+<pre><code class="language-xml">&lt;?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot;?&gt;
+&lt;project xmlns=&quot;http://maven.apache.org/POM/4.0.0&quot; xmlns:xsi=&quot;http://www.w3.org/2001/XMLSchema-instance&quot;
+         xsi:schemaLocation=&quot;http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd&quot;&gt;
+    &lt;modelVersion&gt;4.0.0&lt;/modelVersion&gt;
+
+    &lt;groupId&gt;fluffy.mo&lt;/groupId&gt;
+    &lt;artifactId&gt;kjarUpdate&lt;/artifactId&gt;
+    &lt;version&gt;0.0.1-SNAPSHOT&lt;/version&gt;
+    &lt;packaging&gt;jar&lt;/packaging&gt;
+
+    &lt;properties&gt;
+        &lt;project.build.sourceEncoding&gt;UTF-8&lt;/project.build.sourceEncoding&gt;
+        &lt;project.reporting.outputEncoding&gt;UTF-8&lt;/project.reporting.outputEncoding&gt;
+        &lt;java.version&gt;11&lt;/java.version&gt;
+        &lt;maven.compiler.source&gt;11&lt;/maven.compiler.source&gt;
+        &lt;maven.compiler.target&gt;11&lt;/maven.compiler.target&gt;
+    &lt;/properties&gt;
+&lt;/project&gt;
+</code></pre>
+
+<p>src\main\resources\META-INF\kmodule.xml</p>
+
+<pre><code class="language-xml">&lt;?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot;?&gt;
+&lt;kmodule xmlns=&quot;http://www.drools.org/xsd/kmodule&quot;&gt;
+    &lt;kbase name=&quot;kb1&quot; packages=&quot;vdrl&quot; default=&quot;true&quot;&gt;
+        &lt;ksession name=&quot;ks-testUpdate&quot; type=&quot;stateful&quot; default=&quot;true&quot;/&gt;
+    &lt;/kbase&gt;
+&lt;/kmodule&gt;
+</code></pre>
+
+<p>src\main\resources\vdrl\testUpdate.drl</p>
+
+<pre><code>package vdrl;
+
+global String tag
+rule &quot;aa1&quot;
+when
+  total : Number()
+      from accumulate( d: Double(), sum( d ) )
+then
+  System.out.println(&quot;v1--&quot;+ tag + &quot;--&quot; + total );
+end
+</code></pre>
+
+<h2 id="打包成kjar">打包成kjar</h2>
+
+<p>先打包一次 得到文件 kjarUpdate-0.0.1-SNAPSHOT.jar</p>
+
+<pre><code>mvn clean package
+</code></pre>
+
+<p>修改 pom.xml中的版本号为 0.0.2-SNAPSHOT
+修改 testUpdate.drl 中 【v1】为【v2】
+再打包 得到文件 kjarUpdate-0.0.2-SNAPSHOT.jar</p>
+
+<pre><code>mvn clean package
+</code></pre>
+
+<p>同上 得到 kjarUpdate-0.0.3-SNAPSHOT.jar</p>
+
+<pre><code>mvn clean package
+</code></pre>
+
+<p>kjar 全部放在 drools-demo-update 文件夹中</p>
+
+<pre><code>kjarUpdate-0.0.1-SNAPSHOT.jar
+kjarUpdate-0.0.2-SNAPSHOT.jar
+kjarUpdate-0.0.3-SNAPSHOT.jar
+pom.xml
+scanFoler/
+src/
+</code></pre>
+
+<h2 id="测试流程">测试流程</h2>
+
+<p>先加载 0.0.1 版本的jar 执行规则，
+然后升级到  0.0.2 版本的jar 执行规则，看是否升级成功</p>
+
+<h1 id="调用待测规则">调用待测规则</h1>
+
+<p>jdk 11
+kotlin 1.3.50
+drools  7.18.0.Final</p>
+
+<p>DroolsRunMyScanner.kt</p>
+
+<pre><code class="language-kotlin">package fluffy.test_update_rule
+
+import org.kie.api.KieServices
+import org.kie.api.builder.ReleaseIdComparator.ComparableVersion
+import org.kie.api.runtime.KieSession
+import java.util.concurrent.TimeUnit
+
+val pjRoot = &quot;E:\\myprogram\\my_workspace\\code_rep12\\some-task\\drools-demo-update&quot;;
+// 初版规则 kjar
+val kjar = &quot;$pjRoot/kjarUpdate-0.0.1-SNAPSHOT.jar&quot;
+// 检查更新的文件夹
+val updateFolder = &quot;$pjRoot/scanFoler&quot;;
+fun main() {
+  mainV1();
+}
+
+fun mainV1() {
+    val ks = KieServices.Factory.get()
+    val kModule = ks.repository.addKieModule(ks.resources.newFileSystemResource(kjar))
+    // 创建container
+    val kContainer = ks.newKieContainer(kModule.getReleaseId())
+    // 指定文件夹，每两秒检查一次更新
+    val scanner = ks.newKieScanner(kContainer, updateFolder)
+    scanner.start(TimeUnit.SECONDS.toMillis(2))
+
+    val kss = kContainer.newKieSession(&quot;ks-testUpdate&quot;)
+    kss.setGlobal(&quot;tag&quot;, &quot;A&quot;);
+    runRule(kss)
+    println(&quot;此处打打断点--在文件夹【scanFoler】放入新的kjar--kjarUpdate-0.0.2-SNAPSHOT.jar-然后继续执行&quot;)
+    TimeUnit.SECONDS.sleep(2)
+
+    runRule(kss)
+    println(&quot;完成--可看到之后调用的规则-更新为v2了-对之前创建的session也有效&quot;)
+}
+
+fun runRule(kss: KieSession) {
+    kss.insert(1.01)
+    kss.fireAllRules()
+    kss.insert(1.02)
+    kss.fireAllRules()
+    kss.insert(1.03)
+    kss.fireAllRules()
+}
+</code></pre>
+
+<p>方法 <code>mainV1()</code>的逻辑为 根据v1版本的jar创建一个容器
+新建一个session 运行到断点处，
+手动将 kjar&ndash;kjarUpdate-0.0.2-SNAPSHOT.jar 放入 scanFoler 文件夹
+然后再次触发规则 即可看到 规则已经更新</p>
+
+<p>运行结果</p>
+
+<pre><code>v1--A--1.01
+v1--A--2.0300000000000002
+v1--A--3.0600000000000005
+此处打打断点--在文件夹【scanFoler】放入新的kjar--kjarUpdate-0.0.2-SNAPSHOT.jar-然后继续执行
+v2--A--4.07
+v2--A--5.09
+v2--A--6.12
+完成--可看到之后调用的规则-更新为v2了-对之前创建的session也有效
+</code></pre>
+
+<h1 id="分析-kiefilesystemscannerimpl">分析 KieFileSystemScannerImpl</h1>
+
+<pre><code class="language-java">import java.io.File;
+import java.util.Arrays;
+import java.util.Comparator;
+import java.util.List;
+
+import org.drools.compiler.kie.builder.impl.AbstractKieScanner;
+import org.drools.compiler.kie.builder.impl.InternalKieModule;
+import org.drools.compiler.kie.builder.impl.KieContainerImpl;
+import org.drools.core.impl.InternalKieContainer;
+import org.kie.api.builder.KieScanner;
+import org.kie.api.builder.ReleaseIdComparator.ComparableVersion;
+import org.kie.api.runtime.KieContainer;
+
+public class KieFileSystemScannerImpl extends AbstractKieScanner&lt;InternalKieModule&gt; implements KieScanner {
+
+    private final File repositoryFolder;
+    private final String kjarFileHead;
+    private final VersionComparator versionComparator;
+
+    public KieFileSystemScannerImpl(final KieContainer kieContainer, final String repositoryFolder) {
+        this.kieContainer = ( InternalKieContainer ) kieContainer;
+        // 查询当前的ArtifactId， 以确定文件夹下的新kjar以什么文件名开头
+        this.kjarFileHead = kieContainer.getReleaseId().getArtifactId() + &quot;-&quot;;
+        // 用来从文件夹下找到最新的kjar
+        this.versionComparator = new VersionComparator( kjarFileHead.length() );
+        this.repositoryFolder = new File( repositoryFolder );
+    }
+
+    @Override
+    protected InternalKieModule internalScan() {
+        final File newKJar = findNewFile();
+        return newKJar == null ? null : InternalKieModule.createKieModule(kieContainer.getReleaseId(), newKJar);
+    }
+
+    @Override
+    protected void internalUpdate(final InternalKieModule kmodule ) {
+        ((KieContainerImpl) kieContainer).updateToKieModule( kmodule );
+    }
+
+    private File findNewFile() { // 如果有新的规则kjar，则返回新kjar
+        File[] files = repositoryFolder.listFiles((dir, name) -&gt; name.startsWith(kjarFileHead) &amp;&amp; name.endsWith(&quot;.jar&quot; ));
+        if (files == null || files.length == 0) {
+            return null;
+        }
+
+        File candidateNew = getCandidateNew( files ); // 可能有多个 排序后取最新的
+        // 比较 文件夹中的kjar版本 和 当前容器中使用的版本 , 返回新版本 或空
+        int versionComparison = compareVersion(getVersionFromFile(candidateNew, kjarFileHead.length()), kieContainer.getReleaseId().getVersion());
+        return versionComparison &gt; 0 || ( versionComparison == 0 &amp;&amp; kieContainer.getReleaseId().isSnapshot() ) ? candidateNew : null;
+    }
+
+    private File getCandidateNew( File[] files ) {
+        if (files.length == 1) {
+            return files[0];
+        }
+        final List&lt;File&gt; jarFiles = Arrays.asList(files);
+        jarFiles.sort(versionComparator.reversed());
+        return jarFiles.get(0);
+    }
+
+    private static class VersionComparator implements Comparator&lt;File&gt; {
+        private final int headLength;
+
+        private VersionComparator(final int headLength) {
+            this.headLength = headLength;
+        }
+
+        @Override
+        public int compare(final File f1, final File f2 ) {
+            return compareVersion( getVersionFromFile(f1, headLength), getVersionFromFile(f2, headLength) );
+        }
+    }
+
+    private static int compareVersion(String v1, String v2) {
+        return new ComparableVersion( v1 ).compareTo( new ComparableVersion( v2 ) );
+    }
+
+    private static String getVersionFromFile(File f, int headLength) {
+        String name = f.getName();
+        return name.substring( headLength, name.length()-4 );
+    }
+}
+</code></pre>
+
+<p>测试 drools中比较版本的工具
+org.kie.api.builder.ReleaseIdComparator.ComparableVersion</p>
+
+<pre><code class="language-kotlin">fun testCompareVersion() {
+    val v1 = ComparableVersion(&quot;myshop-1.0.0-20191101.165906-1.jar&quot;)
+    val v2 = ComparableVersion(&quot;myshop-1.0.0-20191104.065907-3.jar&quot;)
+    val v3 = ComparableVersion(&quot;myshop-1.2.0-SNAPSHOT.jar&quot;)
+    val v4 = ComparableVersion(&quot;myshop-1.10.0-SNAPSHOT.jar&quot;)
+    val v5 = ComparableVersion(&quot;myshop-1.10.0.Final.jar&quot;)
+
+    println(v1.compareTo(v2))
+    println(v2.compareTo(v3))
+    println(v3.compareTo(v4))
+    println(v4.compareTo(v5))
+    // 结果显示: v5的版本号最大, 没毛病
+    println(v5.compareTo(v1))
+}
+</code></pre>
+
+<p>KieFileSystemScannerImpl 继承了 AbstractKieScanner
+调度的逻辑在抽象类中
+检查更新的逻辑 在 internalScan 方法中实现
+然后 internalUpdate 中将新规则更新到容器中</p>
+
+<h1 id="自定义kiescanner">自定义KieScanner</h1>
+
+<p>自定义后 可以从指定检查更新的来源
+比如 从数据库查 从某个url去查询</p>
+
+<p>自定义的scanner中 internalScan、 internalUpdate都是复制的 KieFileSystemScannerImpl 的逻辑
+通过在 findNewFile 方法中编写自己的检查更新逻辑</p>
+
+<pre><code class="language-java">package fluffy.test_update_rule;
+
+import org.drools.compiler.kie.builder.impl.AbstractKieScanner;
+import org.drools.compiler.kie.builder.impl.InternalKieModule;
+import org.drools.compiler.kie.builder.impl.KieContainerImpl;
+import org.drools.core.impl.InternalKieContainer;
+import org.kie.api.builder.KieScanner;
+import org.kie.api.runtime.KieContainer;
+
+import java.io.File;
+
+public class KieMyScannerImpl extends AbstractKieScanner&lt;InternalKieModule&gt; implements KieScanner {
+    private final File repositoryFolder;
+    int count = 1;
+
+    public KieMyScannerImpl(final KieContainer kieContainer, final String repositoryFolder) {
+        this.kieContainer = (InternalKieContainer) kieContainer;
+        // 查询当前的ArtifactId， 以确定文件夹下的新kjar以什么文件名开头
+        this.repositoryFolder = new File(repositoryFolder);
+    }
+
+    @Override
+    protected InternalKieModule internalScan() {
+        // 同 KieFileSystemScannerImpl 相同
+        final File newKJar = findNewFile();
+        return newKJar == null ? null : InternalKieModule.createKieModule(kieContainer.getReleaseId(), newKJar);
+    }
+
+    @Override
+    protected void internalUpdate(final InternalKieModule kmodule) {
+        // 同 KieFileSystemScannerImpl 相同
+        ((KieContainerImpl) kieContainer).updateToKieModule(kmodule);
+    }
+
+    private File findNewFile() {
+        // 查找新文件的逻辑， 此处写死了
+        count++;
+        String path = repositoryFolder.getAbsolutePath();
+        File f = null;
+        if (count == 2) {
+            f = new File(path + &quot;/kjarUpdate-0.0.2-SNAPSHOT.jar&quot;);
+        } else if (3 == count) {
+            f = new File(path + &quot;/kjarUpdate-0.0.3-SNAPSHOT.jar&quot;);
+        }
+        if (f != null) {
+            System.out.println(&quot;发现新规则--&quot; + f.getName());
+        }
+        return f;
+    }
+}
+</code></pre>
+
+<h2 id="运行自定义检测类的逻辑">运行自定义检测类的逻辑</h2>
+
+<pre><code class="language-kotlin">fun mainV2() {
+    val ks = KieServices.Factory.get()
+    val kModule = ks.repository.addKieModule(ks.resources.newFileSystemResource(kjar))
+    // 创建container
+    val kContainer = ks.newKieContainer(kModule.getReleaseId())
+
+    val ksss = kContainer.newKieSession(&quot;ks-testUpdate&quot;)
+    ksss.setGlobal(&quot;tag&quot;, &quot;A&quot;);
+    runRule(ksss)
+
+    val scanner = KieMyScannerImpl(kContainer, pjRoot)
+    scanner.start(TimeUnit.SECONDS.toMillis(3))
+
+    println(&quot;此处不打断点--scanner写死了 两个新版本&quot;)
+    TimeUnit.SECONDS.sleep(4)
+    runRule(ksss)
+
+    TimeUnit.SECONDS.sleep(4)
+    runRule(ksss)
+
+    println(&quot;done&quot;)
+}
+</code></pre>
+
+<p>运行结果</p>
+
+<pre><code>v1--A--1.01
+v1--A--2.0300000000000002
+v1--A--3.0600000000000005
+此处不打断点--scanner写死了 两个新版本
+发现新规则--kjarUpdate-0.0.2-SNAPSHOT.jar
+v2--A--4.07
+v2--A--5.09
+v2--A--6.12
+发现新规则--kjarUpdate-0.0.3-SNAPSHOT.jar
+v3--A--7.130000000000001
+v3--A--8.15
+v3--A--9.18
+done
+</code></pre>
+
+<p>归根结底 还是调用的 <code>kieContainer.updateToKieModule( kmodule );</code> 来更新规则的</p>
+
+                        </div>
+
+                        
+
+
+                        
+
+<div class="post-archive">
+    <h2>See Also</h2>
+    <ul class="listing">
+        
+        <li><a href="/2019/09/12/doh.html">浏览器启用dns-over-https(DoH)</a></li>
+        
+        <li><a href="/2019/09/03/hashids-usage.html">使用hashids创建短链服务</a></li>
+        
+        <li><a href="/2019/09/07/zero-width.html">给文章加水印-零宽字符</a></li>
+        
+        <li><a href="/2019/08/16/hashids-usage.html">激活码的生成</a></li>
+        
+        <li><a href="/2019/08/02/k8s-cluster-setup-02.html">mysql物理备份与还原示例</a></li>
+        
+    </ul>
+</div>
+
+
+                        <div class="post-meta meta-tags">
+                            
+                            <ul class="clearfix">
+                                
+                                <li><a href="https://duansheli.github.io/tags/drools">drools</a></li>
+                                
+                            </ul>
+                            
+                        </div>
+                    </article>
+                    
+    
+
+    
+    
+                </div>
+            </div>
+            <div id="secondary">
+    <section class="widget">
+        <form id="search" action="//www.google.com/search" method="get" accept-charset="utf-8" target="_blank" _lpchecked="1">
+      
+      <input type="text" name="q" maxlength="20" placeholder="Search">
+      <input type="hidden" name="sitesearch" value="https://duansheli.github.io">
+      <button type="submit" class="submit icon-search"></button>
+</form>
+    </section>
+    
+    <section class="widget">
+        <h3 class="widget-title">最近文章</h3>
+<ul class="widget-list">
+    
+    <li>
+        <a href="https://duansheli.github.io/2019/11/12/doh.html" title="群晖两步验证的关闭">群晖两步验证的关闭</a>
+    </li>
+    
+    <li>
+        <a href="https://duansheli.github.io/2019/10/28/update-rule-by-scanner.html" title="使用drools的规则管理平台-01">使用drools的规则管理平台-01</a>
+    </li>
+    
+    <li>
+        <a href="https://duansheli.github.io/2019/10/28/update-rule-by-scanner.html" title="使用drools的规则管理平台-02">使用drools的规则管理平台-02</a>
+    </li>
+    
+    <li>
+        <a href="https://duansheli.github.io/2019/10/26/update-rule-by-scanner.html" title="自定义动态更新drools规则">自定义动态更新drools规则</a>
+    </li>
+    
+    <li>
+        <a href="https://duansheli.github.io/2019/09/12/doh.html" title="浏览器启用dns-over-https(DoH)">浏览器启用dns-over-https(DoH)</a>
+    </li>
+    
+    <li>
+        <a href="https://duansheli.github.io/2019/09/03/hashids-usage.html" title="使用hashids创建短链服务">使用hashids创建短链服务</a>
+    </li>
+    
+    <li>
+        <a href="https://duansheli.github.io/2019/09/07/zero-width.html" title="给文章加水印-零宽字符">给文章加水印-零宽字符</a>
+    </li>
+    
+    <li>
+        <a href="https://duansheli.github.io/2019/08/16/hashids-usage.html" title="激活码的生成">激活码的生成</a>
+    </li>
+    
+    <li>
+        <a href="https://duansheli.github.io/2019/08/02/k8s-cluster-setup-02.html" title="mysql物理备份与还原示例">mysql物理备份与还原示例</a>
+    </li>
+    
+    <li>
+        <a href="https://duansheli.github.io/2019/07/06/check-credit.html" title="Github 最简单的认证方式 - Access Token[转]">Github 最简单的认证方式 - Access Token[转]</a>
+    </li>
+    
+</ul>
+    </section>
+
+    
+
+    <section class="widget">
+        <h3 class="widget-title">分类</h3>
+<ul class="widget-list">
+    
+    <li>
+        <a href="https://duansheli.github.io/categories/Java%E6%B7%B1%E5%85%A5/">Java深入(8)</a>
+    </li>
+    
+    <li>
+        <a href="https://duansheli.github.io/categories/k8s%E9%9B%86%E7%BE%A4/">k8s集群(4)</a>
+    </li>
+    
+</ul>
+    </section>
+
+    <section class="widget">
+        <h3 class="widget-title">标签</h3>
+<div class="tagcloud">
+    
+    <a href="https://duansheli.github.io/tags/Java/">Java</a>
+    
+    <a href="https://duansheli.github.io/tags/classloader/">classloader</a>
+    
+    <a href="https://duansheli.github.io/tags/docker/">docker</a>
+    
+    <a href="https://duansheli.github.io/tags/drone/">drone</a>
+    
+    <a href="https://duansheli.github.io/tags/drools/">drools</a>
+    
+    <a href="https://duansheli.github.io/tags/dubbo/">dubbo</a>
+    
+    <a href="https://duansheli.github.io/tags/elasticsearch/">elasticsearch</a>
+    
+    <a href="https://duansheli.github.io/tags/gc/">gc</a>
+    
+    <a href="https://duansheli.github.io/tags/git/">git</a>
+    
+    <a href="https://duansheli.github.io/tags/hashids/">hashids</a>
+    
+    <a href="https://duansheli.github.io/tags/id/">id</a>
+    
+    <a href="https://duansheli.github.io/tags/java/">java</a>
+    
+    <a href="https://duansheli.github.io/tags/jdk/">jdk</a>
+    
+    <a href="https://duansheli.github.io/tags/jvm/">jvm</a>
+    
+    <a href="https://duansheli.github.io/tags/k8s/">k8s</a>
+    
+    <a href="https://duansheli.github.io/tags/life/">life</a>
+    
+    <a href="https://duansheli.github.io/tags/mysql/">mysql</a>
+    
+    <a href="https://duansheli.github.io/tags/proxy/">proxy</a>
+    
+    <a href="https://duansheli.github.io/tags/rocketmq/">rocketmq</a>
+    
+    <a href="https://duansheli.github.io/tags/route/">route</a>
+    
+    <a href="https://duansheli.github.io/tags/scala/">scala</a>
+    
+    <a href="https://duansheli.github.io/tags/session/">session</a>
+    
+    <a href="https://duansheli.github.io/tags/spring-boot/">spring-boot</a>
+    
+    <a href="https://duansheli.github.io/tags/spring-security/">spring-security</a>
+    
+    <a href="https://duansheli.github.io/tags/springboot/">springboot</a>
+    
+    <a href="https://duansheli.github.io/tags/zipkin/">zipkin</a>
+    
+    <a href="https://duansheli.github.io/tags/%E5%88%86%E5%B8%83%E5%BC%8F%E4%BA%8B%E5%8A%A1/">分布式事务</a>
+    
+    <a href="https://duansheli.github.io/tags/%E6%8C%81%E7%BB%AD%E9%9B%86%E6%88%90/">持续集成</a>
+    
+    <a href="https://duansheli.github.io/tags/%E7%99%BB%E5%BD%95/">登录</a>
+    
+</div>
+    </section>
+
+    
+
+    <section class="widget">
+        <h3 class="widget-title">其它</h3>
+        <ul class="widget-list">
+            <li><a href="https://duansheli.github.io/index.xml">文章 RSS</a></li>
+        </ul>
+    </section>
+</div>
+        </div>
+    </div>
+</div>
+<footer id="footer">
+    <div class="container">
+        &copy; 2019 <a href="https://duansheli.github.io">断舍离的博客 By 断舍离</a>.
+        Powered by <a rel="nofollow noreferer noopener" href="https://gohugo.io" target="_blank">Hugo</a>.
+        <a href="https://www.flysnow.org/" target="_blank">Theme</a> based on <a href="https://github.com/rujews/maupassant-hugo" target="_blank">maupassant</a>.
+        
+    </div>
+</footer>
+
+
+    
+    <script type="text/javascript">
+        
+        (function () {
+            $("pre code").parent().addClass("line-numbers")
+        }());
+
+        window.MathJax = {
+            tex2jax: {
+                inlineMath: [['$', '$']],
+                processEscapes: true
+                }
+            };
+    </script>
+    <script type="text/javascript" src="/js/prism.js" async="true"></script>
+    <script src='https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/MathJax.js?config=TeX-MML-AM_CHTML' async></script>
+
+
+<a id="rocket" href="#top"></a>
+<script type="text/javascript" src="/js/totop.js?v=0.0.0" async=""></script>
+
+<script type="application/javascript">
+var doNotTrack = false;
+if (!doNotTrack) {
+	window.ga=window.ga||function(){(ga.q=ga.q||[]).push(arguments)};ga.l=+new Date;
+	ga('create', 'GTM-NPJC8J2', 'auto');
+	
+	ga('send', 'pageview');
+}
+</script>
+<script async src='https://www.google-analytics.com/analytics.js'></script>
+
+
+
+
+
+
+</body>
+</html>

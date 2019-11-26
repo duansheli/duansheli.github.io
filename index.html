@@ -67,6 +67,90 @@
                         <article class="post">
                             <header>
                                 <h1 class="post-title">
+                                    <a href="https://duansheli.github.io/2019/11/12/doh.html" title="群晖两步验证的关闭" >群晖两步验证的关闭</a>
+                                </h1>
+                            </header>
+                            <date class="post-meta meta-date">
+                                2019年11月12日
+                            </date>
+                            
+                            <div class="post-content">
+                                家里的网络用的是软路由拨号的，软路由装在群晖的虚拟机里 突然断网了 于是登上软路由看看是咋了， 发现访问不了 估计死机了，那就重启下虚拟机好了，访问群晖时发现二次验证的软件不在身边 找软件找半天，突然想起来重启群晖主机，虚拟机一样重启
+群晖主机的关闭  可以在web管理界面关机，但目前无法登录 可以直接按住开机键等一会就关机了 虽然web界面无法访问，但ssh可以连上 shutdown命令关机  web界面的登录 虽然重启主机解决了网络问题 但登录问题咋整 网上搜了下
+官方的解决方案是 用回形针轻按住 RESET 按钮约 4 秒 , 然后重新配置账户 https://www.……
+                            </div>
+                            <p class="readmore"><a href="https://duansheli.github.io/2019/11/12/doh.html">阅读全文</a></p>
+                        </article>
+                    
+                    
+		    
+                        <article class="post">
+                            <header>
+                                <h1 class="post-title">
+                                    <a href="https://duansheli.github.io/2019/10/28/update-rule-by-scanner.html" title="使用drools的规则管理平台-01" >使用drools的规则管理平台-01</a>
+                                </h1>
+                            </header>
+                            <date class="post-meta meta-date">
+                                2019年10月28日
+                            </date>
+                            
+                            <div class="post-content">
+                                简述 drools的BRMS(业务规则管理系统)
+起先叫 guvnor 然后叫 drools-workbench
+从7.18版本开始叫 Business Central Workbench
+Business-Central Workbench == Drools Workbench + jBPM Workbench
+drools-workbench 用来管理规则……
+                            </div>
+                            <p class="readmore"><a href="https://duansheli.github.io/2019/10/28/update-rule-by-scanner.html">阅读全文</a></p>
+                        </article>
+                    
+                    
+		    
+                        <article class="post">
+                            <header>
+                                <h1 class="post-title">
+                                    <a href="https://duansheli.github.io/2019/10/28/update-rule-by-scanner.html" title="使用drools的规则管理平台-02" >使用drools的规则管理平台-02</a>
+                                </h1>
+                            </header>
+                            <date class="post-meta meta-date">
+                                2019年10月28日
+                            </date>
+                            
+                            <div class="post-content">
+                                <p>上一节演示了 workbench 的搭建，规则编写、规则测试、规则部署
+还通过http使用了部署在kie-server中的规则</p>
+
+<p>下面演示使用java客户端，调用部署在kie-server中的规则。</p>……
+                            </div>
+                            <p class="readmore"><a href="https://duansheli.github.io/2019/10/28/update-rule-by-scanner.html">阅读全文</a></p>
+                        </article>
+                    
+                    
+		    
+                        <article class="post">
+                            <header>
+                                <h1 class="post-title">
+                                    <a href="https://duansheli.github.io/2019/10/26/update-rule-by-scanner.html" title="自定义动态更新drools规则" >自定义动态更新drools规则</a>
+                                </h1>
+                            </header>
+                            <date class="post-meta meta-date">
+                                2019年10月26日
+                            </date>
+                            
+                            <div class="post-content">
+                                简述 scanner有两个实现 KieRepositoryScannerImpl KieFileSystemScannerImpl 二者区别为 一个是从文件夹检查更新， 一个是从maven仓库检查更新
+下面以 KieFileSystemScannerImpl 为例进行演示从文件夹获取更新 然后分析过程 最后自定义一个 KieScanner
+准备kjar工程 其实就是个maven项目 存放着规则文件
+&lt;?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot;?&gt; &lt;project xmlns=&quot;http://maven.……
+                            </div>
+                            <p class="readmore"><a href="https://duansheli.github.io/2019/10/26/update-rule-by-scanner.html">阅读全文</a></p>
+                        </article>
+                    
+                    
+		    
+                        <article class="post">
+                            <header>
+                                <h1 class="post-title">
                                     <a href="https://duansheli.github.io/2019/09/12/doh.html" title="浏览器启用dns-over-https(DoH)" >浏览器启用dns-over-https(DoH)</a>
                                 </h1>
                             </header>
@@ -161,102 +245,19 @@ by duansheli  项目源码 https://github.com/rover95/morse-encrypt 在线服务
                         <article class="post">
                             <header>
                                 <h1 class="post-title">
-                                    <a href="https://duansheli.github.io/2019/02/10/jstack-demo.html" title="使用jstack分析线程-示例" >使用jstack分析线程-示例</a>
+                                    <a href="https://duansheli.github.io/2019/07/06/check-credit.html" title="Github 最简单的认证方式 - Access Token[转]" >Github 最简单的认证方式 - Access Token[转]</a>
                                 </h1>
                             </header>
                             <date class="post-meta meta-date">
-                                2019年6月10日
+                                2019年7月6日
                             </date>
                             
                             <div class="post-content">
-                                1. 使用jstack分析线程-示例 通过两个demo来学习如何使用jstack
-1.1. 死锁 1.1.1. 死锁示例代码 import java.util.concurrent.TimeUnit; import java.util.concurrent.locks.LockSupport; import java.util.concurrent.locks.ReentrantLock; class DeadLockDemo { public static void main(String[] args) throws Exception { dead1(); dead2(); System.……
+                                Github 最简单的认证方式 - Access Token[转] Github 本身提供了多种认证方式，所有开发人员可以各取所需。
+ SSH，这是最原始的方式，如果使用git bash只要按照官方文档一步一步配置就好了
+小心坑：SSH有可能需要配置代理，否则无法解析服务器域名。错误如下： ssh: Could not resolve hostname github.com: no address associated with name 解决办法：给SSH以及git 客户端配置代理。  HTTPS，这也是比较方便的方式，但是每一次都需要输入用户名和密码。……
                             </div>
-                            <p class="readmore"><a href="https://duansheli.github.io/2019/02/10/jstack-demo.html">阅读全文</a></p>
-                        </article>
-                    
-                    
-		    
-                        <article class="post">
-                            <header>
-                                <h1 class="post-title">
-                                    <a href="https://duansheli.github.io/2019/06/05/check-credit.html" title="查查查-各类信用查询" >查查查-各类信用查询</a>
-                                </h1>
-                            </header>
-                            <date class="post-meta meta-date">
-                                2019年6月5日
-                            </date>
-                            
-                            <div class="post-content">
-                                中国执行信息公开网
-可以查到一个人的失信记录
-http://zxgk.court.gov.cn
- 全国标准信息公共服务平台
-每个行业接触到的各种标准，包括行业标准、团体标准、国外标准，已废止的、现行的、即将实施的都能查到。
-http://www.std.gov.cn
- 征信中心（银行一般规定：一个月不要查询超过三次） 用来查询自己的个人信用记录，违约、延迟还款和查询是否存在不良记录。
-https://ipcrs.pbccrc.org.cn/
- 中国法律法规资讯网 http://www.86148.com/
- 全国企业信用信息公示系统 全国企业信用信息公示系统
-毕业学生找工作不知道公司靠不靠谱，可以上这里查询是不是正规公司。
-http://gsxt.saic.gov.cn/……
-                            </div>
-                            <p class="readmore"><a href="https://duansheli.github.io/2019/06/05/check-credit.html">阅读全文</a></p>
-                        </article>
-                    
-                    
-		    
-                        <article class="post">
-                            <header>
-                                <h1 class="post-title">
-                                    <a href="https://duansheli.github.io/2019/09/09/docker-cp.html" title="docker的复制文件操作" >docker的复制文件操作</a>
-                                </h1>
-                            </header>
-                            <date class="post-meta meta-date">
-                                2019年6月2日
-                            </date>
-                            
-                            <div class="post-content">
-                                <p>容器与宿主机之间的文件复制示例</p>……
-                            </div>
-                            <p class="readmore"><a href="https://duansheli.github.io/2019/09/09/docker-cp.html">阅读全文</a></p>
-                        </article>
-                    
-                    
-		    
-                        <article class="post">
-                            <header>
-                                <h1 class="post-title">
-                                    <a href="https://duansheli.github.io/2019/06/05/relax.html" title="休闲娱乐" >休闲娱乐</a>
-                                </h1>
-                            </header>
-                            <date class="post-meta meta-date">
-                                2019年5月30日
-                            </date>
-                            
-                            <div class="post-content">
-                                小河淌水-颅内高潮 https://weibo.com/tv/v/Hl5d8en8D?fid=1034:4350248915771690 https://dig.chouti.com/link/25184166 小河淌水-龚琳娜-歌手第三季-第10期：第76分钟开始 https://www.mgtv.com/b/327378/5314401.html https://www.mgtv.com/b/327378/5314351.html https://y.qq.com/n/yqq/song/002ogMAd2lR6sT.html 小河淌水-龚琳娜-全能星战-第二期第80分钟开始 https://www.iqiyi.com/v_19rrh8hi14.html https://y.qq.com/n/yqq/song/004ezdyr3O6GTp.html  图片-解压 https://www.flickr.com/explore
-点开图片，单张图片全屏观看，切换图片用键盘左右键。……
-                            </div>
-                            <p class="readmore"><a href="https://duansheli.github.io/2019/06/05/relax.html">阅读全文</a></p>
-                        </article>
-                    
-                    
-		    
-                        <article class="post">
-                            <header>
-                                <h1 class="post-title">
-                                    <a href="https://duansheli.github.io/2019/05/25/download-openjdk.html" title="各类openjdk下载地址" >各类openjdk下载地址</a>
-                                </h1>
-                            </header>
-                            <date class="post-meta meta-date">
-                                2019年5月25日
-                            </date>
-                            
-                            <div class="post-content">
-                                openjdk oracle原版 jdk 之前在可通过命令从官网下载，现在行不通了，必须用oracle账号登录才能下载。 https://github.com/frekele/oracle-java/releases https://github.com/ZachCheung/oracle-java-downloads https://www.oracle.com/technetwork/java/javase/downloads/jdk11-downloads-5066655.html 有一种 oracle版的openjdk http://jdk.java.net/archive/ oracle还有一个跨语言的通用虚拟机 GraalVM https://github.com/oracle/graal/releases 从java 8开始 oracle开始收费，虽然对个人免费， 但对企业是收费的，虽然不知道怎么收，但收费肯定是不菲的。 如果生产环境不用oracle的jdk，最好平时开发就别用oracle，改用openjdk  部分下载地址 没整明白算是哪个厂商的openjdk https://mirrors.……
-                            </div>
-                            <p class="readmore"><a href="https://duansheli.github.io/2019/05/25/download-openjdk.html">阅读全文</a></p>
+                            <p class="readmore"><a href="https://duansheli.github.io/2019/07/06/check-credit.html">阅读全文</a></p>
                         </article>
                     
                     
@@ -282,6 +283,10 @@ http://gsxt.saic.gov.cn/……
     
     <li >
         <a href="https://duansheli.github.io/page/4/">4</a>
+    </li>
+    
+    <li >
+        <a href="https://duansheli.github.io/page/5/">5</a>
     </li>
     
 
@@ -312,6 +317,22 @@ http://gsxt.saic.gov.cn/……
 <ul class="widget-list">
     
     <li>
+        <a href="https://duansheli.github.io/2019/11/12/doh.html" title="群晖两步验证的关闭">群晖两步验证的关闭</a>
+    </li>
+    
+    <li>
+        <a href="https://duansheli.github.io/2019/10/28/update-rule-by-scanner.html" title="使用drools的规则管理平台-01">使用drools的规则管理平台-01</a>
+    </li>
+    
+    <li>
+        <a href="https://duansheli.github.io/2019/10/28/update-rule-by-scanner.html" title="使用drools的规则管理平台-02">使用drools的规则管理平台-02</a>
+    </li>
+    
+    <li>
+        <a href="https://duansheli.github.io/2019/10/26/update-rule-by-scanner.html" title="自定义动态更新drools规则">自定义动态更新drools规则</a>
+    </li>
+    
+    <li>
         <a href="https://duansheli.github.io/2019/09/12/doh.html" title="浏览器启用dns-over-https(DoH)">浏览器启用dns-over-https(DoH)</a>
     </li>
     
@@ -332,23 +353,7 @@ http://gsxt.saic.gov.cn/……
     </li>
     
     <li>
-        <a href="https://duansheli.github.io/2019/02/10/jstack-demo.html" title="使用jstack分析线程-示例">使用jstack分析线程-示例</a>
-    </li>
-    
-    <li>
-        <a href="https://duansheli.github.io/2019/06/05/check-credit.html" title="查查查-各类信用查询">查查查-各类信用查询</a>
-    </li>
-    
-    <li>
-        <a href="https://duansheli.github.io/2019/09/09/docker-cp.html" title="docker的复制文件操作">docker的复制文件操作</a>
-    </li>
-    
-    <li>
-        <a href="https://duansheli.github.io/2019/06/05/relax.html" title="休闲娱乐">休闲娱乐</a>
-    </li>
-    
-    <li>
-        <a href="https://duansheli.github.io/2019/05/25/download-openjdk.html" title="各类openjdk下载地址">各类openjdk下载地址</a>
+        <a href="https://duansheli.github.io/2019/07/06/check-credit.html" title="Github 最简单的认证方式 - Access Token[转]">Github 最简单的认证方式 - Access Token[转]</a>
     </li>
     
 </ul>
@@ -365,7 +370,7 @@ http://gsxt.saic.gov.cn/……
     </li>
     
     <li>
-        <a href="https://duansheli.github.io/categories/k8s%E9%9B%86%E7%BE%A4/">k8s集群(3)</a>
+        <a href="https://duansheli.github.io/categories/k8s%E9%9B%86%E7%BE%A4/">k8s集群(4)</a>
     </li>
     
 </ul>
@@ -383,11 +388,15 @@ http://gsxt.saic.gov.cn/……
     
     <a href="https://duansheli.github.io/tags/drone/">drone</a>
     
+    <a href="https://duansheli.github.io/tags/drools/">drools</a>
+    
     <a href="https://duansheli.github.io/tags/dubbo/">dubbo</a>
     
     <a href="https://duansheli.github.io/tags/elasticsearch/">elasticsearch</a>
     
     <a href="https://duansheli.github.io/tags/gc/">gc</a>
+    
+    <a href="https://duansheli.github.io/tags/git/">git</a>
     
     <a href="https://duansheli.github.io/tags/hashids/">hashids</a>
     
@@ -424,6 +433,8 @@ http://gsxt.saic.gov.cn/……
     <a href="https://duansheli.github.io/tags/zipkin/">zipkin</a>
     
     <a href="https://duansheli.github.io/tags/%E5%88%86%E5%B8%83%E5%BC%8F%E4%BA%8B%E5%8A%A1/">分布式事务</a>
+    
+    <a href="https://duansheli.github.io/tags/%E6%8C%81%E7%BB%AD%E9%9B%86%E6%88%90/">持续集成</a>
     
     <a href="https://duansheli.github.io/tags/%E7%99%BB%E5%BD%95/">登录</a>
     

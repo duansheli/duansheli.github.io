@@ -76,6 +76,37 @@
                         <article class="post">
                             <header>
                                 <h1 class="post-title">
+                                    <a href="https://duansheli.github.io/2019/06/27/k8s-ingress-controller.html">k8s-外部访问ingress</a>
+                                </h1>
+                            </header>
+                            <date class="post-meta meta-date">
+                                2019年6月27日
+                            </date>
+                            
+                            <div class="post-meta meta-category">
+                                |
+                                
+                                    <a href="https://duansheli.github.io/categories/k8s%E9%9B%86%E7%BE%A4">k8s集群</a>
+                                
+                            </div>
+                            
+                            <div class="post-content">
+                                对外暴露服务 通常使用ingress作为前置入口 那如何配置 ingress-controller 与外界通信？
+LoadBalancer 如果有云厂商的LoadBalancer， 那自然方便
+各云厂商的实现可能有所不同
+但使用后效果 应该都是高可用的vip入口
+其他方案 如果是自建的k8s集群
+或者云厂商没有LoadBalancer
+又或者不想用云厂商的LoadBalancer
+那这个时候整，之间nodePort么
+自建-LoadBalance 基于开源项目自建 LoadBalance……
+                                <p class="readmore"><a href="https://duansheli.github.io/2019/06/27/k8s-ingress-controller.html">阅读全文</a></p>
+                            </div>
+                        </article>
+                    
+                        <article class="post">
+                            <header>
+                                <h1 class="post-title">
                                     <a href="https://duansheli.github.io/2018/01/03/k8s-cluster-setup-03.html">k8s搭建集群3-异常解决</a>
                                 </h1>
                             </header>
@@ -179,6 +210,22 @@ k8s=v1.12.6
 <ul class="widget-list">
     
     <li>
+        <a href="https://duansheli.github.io/2019/11/12/doh.html" title="群晖两步验证的关闭">群晖两步验证的关闭</a>
+    </li>
+    
+    <li>
+        <a href="https://duansheli.github.io/2019/10/28/update-rule-by-scanner.html" title="使用drools的规则管理平台-01">使用drools的规则管理平台-01</a>
+    </li>
+    
+    <li>
+        <a href="https://duansheli.github.io/2019/10/28/update-rule-by-scanner.html" title="使用drools的规则管理平台-02">使用drools的规则管理平台-02</a>
+    </li>
+    
+    <li>
+        <a href="https://duansheli.github.io/2019/10/26/update-rule-by-scanner.html" title="自定义动态更新drools规则">自定义动态更新drools规则</a>
+    </li>
+    
+    <li>
         <a href="https://duansheli.github.io/2019/09/12/doh.html" title="浏览器启用dns-over-https(DoH)">浏览器启用dns-over-https(DoH)</a>
     </li>
     
@@ -199,23 +246,7 @@ k8s=v1.12.6
     </li>
     
     <li>
-        <a href="https://duansheli.github.io/2019/02/10/jstack-demo.html" title="使用jstack分析线程-示例">使用jstack分析线程-示例</a>
-    </li>
-    
-    <li>
-        <a href="https://duansheli.github.io/2019/06/05/check-credit.html" title="查查查-各类信用查询">查查查-各类信用查询</a>
-    </li>
-    
-    <li>
-        <a href="https://duansheli.github.io/2019/09/09/docker-cp.html" title="docker的复制文件操作">docker的复制文件操作</a>
-    </li>
-    
-    <li>
-        <a href="https://duansheli.github.io/2019/06/05/relax.html" title="休闲娱乐">休闲娱乐</a>
-    </li>
-    
-    <li>
-        <a href="https://duansheli.github.io/2019/05/25/download-openjdk.html" title="各类openjdk下载地址">各类openjdk下载地址</a>
+        <a href="https://duansheli.github.io/2019/07/06/check-credit.html" title="Github 最简单的认证方式 - Access Token[转]">Github 最简单的认证方式 - Access Token[转]</a>
     </li>
     
 </ul>
@@ -232,7 +263,7 @@ k8s=v1.12.6
     </li>
     
     <li>
-        <a href="https://duansheli.github.io/categories/k8s%E9%9B%86%E7%BE%A4/">k8s集群(3)</a>
+        <a href="https://duansheli.github.io/categories/k8s%E9%9B%86%E7%BE%A4/">k8s集群(4)</a>
     </li>
     
 </ul>
@@ -250,11 +281,15 @@ k8s=v1.12.6
     
     <a href="https://duansheli.github.io/tags/drone/">drone</a>
     
+    <a href="https://duansheli.github.io/tags/drools/">drools</a>
+    
     <a href="https://duansheli.github.io/tags/dubbo/">dubbo</a>
     
     <a href="https://duansheli.github.io/tags/elasticsearch/">elasticsearch</a>
     
     <a href="https://duansheli.github.io/tags/gc/">gc</a>
+    
+    <a href="https://duansheli.github.io/tags/git/">git</a>
     
     <a href="https://duansheli.github.io/tags/hashids/">hashids</a>
     
@@ -291,6 +326,8 @@ k8s=v1.12.6
     <a href="https://duansheli.github.io/tags/zipkin/">zipkin</a>
     
     <a href="https://duansheli.github.io/tags/%E5%88%86%E5%B8%83%E5%BC%8F%E4%BA%8B%E5%8A%A1/">分布式事务</a>
+    
+    <a href="https://duansheli.github.io/tags/%E6%8C%81%E7%BB%AD%E9%9B%86%E6%88%90/">持续集成</a>
     
     <a href="https://duansheli.github.io/tags/%E7%99%BB%E5%BD%95/">登录</a>
     

@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>git on 断舍离的博客</title>
+    <link>https://duansheli.github.io/tags/git/</link>
+    <description>Recent content in git on 断舍离的博客</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>zh-CN</language>
+    <lastBuildDate>Sat, 06 Jul 2019 16:13:13 +0800</lastBuildDate>
+    
+	<atom:link href="https://duansheli.github.io/tags/git/index.xml" rel="self" type="application/rss+xml" />
+    
+    
+    <item>
+      <title>Github 最简单的认证方式 - Access Token[转]</title>
+      <link>https://duansheli.github.io/2019/07/06/check-credit.html</link>
+      <pubDate>Sat, 06 Jul 2019 16:13:13 +0800</pubDate>
+      
+      <guid>https://duansheli.github.io/2019/07/06/check-credit.html</guid>
+      <description>Github 最简单的认证方式 - Access Token[转] Github 本身提供了多种认证方式，所有开发人员可以各取所需。
+ SSH，这是最原始的方式，如果使用git bash只要按照官方文档一步一步配置就好了
+小心坑：SSH有可能需要配置代理，否则无法解析服务器域名。错误如下： ssh: Could not resolve hostname github.com: no address associated with name 解决办法：给SSH以及git 客户端配置代理。  HTTPS，这也是比较方便的方式，但是每一次都需要输入用户名和密码。</description>
+    </item>
+    
+    <item>
+      <title>github搜开源项目技巧</title>
+      <link>https://duansheli.github.io/2019/07/06/check-credit.html</link>
+      <pubDate>Sat, 06 Jul 2019 16:13:13 +0800</pubDate>
+      
+      <guid>https://duansheli.github.io/2019/07/06/check-credit.html</guid>
+      <description>主要使用高级搜索来实现精准搜索开源项目
+一个仓库主要以下几部分 项目名称，项目描述 项目主要是什么语言的 根目录下的README.md 描述一些详情
+常用示例 #名字包含spring spring in:name #描述中包含流量控制的 flow control in:description #描述包含xx spring in:readme #语言当然选你会的 language:java #作者是国内的 location:China #点赞数大说明大家比较认可 stars:&amp;gt;=800 #点赞数在10到50之间的 stars:10.</description>
+    </item>
+    
+  </channel>
+</rss>

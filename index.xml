@@ -6,10 +6,58 @@
     <description>Recent content on 断舍离的博客</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>zh-CN</language>
-    <lastBuildDate>Thu, 12 Sep 2019 13:13:13 +0800</lastBuildDate>
+    <lastBuildDate>Tue, 12 Nov 2019 13:13:13 +0800</lastBuildDate>
     
 	<atom:link href="https://duansheli.github.io/index.xml" rel="self" type="application/rss+xml" />
     
+    
+    <item>
+      <title>群晖两步验证的关闭</title>
+      <link>https://duansheli.github.io/2019/11/12/doh.html</link>
+      <pubDate>Tue, 12 Nov 2019 13:13:13 +0800</pubDate>
+      
+      <guid>https://duansheli.github.io/2019/11/12/doh.html</guid>
+      <description>家里的网络用的是软路由拨号的，软路由装在群晖的虚拟机里 突然断网了 于是登上软路由看看是咋了， 发现访问不了 估计死机了，那就重启下虚拟机好了，访问群晖时发现二次验证的软件不在身边 找软件找半天，突然想起来重启群晖主机，虚拟机一样重启
+群晖主机的关闭  可以在web管理界面关机，但目前无法登录 可以直接按住开机键等一会就关机了 虽然web界面无法访问，但ssh可以连上 shutdown命令关机  web界面的登录 虽然重启主机解决了网络问题 但登录问题咋整 网上搜了下
+官方的解决方案是 用回形针轻按住 RESET 按钮约 4 秒 , 然后重新配置账户 https://www.</description>
+    </item>
+    
+    <item>
+      <title>使用drools的规则管理平台-01</title>
+      <link>https://duansheli.github.io/2019/10/28/update-rule-by-scanner.html</link>
+      <pubDate>Mon, 28 Oct 2019 17:28:13 +0800</pubDate>
+      
+      <guid>https://duansheli.github.io/2019/10/28/update-rule-by-scanner.html</guid>
+      <description>简述 drools的BRMS(业务规则管理系统)
+起先叫 guvnor 然后叫 drools-workbench
+从7.18版本开始叫 Business Central Workbench
+Business-Central Workbench == Drools Workbench + jBPM Workbench
+drools-workbench 用来管理规则</description>
+    </item>
+    
+    <item>
+      <title>使用drools的规则管理平台-02</title>
+      <link>https://duansheli.github.io/2019/10/28/update-rule-by-scanner.html</link>
+      <pubDate>Mon, 28 Oct 2019 17:28:13 +0800</pubDate>
+      
+      <guid>https://duansheli.github.io/2019/10/28/update-rule-by-scanner.html</guid>
+      <description>&lt;p&gt;上一节演示了 workbench 的搭建，规则编写、规则测试、规则部署
+还通过http使用了部署在kie-server中的规则&lt;/p&gt;
+
+&lt;p&gt;下面演示使用java客户端，调用部署在kie-server中的规则。&lt;/p&gt;</description>
+    </item>
+    
+    <item>
+      <title>自定义动态更新drools规则</title>
+      <link>https://duansheli.github.io/2019/10/26/update-rule-by-scanner.html</link>
+      <pubDate>Sat, 26 Oct 2019 17:28:13 +0800</pubDate>
+      
+      <guid>https://duansheli.github.io/2019/10/26/update-rule-by-scanner.html</guid>
+      <description>简述 scanner有两个实现 KieRepositoryScannerImpl KieFileSystemScannerImpl 二者区别为 一个是从文件夹检查更新， 一个是从maven仓库检查更新
+下面以 KieFileSystemScannerImpl 为例进行演示从文件夹获取更新 然后分析过程 最后自定义一个 KieScanner
+准备kjar工程 其实就是个maven项目 存放着规则文件
+&amp;lt;?xml version=&amp;quot;1.0&amp;quot; encoding=&amp;quot;UTF-8&amp;quot;?&amp;gt; &amp;lt;project xmlns=&amp;quot;http://maven.</description>
+    </item>
     
     <item>
       <title>浏览器启用dns-over-https(DoH)</title>
@@ -58,6 +106,45 @@ by duansheli  项目源码 https://github.com/rover95/morse-encrypt 在线服务
       
       <guid>https://duansheli.github.io/2019/08/02/k8s-cluster-setup-02.html</guid>
       <description>主要流程 1. 先建库建表 插入测试数据 2. 以物理方式备份数据 --数据备份完毕 3. 创建新的mysql-server 然后建库建表 移除表空间 4.停止mysql服务 将备份的数据还原 重新载入表空间 --数据还原完毕 ubuntu 中通过docker 运行mysql  测试过程 数据准备 两个sql脚本 一个是建表 一个是测试数据</description>
+    </item>
+    
+    <item>
+      <title>Github 最简单的认证方式 - Access Token[转]</title>
+      <link>https://duansheli.github.io/2019/07/06/check-credit.html</link>
+      <pubDate>Sat, 06 Jul 2019 16:13:13 +0800</pubDate>
+      
+      <guid>https://duansheli.github.io/2019/07/06/check-credit.html</guid>
+      <description>Github 最简单的认证方式 - Access Token[转] Github 本身提供了多种认证方式，所有开发人员可以各取所需。
+ SSH，这是最原始的方式，如果使用git bash只要按照官方文档一步一步配置就好了
+小心坑：SSH有可能需要配置代理，否则无法解析服务器域名。错误如下： ssh: Could not resolve hostname github.com: no address associated with name 解决办法：给SSH以及git 客户端配置代理。  HTTPS，这也是比较方便的方式，但是每一次都需要输入用户名和密码。</description>
+    </item>
+    
+    <item>
+      <title>github搜开源项目技巧</title>
+      <link>https://duansheli.github.io/2019/07/06/check-credit.html</link>
+      <pubDate>Sat, 06 Jul 2019 16:13:13 +0800</pubDate>
+      
+      <guid>https://duansheli.github.io/2019/07/06/check-credit.html</guid>
+      <description>主要使用高级搜索来实现精准搜索开源项目
+一个仓库主要以下几部分 项目名称，项目描述 项目主要是什么语言的 根目录下的README.md 描述一些详情
+常用示例 #名字包含spring spring in:name #描述中包含流量控制的 flow control in:description #描述包含xx spring in:readme #语言当然选你会的 language:java #作者是国内的 location:China #点赞数大说明大家比较认可 stars:&amp;gt;=800 #点赞数在10到50之间的 stars:10.</description>
+    </item>
+    
+    <item>
+      <title>k8s-外部访问ingress</title>
+      <link>https://duansheli.github.io/2019/06/27/k8s-ingress-controller.html</link>
+      <pubDate>Thu, 27 Jun 2019 17:28:13 +0800</pubDate>
+      
+      <guid>https://duansheli.github.io/2019/06/27/k8s-ingress-controller.html</guid>
+      <description>对外暴露服务 通常使用ingress作为前置入口 那如何配置 ingress-controller 与外界通信？
+LoadBalancer 如果有云厂商的LoadBalancer， 那自然方便
+各云厂商的实现可能有所不同
+但使用后效果 应该都是高可用的vip入口
+其他方案 如果是自建的k8s集群
+或者云厂商没有LoadBalancer
+又或者不想用云厂商的LoadBalancer
+那这个时候整，之间nodePort么
+自建-LoadBalance 基于开源项目自建 LoadBalance</description>
     </item>
     
     <item>
@@ -189,6 +276,17 @@ request.getSession().setAttribute(&amp;ldquo;currentUser&amp;rdquo;,&amp;ldquo;t
       <guid>https://duansheli.github.io/2019/03/02/spring-session-in-action.html</guid>
       <description>&lt;p&gt;通过spring session实现分布式会话&lt;br /&gt;
 集群下不会丢失会话 集中管理session&lt;/p&gt;</description>
+    </item>
+    
+    <item>
+      <title>cloudflare设置ddns</title>
+      <link>https://duansheli.github.io/2019/08/22/cloudflare-ddns.html</link>
+      <pubDate>Fri, 22 Feb 2019 13:13:13 +0800</pubDate>
+      
+      <guid>https://duansheli.github.io/2019/08/22/cloudflare-ddns.html</guid>
+      <description>主要流程 最终目的是 让 movie.aaabbb.com 能解析成家中的公网ip
+最终的api为
+curl -X PUT &amp;quot;https://api.cloudflare.com/client/v4/zones/$tzone_id/dns_records/$trecord_id&amp;quot; \ -H &amp;quot;X-Auth-Email: $auth_email&amp;quot; \ -H &amp;quot;X-Auth-Key: $auth_key&amp;quot; \ -H &amp;quot;Content-Type: application/json&amp;quot; \ --data &#39;{&amp;quot;type&amp;quot;:&amp;quot;A&amp;quot;,&amp;quot;name&amp;quot;:&amp;quot;file.</description>
     </item>
     
     <item>
@@ -374,6 +472,16 @@ Rpc大致思路 定义一个接口HelloService 放在iface.jar中 应用P中引�
 firefox 首选 http://download-origin.cdn.mozilla.net/pub/devedition/releases/
 选则版本-32或64位-语言 比如 http://download-origin.cdn.mozilla.net/pub/devedition/releases/58.0b1/win64/zh-CN/ 下载Firefox Setup 58.0b1.exe后， 修改后缀为zip后解压core文件夹  更多
 http://download-origin.cdn.mozilla.net/pub/devedition/releases/ http://ftp.mozilla.org/pub/firefox/nightly/latest-mozilla-central-l10n/ http://ftp.mozilla.org/pub/firefox/nightly/latest-oak-l10n/ Firefox Release/mozilla-release : Firefox 官方正式版 Firefox Beta/mozilla-beta : 在正式发布之前的测试版 Firefox Aurora/mozilla-aurora : 提供给Web/平台开发者和早期采用者的测试版 Firefox Nightly/mozilla-central : 每夜（天）发布，其中包含试验功能 Firefox ESR/mozilla-esr17 : 提供给企业组织的官方桌面正式版 http://ftp.</description>
+    </item>
+    
+    <item>
+      <title>kotlin空指针校验</title>
+      <link>https://duansheli.github.io/2019/09/11/kotlin-null-check.html</link>
+      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
+      
+      <guid>https://duansheli.github.io/2019/09/11/kotlin-null-check.html</guid>
+      <description>kotlin空指针校验 类型的说明 变量声明方式 val a: String=&amp;quot;tom&amp;quot; 通常会写成val a = &amp;quot;tom&amp;quot; 但还有另一种 val a: String?=&amp;quot;tom&amp;quot; 表示非空类型
+fun test1() { val a1 = 2; // val a2 = ss as String // 抛出转换失败的异常 val a2 = a1 as?</description>
     </item>
     
     <item>
