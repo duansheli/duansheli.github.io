@@ -67,6 +67,25 @@
                         <article class="post">
                             <header>
                                 <h1 class="post-title">
+                                    <a href="https://duansheli.github.io/2019/05/10/spring-data-elasticsearch-error-date.html" title="spring data elasticsearch日期类型冲突" >spring data elasticsearch日期类型冲突</a>
+                                </h1>
+                            </header>
+                            <date class="post-meta meta-date">
+                                2019年5月10日
+                            </date>
+                            
+                            <div class="post-content">
+                                IllegalArgumentException 环境 spring-data-elasticsearch 3.1.6
+java.lang.IllegalArgumentException: Mapper for [publishDate] conflicts with existing mapping in other types: [mapper [publishDate] has different [format] values……
+                            </div>
+                            <p class="readmore"><a href="https://duansheli.github.io/2019/05/10/spring-data-elasticsearch-error-date.html">阅读全文</a></p>
+                        </article>
+                    
+                    
+		    
+                        <article class="post">
+                            <header>
+                                <h1 class="post-title">
                                     <a href="https://duansheli.github.io/2019/04/09/spring-security-login-by-mobile-code.html" title="使用spring security实现手机验证码登录" >使用spring security实现手机验证码登录</a>
                                 </h1>
                             </header>
@@ -246,34 +265,6 @@ Sending build context to Docker daemon 5.902MB Step 1/10 : FROM docker:git as bu
                         </article>
                     
                     
-		    
-                        <article class="post">
-                            <header>
-                                <h1 class="post-title">
-                                    <a href="https://duansheli.github.io/2018/01/03/k8s-cluster-setup-03.html" title="k8s搭建集群3-异常解决" >k8s搭建集群3-异常解决</a>
-                                </h1>
-                            </header>
-                            <date class="post-meta meta-date">
-                                2019年1月3日
-                            </date>
-                            
-                            <div class="post-meta">
-                                <span>|</span>
-                                
-                                <span class="meta-category"><a href="https://duansheli.github.io/categories/k8s%E9%9B%86%E7%BE%A4">k8s集群</a></span>
-                                
-                            </div>
-                            
-                            <div class="post-content">
-                                出错恢复 没遇到报错可以跳过
-安装过程中可能有一些异常
-查看所有的pod分布情况 kubectl get pods -n kube-system -o wide -l k8s-app=kubernetes-dashboard  查看失败的镜像
-imageName=`kubectl describe -n kube-system pod -l k8s-app=kubernetes-dashboard | grep Image: | awk '{print $2 }' ` kubectl describe -n kube-system pod -l k8s-app=kubernetes-dashboard  某个pod的详情 kubectl describe pod -l k8s-app=kubernetes-dashboard -n kube-system  出错日志 kubectl logs `kubectl get pods -n kube-system -l k8s-app=kubernetes-dashboard -o name` -n kube-system  报错描述提到 addr cni0 failed to set bridge addr: &ldquo;cni0&rdquo; already has an IP address different from 10.……
-                            </div>
-                            <p class="readmore"><a href="https://duansheli.github.io/2018/01/03/k8s-cluster-setup-03.html">阅读全文</a></p>
-                        </article>
-                    
-                    
                     
 
 
@@ -354,6 +345,10 @@ imageName=`kubectl describe -n kube-system pod -l k8s-app=kubernetes-dashboard |
     </li>
     
     <li>
+        <a href="https://duansheli.github.io/2019/09/11/kotlin-null-check.html" title="kotlin空指针校验">kotlin空指针校验</a>
+    </li>
+    
+    <li>
         <a href="https://duansheli.github.io/2019/09/03/hashids-usage.html" title="使用hashids创建短链服务">使用hashids创建短链服务</a>
     </li>
     
@@ -367,10 +362,6 @@ imageName=`kubectl describe -n kube-system pod -l k8s-app=kubernetes-dashboard |
     
     <li>
         <a href="https://duansheli.github.io/2019/08/02/k8s-cluster-setup-02.html" title="mysql物理备份与还原示例">mysql物理备份与还原示例</a>
-    </li>
-    
-    <li>
-        <a href="https://duansheli.github.io/2019/07/06/check-credit.html" title="Github 最简单的认证方式 - Access Token[转]">Github 最简单的认证方式 - Access Token[转]</a>
     </li>
     
 </ul>
@@ -426,6 +417,8 @@ imageName=`kubectl describe -n kube-system pod -l k8s-app=kubernetes-dashboard |
     <a href="https://duansheli.github.io/tags/jvm/">jvm</a>
     
     <a href="https://duansheli.github.io/tags/k8s/">k8s</a>
+    
+    <a href="https://duansheli.github.io/tags/kotlin/">kotlin</a>
     
     <a href="https://duansheli.github.io/tags/life/">life</a>
     

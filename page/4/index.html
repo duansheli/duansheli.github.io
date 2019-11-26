@@ -67,6 +67,34 @@
                         <article class="post">
                             <header>
                                 <h1 class="post-title">
+                                    <a href="https://duansheli.github.io/2018/01/03/k8s-cluster-setup-03.html" title="k8s搭建集群3-异常解决" >k8s搭建集群3-异常解决</a>
+                                </h1>
+                            </header>
+                            <date class="post-meta meta-date">
+                                2019年1月3日
+                            </date>
+                            
+                            <div class="post-meta">
+                                <span>|</span>
+                                
+                                <span class="meta-category"><a href="https://duansheli.github.io/categories/k8s%E9%9B%86%E7%BE%A4">k8s集群</a></span>
+                                
+                            </div>
+                            
+                            <div class="post-content">
+                                出错恢复 没遇到报错可以跳过
+安装过程中可能有一些异常
+查看所有的pod分布情况 kubectl get pods -n kube-system -o wide -l k8s-app=kubernetes-dashboard  查看失败的镜像
+imageName=`kubectl describe -n kube-system pod -l k8s-app=kubernetes-dashboard | grep Image: | awk '{print $2 }' ` kubectl describe -n kube-system pod -l k8s-app=kubernetes-dashboard  某个pod的详情 kubectl describe pod -l k8s-app=kubernetes-dashboard -n kube-system  出错日志 kubectl logs `kubectl get pods -n kube-system -l k8s-app=kubernetes-dashboard -o name` -n kube-system  报错描述提到 addr cni0 failed to set bridge addr: &ldquo;cni0&rdquo; already has an IP address different from 10.……
+                            </div>
+                            <p class="readmore"><a href="https://duansheli.github.io/2018/01/03/k8s-cluster-setup-03.html">阅读全文</a></p>
+                        </article>
+                    
+                    
+		    
+                        <article class="post">
+                            <header>
+                                <h1 class="post-title">
                                     <a href="https://duansheli.github.io/2019/01/02/k8s-cluster-setup-02.html" title="k8s集群搭建-02" >k8s集群搭建-02</a>
                                 </h1>
                             </header>
@@ -304,36 +332,6 @@ Rpc大致思路 定义一个接口HelloService 放在iface.jar中 应用P中引�
                         </article>
                     
                     
-		    
-                        <article class="post">
-                            <header>
-                                <h1 class="post-title">
-                                    <a href="https://duansheli.github.io/2018/04/02/reflect-start.html" title="反射使用" >反射使用</a>
-                                </h1>
-                            </header>
-                            <date class="post-meta meta-date">
-                                2018年4月2日
-                            </date>
-                            
-                            <div class="post-meta">
-                                <span>|</span>
-                                
-                                <span class="meta-category"><a href="https://duansheli.github.io/categories/Java%E6%B7%B1%E5%85%A5">Java深入</a></span>
-                                
-                            </div>
-                            
-                            <div class="post-content">
-                                反射介绍 可以不直接new 对象，或调用方法。 用另一种创建某个对象（字符串的方式），或调用某个对象的方法（字符串的方式）。 反射这种间接调用效率肯定是不如直接调用的。
-程序不知道具体要创建接口的哪个实现类， 在启动时，通过读取配置文件才知道要创建那个实现类。
-先学习语法，然后可以通过结合动态代理加深理解。
-反射的场景 一般的开发很少直接用到，不过在各类框架中基本离不开。
-另外如果要自研框架，或者对框架定制功能，通常也会用到。
- spring以xml配置去注册bean 动态代理以及其衍生的各类服务  远程调用 日志，监控 缓存 权限 spring-事务注解  使用注解的实现的各种功能 软件破解。。。等等  语法示例 普通的bean package com.……
-                            </div>
-                            <p class="readmore"><a href="https://duansheli.github.io/2018/04/02/reflect-start.html">阅读全文</a></p>
-                        </article>
-                    
-                    
                     
 
 
@@ -414,6 +412,10 @@ Rpc大致思路 定义一个接口HelloService 放在iface.jar中 应用P中引�
     </li>
     
     <li>
+        <a href="https://duansheli.github.io/2019/09/11/kotlin-null-check.html" title="kotlin空指针校验">kotlin空指针校验</a>
+    </li>
+    
+    <li>
         <a href="https://duansheli.github.io/2019/09/03/hashids-usage.html" title="使用hashids创建短链服务">使用hashids创建短链服务</a>
     </li>
     
@@ -427,10 +429,6 @@ Rpc大致思路 定义一个接口HelloService 放在iface.jar中 应用P中引�
     
     <li>
         <a href="https://duansheli.github.io/2019/08/02/k8s-cluster-setup-02.html" title="mysql物理备份与还原示例">mysql物理备份与还原示例</a>
-    </li>
-    
-    <li>
-        <a href="https://duansheli.github.io/2019/07/06/check-credit.html" title="Github 最简单的认证方式 - Access Token[转]">Github 最简单的认证方式 - Access Token[转]</a>
     </li>
     
 </ul>
@@ -486,6 +484,8 @@ Rpc大致思路 定义一个接口HelloService 放在iface.jar中 应用P中引�
     <a href="https://duansheli.github.io/tags/jvm/">jvm</a>
     
     <a href="https://duansheli.github.io/tags/k8s/">k8s</a>
+    
+    <a href="https://duansheli.github.io/tags/kotlin/">kotlin</a>
     
     <a href="https://duansheli.github.io/tags/life/">life</a>
     

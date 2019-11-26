@@ -69,6 +69,16 @@ drools-workbench 用来管理规则</description>
     </item>
     
     <item>
+      <title>kotlin空指针校验</title>
+      <link>https://duansheli.github.io/2019/09/11/kotlin-null-check.html</link>
+      <pubDate>Wed, 11 Sep 2019 17:28:13 +0800</pubDate>
+      
+      <guid>https://duansheli.github.io/2019/09/11/kotlin-null-check.html</guid>
+      <description>kotlin空指针校验 类型的说明 变量声明方式 val a: String=&amp;quot;tom&amp;quot; 通常会写成val a = &amp;quot;tom&amp;quot; 但还有另一种 val a: String?=&amp;quot;tom&amp;quot; 表示非空类型
+fun test1() { val a1 = 2; // val a2 = ss as String // 抛出转换失败的异常 val a2 = a1 as?</description>
+    </item>
+    
+    <item>
       <title>使用hashids创建短链服务</title>
       <link>https://duansheli.github.io/2019/09/03/hashids-usage.html</link>
       <pubDate>Tue, 03 Sep 2019 17:28:13 +0800</pubDate>
@@ -472,16 +482,6 @@ Rpc大致思路 定义一个接口HelloService 放在iface.jar中 应用P中引�
 firefox 首选 http://download-origin.cdn.mozilla.net/pub/devedition/releases/
 选则版本-32或64位-语言 比如 http://download-origin.cdn.mozilla.net/pub/devedition/releases/58.0b1/win64/zh-CN/ 下载Firefox Setup 58.0b1.exe后， 修改后缀为zip后解压core文件夹  更多
 http://download-origin.cdn.mozilla.net/pub/devedition/releases/ http://ftp.mozilla.org/pub/firefox/nightly/latest-mozilla-central-l10n/ http://ftp.mozilla.org/pub/firefox/nightly/latest-oak-l10n/ Firefox Release/mozilla-release : Firefox 官方正式版 Firefox Beta/mozilla-beta : 在正式发布之前的测试版 Firefox Aurora/mozilla-aurora : 提供给Web/平台开发者和早期采用者的测试版 Firefox Nightly/mozilla-central : 每夜（天）发布，其中包含试验功能 Firefox ESR/mozilla-esr17 : 提供给企业组织的官方桌面正式版 http://ftp.</description>
-    </item>
-    
-    <item>
-      <title>kotlin空指针校验</title>
-      <link>https://duansheli.github.io/2019/09/11/kotlin-null-check.html</link>
-      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
-      
-      <guid>https://duansheli.github.io/2019/09/11/kotlin-null-check.html</guid>
-      <description>kotlin空指针校验 类型的说明 变量声明方式 val a: String=&amp;quot;tom&amp;quot; 通常会写成val a = &amp;quot;tom&amp;quot; 但还有另一种 val a: String?=&amp;quot;tom&amp;quot; 表示非空类型
-fun test1() { val a1 = 2; // val a2 = ss as String // 抛出转换失败的异常 val a2 = a1 as?</description>
     </item>
     
   </channel>

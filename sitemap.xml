@@ -53,6 +53,16 @@
   </url>
   
   <url>
+    <loc>https://duansheli.github.io/tags/kotlin/</loc>
+    <lastmod>2019-09-11T17:28:13+08:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>https://duansheli.github.io/2019/09/11/kotlin-null-check.html</loc>
+    <lastmod>2019-09-11T17:28:13+08:00</lastmod>
+  </url>
+  
+  <url>
     <loc>https://duansheli.github.io/tags/hashids/</loc>
     <lastmod>2019-09-03T17:28:13+08:00</lastmod>
   </url>
@@ -375,10 +385,6 @@
   <url>
     <loc>https://duansheli.github.io/2018/03/17/dev-browser.html</loc>
     <lastmod>2018-03-17T13:13:13+08:00</lastmod>
-  </url>
-  
-  <url>
-    <loc>https://duansheli.github.io/2019/09/11/kotlin-null-check.html</loc>
   </url>
   
   <url>

@@ -7,22 +7,22 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1">
 
-    <title>route | 断舍离的博客</title>
-    <meta property="og:title" content="route - 断舍离的博客">
+    <title>kotlin | 断舍离的博客</title>
+    <meta property="og:title" content="kotlin - 断舍离的博客">
     <meta property="og:type" content="article">
         
         
     <meta name="Keywords" content="java,scala,spark,kubernetes">
-    <meta name="description" content="route">
+    <meta name="description" content="kotlin">
         
     <meta name="author" content="断舍离">
-    <meta property="og:url" content="https://duansheli.github.io/tags/route/">
+    <meta property="og:url" content="https://duansheli.github.io/tags/kotlin/">
     <link rel="shortcut icon" href="/favicon.ico" type="image/x-icon">
 
     <link rel="stylesheet" href="/css/normalize.css">
     
     <link rel="stylesheet" href="/css/style.css">
-    <link rel="alternate" type="application/rss+xml+xml" href="https://duansheli.github.io/tags/route/index.xml" title="断舍离的博客" />
+    <link rel="alternate" type="application/rss+xml+xml" href="https://duansheli.github.io/tags/kotlin/index.xml" title="断舍离的博客" />
     <script type="text/javascript" src="//cdnjs.cloudflare.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
 
     
@@ -67,7 +67,7 @@
                     
                     <h3 class="archive-title">
                         包含标签
-                        <span class="keyword">route</span>
+                        <span class="keyword">kotlin</span>
                         的文章
                     </h3>
                     
@@ -76,52 +76,17 @@
                         <article class="post">
                             <header>
                                 <h1 class="post-title">
-                                    <a href="https://duansheli.github.io/2019/11/12/doh.html">群晖两步验证的关闭</a>
+                                    <a href="https://duansheli.github.io/2019/09/11/kotlin-null-check.html">kotlin空指针校验</a>
                                 </h1>
                             </header>
                             <date class="post-meta meta-date">
-                                2019年11月12日
+                                2019年9月11日
                             </date>
                             
                             <div class="post-content">
-                                家里的网络用的是软路由拨号的，软路由装在群晖的虚拟机里 突然断网了 于是登上软路由看看是咋了， 发现访问不了 估计死机了，那就重启下虚拟机好了，访问群晖时发现二次验证的软件不在身边 找软件找半天，突然想起来重启群晖主机，虚拟机一样重启
-群晖主机的关闭  可以在web管理界面关机，但目前无法登录 可以直接按住开机键等一会就关机了 虽然web界面无法访问，但ssh可以连上 shutdown命令关机  web界面的登录 虽然重启主机解决了网络问题 但登录问题咋整 网上搜了下
-官方的解决方案是 用回形针轻按住 RESET 按钮约 4 秒 , 然后重新配置账户 https://www.……
-                                <p class="readmore"><a href="https://duansheli.github.io/2019/11/12/doh.html">阅读全文</a></p>
-                            </div>
-                        </article>
-                    
-                        <article class="post">
-                            <header>
-                                <h1 class="post-title">
-                                    <a href="https://duansheli.github.io/2019/09/12/doh.html">浏览器启用dns-over-https(DoH)</a>
-                                </h1>
-                            </header>
-                            <date class="post-meta meta-date">
-                                2019年9月12日
-                            </date>
-                            
-                            <div class="post-content">
-                                firefox chrome://flags Secure DNS lookups. 启用该选项 重启浏览器  chrome chrome://flags Secure DNS lookups. 启用该选项 重启浏览器  修改chrome快捷方式的参数 增加以下参数 --enable-features=&quot;dns-over-https&lt;DoHTrial&quot; --force-fieldtrials=&quot;DoHTrial/Group1&quot; --force-fieldtrial-params=&quot;DoHTrial.……
-                                <p class="readmore"><a href="https://duansheli.github.io/2019/09/12/doh.html">阅读全文</a></p>
-                            </div>
-                        </article>
-                    
-                        <article class="post">
-                            <header>
-                                <h1 class="post-title">
-                                    <a href="https://duansheli.github.io/2019/08/22/cloudflare-ddns.html">cloudflare设置ddns</a>
-                                </h1>
-                            </header>
-                            <date class="post-meta meta-date">
-                                2019年2月22日
-                            </date>
-                            
-                            <div class="post-content">
-                                主要流程 最终目的是 让 movie.aaabbb.com 能解析成家中的公网ip
-最终的api为
-curl -X PUT &quot;https://api.cloudflare.com/client/v4/zones/$tzone_id/dns_records/$trecord_id&quot; \ -H &quot;X-Auth-Email: $auth_email&quot; \ -H &quot;X-Auth-Key: $auth_key&quot; \ -H &quot;Content-Type: application/json&quot; \ --data '{&quot;type&quot;:&quot;A&quot;,&quot;name&quot;:&quot;file.……
-                                <p class="readmore"><a href="https://duansheli.github.io/2019/08/22/cloudflare-ddns.html">阅读全文</a></p>
+                                kotlin空指针校验 类型的说明 变量声明方式 val a: String=&quot;tom&quot; 通常会写成val a = &quot;tom&quot; 但还有另一种 val a: String?=&quot;tom&quot; 表示非空类型
+fun test1() { val a1 = 2; // val a2 = ss as String // 抛出转换失败的异常 val a2 = a1 as?……
+                                <p class="readmore"><a href="https://duansheli.github.io/2019/09/11/kotlin-null-check.html">阅读全文</a></p>
                             </div>
                         </article>
                     
