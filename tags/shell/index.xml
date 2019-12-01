@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>shell on 断舍离的博客</title>
+    <link>https://duansheli.github.io/tags/shell/</link>
+    <description>Recent content in shell on 断舍离的博客</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>zh-CN</language>
+    <lastBuildDate>Wed, 07 Aug 2019 17:28:13 +0800</lastBuildDate>
+    
+	<atom:link href="https://duansheli.github.io/tags/shell/index.xml" rel="self" type="application/rss+xml" />
+    
+    
+    <item>
+      <title>文件分割与合并</title>
+      <link>https://duansheli.github.io/2019/08/07/split-merge-file.html</link>
+      <pubDate>Wed, 07 Aug 2019 17:28:13 +0800</pubDate>
+      
+      <guid>https://duansheli.github.io/2019/08/07/split-merge-file.html</guid>
+      <description>简介 linux下的命令 dd、split 用于分割文件
+cat命令用于合并文件
+windows下使用 copy合并文件
+linux下dd、split演示 测试文件 testfile 大小为 1004k 使用 split 命令将其 每600k切为一个文件
+然后使用cat命令合并
+使用 dd 命令将其 前700k复制为一个文件</description>
+    </item>
+    
+  </channel>
+</rss>

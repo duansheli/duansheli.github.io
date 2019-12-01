@@ -30,7 +30,7 @@
       <guid>https://duansheli.github.io/2019/07/06/check-credit.html</guid>
       <description>主要使用高级搜索来实现精准搜索开源项目
 一个仓库主要以下几部分 项目名称，项目描述 项目主要是什么语言的 根目录下的README.md 描述一些详情
-常用示例 #名字包含spring spring in:name #描述中包含流量控制的 flow control in:description #描述包含xx spring in:readme #语言当然选你会的 language:java #作者是国内的 location:China #点赞数大说明大家比较认可 stars:&amp;gt;=800 #点赞数在10到50之间的 stars:10.</description>
+常用示例 #名字包含spring spring in:name #描述中包含流量控制的 flow control in:description #文件readme.md包含xx spring in:readme #语言当然选你会的 language:java #作者是国内的 location:China #点赞数大说明大家比较认可 stars:&amp;gt;=800 #点赞数在10到50之间的 stars:10.</description>
     </item>
     
   </channel>

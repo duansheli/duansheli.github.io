@@ -80,6 +80,7 @@
 <li><a href="#todo">todo</a></li>
 </ul></li>
 <li><a href="#kie-server的maven配置">kie-server的maven配置</a></li>
+<li><a href="#结论">结论</a></li>
 </ul></li>
 </ul>
 </nav>
@@ -304,6 +305,10 @@ public class KieServerDemo {
 
 <h1 id="maven仓库的配置">maven仓库的配置</h1>
 
+<p>本地在调用远程kie-server时，使用了Person类
+那项目该如何依赖该fact类呢？<br />
+直接拷贝源码、或下载jar到本地、或以坐标方式引入远程jar等</p>
+
 <h2 id="方案1">方案1</h2>
 
 <p>fact的jar在workbench节点的maven仓库中<br />
@@ -363,6 +368,16 @@ Guvnor M2 repository 可由系统变量 org.guvnor.m2repo.dir 进行覆盖</p>
 
 <p><a href="http://localhost:8080/business-central/maven2/">http://localhost:8080/business-central/maven2/</a>
 -Dorg.guvnor.m2repo.dir</p>
+
+<h2 id="结论">结论</h2>
+
+<p>在工作环境倾向第二种方案</p>
+
+<p>所有项目都是使用公共的共同的私服
+fact单独一个jar发布<br />
+kjar以坐标方式引入fact-jar 同时也发布到私服上</p>
+
+<p>如果觉着kjar中的规则数据应保密， 也可不发布到私服上</p>
                         </div>
 
                         
@@ -378,11 +393,11 @@ Guvnor M2 repository 可由系统变量 org.guvnor.m2repo.dir 进行覆盖</p>
         
         <li><a href="/2019/10/26/update-rule-by-scanner.html">自定义动态更新drools规则</a></li>
         
+        <li><a href="/2019/10/03/k8s-cluster-setup-03.html">k8s的相关项目</a></li>
+        
         <li><a href="/2019/09/12/doh.html">浏览器启用dns-over-https(DoH)</a></li>
         
         <li><a href="/2019/09/11/kotlin-null-check.html">kotlin空指针校验</a></li>
-        
-        <li><a href="/2019/09/03/hashids-usage.html">使用hashids创建短链服务</a></li>
         
     </ul>
 </div>
@@ -420,6 +435,10 @@ Guvnor M2 repository 可由系统变量 org.guvnor.m2repo.dir 进行覆盖</p>
 <ul class="widget-list">
     
     <li>
+        <a href="https://duansheli.github.io/2019/11/26/scala-process.html" title="scala调用系统命令">scala调用系统命令</a>
+    </li>
+    
+    <li>
         <a href="https://duansheli.github.io/2019/11/12/doh.html" title="群晖两步验证的关闭">群晖两步验证的关闭</a>
     </li>
     
@@ -433,6 +452,10 @@ Guvnor M2 repository 可由系统变量 org.guvnor.m2repo.dir 进行覆盖</p>
     
     <li>
         <a href="https://duansheli.github.io/2019/10/26/update-rule-by-scanner.html" title="自定义动态更新drools规则">自定义动态更新drools规则</a>
+    </li>
+    
+    <li>
+        <a href="https://duansheli.github.io/2019/10/03/k8s-cluster-setup-03.html" title="k8s的相关项目">k8s的相关项目</a>
     </li>
     
     <li>
@@ -451,14 +474,6 @@ Guvnor M2 repository 可由系统变量 org.guvnor.m2repo.dir 进行覆盖</p>
         <a href="https://duansheli.github.io/2019/09/07/zero-width.html" title="给文章加水印-零宽字符">给文章加水印-零宽字符</a>
     </li>
     
-    <li>
-        <a href="https://duansheli.github.io/2019/08/16/hashids-usage.html" title="激活码的生成">激活码的生成</a>
-    </li>
-    
-    <li>
-        <a href="https://duansheli.github.io/2019/08/02/k8s-cluster-setup-02.html" title="mysql物理备份与还原示例">mysql物理备份与还原示例</a>
-    </li>
-    
 </ul>
     </section>
 
@@ -473,7 +488,7 @@ Guvnor M2 repository 可由系统变量 org.guvnor.m2repo.dir 进行覆盖</p>
     </li>
     
     <li>
-        <a href="https://duansheli.github.io/categories/k8s%E9%9B%86%E7%BE%A4/">k8s集群(4)</a>
+        <a href="https://duansheli.github.io/categories/k8s%E9%9B%86%E7%BE%A4/">k8s集群(5)</a>
     </li>
     
 </ul>
@@ -501,6 +516,8 @@ Guvnor M2 repository 可由系统变量 org.guvnor.m2repo.dir 进行覆盖</p>
     
     <a href="https://duansheli.github.io/tags/git/">git</a>
     
+    <a href="https://duansheli.github.io/tags/gradle/">gradle</a>
+    
     <a href="https://duansheli.github.io/tags/hashids/">hashids</a>
     
     <a href="https://duansheli.github.io/tags/id/">id</a>
@@ -517,6 +534,8 @@ Guvnor M2 repository 可由系统变量 org.guvnor.m2repo.dir 进行覆盖</p>
     
     <a href="https://duansheli.github.io/tags/life/">life</a>
     
+    <a href="https://duansheli.github.io/tags/linux/">linux</a>
+    
     <a href="https://duansheli.github.io/tags/mysql/">mysql</a>
     
     <a href="https://duansheli.github.io/tags/proxy/">proxy</a>
@@ -528,6 +547,8 @@ Guvnor M2 repository 可由系统变量 org.guvnor.m2repo.dir 进行覆盖</p>
     <a href="https://duansheli.github.io/tags/scala/">scala</a>
     
     <a href="https://duansheli.github.io/tags/session/">session</a>
+    
+    <a href="https://duansheli.github.io/tags/shell/">shell</a>
     
     <a href="https://duansheli.github.io/tags/spring-boot/">spring-boot</a>
     

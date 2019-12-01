@@ -67,6 +67,27 @@
                         <article class="post">
                             <header>
                                 <h1 class="post-title">
+                                    <a href="https://duansheli.github.io/2019/11/26/scala-process.html" title="scala调用系统命令" >scala调用系统命令</a>
+                                </h1>
+                            </header>
+                            <date class="post-meta meta-date">
+                                2019年11月26日
+                            </date>
+                            
+                            <div class="post-content">
+                                操作演示 启动scala docker run --rm -it hseeberger/scala-sbt:11.0.4_1.3.4_2.12.10 bash scala -language:postfixOps  命令里面不能直接用管道或重定向符号
+需要用#来拼接
+报错解决 scala代码中如果使用 !执行命令时， 会有一段警告
+scala&gt; import scala.……
+                            </div>
+                            <p class="readmore"><a href="https://duansheli.github.io/2019/11/26/scala-process.html">阅读全文</a></p>
+                        </article>
+                    
+                    
+		    
+                        <article class="post">
+                            <header>
+                                <h1 class="post-title">
                                     <a href="https://duansheli.github.io/2019/11/12/doh.html" title="群晖两步验证的关闭" >群晖两步验证的关闭</a>
                                 </h1>
                             </header>
@@ -151,6 +172,33 @@ drools-workbench 用来管理规则……
                         <article class="post">
                             <header>
                                 <h1 class="post-title">
+                                    <a href="https://duansheli.github.io/2019/10/03/k8s-cluster-setup-03.html" title="k8s的相关项目" >k8s的相关项目</a>
+                                </h1>
+                            </header>
+                            <date class="post-meta meta-date">
+                                2019年10月3日
+                            </date>
+                            
+                            <div class="post-meta">
+                                <span>|</span>
+                                
+                                <span class="meta-category"><a href="https://duansheli.github.io/categories/k8s%E9%9B%86%E7%BE%A4">k8s集群</a></span>
+                                
+                            </div>
+                            
+                            <div class="post-content">
+                                其他厂商版本 Canonical 公司为自家的 ubuntu 提供的 适配版 k8s 单机版 MicroK8s 集群版 Charmed Kubernetes
+rancher公司 https://github.com/rancher/k3s/releases
+工具 helm 包管理工具 就好比360软件管家、yum、apt等软件 可快速在k8s集群部署应用 https://github.……
+                            </div>
+                            <p class="readmore"><a href="https://duansheli.github.io/2019/10/03/k8s-cluster-setup-03.html">阅读全文</a></p>
+                        </article>
+                    
+                    
+		    
+                        <article class="post">
+                            <header>
+                                <h1 class="post-title">
                                     <a href="https://duansheli.github.io/2019/09/12/doh.html" title="浏览器启用dns-over-https(DoH)" >浏览器启用dns-over-https(DoH)</a>
                                 </h1>
                             </header>
@@ -223,43 +271,6 @@ by duansheli  项目源码 https://github.com/rover95/morse-encrypt 在线服务
                         </article>
                     
                     
-		    
-                        <article class="post">
-                            <header>
-                                <h1 class="post-title">
-                                    <a href="https://duansheli.github.io/2019/08/16/hashids-usage.html" title="激活码的生成" >激活码的生成</a>
-                                </h1>
-                            </header>
-                            <date class="post-meta meta-date">
-                                2019年8月16日
-                            </date>
-                            
-                            <div class="post-content">
-                                <p>简单的方案是使用uuid生成， 但太长且数据库检索效率低。<br />
-本次使用hashIds的方案 简单 安全。</p>……
-                            </div>
-                            <p class="readmore"><a href="https://duansheli.github.io/2019/08/16/hashids-usage.html">阅读全文</a></p>
-                        </article>
-                    
-                    
-		    
-                        <article class="post">
-                            <header>
-                                <h1 class="post-title">
-                                    <a href="https://duansheli.github.io/2019/08/02/k8s-cluster-setup-02.html" title="mysql物理备份与还原示例" >mysql物理备份与还原示例</a>
-                                </h1>
-                            </header>
-                            <date class="post-meta meta-date">
-                                2019年8月2日
-                            </date>
-                            
-                            <div class="post-content">
-                                主要流程 1. 先建库建表 插入测试数据 2. 以物理方式备份数据 --数据备份完毕 3. 创建新的mysql-server 然后建库建表 移除表空间 4.停止mysql服务 将备份的数据还原 重新载入表空间 --数据还原完毕 ubuntu 中通过docker 运行mysql  测试过程 数据准备 两个sql脚本 一个是建表 一个是测试数据……
-                            </div>
-                            <p class="readmore"><a href="https://duansheli.github.io/2019/08/02/k8s-cluster-setup-02.html">阅读全文</a></p>
-                        </article>
-                    
-                    
                     
 
 
@@ -286,6 +297,10 @@ by duansheli  项目源码 https://github.com/rover95/morse-encrypt 在线服务
     
     <li >
         <a href="https://duansheli.github.io/page/5/">5</a>
+    </li>
+    
+    <li >
+        <a href="https://duansheli.github.io/page/6/">6</a>
     </li>
     
 
@@ -316,6 +331,10 @@ by duansheli  项目源码 https://github.com/rover95/morse-encrypt 在线服务
 <ul class="widget-list">
     
     <li>
+        <a href="https://duansheli.github.io/2019/11/26/scala-process.html" title="scala调用系统命令">scala调用系统命令</a>
+    </li>
+    
+    <li>
         <a href="https://duansheli.github.io/2019/11/12/doh.html" title="群晖两步验证的关闭">群晖两步验证的关闭</a>
     </li>
     
@@ -329,6 +348,10 @@ by duansheli  项目源码 https://github.com/rover95/morse-encrypt 在线服务
     
     <li>
         <a href="https://duansheli.github.io/2019/10/26/update-rule-by-scanner.html" title="自定义动态更新drools规则">自定义动态更新drools规则</a>
+    </li>
+    
+    <li>
+        <a href="https://duansheli.github.io/2019/10/03/k8s-cluster-setup-03.html" title="k8s的相关项目">k8s的相关项目</a>
     </li>
     
     <li>
@@ -347,14 +370,6 @@ by duansheli  项目源码 https://github.com/rover95/morse-encrypt 在线服务
         <a href="https://duansheli.github.io/2019/09/07/zero-width.html" title="给文章加水印-零宽字符">给文章加水印-零宽字符</a>
     </li>
     
-    <li>
-        <a href="https://duansheli.github.io/2019/08/16/hashids-usage.html" title="激活码的生成">激活码的生成</a>
-    </li>
-    
-    <li>
-        <a href="https://duansheli.github.io/2019/08/02/k8s-cluster-setup-02.html" title="mysql物理备份与还原示例">mysql物理备份与还原示例</a>
-    </li>
-    
 </ul>
     </section>
 
@@ -369,7 +384,7 @@ by duansheli  项目源码 https://github.com/rover95/morse-encrypt 在线服务
     </li>
     
     <li>
-        <a href="https://duansheli.github.io/categories/k8s%E9%9B%86%E7%BE%A4/">k8s集群(4)</a>
+        <a href="https://duansheli.github.io/categories/k8s%E9%9B%86%E7%BE%A4/">k8s集群(5)</a>
     </li>
     
 </ul>
@@ -397,6 +412,8 @@ by duansheli  项目源码 https://github.com/rover95/morse-encrypt 在线服务
     
     <a href="https://duansheli.github.io/tags/git/">git</a>
     
+    <a href="https://duansheli.github.io/tags/gradle/">gradle</a>
+    
     <a href="https://duansheli.github.io/tags/hashids/">hashids</a>
     
     <a href="https://duansheli.github.io/tags/id/">id</a>
@@ -413,6 +430,8 @@ by duansheli  项目源码 https://github.com/rover95/morse-encrypt 在线服务
     
     <a href="https://duansheli.github.io/tags/life/">life</a>
     
+    <a href="https://duansheli.github.io/tags/linux/">linux</a>
+    
     <a href="https://duansheli.github.io/tags/mysql/">mysql</a>
     
     <a href="https://duansheli.github.io/tags/proxy/">proxy</a>
@@ -424,6 +443,8 @@ by duansheli  项目源码 https://github.com/rover95/morse-encrypt 在线服务
     <a href="https://duansheli.github.io/tags/scala/">scala</a>
     
     <a href="https://duansheli.github.io/tags/session/">session</a>
+    
+    <a href="https://duansheli.github.io/tags/shell/">shell</a>
     
     <a href="https://duansheli.github.io/tags/spring-boot/">spring-boot</a>
     

@@ -6,10 +6,22 @@
     <description>Recent content on 断舍离的博客</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>zh-CN</language>
-    <lastBuildDate>Tue, 12 Nov 2019 13:13:13 +0800</lastBuildDate>
+    <lastBuildDate>Tue, 26 Nov 2019 17:28:13 +0800</lastBuildDate>
     
 	<atom:link href="https://duansheli.github.io/index.xml" rel="self" type="application/rss+xml" />
     
+    
+    <item>
+      <title>scala调用系统命令</title>
+      <link>https://duansheli.github.io/2019/11/26/scala-process.html</link>
+      <pubDate>Tue, 26 Nov 2019 17:28:13 +0800</pubDate>
+      
+      <guid>https://duansheli.github.io/2019/11/26/scala-process.html</guid>
+      <description>操作演示 启动scala docker run --rm -it hseeberger/scala-sbt:11.0.4_1.3.4_2.12.10 bash scala -language:postfixOps  命令里面不能直接用管道或重定向符号
+需要用#来拼接
+报错解决 scala代码中如果使用 !执行命令时， 会有一段警告
+scala&amp;gt; import scala.</description>
+    </item>
     
     <item>
       <title>群晖两步验证的关闭</title>
@@ -57,6 +69,17 @@ drools-workbench 用来管理规则</description>
 下面以 KieFileSystemScannerImpl 为例进行演示从文件夹获取更新 然后分析过程 最后自定义一个 KieScanner
 准备kjar工程 其实就是个maven项目 存放着规则文件
 &amp;lt;?xml version=&amp;quot;1.0&amp;quot; encoding=&amp;quot;UTF-8&amp;quot;?&amp;gt; &amp;lt;project xmlns=&amp;quot;http://maven.</description>
+    </item>
+    
+    <item>
+      <title>k8s的相关项目</title>
+      <link>https://duansheli.github.io/2019/10/03/k8s-cluster-setup-03.html</link>
+      <pubDate>Thu, 03 Oct 2019 17:28:13 +0800</pubDate>
+      
+      <guid>https://duansheli.github.io/2019/10/03/k8s-cluster-setup-03.html</guid>
+      <description>其他厂商版本 Canonical 公司为自家的 ubuntu 提供的 适配版 k8s 单机版 MicroK8s 集群版 Charmed Kubernetes
+rancher公司 https://github.com/rancher/k3s/releases
+工具 helm 包管理工具 就好比360软件管家、yum、apt等软件 可快速在k8s集群部署应用 https://github.</description>
     </item>
     
     <item>
@@ -110,6 +133,20 @@ by duansheli  项目源码 https://github.com/rover95/morse-encrypt 在线服务
     </item>
     
     <item>
+      <title>文件分割与合并</title>
+      <link>https://duansheli.github.io/2019/08/07/split-merge-file.html</link>
+      <pubDate>Wed, 07 Aug 2019 17:28:13 +0800</pubDate>
+      
+      <guid>https://duansheli.github.io/2019/08/07/split-merge-file.html</guid>
+      <description>简介 linux下的命令 dd、split 用于分割文件
+cat命令用于合并文件
+windows下使用 copy合并文件
+linux下dd、split演示 测试文件 testfile 大小为 1004k 使用 split 命令将其 每600k切为一个文件
+然后使用cat命令合并
+使用 dd 命令将其 前700k复制为一个文件</description>
+    </item>
+    
+    <item>
       <title>mysql物理备份与还原示例</title>
       <link>https://duansheli.github.io/2019/08/02/k8s-cluster-setup-02.html</link>
       <pubDate>Fri, 02 Aug 2019 17:28:13 +0800</pubDate>
@@ -137,7 +174,7 @@ by duansheli  项目源码 https://github.com/rover95/morse-encrypt 在线服务
       <guid>https://duansheli.github.io/2019/07/06/check-credit.html</guid>
       <description>主要使用高级搜索来实现精准搜索开源项目
 一个仓库主要以下几部分 项目名称，项目描述 项目主要是什么语言的 根目录下的README.md 描述一些详情
-常用示例 #名字包含spring spring in:name #描述中包含流量控制的 flow control in:description #描述包含xx spring in:readme #语言当然选你会的 language:java #作者是国内的 location:China #点赞数大说明大家比较认可 stars:&amp;gt;=800 #点赞数在10到50之间的 stars:10.</description>
+常用示例 #名字包含spring spring in:name #描述中包含流量控制的 flow control in:description #文件readme.md包含xx spring in:readme #语言当然选你会的 language:java #作者是国内的 location:China #点赞数大说明大家比较认可 stars:&amp;gt;=800 #点赞数在10到50之间的 stars:10.</description>
     </item>
     
     <item>
@@ -155,6 +192,17 @@ LoadBalancer 如果有云厂商的LoadBalancer， 那自然方便
 又或者不想用云厂商的LoadBalancer
 那这个时候整，之间nodePort么
 自建-LoadBalance 基于开源项目自建 LoadBalance</description>
+    </item>
+    
+    <item>
+      <title>gradle-task使用</title>
+      <link>https://duansheli.github.io/2019/06/21/gradle-task-learn.html</link>
+      <pubDate>Fri, 21 Jun 2019 16:13:13 +0800</pubDate>
+      
+      <guid>https://duansheli.github.io/2019/06/21/gradle-task-learn.html</guid>
+      <description>gradle-task的使用 新建一个gradle-Java项目
+工程创建 默认的 build.gradle 文件
+plugins { id &#39;java&#39; } group &#39;fluffy.mo&#39; version &#39;1.0-SNAPSHOT&#39; sourceCompatibility = 1.8 repositories { mavenCentral() } dependencies { testCompile group: &#39;junit&#39;, name: &#39;junit&#39;, version: &#39;4.</description>
     </item>
     
     <item>
@@ -279,6 +327,18 @@ request.getSession().setAttribute(&amp;ldquo;currentUser&amp;rdquo;,&amp;ldquo;t
     </item>
     
     <item>
+      <title>linux内存文件系统使用</title>
+      <link>https://duansheli.github.io/2019/03/17/linux-ram-filesystem.html</link>
+      <pubDate>Sun, 17 Mar 2019 17:28:13 +0800</pubDate>
+      
+      <guid>https://duansheli.github.io/2019/03/17/linux-ram-filesystem.html</guid>
+      <description>使用内存文件系统 就是图它特别快
+操作演示 3种创建内存文件系统的方式 tmpfs 使用操作比较友好 ramfs 比较快，但危险 格式化内存 步骤稍微繁琐
+创建几个文件夹用来演示挂载
+mkdir /mnt/m01 /mnt/m02 /mnt/m03  方案1-格式化内存 linux系统 目前有16个ram块</description>
+    </item>
+    
+    <item>
       <title>spring-session实现分布式会话</title>
       <link>https://duansheli.github.io/2019/03/02/spring-session-in-action.html</link>
       <pubDate>Sat, 02 Mar 2019 17:28:13 +0800</pubDate>
@@ -340,6 +400,18 @@ serviceA 中会调用serviceB，serviceC，serviceD
     </item>
     
     <item>
+      <title>gradle-全局init</title>
+      <link>https://duansheli.github.io/2019/01/16/gradle-init-learn.html</link>
+      <pubDate>Wed, 16 Jan 2019 16:13:13 +0800</pubDate>
+      
+      <guid>https://duansheli.github.io/2019/01/16/gradle-init-learn.html</guid>
+      <description>官方文档 https://docs.gradle.org/5.1.1/userguide/init_scripts.html
+全局脚本位置 通过参数指定脚本 &amp;ndash;init-script 或 -I （大写的i） 如 gradle -I init.gradle package
+存放在 USER_HOME/.gradle/ 目录下
+文件名为 init.gradle 或者 init.</description>
+    </item>
+    
+    <item>
       <title>docker常用操作</title>
       <link>https://duansheli.github.io/2019/01/15/docker-useful-cmd.html</link>
       <pubDate>Tue, 15 Jan 2019 17:28:13 +0800</pubDate>
@@ -350,11 +422,24 @@ Sending build context to Docker daemon 5.902MB Step 1/10 : FROM docker:git as bu
     </item>
     
     <item>
+      <title>压缩包解压时不使用临时目录</title>
+      <link>https://duansheli.github.io/2018/01/06/unzip-no-copy.html</link>
+      <pubDate>Sun, 06 Jan 2019 13:13:13 +0800</pubDate>
+      
+      <guid>https://duansheli.github.io/2018/01/06/unzip-no-copy.html</guid>
+      <description>平时主要用 firefox 和 chrome
+举例描述 比如下载了一个压缩包 apache-tomcat-7.0.96-windows-x86.zip
+文件放在C盘的download文件夹下
+通常的操作是 双击打开压缩包 文件浏览器打开希望解压的位置 比如 d://myprogram 此时再从压缩包中拖动要解压的文件到 d://myprogram 文件夹中
+在解压的过程中 d://myprogram 中不会有文件夹 apache-tomcat-7.</description>
+    </item>
+    
+    <item>
       <title>k8s搭建集群3-异常解决</title>
-      <link>https://duansheli.github.io/2018/01/03/k8s-cluster-setup-03.html</link>
+      <link>https://duansheli.github.io/2019/01/03/k8s-cluster-setup-03.html</link>
       <pubDate>Thu, 03 Jan 2019 17:28:13 +0800</pubDate>
       
-      <guid>https://duansheli.github.io/2018/01/03/k8s-cluster-setup-03.html</guid>
+      <guid>https://duansheli.github.io/2019/01/03/k8s-cluster-setup-03.html</guid>
       <description>出错恢复 没遇到报错可以跳过
 安装过程中可能有一些异常
 查看所有的pod分布情况 kubectl get pods -n kube-system -o wide -l k8s-app=kubernetes-dashboard  查看失败的镜像

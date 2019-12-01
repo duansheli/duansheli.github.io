@@ -76,6 +76,31 @@
                         <article class="post">
                             <header>
                                 <h1 class="post-title">
+                                    <a href="https://duansheli.github.io/2019/10/03/k8s-cluster-setup-03.html">k8s的相关项目</a>
+                                </h1>
+                            </header>
+                            <date class="post-meta meta-date">
+                                2019年10月3日
+                            </date>
+                            
+                            <div class="post-meta meta-category">
+                                |
+                                
+                                    <a href="https://duansheli.github.io/categories/k8s%E9%9B%86%E7%BE%A4">k8s集群</a>
+                                
+                            </div>
+                            
+                            <div class="post-content">
+                                其他厂商版本 Canonical 公司为自家的 ubuntu 提供的 适配版 k8s 单机版 MicroK8s 集群版 Charmed Kubernetes
+rancher公司 https://github.com/rancher/k3s/releases
+工具 helm 包管理工具 就好比360软件管家、yum、apt等软件 可快速在k8s集群部署应用 https://github.……
+                                <p class="readmore"><a href="https://duansheli.github.io/2019/10/03/k8s-cluster-setup-03.html">阅读全文</a></p>
+                            </div>
+                        </article>
+                    
+                        <article class="post">
+                            <header>
+                                <h1 class="post-title">
                                     <a href="https://duansheli.github.io/2019/09/09/docker-cp.html">docker的复制文件操作</a>
                                 </h1>
                             </header>
@@ -166,7 +191,7 @@ Sending build context to Docker daemon 5.902MB Step 1/10 : FROM docker:git as bu
                         <article class="post">
                             <header>
                                 <h1 class="post-title">
-                                    <a href="https://duansheli.github.io/2018/01/03/k8s-cluster-setup-03.html">k8s搭建集群3-异常解决</a>
+                                    <a href="https://duansheli.github.io/2019/01/03/k8s-cluster-setup-03.html">k8s搭建集群3-异常解决</a>
                                 </h1>
                             </header>
                             <date class="post-meta meta-date">
@@ -185,7 +210,7 @@ Sending build context to Docker daemon 5.902MB Step 1/10 : FROM docker:git as bu
 安装过程中可能有一些异常
 查看所有的pod分布情况 kubectl get pods -n kube-system -o wide -l k8s-app=kubernetes-dashboard  查看失败的镜像
 imageName=`kubectl describe -n kube-system pod -l k8s-app=kubernetes-dashboard | grep Image: | awk '{print $2 }' ` kubectl describe -n kube-system pod -l k8s-app=kubernetes-dashboard  某个pod的详情 kubectl describe pod -l k8s-app=kubernetes-dashboard -n kube-system  出错日志 kubectl logs `kubectl get pods -n kube-system -l k8s-app=kubernetes-dashboard -o name` -n kube-system  报错描述提到 addr cni0 failed to set bridge addr: &ldquo;cni0&rdquo; already has an IP address different from 10.……
-                                <p class="readmore"><a href="https://duansheli.github.io/2018/01/03/k8s-cluster-setup-03.html">阅读全文</a></p>
+                                <p class="readmore"><a href="https://duansheli.github.io/2019/01/03/k8s-cluster-setup-03.html">阅读全文</a></p>
                             </div>
                         </article>
                     
@@ -269,6 +294,10 @@ k8s=v1.12.6
 <ul class="widget-list">
     
     <li>
+        <a href="https://duansheli.github.io/2019/11/26/scala-process.html" title="scala调用系统命令">scala调用系统命令</a>
+    </li>
+    
+    <li>
         <a href="https://duansheli.github.io/2019/11/12/doh.html" title="群晖两步验证的关闭">群晖两步验证的关闭</a>
     </li>
     
@@ -282,6 +311,10 @@ k8s=v1.12.6
     
     <li>
         <a href="https://duansheli.github.io/2019/10/26/update-rule-by-scanner.html" title="自定义动态更新drools规则">自定义动态更新drools规则</a>
+    </li>
+    
+    <li>
+        <a href="https://duansheli.github.io/2019/10/03/k8s-cluster-setup-03.html" title="k8s的相关项目">k8s的相关项目</a>
     </li>
     
     <li>
@@ -300,14 +333,6 @@ k8s=v1.12.6
         <a href="https://duansheli.github.io/2019/09/07/zero-width.html" title="给文章加水印-零宽字符">给文章加水印-零宽字符</a>
     </li>
     
-    <li>
-        <a href="https://duansheli.github.io/2019/08/16/hashids-usage.html" title="激活码的生成">激活码的生成</a>
-    </li>
-    
-    <li>
-        <a href="https://duansheli.github.io/2019/08/02/k8s-cluster-setup-02.html" title="mysql物理备份与还原示例">mysql物理备份与还原示例</a>
-    </li>
-    
 </ul>
     </section>
 
@@ -322,7 +347,7 @@ k8s=v1.12.6
     </li>
     
     <li>
-        <a href="https://duansheli.github.io/categories/k8s%E9%9B%86%E7%BE%A4/">k8s集群(4)</a>
+        <a href="https://duansheli.github.io/categories/k8s%E9%9B%86%E7%BE%A4/">k8s集群(5)</a>
     </li>
     
 </ul>
@@ -350,6 +375,8 @@ k8s=v1.12.6
     
     <a href="https://duansheli.github.io/tags/git/">git</a>
     
+    <a href="https://duansheli.github.io/tags/gradle/">gradle</a>
+    
     <a href="https://duansheli.github.io/tags/hashids/">hashids</a>
     
     <a href="https://duansheli.github.io/tags/id/">id</a>
@@ -366,6 +393,8 @@ k8s=v1.12.6
     
     <a href="https://duansheli.github.io/tags/life/">life</a>
     
+    <a href="https://duansheli.github.io/tags/linux/">linux</a>
+    
     <a href="https://duansheli.github.io/tags/mysql/">mysql</a>
     
     <a href="https://duansheli.github.io/tags/proxy/">proxy</a>
@@ -377,6 +406,8 @@ k8s=v1.12.6
     <a href="https://duansheli.github.io/tags/scala/">scala</a>
     
     <a href="https://duansheli.github.io/tags/session/">session</a>
+    
+    <a href="https://duansheli.github.io/tags/shell/">shell</a>
     
     <a href="https://duansheli.github.io/tags/spring-boot/">spring-boot</a>
     

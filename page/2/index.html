@@ -67,6 +67,66 @@
                         <article class="post">
                             <header>
                                 <h1 class="post-title">
+                                    <a href="https://duansheli.github.io/2019/08/16/hashids-usage.html" title="激活码的生成" >激活码的生成</a>
+                                </h1>
+                            </header>
+                            <date class="post-meta meta-date">
+                                2019年8月16日
+                            </date>
+                            
+                            <div class="post-content">
+                                <p>简单的方案是使用uuid生成， 但太长且数据库检索效率低。<br />
+本次使用hashIds的方案 简单 安全。</p>……
+                            </div>
+                            <p class="readmore"><a href="https://duansheli.github.io/2019/08/16/hashids-usage.html">阅读全文</a></p>
+                        </article>
+                    
+                    
+		    
+                        <article class="post">
+                            <header>
+                                <h1 class="post-title">
+                                    <a href="https://duansheli.github.io/2019/08/07/split-merge-file.html" title="文件分割与合并" >文件分割与合并</a>
+                                </h1>
+                            </header>
+                            <date class="post-meta meta-date">
+                                2019年8月7日
+                            </date>
+                            
+                            <div class="post-content">
+                                简介 linux下的命令 dd、split 用于分割文件
+cat命令用于合并文件
+windows下使用 copy合并文件
+linux下dd、split演示 测试文件 testfile 大小为 1004k 使用 split 命令将其 每600k切为一个文件
+然后使用cat命令合并
+使用 dd 命令将其 前700k复制为一个文件……
+                            </div>
+                            <p class="readmore"><a href="https://duansheli.github.io/2019/08/07/split-merge-file.html">阅读全文</a></p>
+                        </article>
+                    
+                    
+		    
+                        <article class="post">
+                            <header>
+                                <h1 class="post-title">
+                                    <a href="https://duansheli.github.io/2019/08/02/k8s-cluster-setup-02.html" title="mysql物理备份与还原示例" >mysql物理备份与还原示例</a>
+                                </h1>
+                            </header>
+                            <date class="post-meta meta-date">
+                                2019年8月2日
+                            </date>
+                            
+                            <div class="post-content">
+                                主要流程 1. 先建库建表 插入测试数据 2. 以物理方式备份数据 --数据备份完毕 3. 创建新的mysql-server 然后建库建表 移除表空间 4.停止mysql服务 将备份的数据还原 重新载入表空间 --数据还原完毕 ubuntu 中通过docker 运行mysql  测试过程 数据准备 两个sql脚本 一个是建表 一个是测试数据……
+                            </div>
+                            <p class="readmore"><a href="https://duansheli.github.io/2019/08/02/k8s-cluster-setup-02.html">阅读全文</a></p>
+                        </article>
+                    
+                    
+		    
+                        <article class="post">
+                            <header>
+                                <h1 class="post-title">
                                     <a href="https://duansheli.github.io/2019/07/06/check-credit.html" title="Github 最简单的认证方式 - Access Token[转]" >Github 最简单的认证方式 - Access Token[转]</a>
                                 </h1>
                             </header>
@@ -97,7 +157,7 @@
                             <div class="post-content">
                                 主要使用高级搜索来实现精准搜索开源项目
 一个仓库主要以下几部分 项目名称，项目描述 项目主要是什么语言的 根目录下的README.md 描述一些详情
-常用示例 #名字包含spring spring in:name #描述中包含流量控制的 flow control in:description #描述包含xx spring in:readme #语言当然选你会的 language:java #作者是国内的 location:China #点赞数大说明大家比较认可 stars:&gt;=800 #点赞数在10到50之间的 stars:10.……
+常用示例 #名字包含spring spring in:name #描述中包含流量控制的 flow control in:description #文件readme.md包含xx spring in:readme #语言当然选你会的 language:java #作者是国内的 location:China #点赞数大说明大家比较认可 stars:&gt;=800 #点赞数在10到50之间的 stars:10.……
                             </div>
                             <p class="readmore"><a href="https://duansheli.github.io/2019/07/06/check-credit.html">阅读全文</a></p>
                         </article>
@@ -133,6 +193,26 @@ LoadBalancer 如果有云厂商的LoadBalancer， 那自然方便
 自建-LoadBalance 基于开源项目自建 LoadBalance……
                             </div>
                             <p class="readmore"><a href="https://duansheli.github.io/2019/06/27/k8s-ingress-controller.html">阅读全文</a></p>
+                        </article>
+                    
+                    
+		    
+                        <article class="post">
+                            <header>
+                                <h1 class="post-title">
+                                    <a href="https://duansheli.github.io/2019/06/21/gradle-task-learn.html" title="gradle-task使用" >gradle-task使用</a>
+                                </h1>
+                            </header>
+                            <date class="post-meta meta-date">
+                                2019年6月21日
+                            </date>
+                            
+                            <div class="post-content">
+                                gradle-task的使用 新建一个gradle-Java项目
+工程创建 默认的 build.gradle 文件
+plugins { id 'java' } group 'fluffy.mo' version '1.0-SNAPSHOT' sourceCompatibility = 1.8 repositories { mavenCentral() } dependencies { testCompile group: 'junit', name: 'junit', version: '4.……
+                            </div>
+                            <p class="readmore"><a href="https://duansheli.github.io/2019/06/21/gradle-task-learn.html">阅读全文</a></p>
                         </article>
                     
                     
@@ -202,83 +282,6 @@ http://gsxt.saic.gov.cn/……
                         </article>
                     
                     
-		    
-                        <article class="post">
-                            <header>
-                                <h1 class="post-title">
-                                    <a href="https://duansheli.github.io/2019/06/05/relax.html" title="休闲娱乐" >休闲娱乐</a>
-                                </h1>
-                            </header>
-                            <date class="post-meta meta-date">
-                                2019年5月30日
-                            </date>
-                            
-                            <div class="post-content">
-                                小河淌水-颅内高潮 https://weibo.com/tv/v/Hl5d8en8D?fid=1034:4350248915771690 https://dig.chouti.com/link/25184166 小河淌水-龚琳娜-歌手第三季-第10期：第76分钟开始 https://www.mgtv.com/b/327378/5314401.html https://www.mgtv.com/b/327378/5314351.html https://y.qq.com/n/yqq/song/002ogMAd2lR6sT.html 小河淌水-龚琳娜-全能星战-第二期第80分钟开始 https://www.iqiyi.com/v_19rrh8hi14.html https://y.qq.com/n/yqq/song/004ezdyr3O6GTp.html  图片-解压 https://www.flickr.com/explore
-点开图片，单张图片全屏观看，切换图片用键盘左右键。……
-                            </div>
-                            <p class="readmore"><a href="https://duansheli.github.io/2019/06/05/relax.html">阅读全文</a></p>
-                        </article>
-                    
-                    
-		    
-                        <article class="post">
-                            <header>
-                                <h1 class="post-title">
-                                    <a href="https://duansheli.github.io/2019/05/25/download-openjdk.html" title="各类openjdk下载地址" >各类openjdk下载地址</a>
-                                </h1>
-                            </header>
-                            <date class="post-meta meta-date">
-                                2019年5月25日
-                            </date>
-                            
-                            <div class="post-content">
-                                openjdk oracle原版 jdk 之前在可通过命令从官网下载，现在行不通了，必须用oracle账号登录才能下载。 https://github.com/frekele/oracle-java/releases https://github.com/ZachCheung/oracle-java-downloads https://www.oracle.com/technetwork/java/javase/downloads/jdk11-downloads-5066655.html 有一种 oracle版的openjdk http://jdk.java.net/archive/ oracle还有一个跨语言的通用虚拟机 GraalVM https://github.com/oracle/graal/releases 从java 8开始 oracle开始收费，虽然对个人免费， 但对企业是收费的，虽然不知道怎么收，但收费肯定是不菲的。 如果生产环境不用oracle的jdk，最好平时开发就别用oracle，改用openjdk  部分下载地址 没整明白算是哪个厂商的openjdk https://mirrors.……
-                            </div>
-                            <p class="readmore"><a href="https://duansheli.github.io/2019/05/25/download-openjdk.html">阅读全文</a></p>
-                        </article>
-                    
-                    
-		    
-                        <article class="post">
-                            <header>
-                                <h1 class="post-title">
-                                    <a href="https://duansheli.github.io/2019/05/18/dind-build-image-with-cache.html" title="DinD模式下通过容器构建镜像-方案" >DinD模式下通过容器构建镜像-方案</a>
-                                </h1>
-                            </header>
-                            <date class="post-meta meta-date">
-                                2019年5月18日
-                            </date>
-                            
-                            <div class="post-content">
-                                <p>持续集成时，构建镜像后，通常会产生一些临时镜像<br />
-很不docker，一点也不绿色<br />
-使用DinD的方案可以解决该问题</p>……
-                            </div>
-                            <p class="readmore"><a href="https://duansheli.github.io/2019/05/18/dind-build-image-with-cache.html">阅读全文</a></p>
-                        </article>
-                    
-                    
-		    
-                        <article class="post">
-                            <header>
-                                <h1 class="post-title">
-                                    <a href="https://duansheli.github.io/2019/05/17/thinking-autoboxing-implicit.html" title="自动装箱拆箱在scala中的表现" >自动装箱拆箱在scala中的表现</a>
-                                </h1>
-                            </header>
-                            <date class="post-meta meta-date">
-                                2019年5月17日
-                            </date>
-                            
-                            <div class="post-content">
-                                <p>自动装箱拆箱是java中的概念<br />
-implicit是scala中的概念<br />
-都有变量包装的特性</p>……
-                            </div>
-                            <p class="readmore"><a href="https://duansheli.github.io/2019/05/17/thinking-autoboxing-implicit.html">阅读全文</a></p>
-                        </article>
-                    
-                    
                     
 
 
@@ -311,6 +314,10 @@ implicit是scala中的概念<br />
         <a href="https://duansheli.github.io/page/5/">5</a>
     </li>
     
+    <li >
+        <a href="https://duansheli.github.io/page/6/">6</a>
+    </li>
+    
 
     
     <li class="next">
@@ -339,6 +346,10 @@ implicit是scala中的概念<br />
 <ul class="widget-list">
     
     <li>
+        <a href="https://duansheli.github.io/2019/11/26/scala-process.html" title="scala调用系统命令">scala调用系统命令</a>
+    </li>
+    
+    <li>
         <a href="https://duansheli.github.io/2019/11/12/doh.html" title="群晖两步验证的关闭">群晖两步验证的关闭</a>
     </li>
     
@@ -352,6 +363,10 @@ implicit是scala中的概念<br />
     
     <li>
         <a href="https://duansheli.github.io/2019/10/26/update-rule-by-scanner.html" title="自定义动态更新drools规则">自定义动态更新drools规则</a>
+    </li>
+    
+    <li>
+        <a href="https://duansheli.github.io/2019/10/03/k8s-cluster-setup-03.html" title="k8s的相关项目">k8s的相关项目</a>
     </li>
     
     <li>
@@ -370,14 +385,6 @@ implicit是scala中的概念<br />
         <a href="https://duansheli.github.io/2019/09/07/zero-width.html" title="给文章加水印-零宽字符">给文章加水印-零宽字符</a>
     </li>
     
-    <li>
-        <a href="https://duansheli.github.io/2019/08/16/hashids-usage.html" title="激活码的生成">激活码的生成</a>
-    </li>
-    
-    <li>
-        <a href="https://duansheli.github.io/2019/08/02/k8s-cluster-setup-02.html" title="mysql物理备份与还原示例">mysql物理备份与还原示例</a>
-    </li>
-    
 </ul>
     </section>
 
@@ -392,7 +399,7 @@ implicit是scala中的概念<br />
     </li>
     
     <li>
-        <a href="https://duansheli.github.io/categories/k8s%E9%9B%86%E7%BE%A4/">k8s集群(4)</a>
+        <a href="https://duansheli.github.io/categories/k8s%E9%9B%86%E7%BE%A4/">k8s集群(5)</a>
     </li>
     
 </ul>
@@ -420,6 +427,8 @@ implicit是scala中的概念<br />
     
     <a href="https://duansheli.github.io/tags/git/">git</a>
     
+    <a href="https://duansheli.github.io/tags/gradle/">gradle</a>
+    
     <a href="https://duansheli.github.io/tags/hashids/">hashids</a>
     
     <a href="https://duansheli.github.io/tags/id/">id</a>
@@ -436,6 +445,8 @@ implicit是scala中的概念<br />
     
     <a href="https://duansheli.github.io/tags/life/">life</a>
     
+    <a href="https://duansheli.github.io/tags/linux/">linux</a>
+    
     <a href="https://duansheli.github.io/tags/mysql/">mysql</a>
     
     <a href="https://duansheli.github.io/tags/proxy/">proxy</a>
@@ -447,6 +458,8 @@ implicit是scala中的概念<br />
     <a href="https://duansheli.github.io/tags/scala/">scala</a>
     
     <a href="https://duansheli.github.io/tags/session/">session</a>
+    
+    <a href="https://duansheli.github.io/tags/shell/">shell</a>
     
     <a href="https://duansheli.github.io/tags/spring-boot/">spring-boot</a>
     

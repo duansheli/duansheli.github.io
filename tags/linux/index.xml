@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>linux on 断舍离的博客</title>
+    <link>https://duansheli.github.io/tags/linux/</link>
+    <description>Recent content in linux on 断舍离的博客</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>zh-CN</language>
+    <lastBuildDate>Tue, 26 Nov 2019 17:28:13 +0800</lastBuildDate>
+    
+	<atom:link href="https://duansheli.github.io/tags/linux/index.xml" rel="self" type="application/rss+xml" />
+    
+    
+    <item>
+      <title>scala调用系统命令</title>
+      <link>https://duansheli.github.io/2019/11/26/scala-process.html</link>
+      <pubDate>Tue, 26 Nov 2019 17:28:13 +0800</pubDate>
+      
+      <guid>https://duansheli.github.io/2019/11/26/scala-process.html</guid>
+      <description>操作演示 启动scala docker run --rm -it hseeberger/scala-sbt:11.0.4_1.3.4_2.12.10 bash scala -language:postfixOps  命令里面不能直接用管道或重定向符号
+需要用#来拼接
+报错解决 scala代码中如果使用 !执行命令时， 会有一段警告
+scala&amp;gt; import scala.</description>
+    </item>
+    
+    <item>
+      <title>linux内存文件系统使用</title>
+      <link>https://duansheli.github.io/2019/03/17/linux-ram-filesystem.html</link>
+      <pubDate>Sun, 17 Mar 2019 17:28:13 +0800</pubDate>
+      
+      <guid>https://duansheli.github.io/2019/03/17/linux-ram-filesystem.html</guid>
+      <description>使用内存文件系统 就是图它特别快
+操作演示 3种创建内存文件系统的方式 tmpfs 使用操作比较友好 ramfs 比较快，但危险 格式化内存 步骤稍微繁琐
+创建几个文件夹用来演示挂载
+mkdir /mnt/m01 /mnt/m02 /mnt/m03  方案1-格式化内存 linux系统 目前有16个ram块</description>
+    </item>
+    
+  </channel>
+</rss>

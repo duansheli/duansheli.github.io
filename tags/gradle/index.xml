@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>gradle on 断舍离的博客</title>
+    <link>https://duansheli.github.io/tags/gradle/</link>
+    <description>Recent content in gradle on 断舍离的博客</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>zh-CN</language>
+    <lastBuildDate>Fri, 21 Jun 2019 16:13:13 +0800</lastBuildDate>
+    
+	<atom:link href="https://duansheli.github.io/tags/gradle/index.xml" rel="self" type="application/rss+xml" />
+    
+    
+    <item>
+      <title>gradle-task使用</title>
+      <link>https://duansheli.github.io/2019/06/21/gradle-task-learn.html</link>
+      <pubDate>Fri, 21 Jun 2019 16:13:13 +0800</pubDate>
+      
+      <guid>https://duansheli.github.io/2019/06/21/gradle-task-learn.html</guid>
+      <description>gradle-task的使用 新建一个gradle-Java项目
+工程创建 默认的 build.gradle 文件
+plugins { id &#39;java&#39; } group &#39;fluffy.mo&#39; version &#39;1.0-SNAPSHOT&#39; sourceCompatibility = 1.8 repositories { mavenCentral() } dependencies { testCompile group: &#39;junit&#39;, name: &#39;junit&#39;, version: &#39;4.</description>
+    </item>
+    
+    <item>
+      <title>gradle-全局init</title>
+      <link>https://duansheli.github.io/2019/01/16/gradle-init-learn.html</link>
+      <pubDate>Wed, 16 Jan 2019 16:13:13 +0800</pubDate>
+      
+      <guid>https://duansheli.github.io/2019/01/16/gradle-init-learn.html</guid>
+      <description>官方文档 https://docs.gradle.org/5.1.1/userguide/init_scripts.html
+全局脚本位置 通过参数指定脚本 &amp;ndash;init-script 或 -I （大写的i） 如 gradle -I init.gradle package
+存放在 USER_HOME/.gradle/ 目录下
+文件名为 init.gradle 或者 init.</description>
+    </item>
+    
+  </channel>
+</rss>

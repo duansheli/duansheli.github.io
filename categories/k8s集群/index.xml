@@ -6,10 +6,21 @@
     <description>Recent content in k8s集群 on 断舍离的博客</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>zh-CN</language>
-    <lastBuildDate>Thu, 27 Jun 2019 17:28:13 +0800</lastBuildDate>
+    <lastBuildDate>Thu, 03 Oct 2019 17:28:13 +0800</lastBuildDate>
     
 	<atom:link href="https://duansheli.github.io/categories/k8s%E9%9B%86%E7%BE%A4/index.xml" rel="self" type="application/rss+xml" />
     
+    
+    <item>
+      <title>k8s的相关项目</title>
+      <link>https://duansheli.github.io/2019/10/03/k8s-cluster-setup-03.html</link>
+      <pubDate>Thu, 03 Oct 2019 17:28:13 +0800</pubDate>
+      
+      <guid>https://duansheli.github.io/2019/10/03/k8s-cluster-setup-03.html</guid>
+      <description>其他厂商版本 Canonical 公司为自家的 ubuntu 提供的 适配版 k8s 单机版 MicroK8s 集群版 Charmed Kubernetes
+rancher公司 https://github.com/rancher/k3s/releases
+工具 helm 包管理工具 就好比360软件管家、yum、apt等软件 可快速在k8s集群部署应用 https://github.</description>
+    </item>
     
     <item>
       <title>k8s-外部访问ingress</title>
@@ -30,10 +41,10 @@ LoadBalancer 如果有云厂商的LoadBalancer， 那自然方便
     
     <item>
       <title>k8s搭建集群3-异常解决</title>
-      <link>https://duansheli.github.io/2018/01/03/k8s-cluster-setup-03.html</link>
+      <link>https://duansheli.github.io/2019/01/03/k8s-cluster-setup-03.html</link>
       <pubDate>Thu, 03 Jan 2019 17:28:13 +0800</pubDate>
       
-      <guid>https://duansheli.github.io/2018/01/03/k8s-cluster-setup-03.html</guid>
+      <guid>https://duansheli.github.io/2019/01/03/k8s-cluster-setup-03.html</guid>
       <description>出错恢复 没遇到报错可以跳过
 安装过程中可能有一些异常
 查看所有的pod分布情况 kubectl get pods -n kube-system -o wide -l k8s-app=kubernetes-dashboard  查看失败的镜像
