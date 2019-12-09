@@ -1,0 +1,696 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+
+    <meta charset="utf-8">
+    <meta name="generator" content="Hugo 0.59.0" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <title>下载m3u8加密视频-01 | 断舍离的博客</title>
+    <meta property="og:title" content="下载m3u8加密视频-01 - 断舍离的博客">
+    <meta property="og:type" content="article">
+        
+    <meta property="article:published_time" content="2019-10-12T17:28:13&#43;08:00">
+        
+        
+    <meta property="article:modified_time" content="2019-10-12T17:28:13&#43;08:00">
+        
+    <meta name="Keywords" content="java,scala,spark,kubernetes">
+    <meta name="description" content="下载m3u8加密视频-01">
+        
+    <meta name="author" content="断舍离">
+    <meta property="og:url" content="https://duansheli.github.io/2019/10/13/download-m3u8-video-01.html">
+    <link rel="shortcut icon" href="/favicon.ico" type="image/x-icon">
+
+    <link rel="stylesheet" href="/css/normalize.css">
+    
+        <link rel="stylesheet" href="/css/prism.css">
+    
+    <link rel="stylesheet" href="/css/style.css">
+    <script type="text/javascript" src="//cdnjs.cloudflare.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+
+    
+
+
+    
+    
+</head>
+
+<body>
+<header id="header" class="clearfix">
+    <div class="container">
+        <div class="col-group">
+            <div class="site-name ">
+                
+                    <a id="logo" href="https://duansheli.github.io">
+                        断舍离的博客
+                    </a>
+                
+                <p class="description">java, scala, spark, kubernetes</p>
+            </div>
+            <div>
+                <nav id="nav-menu" class="clearfix">
+                    <a class="" href="https://duansheli.github.io">首页</a>
+                    
+                    <a  href="https://duansheli.github.io/archives/" title="归档">归档</a>
+                    
+                </nav>
+            </div>
+        </div>
+    </div>
+</header>
+
+
+<div id="body">
+        
+        <div id="virtual_toc_list" style="display: none">
+            <nav id="TableOfContents">
+<ul>
+<li><a href="#操作演示">操作演示</a></li>
+<li><a href="#手动下载方式">手动下载方式</a>
+<ul>
+<li><a href="#获取key">获取key</a></li>
+<li><a href="#下载ts">下载ts</a></li>
+<li><a href="#解密">解密</a></li>
+<li><a href="#合并文件">合并文件</a></li>
+</ul></li>
+<li><a href="#java代码方式下载">java代码方式下载</a>
+<ul>
+<li><a href="#解密说明">解密说明</a></li>
+<li><a href="#工具类">工具类</a></li>
+</ul></li>
+</ul>
+</nav>
+        </div>
+        <div id="float_toc_div" style="margin: 10px;border: 1px solid gray;z-index:99999;display: none;">
+            <header style="background-color: #f3f3f3;color: black;border-bottom: 1px solid gray;padding: 10px 10px 10px 10px;">
+                <strong id="toc_btn_open" style="color: black;font-size: large;">目录</strong>
+                <strong id="toc_btn_close" style="color: black;font-size: large;float: right">╳</strong>
+            </header>
+            <div id="toc_list" style="background-color: #f3f3f3;color: black;padding: 10px;">
+        
+            </div>
+        </div>
+        <style type="text/css">
+            #float_toc_div {
+                position: fixed;
+                display: none;
+                 
+                height: auto;
+                font-size: 13px;
+            }
+        
+            #toc_list a:hover,
+            #toc_list a:active {
+                color: #ba3925;
+            }
+        </style>
+        <script>
+            window.onload = function () {
+                let tocNavElem = document.getElementById("TableOfContents");
+                let floatTocDivElem = document.getElementById("float_toc_div");
+                let tocListElem = floatTocDivElem.getElementsByTagName('div')[0];
+                let colGroupElem = document.getElementById("body").getElementsByClassName("col-group")[0]
+                let floatTocWidth = (document.body.clientWidth - colGroupElem.offsetWidth) / 2 - 16;
+                var useFloatToc = false;
+
+                if (floatTocWidth >= 100) {
+                    useFloatToc = true;
+                    document.getElementById("toc_list").appendChild(tocNavElem);
+                    floatTocDivElem.style.display = 'block';
+                    floatTocDivElem.style.width = floatTocWidth + 'px';
+                    top();
+                    floatTocDivElem.style.left = '0px';
+
+                    function top() {
+                        if (document.getElementsByClassName('container')[0].offsetWidth <= 720) {
+                            floatTocDivElem.style.top = '0px';
+                        } else {
+                            floatTocDivElem.style.top = window.innerHeight / 9 + 'px';
+                        }
+                    }
+
+                    function ishide() {
+                        if (document.getElementsByClassName('container')[0].offsetWidth <= 720) {
+                            floatTocDivElem.style.top = '0px';
+                        } else {
+                            floatTocDivElem.style.display = 'block';
+                        }
+                    }
+
+                    window.onscroll = function () {
+                        ishide();
+                        if ((document.documentElement.scrollTop != 0) && (floatTocDivElem.style.display == 'block')) {
+                            top();
+                        }
+                    };
+
+                    window.onresize = function () {
+                        ishide();
+                    }
+
+                    document.getElementById("toc_btn_open").addEventListener('click', function () {
+                        switch (tocListElem.style.display) {
+                            case "none":
+                                document.getElementById("toc_btn_close").style.display = "";
+                                tocListElem.style.display = "";
+                                floatTocDivElem.getElementsByTagName("header")[0].style.borderBottom = "1px solid gray";
+                                break;
+                            default:
+                                break;
+                        }
+                    }, false);
+
+                    document.getElementById("toc_btn_close").addEventListener('click', function () {
+                        switch (tocListElem.style.display) {
+                            case "":
+                                document.getElementById("toc_btn_close").style.display = "none";
+                                tocListElem.style.display = "none";
+                                floatTocDivElem.getElementsByTagName("header")[0].style.borderBottom = "";
+                                break;
+                            default:
+                                break;
+                        }
+                    }, false);
+                } else {
+                    let fixedTocElem = document.getElementsByClassName("toc-article")[0];
+                    fixedTocElem.appendChild(tocNavElem);
+                    fixedTocElem.parentElement.style.display = "";
+                }
+                document.getElementById("virtual_toc_list").remove();
+            };   
+        </script>
+        
+    <div class="container">
+        <div class="col-group">
+
+            <div class="col-8" id="main">
+                <div class="res-cons">
+                    <article class="post">
+                        <header>
+                            <h1 class="post-title">下载m3u8加密视频-01</h1>
+                        </header>
+                        <date class="post-meta meta-date">
+                            2019年10月12日
+                        </date>
+                        
+                        
+                        
+                        <div class="clear" style="display: none">
+                            <div class="toc-article">
+                                <div class="toc-title">文章目录</div>
+                            </div>
+                        </div>
+                        
+                        <div class="post-content">
+                            
+
+<h1 id="操作演示">操作演示</h1>
+
+<p>如果是没加密的 一条命令就够了
+<code>ffmpeg  -i http://aa.bb.com/play.m3u8 file.mp4</code>
+但被包含的资源一般m3u8的访问需要权限<br />
+同时m3u8中的ts也通过aes128加密  密码则也被包含起来</p>
+
+<h1 id="手动下载方式">手动下载方式</h1>
+
+<pre><code class="language-bash">video_m3u8_url=http://aa.bb.com/xx/001/play.m3u8
+</code></pre>
+
+<h2 id="获取key">获取key</h2>
+
+<p>如果被加密了则 在 play.m3u8 中前几行可看到</p>
+
+<pre><code>#EXT-X-KEY:METHOD=AES-128,URI=&quot;https://aa.bb.com/yy/001/key&quot;,IV=0x5901307461D2D72A5EA7F1B2269C33DC
+</code></pre>
+
+<p>可得 <code>ts_iv=5901307461D2D72A5EA7F1B2269C33DC &amp;&amp; ts_key_url=https://aa.bb.com/yy/001/key</code></p>
+
+<p>那就需要先获取 key<br />
+通常访问key也是需要鉴权的（验证登录）</p>
+
+<pre><code>curl $ts_key_url | hexdump -v -e '16/1 &quot;%02x&quot;'
+</code></pre>
+
+<p>可得 <code>ts_key=d1d4295da4f2b1259f30df5a02337762</code></p>
+
+<h2 id="下载ts">下载ts</h2>
+
+<p>然后是下载 在 play.m3u8 中的ts文件
+有一行行的 ts文件名 001.ts 002.ts &hellip; 00N.ts<br />
+可得 ts文件下载地址为</p>
+
+<pre><code>http://aa.bb.com/xx/v23/001.ts 
+http://aa.bb.com/xx/v23/002.ts 
+http://aa.bb.com/xx/v23/00N.ts 
+</code></pre>
+
+<h2 id="解密">解密</h2>
+
+<p>全部下载完成后 对每个ts文件进行解密</p>
+
+<pre><code>openssl aes-128-cbc -d -in 001.ts -out g001.ts -nosalt -K $ts_key -iv $ts_iv
+openssl aes-128-cbc -d -in 002.ts -out g002.ts -nosalt -K $ts_key -iv $ts_iv
+openssl aes-128-cbc -d -in 00N.ts -out g00N.ts -nosalt -K $ts_key -iv $ts_iv
+</code></pre>
+
+<h2 id="合并文件">合并文件</h2>
+
+<p>最后将解密后的文件合并</p>
+
+<p>制作待合并文件清单</p>
+
+<p>vlist.txt</p>
+
+<pre><code>file 'g001.ts'
+file 'g002.ts'
+...
+file 'g00N.ts'
+</code></pre>
+
+<p>可以合成mp4的或ts的</p>
+
+<pre><code>#合成mp4文件
+ffmpeg.exe -f concat -i vlist.txt -c copy output.mp4
+
+或者用linux的cat合并ts
+cat *.ts &gt; cv23.ts
+</code></pre>
+
+<p>合并时，注意文件名顺序<br />
+顺序不对会导致合并的视频时间顺序错误</p>
+
+<h1 id="java代码方式下载">java代码方式下载</h1>
+
+<pre><code class="language-java">
+</code></pre>
+
+<h2 id="解密说明">解密说明</h2>
+
+<p>在通过java解析时， 对解密流程比较耗心费力，着重讲下该部分。
+如果是通过ffmpeg命令去转换m3u8为mp4
+那ffmpeg会自动解密
+或者使用 openssl 命令去解密ts文件 传入的是两个字符串</p>
+
+<p>但网上下载的key是个二进制 以及如何用java解密比较迷惑。
+最初没办法，用java调用系统命令 hexdump 计算key
+然后改写了m3u8文件 又调用ffmpeg 去转换为mp4</p>
+
+<p>之后又花功夫重新梳理关系  有了答案<br />
+ffmpeg 先是分割视频 并对每一段ts 使用了openssl去加密</p>
+
+<p>一般都是搜索关键字 <code>java openssl m3u8</code> 网友都说让用ffmpeg去解密。。。
+然后搜 java aes 再和 key 去解密，又绕远了。。。</p>
+
+<p><strong>划重点</strong>
+在ffmpeg加密视频时 使用的时 aes 128 填充方式为PKCS7Padding
+java默认不支持该方式 ， 所以需要另外加载一个jar
+gradle引入 <code>implementation &quot;org.bouncycastle:bcprov-jdk15on:1.64&quot;</code></p>
+
+<p><strong>另一个困惑点</strong>
+网上资料都是 <code>openssl -k key-xxx iv  iv-xxx</code>
+命令中都是字符串形式，在java解密代码中都是byte形式<br />
+ 二者如何转换<br />
+openssl生成的key iv 都是16个byte的数据
+而字符串则是 每个byte转换为16进制的字符<br />
+每个byte有8位，每个16进制数有4位， 即1个byte会转为2位的16进制字符<br />
+所以通常 key iv都是32的字符串， 解析的时候，每两位转换成1个byte即可</p>
+
+<h2 id="工具类">工具类</h2>
+
+<p>工具类用于解析aes的key<br />
+以及将加密的ts文件解密</p>
+
+<p>DecodeUtil.java</p>
+
+<pre><code class="language-java">package fluffy.mo.util;
+
+import javax.crypto.Cipher;
+import javax.crypto.spec.IvParameterSpec;
+import javax.crypto.spec.SecretKeySpec;
+import java.io.File;
+import java.io.FileInputStream;
+import java.nio.charset.StandardCharsets;
+import java.security.MessageDigest;
+import java.security.Security;
+
+public class DecodeUtil {
+    static {
+        Security.addProvider(new org.bouncycastle.jce.provider.BouncyCastleProvider());
+        //&quot;abcd&quot;.getBytes(StandardCharsets.UTF_8);
+    }
+
+    public static byte[] decode(byte[] encryp, String key, String iv) throws Exception {
+        byte[] ivb = hexStr2Byte(iv);
+        byte[] kb = hexStr2Byte(key);
+        return decode(encryp, kb, ivb);
+    }
+
+    public static byte[] decode(byte[] encryp, byte[] keyb, byte[] ivb) throws Exception {
+        Cipher cipher = Cipher.getInstance(&quot;AES/CBC/PKCS7Padding&quot;);
+        SecretKeySpec keySpec = new SecretKeySpec(keyb, &quot;AES&quot;);
+        IvParameterSpec ivSpec = new IvParameterSpec(ivb);
+        cipher.init(Cipher.DECRYPT_MODE, keySpec, ivSpec);
+        byte[] original = cipher.doFinal(encryp);
+        return original;
+    }
+
+    public static String sha1sum(String str) {
+        return sha1sum(str.getBytes(StandardCharsets.UTF_8));
+    }
+
+    public static String sha1sum(File file) throws Exception {
+        byte[] bytes = new FileInputStream(file).readAllBytes();
+        return sha1sum(bytes);
+    }
+
+    public static String sha1sum(byte[] bytes) {
+        try {
+            MessageDigest mdTemp = MessageDigest.getInstance(&quot;SHA1&quot;);
+            mdTemp.update(bytes);
+            byte[] md = mdTemp.digest();
+            return byte2HexStr(md);
+        } catch (Exception e) {
+            return null;
+        }
+    }
+
+    /**
+     * 16进制字符串转二进制
+     */
+    public static byte[] hexStr2Byte(String hexStr) {
+        if (hexStr.length() &lt; 1) { // 字符串应当 长度为双数，字符都是[0-9或A-F]
+            return null;
+        } else {
+            int byteSize = hexStr.length() / 2;
+            byte[] result = new byte[byteSize];
+            for (int i = 0; i &lt; byteSize; ++i) {
+                int strStart = i * 2;
+                int high = Integer.parseInt(hexStr.substring(strStart, strStart + 1), 16);
+                int low = Integer.parseInt(hexStr.substring(strStart + 1, strStart + 2), 16);
+                result[i] = (byte) (high * 16 + low);
+            }
+            return result;
+        }
+    }
+
+    private static char hexDigits[] = {'0', '1', '2', '3', '4', '5', '6', '7', '8', '9',
+            'a', 'b', 'c', 'd', 'e', 'f'};
+
+    public static String byte2HexStr2(byte[] bs) {
+        // 1byte有8个二进制位 而1个16进制数要占用4个二进制
+        // 所以2个16进制字符对应一个byte , 长度是字节的2倍
+        int j = bs.length;
+        char buf[] = new char[j * 2];
+        int k = 0;
+        for (int i = 0; i &lt; j; i++) {
+            byte byte0 = bs[i];
+            buf[k++] = hexDigits[byte0 &gt;&gt;&gt; 4 &amp; 0xf];
+            buf[k++] = hexDigits[byte0 &amp; 0xf];
+        }
+        return new String(buf);
+    }
+
+    /**
+     * 二进制转16进制字符串
+     */
+    public static String byte2HexStr(byte[] bs) {
+        StringBuilder sb = new StringBuilder();
+        for (int i = 0; i &lt; bs.length; ++i) {
+            String hex = Integer.toHexString(bs[i] &amp; 0xFF);
+            if (hex.length() &lt; 2) {
+                hex = &quot;0&quot; + hex;
+            }
+            sb.append(hex);
+        }
+        return sb.toString();
+    }
+
+}
+</code></pre>
+
+<p>整理后</p>
+
+<pre><code>&quot;cat /etc/passwd&quot; #| &quot;grep /bin/bash&quot; #| &quot;wc -l&quot; !
+&quot;ls /usr&quot; #| &quot;wc -l&quot; !
+val fileNum = &quot;ls /usr&quot; #| &quot;wc -l&quot; !!
+println(s&quot;文件数量为： $fileNum&quot;)
+</code></pre>
+
+                        </div>
+
+                        
+
+
+                        
+
+<div class="post-archive">
+    <h2>See Also</h2>
+    <ul class="listing">
+        
+        <li><a href="/2019/10/03/k8s-cluster-setup-03.html">k8s的相关项目</a></li>
+        
+        <li><a href="/2019/09/12/doh.html">浏览器启用dns-over-https(DoH)</a></li>
+        
+        <li><a href="/2019/09/11/kotlin-null-check.html">kotlin空指针校验</a></li>
+        
+        <li><a href="/2019/09/07/zero-width.html">给文章加水印-零宽字符</a></li>
+        
+        <li><a href="/2019/09/03/hashids-usage.html">使用hashids创建短链服务</a></li>
+        
+    </ul>
+</div>
+
+
+                        <div class="post-meta meta-tags">
+                            
+                            <ul class="clearfix">
+                                
+                                <li><a href="https://duansheli.github.io/tags/ffmpeg">ffmpeg</a></li>
+                                
+                            </ul>
+                            
+                        </div>
+                    </article>
+                    
+    
+
+    
+    
+                </div>
+            </div>
+            <div id="secondary">
+    <section class="widget">
+        <form id="search" action="//www.google.com/search" method="get" accept-charset="utf-8" target="_blank" _lpchecked="1">
+      
+      <input type="text" name="q" maxlength="20" placeholder="Search">
+      <input type="hidden" name="sitesearch" value="https://duansheli.github.io">
+      <button type="submit" class="submit icon-search"></button>
+</form>
+    </section>
+    
+    <section class="widget">
+        <h3 class="widget-title">最近文章</h3>
+<ul class="widget-list">
+    
+    <li>
+        <a href="https://duansheli.github.io/2019/11/26/scala-process.html" title="scala调用系统命令">scala调用系统命令</a>
+    </li>
+    
+    <li>
+        <a href="https://duansheli.github.io/2019/11/12/doh.html" title="群晖两步验证的关闭">群晖两步验证的关闭</a>
+    </li>
+    
+    <li>
+        <a href="https://duansheli.github.io/2019/10/28/update-rule-by-scanner.html" title="使用drools的规则管理平台-02">使用drools的规则管理平台-02</a>
+    </li>
+    
+    <li>
+        <a href="https://duansheli.github.io/2019/10/27/update-rule-by-scanner.html" title="使用drools的规则管理平台-01">使用drools的规则管理平台-01</a>
+    </li>
+    
+    <li>
+        <a href="https://duansheli.github.io/2019/10/26/update-rule-by-scanner.html" title="自定义动态更新drools规则">自定义动态更新drools规则</a>
+    </li>
+    
+    <li>
+        <a href="https://duansheli.github.io/2019/10/13/download-m3u8-video-02.html" title="下载m3u8加密视频-02">下载m3u8加密视频-02</a>
+    </li>
+    
+    <li>
+        <a href="https://duansheli.github.io/2019/10/13/download-m3u8-video-01.html" title="下载m3u8加密视频-01">下载m3u8加密视频-01</a>
+    </li>
+    
+    <li>
+        <a href="https://duansheli.github.io/2019/10/03/k8s-cluster-setup-03.html" title="k8s的相关项目">k8s的相关项目</a>
+    </li>
+    
+    <li>
+        <a href="https://duansheli.github.io/2019/09/12/doh.html" title="浏览器启用dns-over-https(DoH)">浏览器启用dns-over-https(DoH)</a>
+    </li>
+    
+    <li>
+        <a href="https://duansheli.github.io/2019/09/11/kotlin-null-check.html" title="kotlin空指针校验">kotlin空指针校验</a>
+    </li>
+    
+</ul>
+    </section>
+
+    
+
+    <section class="widget">
+        <h3 class="widget-title">分类</h3>
+<ul class="widget-list">
+    
+    <li>
+        <a href="https://duansheli.github.io/categories/Java%E6%B7%B1%E5%85%A5/">Java深入(8)</a>
+    </li>
+    
+    <li>
+        <a href="https://duansheli.github.io/categories/k8s%E9%9B%86%E7%BE%A4/">k8s集群(5)</a>
+    </li>
+    
+    <li>
+        <a href="https://duansheli.github.io/categories/scala%E5%B9%B6%E5%8F%91%E7%BC%96%E7%A8%8B/">scala并发编程(7)</a>
+    </li>
+    
+</ul>
+    </section>
+
+    <section class="widget">
+        <h3 class="widget-title">标签</h3>
+<div class="tagcloud">
+    
+    <a href="https://duansheli.github.io/tags/Java/">Java</a>
+    
+    <a href="https://duansheli.github.io/tags/classloader/">classloader</a>
+    
+    <a href="https://duansheli.github.io/tags/docker/">docker</a>
+    
+    <a href="https://duansheli.github.io/tags/drone/">drone</a>
+    
+    <a href="https://duansheli.github.io/tags/drools/">drools</a>
+    
+    <a href="https://duansheli.github.io/tags/dubbo/">dubbo</a>
+    
+    <a href="https://duansheli.github.io/tags/elasticsearch/">elasticsearch</a>
+    
+    <a href="https://duansheli.github.io/tags/ffmpeg/">ffmpeg</a>
+    
+    <a href="https://duansheli.github.io/tags/gc/">gc</a>
+    
+    <a href="https://duansheli.github.io/tags/git/">git</a>
+    
+    <a href="https://duansheli.github.io/tags/gradle/">gradle</a>
+    
+    <a href="https://duansheli.github.io/tags/hashids/">hashids</a>
+    
+    <a href="https://duansheli.github.io/tags/id/">id</a>
+    
+    <a href="https://duansheli.github.io/tags/java/">java</a>
+    
+    <a href="https://duansheli.github.io/tags/jdk/">jdk</a>
+    
+    <a href="https://duansheli.github.io/tags/jvm/">jvm</a>
+    
+    <a href="https://duansheli.github.io/tags/k8s/">k8s</a>
+    
+    <a href="https://duansheli.github.io/tags/kotlin/">kotlin</a>
+    
+    <a href="https://duansheli.github.io/tags/life/">life</a>
+    
+    <a href="https://duansheli.github.io/tags/linux/">linux</a>
+    
+    <a href="https://duansheli.github.io/tags/mysql/">mysql</a>
+    
+    <a href="https://duansheli.github.io/tags/proxy/">proxy</a>
+    
+    <a href="https://duansheli.github.io/tags/rocketmq/">rocketmq</a>
+    
+    <a href="https://duansheli.github.io/tags/route/">route</a>
+    
+    <a href="https://duansheli.github.io/tags/scala/">scala</a>
+    
+    <a href="https://duansheli.github.io/tags/session/">session</a>
+    
+    <a href="https://duansheli.github.io/tags/shell/">shell</a>
+    
+    <a href="https://duansheli.github.io/tags/spring-boot/">spring-boot</a>
+    
+    <a href="https://duansheli.github.io/tags/spring-security/">spring-security</a>
+    
+    <a href="https://duansheli.github.io/tags/springboot/">springboot</a>
+    
+    <a href="https://duansheli.github.io/tags/zipkin/">zipkin</a>
+    
+    <a href="https://duansheli.github.io/tags/%E5%88%86%E5%B8%83%E5%BC%8F%E4%BA%8B%E5%8A%A1/">分布式事务</a>
+    
+    <a href="https://duansheli.github.io/tags/%E6%8C%81%E7%BB%AD%E9%9B%86%E6%88%90/">持续集成</a>
+    
+    <a href="https://duansheli.github.io/tags/%E7%99%BB%E5%BD%95/">登录</a>
+    
+</div>
+    </section>
+
+    
+
+    <section class="widget">
+        <h3 class="widget-title">其它</h3>
+        <ul class="widget-list">
+            <li><a href="https://duansheli.github.io/index.xml">文章 RSS</a></li>
+        </ul>
+    </section>
+</div>
+        </div>
+    </div>
+</div>
+<footer id="footer">
+    <div class="container">
+        &copy; 2019 <a href="https://duansheli.github.io">断舍离的博客 By 断舍离</a>.
+        Powered by <a rel="nofollow noreferer noopener" href="https://gohugo.io" target="_blank">Hugo</a>.
+        <a href="https://www.flysnow.org/" target="_blank">Theme</a> based on <a href="https://github.com/rujews/maupassant-hugo" target="_blank">maupassant</a>.
+        
+    </div>
+</footer>
+
+
+    
+    <script type="text/javascript">
+        
+        (function () {
+            $("pre code").parent().addClass("line-numbers")
+        }());
+
+        window.MathJax = {
+            tex2jax: {
+                inlineMath: [['$', '$']],
+                processEscapes: true
+                }
+            };
+    </script>
+    <script type="text/javascript" src="/js/prism.js" async="true"></script>
+    <script src='https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/MathJax.js?config=TeX-MML-AM_CHTML' async></script>
+
+
+<a id="rocket" href="#top"></a>
+<script type="text/javascript" src="/js/totop.js?v=0.0.0" async=""></script>
+
+<script type="application/javascript">
+var doNotTrack = false;
+if (!doNotTrack) {
+	window.ga=window.ga||function(){(ga.q=ga.q||[]).push(arguments)};ga.l=+new Date;
+	ga('create', 'GTM-NPJC8J2', 'auto');
+	
+	ga('send', 'pageview');
+}
+</script>
+<script async src='https://www.google-analytics.com/analytics.js'></script>
+
+
+
+
+
+
+</body>
+</html>

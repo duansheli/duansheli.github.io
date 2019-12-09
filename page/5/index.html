@@ -67,6 +67,255 @@
                         <article class="post">
                             <header>
                                 <h1 class="post-title">
+                                    <a href="https://duansheli.github.io/2019/01/02/k8s-cluster-setup-02.html" title="k8s集群搭建-02" >k8s集群搭建-02</a>
+                                </h1>
+                            </header>
+                            <date class="post-meta meta-date">
+                                2019年1月2日
+                            </date>
+                            
+                            <div class="post-meta">
+                                <span>|</span>
+                                
+                                <span class="meta-category"><a href="https://duansheli.github.io/categories/k8s%E9%9B%86%E7%BE%A4">k8s集群</a></span>
+                                
+                            </div>
+                            
+                            <div class="post-content">
+                                <p>k8s集群好了 再添加一些相关的组件<br />
+dashboard helm helm的webui</p>……
+                            </div>
+                            <p class="readmore"><a href="https://duansheli.github.io/2019/01/02/k8s-cluster-setup-02.html">阅读全文</a></p>
+                        </article>
+                    
+                    
+		    
+                        <article class="post">
+                            <header>
+                                <h1 class="post-title">
+                                    <a href="https://duansheli.github.io/2019/01/01/k8s-cluster-setup-01.html" title="k8s集群搭建-01" >k8s集群搭建-01</a>
+                                </h1>
+                            </header>
+                            <date class="post-meta meta-date">
+                                2019年1月1日
+                            </date>
+                            
+                            <div class="post-meta">
+                                <span>|</span>
+                                
+                                <span class="meta-category"><a href="https://duansheli.github.io/categories/k8s%E9%9B%86%E7%BE%A4">k8s集群</a></span>
+                                
+                            </div>
+                            
+                            <div class="post-content">
+                                1. 目标 通过虚拟机搭建一个kubernetes集群
+共3个节点基于ubuntu
+2. 组件安装规划  宿主机: win10 vmware-v15
+ubuntu=v16.04.1
+docker=v18.06
+k8s=v1.12.6
+3个虚拟机节点=master,node1,node2
+系统镜像下载
+ 3. 安装系统环境  因为每个节点都需要安装docker kubeadm&hellip;等软件 以及各种配置……
+                            </div>
+                            <p class="readmore"><a href="https://duansheli.github.io/2019/01/01/k8s-cluster-setup-01.html">阅读全文</a></p>
+                        </article>
+                    
+                    
+		    
+                        <article class="post">
+                            <header>
+                                <h1 class="post-title">
+                                    <a href="https://duansheli.github.io/2018/10/15/future-convert-to-scala.html" title="scala并发编程-scala的future与java的互相转换" >scala并发编程-scala的future与java的互相转换</a>
+                                </h1>
+                            </header>
+                            <date class="post-meta meta-date">
+                                2018年10月15日
+                            </date>
+                            
+                            <div class="post-meta">
+                                <span>|</span>
+                                
+                                <span class="meta-category"><a href="https://duansheli.github.io/categories/scala%E5%B9%B6%E5%8F%91%E7%BC%96%E7%A8%8B">scala并发编程</a></span>
+                                
+                            </div>
+                            
+                            <div class="post-content">
+                                操作演示 简单上手 转换需要额外的包
+&lt;dependency&gt; &lt;groupId&gt;org.scala-lang.modules&lt;/groupId&gt; &lt;artifactId&gt;scala-java8-compat_2.12&lt;/artifactId&gt; &lt;version&gt;0.8.0&lt;/version&gt; &lt;/dependency&gt;  import java.time.{Duration =&gt; jduration} val request = HttpRequest.newBuilder.uri(URI.create(&quot;https://www.baidu.com/&quot;)) .timeout(jduration.ofMinutes(2)) .build val java8Future: CompletableFuture[HttpResponse[String]] = HttpClient.……
+                            </div>
+                            <p class="readmore"><a href="https://duansheli.github.io/2018/10/15/future-convert-to-scala.html">阅读全文</a></p>
+                        </article>
+                    
+                    
+		    
+                        <article class="post">
+                            <header>
+                                <h1 class="post-title">
+                                    <a href="https://duansheli.github.io/2018/09/21/scala-concurrent-async.html" title="scala并发编程-async" >scala并发编程-async</a>
+                                </h1>
+                            </header>
+                            <date class="post-meta meta-date">
+                                2018年9月21日
+                            </date>
+                            
+                            <div class="post-meta">
+                                <span>|</span>
+                                
+                                <span class="meta-category"><a href="https://duansheli.github.io/categories/scala%E5%B9%B6%E5%8F%91%E7%BC%96%E7%A8%8B">scala并发编程</a></span>
+                                
+                            </div>
+                            
+                            <div class="post-content">
+                                描述 async是另一个jar包里的， 用来更简洁的处理 多个future之间的任务衔接
+原理是以宏的方式编译代码 可以说是个二道贩子
+相似的东西: java库的lombok
+由于是二次编译，如果需要调试的话，可能会有问题，慎用。
+简单上手 &lt;dependency&gt; &lt;groupId&gt;org.scala-lang.modules&lt;/groupId&gt; &lt;artifactId&gt;scala-async_2.12&lt;/artifactId&gt; &lt;version&gt;0.9.7&lt;/version&gt; &lt;/dependency&gt;  示例1 val f1 = async { val ff1 = async { println(11); true } val ff2 = async { println(22); 322 } if (await(ff1)) await(ff2) else 0 }  示例2 def slowCalcFuture: Future[Int] = Future { TimeUnit.……
+                            </div>
+                            <p class="readmore"><a href="https://duansheli.github.io/2018/09/21/scala-concurrent-async.html">阅读全文</a></p>
+                        </article>
+                    
+                    
+		    
+                        <article class="post">
+                            <header>
+                                <h1 class="post-title">
+                                    <a href="https://duansheli.github.io/2018/08/22/scala-concurrent-blocking.html" title="scala并发编程-blocking" >scala并发编程-blocking</a>
+                                </h1>
+                            </header>
+                            <date class="post-meta meta-date">
+                                2018年8月22日
+                            </date>
+                            
+                            <div class="post-meta">
+                                <span>|</span>
+                                
+                                <span class="meta-category"><a href="https://duansheli.github.io/categories/scala%E5%B9%B6%E5%8F%91%E7%BC%96%E7%A8%8B">scala并发编程</a></span>
+                                
+                            </div>
+                            
+                            <div class="post-content">
+                                blocking描述 blocking 中的代码块 与future不在同一线程中，是阻塞等待。 但是阻塞的方式调用在遇上线程池的线程不足时， 会创建新的线程
+测试效果 package com.fluffy.test_concurrent import java.util.concurrent.{CountDownLatch, TimeUnit} object Demo_blocking extends App { import scala.concurrent.{Future, blocking} import scala.……
+                            </div>
+                            <p class="readmore"><a href="https://duansheli.github.io/2018/08/22/scala-concurrent-blocking.html">阅读全文</a></p>
+                        </article>
+                    
+                    
+		    
+                        <article class="post">
+                            <header>
+                                <h1 class="post-title">
+                                    <a href="https://duansheli.github.io/2018/08/18/scala-concurrent-promise.html" title="scala并发编程-promise" >scala并发编程-promise</a>
+                                </h1>
+                            </header>
+                            <date class="post-meta meta-date">
+                                2018年8月18日
+                            </date>
+                            
+                            <div class="post-meta">
+                                <span>|</span>
+                                
+                                <span class="meta-category"><a href="https://duansheli.github.io/categories/scala%E5%B9%B6%E5%8F%91%E7%BC%96%E7%A8%8B">scala并发编程</a></span>
+                                
+                            </div>
+                            
+                            <div class="post-content">
+                                操作演示 生产者消费者模型
+一个Promise 只有一个future
+Promise只能给future确认一次结果
+简单上手 import scala.concurrent.ExecutionContext.Implicits.global val countDownLatch = new CountDownLatch(1) val p = Promise[Int]() val f1 = p.……
+                            </div>
+                            <p class="readmore"><a href="https://duansheli.github.io/2018/08/18/scala-concurrent-promise.html">阅读全文</a></p>
+                        </article>
+                    
+                    
+		    
+                        <article class="post">
+                            <header>
+                                <h1 class="post-title">
+                                    <a href="https://duansheli.github.io/2018/08/13/scala-concurrent-Duration.html" title="scala并发编程-Duration" >scala并发编程-Duration</a>
+                                </h1>
+                            </header>
+                            <date class="post-meta meta-date">
+                                2018年8月13日
+                            </date>
+                            
+                            <div class="post-meta">
+                                <span>|</span>
+                                
+                                <span class="meta-category"><a href="https://duansheli.github.io/categories/scala%E5%B9%B6%E5%8F%91%E7%BC%96%E7%A8%8B">scala并发编程</a></span>
+                                
+                            </div>
+                            
+                            <div class="post-content">
+                                操作步骤 Duration的几种创建方式
+可以进行 加减乘除 的操作
+java版Duration 与 Scala版Duration 互相转换
+简单上手 import scala.concurrent.duration._ import scala.concurrent.ExecutionContext.Implicits.global // FiniteDuration对象的创建 // 截至期限的创建 def main(args_q: Array[String]) { val d1: FiniteDuration = 1.……
+                            </div>
+                            <p class="readmore"><a href="https://duansheli.github.io/2018/08/13/scala-concurrent-Duration.html">阅读全文</a></p>
+                        </article>
+                    
+                    
+		    
+                        <article class="post">
+                            <header>
+                                <h1 class="post-title">
+                                    <a href="https://duansheli.github.io/2018/08/12/scala-concurrent-map.html" title="scala并发编程-future的map和flatmap" >scala并发编程-future的map和flatmap</a>
+                                </h1>
+                            </header>
+                            <date class="post-meta meta-date">
+                                2018年8月12日
+                            </date>
+                            
+                            <div class="post-meta">
+                                <span>|</span>
+                                
+                                <span class="meta-category"><a href="https://duansheli.github.io/categories/scala%E5%B9%B6%E5%8F%91%E7%BC%96%E7%A8%8B">scala并发编程</a></span>
+                                
+                            </div>
+                            
+                            <div class="post-content">
+                                操作演示 推演 在不使用 map flatmap的情况下 多个future 如果相互之间有依赖关系 则通常是嵌套调用 嵌套太多则维护性太差
+比如
+val f1 = Future { TimeUnit.SECONDS.sleep(1) &quot;f1&quot; } f1 onSuccess { case str =&gt; val f11 = Future { // 启动另一个future // Future{ 。。。 } // 再启动另一个future if (3 &gt; 2) println(str) else throw new Exception(&quot;出错了&quot;) } f11 onSuccess { case _ =&gt; println(s&quot;收到结果 ${str}&quot;) } }  map flatmap 示例 import scala.……
+                            </div>
+                            <p class="readmore"><a href="https://duansheli.github.io/2018/08/12/scala-concurrent-map.html">阅读全文</a></p>
+                        </article>
+                    
+                    
+		    
+                        <article class="post">
+                            <header>
+                                <h1 class="post-title">
+                                    <a href="https://duansheli.github.io/2018/08/11/scala-concurrent-future.html" title="scala并发编程-future" >scala并发编程-future</a>
+                                </h1>
+                            </header>
+                            <date class="post-meta meta-date">
+                                2018年8月11日
+                            </date>
+                            
+                            <div class="post-meta">
+                                <span>|</span>
+                                
+                                <span class="meta-category"><a href="https://duansheli.github.io/categories/scala%E5%B9%B6%E5%8F%91%E7%BC%96%E7%A8%8B">scala并发编程</a></span>
+                                
+                            </div>
+                            
+                            <div class="post-content">
+                                操作演示 简单上手 scala版Future 和java版是一个意思 将任务放在线程池中去执行
+import java.time.LocalTime import java.util.concurrent.TimeUnit import scala.concurrent.duration.Duration import scala.concurrent.{Await, Future} import scala.util.{Failure, Success} // @formatter:off object Demo01_future extends App{ import scala.……
+                            </div>
+                            <p class="readmore"><a href="https://duansheli.github.io/2018/08/11/scala-concurrent-future.html">阅读全文</a></p>
+                        </article>
+                    
+                    
+		    
+                        <article class="post">
+                            <header>
+                                <h1 class="post-title">
                                     <a href="https://duansheli.github.io/2018/07/14/jvm-memory-gc.html" title="JVM的垃圾回收" >JVM的垃圾回收</a>
                                 </h1>
                             </header>
@@ -86,231 +335,6 @@
 内存区域 +------------------------------------------------------+ | | | +-------------+ +---------------+ | | | xxxA.class | | | | | | xxxB.……
                             </div>
                             <p class="readmore"><a href="https://duansheli.github.io/2018/07/14/jvm-memory-gc.html">阅读全文</a></p>
-                        </article>
-                    
-                    
-		    
-                        <article class="post">
-                            <header>
-                                <h1 class="post-title">
-                                    <a href="https://duansheli.github.io/2018/07/08/classloader-modifiers-exception.html" title="类加载器加载的类不能创建对象" >类加载器加载的类不能创建对象</a>
-                                </h1>
-                            </header>
-                            <date class="post-meta meta-date">
-                                2018年7月8日
-                            </date>
-                            
-                            <div class="post-meta">
-                                <span>|</span>
-                                
-                                <span class="meta-category"><a href="https://duansheli.github.io/categories/Java%E6%B7%B1%E5%85%A5">Java深入</a></span>
-                                
-                            </div>
-                            
-                            <div class="post-content">
-                                IllegalAccessException 异常信息 Exception in thread &quot;main&quot; java.lang.IllegalAccessException: Class fluffy.mo.MyClassloader can not access a member of class fluffy.mo.Car with modifiers &quot;public&quot; at sun.……
-                            </div>
-                            <p class="readmore"><a href="https://duansheli.github.io/2018/07/08/classloader-modifiers-exception.html">阅读全文</a></p>
-                        </article>
-                    
-                    
-		    
-                        <article class="post">
-                            <header>
-                                <h1 class="post-title">
-                                    <a href="https://duansheli.github.io/2018/06/27/classloader-spi.html" title="SPI与contextclassloader" >SPI与contextclassloader</a>
-                                </h1>
-                            </header>
-                            <date class="post-meta meta-date">
-                                2018年6月27日
-                            </date>
-                            
-                            <div class="post-meta">
-                                <span>|</span>
-                                
-                                <span class="meta-category"><a href="https://duansheli.github.io/categories/Java%E6%B7%B1%E5%85%A5">Java深入</a></span>
-                                
-                            </div>
-                            
-                            <div class="post-content">
-                                目标 通过SPI学习setContextClassLoader，getContextClassLoader的用法
-SPI概念 SPI（Service Provider Interface）是JDK内置的一种提供服务发现的机制。 也可以看成是一种服务注册或者ioc
-自定义SPI方式
- 定义一个接口 fluffy.mo.CarPlugin 定义两个实现类 fluffy.mo.RedCar、 fluffy.mo.BlueCar 配置文件 【META-INF/services/文件名=接口全名】 &gt; META-INF/services/fluffy.mo.CarPlugin &gt;  &gt; fluffy.……
-                            </div>
-                            <p class="readmore"><a href="https://duansheli.github.io/2018/06/27/classloader-spi.html">阅读全文</a></p>
-                        </article>
-                    
-                    
-		    
-                        <article class="post">
-                            <header>
-                                <h1 class="post-title">
-                                    <a href="https://duansheli.github.io/2018/06/21/classloader-start.html" title="类加载器使用" >类加载器使用</a>
-                                </h1>
-                            </header>
-                            <date class="post-meta meta-date">
-                                2018年6月21日
-                            </date>
-                            
-                            <div class="post-meta">
-                                <span>|</span>
-                                
-                                <span class="meta-category"><a href="https://duansheli.github.io/categories/Java%E6%B7%B1%E5%85%A5">Java深入</a></span>
-                                
-                            </div>
-                            
-                            <div class="post-content">
-                                类加载器 引入 一般开发都不会接触classloader的概念，但程序的运行却是建立在classloader之上的 为什么要有类加载器： java程序的启动首先就需要jvm去加载class 而代码中的对象创建类调用【new Person(); Autil.currentTime();】 都需要class被jvm加载 使用类的静态方法，或者创建对象前，需要先加载class 而每个class必然由一个classloader加载  方向 貌似类加载的事情不需要我们操心，虚拟机已经帮我们解决了 那学这个能干嘛： * 更了解虚拟机; * 在复杂的生产环境可能遇到class找不到异常,了解这个有助于排查错误; * 自研服务/插件，动态加载代码; * tomcat的项目代码热部署，jsp热部署; * 各种热部署插件; * 软件破解;  划重点 一个class在内存中只存一份，以及限定条件 defineClass决定class的类加载器是谁 线程上下文类加载器用于隐式传参 一个对象的类由哪个类加载器去加载，取决于显示使用类或显示使用类加载器……
-                            </div>
-                            <p class="readmore"><a href="https://duansheli.github.io/2018/06/21/classloader-start.html">阅读全文</a></p>
-                        </article>
-                    
-                    
-		    
-                        <article class="post">
-                            <header>
-                                <h1 class="post-title">
-                                    <a href="https://duansheli.github.io/2018/06/05/proxy-rpc-01.html" title="动态代理-rpc示例-01" >动态代理-rpc示例-01</a>
-                                </h1>
-                            </header>
-                            <date class="post-meta meta-date">
-                                2018年6月5日
-                            </date>
-                            
-                            <div class="post-meta">
-                                <span>|</span>
-                                
-                                <span class="meta-category"><a href="https://duansheli.github.io/categories/Java%E6%B7%B1%E5%85%A5">Java深入</a></span>
-                                
-                            </div>
-                            
-                            <div class="post-content">
-                                目标 写个简单的rpc 调用
-Rpc大致思路 定义一个接口HelloService 放在iface.jar中 应用P中引用iface.jar 实现接口HelloService进行处理任务 注册bean到spring中 应用C中, 通过spring获取HelloService的实例phService 调用phService.echo(xxx)方法，获得返回结果 应用P运行在1个jvm中 应用C运行在另1个jvm中 phService实质为一个代理对象 该代理对象通过把调用的参数封装，序列化后，通过网络传输给应用P 应用P根据收到参数后，调用处理接口相应的实现类，并将结果回传给应用C端 最终代理对象返回收到的运行结果  序列化-知识点补充 进行RPC调用必然要涉及对方法参数的序列化。 序列化框架有很多， 如protobuf、thrift、hession等 dubbo的rpc是支持多种序列化方式，如Java原生、Kryo、webservice等 spring cloud的http调用也算一种序列化方式 有了序列化工具，不仅仅是跨JVM的方法调用，还能跨语言调用。 本次示例使用java原生序列化  初版代码 所用到包 import java.……
-                            </div>
-                            <p class="readmore"><a href="https://duansheli.github.io/2018/06/05/proxy-rpc-01.html">阅读全文</a></p>
-                        </article>
-                    
-                    
-		    
-                        <article class="post">
-                            <header>
-                                <h1 class="post-title">
-                                    <a href="https://duansheli.github.io/2018/06/05/proxy-rpc-02.html" title="动态代理-rpc示例-02" >动态代理-rpc示例-02</a>
-                                </h1>
-                            </header>
-                            <date class="post-meta meta-date">
-                                2018年6月5日
-                            </date>
-                            
-                            <div class="post-meta">
-                                <span>|</span>
-                                
-                                <span class="meta-category"><a href="https://duansheli.github.io/categories/Java%E6%B7%B1%E5%85%A5">Java深入</a></span>
-                                
-                            </div>
-                            
-                            <div class="post-content">
-                                上个版本的代码看着比较生肉，与平时开发时的写法差别较大。 接下来这版，加入了动态代理后
-动态代理-guava版 import com.google.common.reflect.Reflection; class DemoGuava { interface MyMath1 { public Integer sum(Integer a, Integer b); } static class MyMathImpl implements MyMath1 { @Override public Integer sum(Integer a, Integer b) { return a + b; } } public static void main(String[] args) { MyMath1 tg = new MyMathImpl(); // 创建对象代理 MyMath1 math = (MyMath1) Reflection.……
-                            </div>
-                            <p class="readmore"><a href="https://duansheli.github.io/2018/06/05/proxy-rpc-02.html">阅读全文</a></p>
-                        </article>
-                    
-                    
-		    
-                        <article class="post">
-                            <header>
-                                <h1 class="post-title">
-                                    <a href="https://duansheli.github.io/2018/06/02/proxy-start.html" title="动态代理" >动态代理</a>
-                                </h1>
-                            </header>
-                            <date class="post-meta meta-date">
-                                2018年6月2日
-                            </date>
-                            
-                            <div class="post-meta">
-                                <span>|</span>
-                                
-                                <span class="meta-category"><a href="https://duansheli.github.io/categories/Java%E6%B7%B1%E5%85%A5">Java深入</a></span>
-                                
-                            </div>
-                            
-                            <div class="post-content">
-                                目标 通过代码示例了解动态代理语法
-示例代码 import java.lang.reflect.InvocationHandler; import java.lang.reflect.Method; import java.lang.reflect.Proxy; public class Demo { interface MyMath1 { public Integer sum(Integer a, Integer b); } static class MyMathImpl implements MyMath1 { @Override public Integer sum(Integer a, Integer b) { return a + b; } } public static void main(String[] args) { MyMath1 tg = new MyMathImpl(); // 创建对象代理 MyMath1 math = (MyMath1) Proxy.……
-                            </div>
-                            <p class="readmore"><a href="https://duansheli.github.io/2018/06/02/proxy-start.html">阅读全文</a></p>
-                        </article>
-                    
-                    
-		    
-                        <article class="post">
-                            <header>
-                                <h1 class="post-title">
-                                    <a href="https://duansheli.github.io/2018/04/02/reflect-start.html" title="反射使用" >反射使用</a>
-                                </h1>
-                            </header>
-                            <date class="post-meta meta-date">
-                                2018年4月2日
-                            </date>
-                            
-                            <div class="post-meta">
-                                <span>|</span>
-                                
-                                <span class="meta-category"><a href="https://duansheli.github.io/categories/Java%E6%B7%B1%E5%85%A5">Java深入</a></span>
-                                
-                            </div>
-                            
-                            <div class="post-content">
-                                反射介绍 可以不直接new 对象，或调用方法。 用另一种创建某个对象（字符串的方式），或调用某个对象的方法（字符串的方式）。 反射这种间接调用效率肯定是不如直接调用的。
-程序不知道具体要创建接口的哪个实现类， 在启动时，通过读取配置文件才知道要创建那个实现类。
-先学习语法，然后可以通过结合动态代理加深理解。
-反射的场景 一般的开发很少直接用到，不过在各类框架中基本离不开。
-另外如果要自研框架，或者对框架定制功能，通常也会用到。
- spring以xml配置去注册bean 动态代理以及其衍生的各类服务  远程调用 日志，监控 缓存 权限 spring-事务注解  使用注解的实现的各种功能 软件破解。。。等等  语法示例 普通的bean package com.……
-                            </div>
-                            <p class="readmore"><a href="https://duansheli.github.io/2018/04/02/reflect-start.html">阅读全文</a></p>
-                        </article>
-                    
-                    
-		    
-                        <article class="post">
-                            <header>
-                                <h1 class="post-title">
-                                    <a href="https://duansheli.github.io/2018/03/17/dev-browser.html" title="dev-浏览器" >dev-浏览器</a>
-                                </h1>
-                            </header>
-                            <date class="post-meta meta-date">
-                                2018年3月17日
-                            </date>
-                            
-                            <div class="post-content">
-                                平时主要用 firefox 和 chrome
-firefox 首选 http://download-origin.cdn.mozilla.net/pub/devedition/releases/
-选则版本-32或64位-语言 比如 http://download-origin.cdn.mozilla.net/pub/devedition/releases/58.0b1/win64/zh-CN/ 下载Firefox Setup 58.0b1.exe后， 修改后缀为zip后解压core文件夹  更多
-http://download-origin.cdn.mozilla.net/pub/devedition/releases/ http://ftp.mozilla.org/pub/firefox/nightly/latest-mozilla-central-l10n/ http://ftp.mozilla.org/pub/firefox/nightly/latest-oak-l10n/ Firefox Release/mozilla-release : Firefox 官方正式版 Firefox Beta/mozilla-beta : 在正式发布之前的测试版 Firefox Aurora/mozilla-aurora : 提供给Web/平台开发者和早期采用者的测试版 Firefox Nightly/mozilla-central : 每夜（天）发布，其中包含试验功能 Firefox ESR/mozilla-esr17 : 提供给企业组织的官方桌面正式版 http://ftp.……
-                            </div>
-                            <p class="readmore"><a href="https://duansheli.github.io/2018/03/17/dev-browser.html">阅读全文</a></p>
-                        </article>
-                    
-                    
-		    
-                        <article class="post">
-                            <header>
-                                <h1 class="post-title">
-                                    <a href="https://duansheli.github.io/archives/" title="归档" >归档</a>
-                                </h1>
-                            </header>
-                            <date class="post-meta meta-date">
-                                1年1月1日
-                            </date>
-                            
-                            <div class="post-content">
-                                ……
-                            </div>
-                            <p class="readmore"><a href="https://duansheli.github.io/archives/">阅读全文</a></p>
                         </article>
                     
                     
@@ -398,6 +422,14 @@ http://download-origin.cdn.mozilla.net/pub/devedition/releases/ http://ftp.mozil
     </li>
     
     <li>
+        <a href="https://duansheli.github.io/2019/10/13/download-m3u8-video-02.html" title="下载m3u8加密视频-02">下载m3u8加密视频-02</a>
+    </li>
+    
+    <li>
+        <a href="https://duansheli.github.io/2019/10/13/download-m3u8-video-01.html" title="下载m3u8加密视频-01">下载m3u8加密视频-01</a>
+    </li>
+    
+    <li>
         <a href="https://duansheli.github.io/2019/10/03/k8s-cluster-setup-03.html" title="k8s的相关项目">k8s的相关项目</a>
     </li>
     
@@ -407,14 +439,6 @@ http://download-origin.cdn.mozilla.net/pub/devedition/releases/ http://ftp.mozil
     
     <li>
         <a href="https://duansheli.github.io/2019/09/11/kotlin-null-check.html" title="kotlin空指针校验">kotlin空指针校验</a>
-    </li>
-    
-    <li>
-        <a href="https://duansheli.github.io/2019/09/03/hashids-usage.html" title="使用hashids创建短链服务">使用hashids创建短链服务</a>
-    </li>
-    
-    <li>
-        <a href="https://duansheli.github.io/2019/09/07/zero-width.html" title="给文章加水印-零宽字符">给文章加水印-零宽字符</a>
     </li>
     
 </ul>
@@ -432,6 +456,10 @@ http://download-origin.cdn.mozilla.net/pub/devedition/releases/ http://ftp.mozil
     
     <li>
         <a href="https://duansheli.github.io/categories/k8s%E9%9B%86%E7%BE%A4/">k8s集群(5)</a>
+    </li>
+    
+    <li>
+        <a href="https://duansheli.github.io/categories/scala%E5%B9%B6%E5%8F%91%E7%BC%96%E7%A8%8B/">scala并发编程(7)</a>
     </li>
     
 </ul>
@@ -454,6 +482,8 @@ http://download-origin.cdn.mozilla.net/pub/devedition/releases/ http://ftp.mozil
     <a href="https://duansheli.github.io/tags/dubbo/">dubbo</a>
     
     <a href="https://duansheli.github.io/tags/elasticsearch/">elasticsearch</a>
+    
+    <a href="https://duansheli.github.io/tags/ffmpeg/">ffmpeg</a>
     
     <a href="https://duansheli.github.io/tags/gc/">gc</a>
     

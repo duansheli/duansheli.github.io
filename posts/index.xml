@@ -72,6 +72,32 @@ drools-workbench 用来管理规则</description>
     </item>
     
     <item>
+      <title>下载m3u8加密视频-02</title>
+      <link>https://duansheli.github.io/2019/10/13/download-m3u8-video-02.html</link>
+      <pubDate>Sun, 13 Oct 2019 22:28:13 +0800</pubDate>
+      
+      <guid>https://duansheli.github.io/2019/10/13/download-m3u8-video-02.html</guid>
+      <description>实例 流程为
+1. 装个抓包工具 1. 浏览器配置代理为抓包工具
+1. 在页面上点击播放后，会加载m3u8文件
+1. 抓包工具检测到特定信息后，将该m3u8地址发送给spring boot应用
+1. springboot根据收到的m3u8信息 下载视频 解密成mp4
+抓包工具-mitmproxy mitmproxy 使用docker安装 docker主机ip 192.</description>
+    </item>
+    
+    <item>
+      <title>下载m3u8加密视频-01</title>
+      <link>https://duansheli.github.io/2019/10/13/download-m3u8-video-01.html</link>
+      <pubDate>Sat, 12 Oct 2019 17:28:13 +0800</pubDate>
+      
+      <guid>https://duansheli.github.io/2019/10/13/download-m3u8-video-01.html</guid>
+      <description>操作演示 如果是没加密的 一条命令就够了 ffmpeg -i http://aa.bb.com/play.m3u8 file.mp4 但被包含的资源一般m3u8的访问需要权限
+同时m3u8中的ts也通过aes128加密 密码则也被包含起来
+手动下载方式 video_m3u8_url=http://aa.bb.com/xx/001/play.m3u8  获取key 如果被加密了则 在 play.m3u8 中前几行可看到
+#EXT-X-KEY:METHOD=AES-128,URI=&amp;quot;https://aa.bb.com/yy/001/key&amp;quot;,IV=0x5901307461D2D72A5EA7F1B2269C33DC  可得 ts_iv=5901307461D2D72A5EA7F1B2269C33DC &amp;amp;&amp;amp; ts_key_url=https://aa.</description>
+    </item>
+    
+    <item>
       <title>k8s的相关项目</title>
       <link>https://duansheli.github.io/2019/10/03/k8s-cluster-setup-03.html</link>
       <pubDate>Thu, 03 Oct 2019 17:28:13 +0800</pubDate>
@@ -260,7 +286,7 @@ http://gsxt.saic.gov.cn/</description>
       <pubDate>Sat, 25 May 2019 17:28:13 +0800</pubDate>
       
       <guid>https://duansheli.github.io/2019/05/25/download-openjdk.html</guid>
-      <description>openjdk oracle原版 jdk 之前在可通过命令从官网下载，现在行不通了，必须用oracle账号登录才能下载。 https://github.com/frekele/oracle-java/releases https://github.com/ZachCheung/oracle-java-downloads https://www.oracle.com/technetwork/java/javase/downloads/jdk11-downloads-5066655.html 有一种 oracle版的openjdk http://jdk.java.net/archive/ oracle还有一个跨语言的通用虚拟机 GraalVM https://github.com/oracle/graal/releases 从java 8开始 oracle开始收费，虽然对个人免费， 但对企业是收费的，虽然不知道怎么收，但收费肯定是不菲的。 如果生产环境不用oracle的jdk，最好平时开发就别用oracle，改用openjdk  部分下载地址 没整明白算是哪个厂商的openjdk https://mirrors.</description>
+      <description>openjdk oracle原版 jdk 之前在可通过命令从官网下载，现在行不通了，必须用oracle账号登录才能下载。 https://www.oracle.com/technetwork/java/javase/downloads/jdk11-downloads-5066655.html oracle的共享账号 http://bugmenot.com/view/oracle.com adobe网站下载jdk不需要登录 https://www.adobe.com/support/coldfusion/downloads.html 过期渠道 https://github.com/frekele/oracle-java/releases https://github.com/ZachCheung/oracle-java-downloads 有一种 oracle版的openjdk http://jdk.java.net/archive/ oracle还有一个跨语言的通用虚拟机 GraalVM https://github.com/oracle/graal/releases 从java 8开始 oracle开始收费，虽然对个人免费， 但对企业是收费的，虽然不知道怎么收，但收费肯定是不菲的。 如果生产环境不用oracle的jdk，最好平时开发就别用oracle，改用openjdk  部分下载地址 没整明白算是哪个厂商的openjdk https://mirrors.</description>
     </item>
     
     <item>
@@ -474,6 +500,84 @@ k8s=v1.12.6
     </item>
     
     <item>
+      <title>scala并发编程-scala的future与java的互相转换</title>
+      <link>https://duansheli.github.io/2018/10/15/future-convert-to-scala.html</link>
+      <pubDate>Mon, 15 Oct 2018 17:28:13 +0800</pubDate>
+      
+      <guid>https://duansheli.github.io/2018/10/15/future-convert-to-scala.html</guid>
+      <description>操作演示 简单上手 转换需要额外的包
+&amp;lt;dependency&amp;gt; &amp;lt;groupId&amp;gt;org.scala-lang.modules&amp;lt;/groupId&amp;gt; &amp;lt;artifactId&amp;gt;scala-java8-compat_2.12&amp;lt;/artifactId&amp;gt; &amp;lt;version&amp;gt;0.8.0&amp;lt;/version&amp;gt; &amp;lt;/dependency&amp;gt;  import java.time.{Duration =&amp;gt; jduration} val request = HttpRequest.newBuilder.uri(URI.create(&amp;quot;https://www.baidu.com/&amp;quot;)) .timeout(jduration.ofMinutes(2)) .build val java8Future: CompletableFuture[HttpResponse[String]] = HttpClient.</description>
+    </item>
+    
+    <item>
+      <title>scala并发编程-async</title>
+      <link>https://duansheli.github.io/2018/09/21/scala-concurrent-async.html</link>
+      <pubDate>Fri, 21 Sep 2018 17:28:13 +0800</pubDate>
+      
+      <guid>https://duansheli.github.io/2018/09/21/scala-concurrent-async.html</guid>
+      <description>描述 async是另一个jar包里的， 用来更简洁的处理 多个future之间的任务衔接
+原理是以宏的方式编译代码 可以说是个二道贩子
+相似的东西: java库的lombok
+由于是二次编译，如果需要调试的话，可能会有问题，慎用。
+简单上手 &amp;lt;dependency&amp;gt; &amp;lt;groupId&amp;gt;org.scala-lang.modules&amp;lt;/groupId&amp;gt; &amp;lt;artifactId&amp;gt;scala-async_2.12&amp;lt;/artifactId&amp;gt; &amp;lt;version&amp;gt;0.9.7&amp;lt;/version&amp;gt; &amp;lt;/dependency&amp;gt;  示例1 val f1 = async { val ff1 = async { println(11); true } val ff2 = async { println(22); 322 } if (await(ff1)) await(ff2) else 0 }  示例2 def slowCalcFuture: Future[Int] = Future { TimeUnit.</description>
+    </item>
+    
+    <item>
+      <title>scala并发编程-blocking</title>
+      <link>https://duansheli.github.io/2018/08/22/scala-concurrent-blocking.html</link>
+      <pubDate>Wed, 22 Aug 2018 17:28:13 +0800</pubDate>
+      
+      <guid>https://duansheli.github.io/2018/08/22/scala-concurrent-blocking.html</guid>
+      <description>blocking描述 blocking 中的代码块 与future不在同一线程中，是阻塞等待。 但是阻塞的方式调用在遇上线程池的线程不足时， 会创建新的线程
+测试效果 package com.fluffy.test_concurrent import java.util.concurrent.{CountDownLatch, TimeUnit} object Demo_blocking extends App { import scala.concurrent.{Future, blocking} import scala.</description>
+    </item>
+    
+    <item>
+      <title>scala并发编程-promise</title>
+      <link>https://duansheli.github.io/2018/08/18/scala-concurrent-promise.html</link>
+      <pubDate>Sat, 18 Aug 2018 17:28:13 +0800</pubDate>
+      
+      <guid>https://duansheli.github.io/2018/08/18/scala-concurrent-promise.html</guid>
+      <description>操作演示 生产者消费者模型
+一个Promise 只有一个future
+Promise只能给future确认一次结果
+简单上手 import scala.concurrent.ExecutionContext.Implicits.global val countDownLatch = new CountDownLatch(1) val p = Promise[Int]() val f1 = p.</description>
+    </item>
+    
+    <item>
+      <title>scala并发编程-Duration</title>
+      <link>https://duansheli.github.io/2018/08/13/scala-concurrent-Duration.html</link>
+      <pubDate>Mon, 13 Aug 2018 17:28:13 +0800</pubDate>
+      
+      <guid>https://duansheli.github.io/2018/08/13/scala-concurrent-Duration.html</guid>
+      <description>操作步骤 Duration的几种创建方式
+可以进行 加减乘除 的操作
+java版Duration 与 Scala版Duration 互相转换
+简单上手 import scala.concurrent.duration._ import scala.concurrent.ExecutionContext.Implicits.global // FiniteDuration对象的创建 // 截至期限的创建 def main(args_q: Array[String]) { val d1: FiniteDuration = 1.</description>
+    </item>
+    
+    <item>
+      <title>scala并发编程-future的map和flatmap</title>
+      <link>https://duansheli.github.io/2018/08/12/scala-concurrent-map.html</link>
+      <pubDate>Sun, 12 Aug 2018 17:28:13 +0800</pubDate>
+      
+      <guid>https://duansheli.github.io/2018/08/12/scala-concurrent-map.html</guid>
+      <description>操作演示 推演 在不使用 map flatmap的情况下 多个future 如果相互之间有依赖关系 则通常是嵌套调用 嵌套太多则维护性太差
+比如
+val f1 = Future { TimeUnit.SECONDS.sleep(1) &amp;quot;f1&amp;quot; } f1 onSuccess { case str =&amp;gt; val f11 = Future { // 启动另一个future // Future{ 。。。 } // 再启动另一个future if (3 &amp;gt; 2) println(str) else throw new Exception(&amp;quot;出错了&amp;quot;) } f11 onSuccess { case _ =&amp;gt; println(s&amp;quot;收到结果 ${str}&amp;quot;) } }  map flatmap 示例 import scala.</description>
+    </item>
+    
+    <item>
+      <title>scala并发编程-future</title>
+      <link>https://duansheli.github.io/2018/08/11/scala-concurrent-future.html</link>
+      <pubDate>Sat, 11 Aug 2018 17:28:13 +0800</pubDate>
+      
+      <guid>https://duansheli.github.io/2018/08/11/scala-concurrent-future.html</guid>
+      <description>操作演示 简单上手 scala版Future 和java版是一个意思 将任务放在线程池中去执行
+import java.time.LocalTime import java.util.concurrent.TimeUnit import scala.concurrent.duration.Duration import scala.concurrent.{Await, Future} import scala.util.{Failure, Success} // @formatter:off object Demo01_future extends App{ import scala.</description>
+    </item>
+    
+    <item>
       <title>JVM的垃圾回收</title>
       <link>https://duansheli.github.io/2018/07/14/jvm-memory-gc.html</link>
       <pubDate>Sat, 14 Jul 2018 15:13:13 +0800</pubDate>
@@ -566,7 +670,7 @@ Rpc大致思路 定义一个接口HelloService 放在iface.jar中 应用P中引�
       <description>平时主要用 firefox 和 chrome
 firefox 首选 http://download-origin.cdn.mozilla.net/pub/devedition/releases/
 选则版本-32或64位-语言 比如 http://download-origin.cdn.mozilla.net/pub/devedition/releases/58.0b1/win64/zh-CN/ 下载Firefox Setup 58.0b1.exe后， 修改后缀为zip后解压core文件夹  更多
-http://download-origin.cdn.mozilla.net/pub/devedition/releases/ http://ftp.mozilla.org/pub/firefox/nightly/latest-mozilla-central-l10n/ http://ftp.mozilla.org/pub/firefox/nightly/latest-oak-l10n/ Firefox Release/mozilla-release : Firefox 官方正式版 Firefox Beta/mozilla-beta : 在正式发布之前的测试版 Firefox Aurora/mozilla-aurora : 提供给Web/平台开发者和早期采用者的测试版 Firefox Nightly/mozilla-central : 每夜（天）发布，其中包含试验功能 Firefox ESR/mozilla-esr17 : 提供给企业组织的官方桌面正式版 http://ftp.</description>
+http://download-origin.cdn.mozilla.net/pub/devedition/releases/ http://download-installer.cdn.mozilla.net/pub/firefox/releases/ http://ftp.mozilla.org/pub/firefox/nightly/latest-mozilla-central-l10n/ http://ftp.</description>
     </item>
     
   </channel>

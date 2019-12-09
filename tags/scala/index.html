@@ -76,6 +76,27 @@
                         <article class="post">
                             <header>
                                 <h1 class="post-title">
+                                    <a href="https://duansheli.github.io/2019/10/13/download-m3u8-video-02.html">下载m3u8加密视频-02</a>
+                                </h1>
+                            </header>
+                            <date class="post-meta meta-date">
+                                2019年10月13日
+                            </date>
+                            
+                            <div class="post-content">
+                                实例 流程为
+1. 装个抓包工具 1. 浏览器配置代理为抓包工具
+1. 在页面上点击播放后，会加载m3u8文件
+1. 抓包工具检测到特定信息后，将该m3u8地址发送给spring boot应用
+1. springboot根据收到的m3u8信息 下载视频 解密成mp4
+抓包工具-mitmproxy mitmproxy 使用docker安装 docker主机ip 192.……
+                                <p class="readmore"><a href="https://duansheli.github.io/2019/10/13/download-m3u8-video-02.html">阅读全文</a></p>
+                            </div>
+                        </article>
+                    
+                        <article class="post">
+                            <header>
+                                <h1 class="post-title">
                                     <a href="https://duansheli.github.io/2019/05/17/thinking-autoboxing-implicit.html">自动装箱拆箱在scala中的表现</a>
                                 </h1>
                             </header>
@@ -88,6 +109,182 @@
 implicit是scala中的概念<br />
 都有变量包装的特性</p>……
                                 <p class="readmore"><a href="https://duansheli.github.io/2019/05/17/thinking-autoboxing-implicit.html">阅读全文</a></p>
+                            </div>
+                        </article>
+                    
+                        <article class="post">
+                            <header>
+                                <h1 class="post-title">
+                                    <a href="https://duansheli.github.io/2018/10/15/future-convert-to-scala.html">scala并发编程-scala的future与java的互相转换</a>
+                                </h1>
+                            </header>
+                            <date class="post-meta meta-date">
+                                2018年10月15日
+                            </date>
+                            
+                            <div class="post-meta meta-category">
+                                |
+                                
+                                    <a href="https://duansheli.github.io/categories/scala%E5%B9%B6%E5%8F%91%E7%BC%96%E7%A8%8B">scala并发编程</a>
+                                
+                            </div>
+                            
+                            <div class="post-content">
+                                操作演示 简单上手 转换需要额外的包
+&lt;dependency&gt; &lt;groupId&gt;org.scala-lang.modules&lt;/groupId&gt; &lt;artifactId&gt;scala-java8-compat_2.12&lt;/artifactId&gt; &lt;version&gt;0.8.0&lt;/version&gt; &lt;/dependency&gt;  import java.time.{Duration =&gt; jduration} val request = HttpRequest.newBuilder.uri(URI.create(&quot;https://www.baidu.com/&quot;)) .timeout(jduration.ofMinutes(2)) .build val java8Future: CompletableFuture[HttpResponse[String]] = HttpClient.……
+                                <p class="readmore"><a href="https://duansheli.github.io/2018/10/15/future-convert-to-scala.html">阅读全文</a></p>
+                            </div>
+                        </article>
+                    
+                        <article class="post">
+                            <header>
+                                <h1 class="post-title">
+                                    <a href="https://duansheli.github.io/2018/09/21/scala-concurrent-async.html">scala并发编程-async</a>
+                                </h1>
+                            </header>
+                            <date class="post-meta meta-date">
+                                2018年9月21日
+                            </date>
+                            
+                            <div class="post-meta meta-category">
+                                |
+                                
+                                    <a href="https://duansheli.github.io/categories/scala%E5%B9%B6%E5%8F%91%E7%BC%96%E7%A8%8B">scala并发编程</a>
+                                
+                            </div>
+                            
+                            <div class="post-content">
+                                描述 async是另一个jar包里的， 用来更简洁的处理 多个future之间的任务衔接
+原理是以宏的方式编译代码 可以说是个二道贩子
+相似的东西: java库的lombok
+由于是二次编译，如果需要调试的话，可能会有问题，慎用。
+简单上手 &lt;dependency&gt; &lt;groupId&gt;org.scala-lang.modules&lt;/groupId&gt; &lt;artifactId&gt;scala-async_2.12&lt;/artifactId&gt; &lt;version&gt;0.9.7&lt;/version&gt; &lt;/dependency&gt;  示例1 val f1 = async { val ff1 = async { println(11); true } val ff2 = async { println(22); 322 } if (await(ff1)) await(ff2) else 0 }  示例2 def slowCalcFuture: Future[Int] = Future { TimeUnit.……
+                                <p class="readmore"><a href="https://duansheli.github.io/2018/09/21/scala-concurrent-async.html">阅读全文</a></p>
+                            </div>
+                        </article>
+                    
+                        <article class="post">
+                            <header>
+                                <h1 class="post-title">
+                                    <a href="https://duansheli.github.io/2018/08/22/scala-concurrent-blocking.html">scala并发编程-blocking</a>
+                                </h1>
+                            </header>
+                            <date class="post-meta meta-date">
+                                2018年8月22日
+                            </date>
+                            
+                            <div class="post-meta meta-category">
+                                |
+                                
+                                    <a href="https://duansheli.github.io/categories/scala%E5%B9%B6%E5%8F%91%E7%BC%96%E7%A8%8B">scala并发编程</a>
+                                
+                            </div>
+                            
+                            <div class="post-content">
+                                blocking描述 blocking 中的代码块 与future不在同一线程中，是阻塞等待。 但是阻塞的方式调用在遇上线程池的线程不足时， 会创建新的线程
+测试效果 package com.fluffy.test_concurrent import java.util.concurrent.{CountDownLatch, TimeUnit} object Demo_blocking extends App { import scala.concurrent.{Future, blocking} import scala.……
+                                <p class="readmore"><a href="https://duansheli.github.io/2018/08/22/scala-concurrent-blocking.html">阅读全文</a></p>
+                            </div>
+                        </article>
+                    
+                        <article class="post">
+                            <header>
+                                <h1 class="post-title">
+                                    <a href="https://duansheli.github.io/2018/08/18/scala-concurrent-promise.html">scala并发编程-promise</a>
+                                </h1>
+                            </header>
+                            <date class="post-meta meta-date">
+                                2018年8月18日
+                            </date>
+                            
+                            <div class="post-meta meta-category">
+                                |
+                                
+                                    <a href="https://duansheli.github.io/categories/scala%E5%B9%B6%E5%8F%91%E7%BC%96%E7%A8%8B">scala并发编程</a>
+                                
+                            </div>
+                            
+                            <div class="post-content">
+                                操作演示 生产者消费者模型
+一个Promise 只有一个future
+Promise只能给future确认一次结果
+简单上手 import scala.concurrent.ExecutionContext.Implicits.global val countDownLatch = new CountDownLatch(1) val p = Promise[Int]() val f1 = p.……
+                                <p class="readmore"><a href="https://duansheli.github.io/2018/08/18/scala-concurrent-promise.html">阅读全文</a></p>
+                            </div>
+                        </article>
+                    
+                        <article class="post">
+                            <header>
+                                <h1 class="post-title">
+                                    <a href="https://duansheli.github.io/2018/08/13/scala-concurrent-Duration.html">scala并发编程-Duration</a>
+                                </h1>
+                            </header>
+                            <date class="post-meta meta-date">
+                                2018年8月13日
+                            </date>
+                            
+                            <div class="post-meta meta-category">
+                                |
+                                
+                                    <a href="https://duansheli.github.io/categories/scala%E5%B9%B6%E5%8F%91%E7%BC%96%E7%A8%8B">scala并发编程</a>
+                                
+                            </div>
+                            
+                            <div class="post-content">
+                                操作步骤 Duration的几种创建方式
+可以进行 加减乘除 的操作
+java版Duration 与 Scala版Duration 互相转换
+简单上手 import scala.concurrent.duration._ import scala.concurrent.ExecutionContext.Implicits.global // FiniteDuration对象的创建 // 截至期限的创建 def main(args_q: Array[String]) { val d1: FiniteDuration = 1.……
+                                <p class="readmore"><a href="https://duansheli.github.io/2018/08/13/scala-concurrent-Duration.html">阅读全文</a></p>
+                            </div>
+                        </article>
+                    
+                        <article class="post">
+                            <header>
+                                <h1 class="post-title">
+                                    <a href="https://duansheli.github.io/2018/08/12/scala-concurrent-map.html">scala并发编程-future的map和flatmap</a>
+                                </h1>
+                            </header>
+                            <date class="post-meta meta-date">
+                                2018年8月12日
+                            </date>
+                            
+                            <div class="post-meta meta-category">
+                                |
+                                
+                                    <a href="https://duansheli.github.io/categories/scala%E5%B9%B6%E5%8F%91%E7%BC%96%E7%A8%8B">scala并发编程</a>
+                                
+                            </div>
+                            
+                            <div class="post-content">
+                                操作演示 推演 在不使用 map flatmap的情况下 多个future 如果相互之间有依赖关系 则通常是嵌套调用 嵌套太多则维护性太差
+比如
+val f1 = Future { TimeUnit.SECONDS.sleep(1) &quot;f1&quot; } f1 onSuccess { case str =&gt; val f11 = Future { // 启动另一个future // Future{ 。。。 } // 再启动另一个future if (3 &gt; 2) println(str) else throw new Exception(&quot;出错了&quot;) } f11 onSuccess { case _ =&gt; println(s&quot;收到结果 ${str}&quot;) } }  map flatmap 示例 import scala.……
+                                <p class="readmore"><a href="https://duansheli.github.io/2018/08/12/scala-concurrent-map.html">阅读全文</a></p>
+                            </div>
+                        </article>
+                    
+                        <article class="post">
+                            <header>
+                                <h1 class="post-title">
+                                    <a href="https://duansheli.github.io/2018/08/11/scala-concurrent-future.html">scala并发编程-future</a>
+                                </h1>
+                            </header>
+                            <date class="post-meta meta-date">
+                                2018年8月11日
+                            </date>
+                            
+                            <div class="post-meta meta-category">
+                                |
+                                
+                                    <a href="https://duansheli.github.io/categories/scala%E5%B9%B6%E5%8F%91%E7%BC%96%E7%A8%8B">scala并发编程</a>
+                                
+                            </div>
+                            
+                            <div class="post-content">
+                                操作演示 简单上手 scala版Future 和java版是一个意思 将任务放在线程池中去执行
+import java.time.LocalTime import java.util.concurrent.TimeUnit import scala.concurrent.duration.Duration import scala.concurrent.{Await, Future} import scala.util.{Failure, Success} // @formatter:off object Demo01_future extends App{ import scala.……
+                                <p class="readmore"><a href="https://duansheli.github.io/2018/08/11/scala-concurrent-future.html">阅读全文</a></p>
                             </div>
                         </article>
                     
@@ -136,6 +333,14 @@ implicit是scala中的概念<br />
     </li>
     
     <li>
+        <a href="https://duansheli.github.io/2019/10/13/download-m3u8-video-02.html" title="下载m3u8加密视频-02">下载m3u8加密视频-02</a>
+    </li>
+    
+    <li>
+        <a href="https://duansheli.github.io/2019/10/13/download-m3u8-video-01.html" title="下载m3u8加密视频-01">下载m3u8加密视频-01</a>
+    </li>
+    
+    <li>
         <a href="https://duansheli.github.io/2019/10/03/k8s-cluster-setup-03.html" title="k8s的相关项目">k8s的相关项目</a>
     </li>
     
@@ -145,14 +350,6 @@ implicit是scala中的概念<br />
     
     <li>
         <a href="https://duansheli.github.io/2019/09/11/kotlin-null-check.html" title="kotlin空指针校验">kotlin空指针校验</a>
-    </li>
-    
-    <li>
-        <a href="https://duansheli.github.io/2019/09/03/hashids-usage.html" title="使用hashids创建短链服务">使用hashids创建短链服务</a>
-    </li>
-    
-    <li>
-        <a href="https://duansheli.github.io/2019/09/07/zero-width.html" title="给文章加水印-零宽字符">给文章加水印-零宽字符</a>
     </li>
     
 </ul>
@@ -170,6 +367,10 @@ implicit是scala中的概念<br />
     
     <li>
         <a href="https://duansheli.github.io/categories/k8s%E9%9B%86%E7%BE%A4/">k8s集群(5)</a>
+    </li>
+    
+    <li>
+        <a href="https://duansheli.github.io/categories/scala%E5%B9%B6%E5%8F%91%E7%BC%96%E7%A8%8B/">scala并发编程(7)</a>
     </li>
     
 </ul>
@@ -192,6 +393,8 @@ implicit是scala中的概念<br />
     <a href="https://duansheli.github.io/tags/dubbo/">dubbo</a>
     
     <a href="https://duansheli.github.io/tags/elasticsearch/">elasticsearch</a>
+    
+    <a href="https://duansheli.github.io/tags/ffmpeg/">ffmpeg</a>
     
     <a href="https://duansheli.github.io/tags/gc/">gc</a>
     

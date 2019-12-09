@@ -24,6 +24,20 @@ scala&amp;gt; import scala.</description>
     </item>
     
     <item>
+      <title>下载m3u8加密视频-02</title>
+      <link>https://duansheli.github.io/2019/10/13/download-m3u8-video-02.html</link>
+      <pubDate>Sun, 13 Oct 2019 22:28:13 +0800</pubDate>
+      
+      <guid>https://duansheli.github.io/2019/10/13/download-m3u8-video-02.html</guid>
+      <description>实例 流程为
+1. 装个抓包工具 1. 浏览器配置代理为抓包工具
+1. 在页面上点击播放后，会加载m3u8文件
+1. 抓包工具检测到特定信息后，将该m3u8地址发送给spring boot应用
+1. springboot根据收到的m3u8信息 下载视频 解密成mp4
+抓包工具-mitmproxy mitmproxy 使用docker安装 docker主机ip 192.</description>
+    </item>
+    
+    <item>
       <title>linux内存文件系统使用</title>
       <link>https://duansheli.github.io/2019/03/17/linux-ram-filesystem.html</link>
       <pubDate>Sun, 17 Mar 2019 17:28:13 +0800</pubDate>

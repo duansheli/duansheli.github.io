@@ -1,0 +1,581 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+
+    <meta charset="utf-8">
+    <meta name="generator" content="Hugo 0.59.0" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <title>scala并发编程-blocking | 断舍离的博客</title>
+    <meta property="og:title" content="scala并发编程-blocking - 断舍离的博客">
+    <meta property="og:type" content="article">
+        
+    <meta property="article:published_time" content="2018-08-22T17:28:13&#43;08:00">
+        
+        
+    <meta property="article:modified_time" content="2018-08-22T17:28:13&#43;08:00">
+        
+    <meta name="Keywords" content="java,scala,spark,kubernetes">
+    <meta name="description" content="scala并发编程-blocking">
+        
+    <meta name="author" content="断舍离">
+    <meta property="og:url" content="https://duansheli.github.io/2018/08/22/scala-concurrent-blocking.html">
+    <link rel="shortcut icon" href="/favicon.ico" type="image/x-icon">
+
+    <link rel="stylesheet" href="/css/normalize.css">
+    
+        <link rel="stylesheet" href="/css/prism.css">
+    
+    <link rel="stylesheet" href="/css/style.css">
+    <script type="text/javascript" src="//cdnjs.cloudflare.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+
+    
+
+
+    
+    
+</head>
+
+<body>
+<header id="header" class="clearfix">
+    <div class="container">
+        <div class="col-group">
+            <div class="site-name ">
+                
+                    <a id="logo" href="https://duansheli.github.io">
+                        断舍离的博客
+                    </a>
+                
+                <p class="description">java, scala, spark, kubernetes</p>
+            </div>
+            <div>
+                <nav id="nav-menu" class="clearfix">
+                    <a class="" href="https://duansheli.github.io">首页</a>
+                    
+                    <a  href="https://duansheli.github.io/archives/" title="归档">归档</a>
+                    
+                </nav>
+            </div>
+        </div>
+    </div>
+</header>
+
+
+<div id="body">
+        
+        <div id="virtual_toc_list" style="display: none">
+            <nav id="TableOfContents">
+<ul>
+<li><a href="#blocking描述">blocking描述</a></li>
+<li><a href="#测试效果">测试效果</a>
+<ul>
+<li><a href="#运行结果">运行结果</a></li>
+</ul></li>
+</ul>
+</nav>
+        </div>
+        <div id="float_toc_div" style="margin: 10px;border: 1px solid gray;z-index:99999;display: none;">
+            <header style="background-color: #f3f3f3;color: black;border-bottom: 1px solid gray;padding: 10px 10px 10px 10px;">
+                <strong id="toc_btn_open" style="color: black;font-size: large;">目录</strong>
+                <strong id="toc_btn_close" style="color: black;font-size: large;float: right">╳</strong>
+            </header>
+            <div id="toc_list" style="background-color: #f3f3f3;color: black;padding: 10px;">
+        
+            </div>
+        </div>
+        <style type="text/css">
+            #float_toc_div {
+                position: fixed;
+                display: none;
+                 
+                height: auto;
+                font-size: 13px;
+            }
+        
+            #toc_list a:hover,
+            #toc_list a:active {
+                color: #ba3925;
+            }
+        </style>
+        <script>
+            window.onload = function () {
+                let tocNavElem = document.getElementById("TableOfContents");
+                let floatTocDivElem = document.getElementById("float_toc_div");
+                let tocListElem = floatTocDivElem.getElementsByTagName('div')[0];
+                let colGroupElem = document.getElementById("body").getElementsByClassName("col-group")[0]
+                let floatTocWidth = (document.body.clientWidth - colGroupElem.offsetWidth) / 2 - 16;
+                var useFloatToc = false;
+
+                if (floatTocWidth >= 100) {
+                    useFloatToc = true;
+                    document.getElementById("toc_list").appendChild(tocNavElem);
+                    floatTocDivElem.style.display = 'block';
+                    floatTocDivElem.style.width = floatTocWidth + 'px';
+                    top();
+                    floatTocDivElem.style.left = '0px';
+
+                    function top() {
+                        if (document.getElementsByClassName('container')[0].offsetWidth <= 720) {
+                            floatTocDivElem.style.top = '0px';
+                        } else {
+                            floatTocDivElem.style.top = window.innerHeight / 9 + 'px';
+                        }
+                    }
+
+                    function ishide() {
+                        if (document.getElementsByClassName('container')[0].offsetWidth <= 720) {
+                            floatTocDivElem.style.top = '0px';
+                        } else {
+                            floatTocDivElem.style.display = 'block';
+                        }
+                    }
+
+                    window.onscroll = function () {
+                        ishide();
+                        if ((document.documentElement.scrollTop != 0) && (floatTocDivElem.style.display == 'block')) {
+                            top();
+                        }
+                    };
+
+                    window.onresize = function () {
+                        ishide();
+                    }
+
+                    document.getElementById("toc_btn_open").addEventListener('click', function () {
+                        switch (tocListElem.style.display) {
+                            case "none":
+                                document.getElementById("toc_btn_close").style.display = "";
+                                tocListElem.style.display = "";
+                                floatTocDivElem.getElementsByTagName("header")[0].style.borderBottom = "1px solid gray";
+                                break;
+                            default:
+                                break;
+                        }
+                    }, false);
+
+                    document.getElementById("toc_btn_close").addEventListener('click', function () {
+                        switch (tocListElem.style.display) {
+                            case "":
+                                document.getElementById("toc_btn_close").style.display = "none";
+                                tocListElem.style.display = "none";
+                                floatTocDivElem.getElementsByTagName("header")[0].style.borderBottom = "";
+                                break;
+                            default:
+                                break;
+                        }
+                    }, false);
+                } else {
+                    let fixedTocElem = document.getElementsByClassName("toc-article")[0];
+                    fixedTocElem.appendChild(tocNavElem);
+                    fixedTocElem.parentElement.style.display = "";
+                }
+                document.getElementById("virtual_toc_list").remove();
+            };   
+        </script>
+        
+    <div class="container">
+        <div class="col-group">
+
+            <div class="col-8" id="main">
+                <div class="res-cons">
+                    <article class="post">
+                        <header>
+                            <h1 class="post-title">scala并发编程-blocking</h1>
+                        </header>
+                        <date class="post-meta meta-date">
+                            2018年8月22日
+                        </date>
+                        
+                        <div class="post-meta">
+                            <span>|</span>
+                            
+                                <span class="meta-category"><a href="https://duansheli.github.io/categories/scala%E5%B9%B6%E5%8F%91%E7%BC%96%E7%A8%8B">scala并发编程</a></span>
+                            
+                        </div>
+                        
+                        
+                        
+                        <div class="clear" style="display: none">
+                            <div class="toc-article">
+                                <div class="toc-title">文章目录</div>
+                            </div>
+                        </div>
+                        
+                        <div class="post-content">
+                            
+
+<h1 id="blocking描述">blocking描述</h1>
+
+<p>blocking 中的代码块 与future不在同一线程中，是阻塞等待。
+但是阻塞的方式调用在遇上线程池的线程不足时， 会创建新的线程</p>
+
+<h1 id="测试效果">测试效果</h1>
+
+<pre><code class="language-scala">package com.fluffy.test_concurrent
+
+import java.util.concurrent.{CountDownLatch, TimeUnit}
+
+
+object Demo_blocking extends App {
+
+  import scala.concurrent.{Future, blocking}
+  import scala.concurrent.ExecutionContext.Implicits.global
+
+  Future {
+    var num = 66
+    blocking {
+      TimeUnit.SECONDS.sleep(1)
+      num = 88
+      println(s&quot;blocking--in--code-- ${num}&quot;)
+    }
+    println(s&quot;blocking--out--code-- ${num}&quot;)
+  }
+  TimeUnit.SECONDS.sleep(2)
+  println(&quot;上面这个num 都是88 说明是阻塞的&quot;)
+
+
+  def test1000() {
+    val array1000 = new Array[String](1000)
+    val latch01 = new CountDownLatch(1000)
+    (0 until 1000) foreach { n =&gt;
+      Future {
+        TimeUnit.MILLISECONDS.sleep(30)
+        val str = Thread.currentThread.getName.intern()
+        array1000.update(n, str)
+        latch01.countDown()
+      }
+    }
+
+    latch01.await()
+    val distinct01: Array[String] = array1000.distinct
+    distinct01.takeRight(5).foreach(println(_))
+    println(s&quot;不启用blocking--线程数 -- ${distinct01.size} &quot;)
+  }
+
+  test1000()
+
+  val arrayOut = new Array[String](1000)
+  val arrayIn = new Array[String](1000)
+  val latch02 = new CountDownLatch(1000)
+  (0 until 1000) foreach { n =&gt;
+    Future {
+      val strOut = Thread.currentThread.getName.intern()
+      arrayOut.update(n, strOut)
+      blocking { // 顾名思义，阻塞住当前线程，相当于一个新future 并且当线程池被用完了，还会创建新的线程去执行
+        val strIn = Thread.currentThread.getName.intern()
+        arrayIn.update(n, strIn)
+        TimeUnit.MILLISECONDS.sleep(500)
+        latch02.countDown()
+      }
+      TimeUnit.MILLISECONDS.sleep(100)
+    }
+  }
+
+  println()
+  latch02.await()
+  val outCount: Array[String] = arrayOut.distinct
+  outCount.takeRight(5).foreach(println(_))
+  println(&quot;启用blocking--out-线程数 -- &quot; + outCount.size)
+
+  val inCount: Array[String] = arrayIn.distinct
+  inCount.takeRight(5).foreach(println(_))
+  println(&quot;启用blocking--in-线程数 -- &quot; + inCount.size)
+  println()
+
+  test1000()
+}
+</code></pre>
+
+<h2 id="运行结果">运行结果</h2>
+
+<pre><code>blocking--in--code-- 88
+blocking--out--code-- 88
+上面这个num 都是88 说明是阻塞的
+scala-execution-context-global-13
+scala-execution-context-global-14
+scala-execution-context-global-16
+scala-execution-context-global-15
+不启用blocking--线程数 -- 4 
+
+scala-execution-context-global-265
+scala-execution-context-global-266
+scala-execution-context-global-267
+scala-execution-context-global-268
+scala-execution-context-global-269
+启用blocking--out-线程数 -- 257
+scala-execution-context-global-265
+scala-execution-context-global-266
+scala-execution-context-global-267
+scala-execution-context-global-268
+scala-execution-context-global-269
+启用blocking--in-线程数 -- 257
+
+scala-execution-context-global-238
+scala-execution-context-global-237
+scala-execution-context-global-241
+scala-execution-context-global-240
+scala-execution-context-global-239
+不启用blocking--线程数 -- 229 
+</code></pre>
+
+<p>如果是非阻塞 那打印出来的num就不是88 而是66了</p>
+
+<p>原本线程中是4个线程，用了blocking后，线程池内的线程数增加了</p>
+
+                        </div>
+
+                        
+
+
+                        
+
+<div class="post-archive">
+    <h2>See Also</h2>
+    <ul class="listing">
+        
+        <li><a href="/2018/08/18/scala-concurrent-promise.html">scala并发编程-promise</a></li>
+        
+        <li><a href="/2018/08/13/scala-concurrent-Duration.html">scala并发编程-Duration</a></li>
+        
+        <li><a href="/2018/08/12/scala-concurrent-map.html">scala并发编程-future的map和flatmap</a></li>
+        
+        <li><a href="/2018/08/11/scala-concurrent-future.html">scala并发编程-future</a></li>
+        
+        <li><a href="/2018/07/14/jvm-memory-gc.html">JVM的垃圾回收</a></li>
+        
+    </ul>
+</div>
+
+
+                        <div class="post-meta meta-tags">
+                            
+                            <ul class="clearfix">
+                                
+                                <li><a href="https://duansheli.github.io/tags/scala">scala</a></li>
+                                
+                            </ul>
+                            
+                        </div>
+                    </article>
+                    
+    
+
+    
+    
+                </div>
+            </div>
+            <div id="secondary">
+    <section class="widget">
+        <form id="search" action="//www.google.com/search" method="get" accept-charset="utf-8" target="_blank" _lpchecked="1">
+      
+      <input type="text" name="q" maxlength="20" placeholder="Search">
+      <input type="hidden" name="sitesearch" value="https://duansheli.github.io">
+      <button type="submit" class="submit icon-search"></button>
+</form>
+    </section>
+    
+    <section class="widget">
+        <h3 class="widget-title">最近文章</h3>
+<ul class="widget-list">
+    
+    <li>
+        <a href="https://duansheli.github.io/2019/11/26/scala-process.html" title="scala调用系统命令">scala调用系统命令</a>
+    </li>
+    
+    <li>
+        <a href="https://duansheli.github.io/2019/11/12/doh.html" title="群晖两步验证的关闭">群晖两步验证的关闭</a>
+    </li>
+    
+    <li>
+        <a href="https://duansheli.github.io/2019/10/28/update-rule-by-scanner.html" title="使用drools的规则管理平台-02">使用drools的规则管理平台-02</a>
+    </li>
+    
+    <li>
+        <a href="https://duansheli.github.io/2019/10/27/update-rule-by-scanner.html" title="使用drools的规则管理平台-01">使用drools的规则管理平台-01</a>
+    </li>
+    
+    <li>
+        <a href="https://duansheli.github.io/2019/10/26/update-rule-by-scanner.html" title="自定义动态更新drools规则">自定义动态更新drools规则</a>
+    </li>
+    
+    <li>
+        <a href="https://duansheli.github.io/2019/10/13/download-m3u8-video-02.html" title="下载m3u8加密视频-02">下载m3u8加密视频-02</a>
+    </li>
+    
+    <li>
+        <a href="https://duansheli.github.io/2019/10/13/download-m3u8-video-01.html" title="下载m3u8加密视频-01">下载m3u8加密视频-01</a>
+    </li>
+    
+    <li>
+        <a href="https://duansheli.github.io/2019/10/03/k8s-cluster-setup-03.html" title="k8s的相关项目">k8s的相关项目</a>
+    </li>
+    
+    <li>
+        <a href="https://duansheli.github.io/2019/09/12/doh.html" title="浏览器启用dns-over-https(DoH)">浏览器启用dns-over-https(DoH)</a>
+    </li>
+    
+    <li>
+        <a href="https://duansheli.github.io/2019/09/11/kotlin-null-check.html" title="kotlin空指针校验">kotlin空指针校验</a>
+    </li>
+    
+</ul>
+    </section>
+
+    
+
+    <section class="widget">
+        <h3 class="widget-title">分类</h3>
+<ul class="widget-list">
+    
+    <li>
+        <a href="https://duansheli.github.io/categories/Java%E6%B7%B1%E5%85%A5/">Java深入(8)</a>
+    </li>
+    
+    <li>
+        <a href="https://duansheli.github.io/categories/k8s%E9%9B%86%E7%BE%A4/">k8s集群(5)</a>
+    </li>
+    
+    <li>
+        <a href="https://duansheli.github.io/categories/scala%E5%B9%B6%E5%8F%91%E7%BC%96%E7%A8%8B/">scala并发编程(7)</a>
+    </li>
+    
+</ul>
+    </section>
+
+    <section class="widget">
+        <h3 class="widget-title">标签</h3>
+<div class="tagcloud">
+    
+    <a href="https://duansheli.github.io/tags/Java/">Java</a>
+    
+    <a href="https://duansheli.github.io/tags/classloader/">classloader</a>
+    
+    <a href="https://duansheli.github.io/tags/docker/">docker</a>
+    
+    <a href="https://duansheli.github.io/tags/drone/">drone</a>
+    
+    <a href="https://duansheli.github.io/tags/drools/">drools</a>
+    
+    <a href="https://duansheli.github.io/tags/dubbo/">dubbo</a>
+    
+    <a href="https://duansheli.github.io/tags/elasticsearch/">elasticsearch</a>
+    
+    <a href="https://duansheli.github.io/tags/ffmpeg/">ffmpeg</a>
+    
+    <a href="https://duansheli.github.io/tags/gc/">gc</a>
+    
+    <a href="https://duansheli.github.io/tags/git/">git</a>
+    
+    <a href="https://duansheli.github.io/tags/gradle/">gradle</a>
+    
+    <a href="https://duansheli.github.io/tags/hashids/">hashids</a>
+    
+    <a href="https://duansheli.github.io/tags/id/">id</a>
+    
+    <a href="https://duansheli.github.io/tags/java/">java</a>
+    
+    <a href="https://duansheli.github.io/tags/jdk/">jdk</a>
+    
+    <a href="https://duansheli.github.io/tags/jvm/">jvm</a>
+    
+    <a href="https://duansheli.github.io/tags/k8s/">k8s</a>
+    
+    <a href="https://duansheli.github.io/tags/kotlin/">kotlin</a>
+    
+    <a href="https://duansheli.github.io/tags/life/">life</a>
+    
+    <a href="https://duansheli.github.io/tags/linux/">linux</a>
+    
+    <a href="https://duansheli.github.io/tags/mysql/">mysql</a>
+    
+    <a href="https://duansheli.github.io/tags/proxy/">proxy</a>
+    
+    <a href="https://duansheli.github.io/tags/rocketmq/">rocketmq</a>
+    
+    <a href="https://duansheli.github.io/tags/route/">route</a>
+    
+    <a href="https://duansheli.github.io/tags/scala/">scala</a>
+    
+    <a href="https://duansheli.github.io/tags/session/">session</a>
+    
+    <a href="https://duansheli.github.io/tags/shell/">shell</a>
+    
+    <a href="https://duansheli.github.io/tags/spring-boot/">spring-boot</a>
+    
+    <a href="https://duansheli.github.io/tags/spring-security/">spring-security</a>
+    
+    <a href="https://duansheli.github.io/tags/springboot/">springboot</a>
+    
+    <a href="https://duansheli.github.io/tags/zipkin/">zipkin</a>
+    
+    <a href="https://duansheli.github.io/tags/%E5%88%86%E5%B8%83%E5%BC%8F%E4%BA%8B%E5%8A%A1/">分布式事务</a>
+    
+    <a href="https://duansheli.github.io/tags/%E6%8C%81%E7%BB%AD%E9%9B%86%E6%88%90/">持续集成</a>
+    
+    <a href="https://duansheli.github.io/tags/%E7%99%BB%E5%BD%95/">登录</a>
+    
+</div>
+    </section>
+
+    
+
+    <section class="widget">
+        <h3 class="widget-title">其它</h3>
+        <ul class="widget-list">
+            <li><a href="https://duansheli.github.io/index.xml">文章 RSS</a></li>
+        </ul>
+    </section>
+</div>
+        </div>
+    </div>
+</div>
+<footer id="footer">
+    <div class="container">
+        &copy; 2019 <a href="https://duansheli.github.io">断舍离的博客 By 断舍离</a>.
+        Powered by <a rel="nofollow noreferer noopener" href="https://gohugo.io" target="_blank">Hugo</a>.
+        <a href="https://www.flysnow.org/" target="_blank">Theme</a> based on <a href="https://github.com/rujews/maupassant-hugo" target="_blank">maupassant</a>.
+        
+    </div>
+</footer>
+
+
+    
+    <script type="text/javascript">
+        
+        (function () {
+            $("pre code").parent().addClass("line-numbers")
+        }());
+
+        window.MathJax = {
+            tex2jax: {
+                inlineMath: [['$', '$']],
+                processEscapes: true
+                }
+            };
+    </script>
+    <script type="text/javascript" src="/js/prism.js" async="true"></script>
+    <script src='https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/MathJax.js?config=TeX-MML-AM_CHTML' async></script>
+
+
+<a id="rocket" href="#top"></a>
+<script type="text/javascript" src="/js/totop.js?v=0.0.0" async=""></script>
+
+<script type="application/javascript">
+var doNotTrack = false;
+if (!doNotTrack) {
+	window.ga=window.ga||function(){(ga.q=ga.q||[]).push(arguments)};ga.l=+new Date;
+	ga('create', 'GTM-NPJC8J2', 'auto');
+	
+	ga('send', 'pageview');
+}
+</script>
+<script async src='https://www.google-analytics.com/analytics.js'></script>
+
+
+
+
+
+
+</body>
+</html>

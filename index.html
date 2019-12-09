@@ -172,6 +172,50 @@ drools-workbench 用来管理规则……
                         <article class="post">
                             <header>
                                 <h1 class="post-title">
+                                    <a href="https://duansheli.github.io/2019/10/13/download-m3u8-video-02.html" title="下载m3u8加密视频-02" >下载m3u8加密视频-02</a>
+                                </h1>
+                            </header>
+                            <date class="post-meta meta-date">
+                                2019年10月13日
+                            </date>
+                            
+                            <div class="post-content">
+                                实例 流程为
+1. 装个抓包工具 1. 浏览器配置代理为抓包工具
+1. 在页面上点击播放后，会加载m3u8文件
+1. 抓包工具检测到特定信息后，将该m3u8地址发送给spring boot应用
+1. springboot根据收到的m3u8信息 下载视频 解密成mp4
+抓包工具-mitmproxy mitmproxy 使用docker安装 docker主机ip 192.……
+                            </div>
+                            <p class="readmore"><a href="https://duansheli.github.io/2019/10/13/download-m3u8-video-02.html">阅读全文</a></p>
+                        </article>
+                    
+                    
+		    
+                        <article class="post">
+                            <header>
+                                <h1 class="post-title">
+                                    <a href="https://duansheli.github.io/2019/10/13/download-m3u8-video-01.html" title="下载m3u8加密视频-01" >下载m3u8加密视频-01</a>
+                                </h1>
+                            </header>
+                            <date class="post-meta meta-date">
+                                2019年10月12日
+                            </date>
+                            
+                            <div class="post-content">
+                                操作演示 如果是没加密的 一条命令就够了 ffmpeg -i http://aa.bb.com/play.m3u8 file.mp4 但被包含的资源一般m3u8的访问需要权限
+同时m3u8中的ts也通过aes128加密 密码则也被包含起来
+手动下载方式 video_m3u8_url=http://aa.bb.com/xx/001/play.m3u8  获取key 如果被加密了则 在 play.m3u8 中前几行可看到
+#EXT-X-KEY:METHOD=AES-128,URI=&quot;https://aa.bb.com/yy/001/key&quot;,IV=0x5901307461D2D72A5EA7F1B2269C33DC  可得 ts_iv=5901307461D2D72A5EA7F1B2269C33DC &amp;&amp; ts_key_url=https://aa.……
+                            </div>
+                            <p class="readmore"><a href="https://duansheli.github.io/2019/10/13/download-m3u8-video-01.html">阅读全文</a></p>
+                        </article>
+                    
+                    
+		    
+                        <article class="post">
+                            <header>
+                                <h1 class="post-title">
                                     <a href="https://duansheli.github.io/2019/10/03/k8s-cluster-setup-03.html" title="k8s的相关项目" >k8s的相关项目</a>
                                 </h1>
                             </header>
@@ -229,45 +273,6 @@ rancher公司 https://github.com/rancher/k3s/releases
 fun test1() { val a1 = 2; // val a2 = ss as String // 抛出转换失败的异常 val a2 = a1 as?……
                             </div>
                             <p class="readmore"><a href="https://duansheli.github.io/2019/09/11/kotlin-null-check.html">阅读全文</a></p>
-                        </article>
-                    
-                    
-		    
-                        <article class="post">
-                            <header>
-                                <h1 class="post-title">
-                                    <a href="https://duansheli.github.io/2019/09/03/hashids-usage.html" title="使用hashids创建短链服务" >使用hashids创建短链服务</a>
-                                </h1>
-                            </header>
-                            <date class="post-meta meta-date">
-                                2019年9月3日
-                            </date>
-                            
-                            <div class="post-content">
-                                <p>简单的方案是使用uuid生成， 但太长且数据库检索效率低。<br />
-本次使用hashIds的方案 简单 安全。</p>……
-                            </div>
-                            <p class="readmore"><a href="https://duansheli.github.io/2019/09/03/hashids-usage.html">阅读全文</a></p>
-                        </article>
-                    
-                    
-		    
-                        <article class="post">
-                            <header>
-                                <h1 class="post-title">
-                                    <a href="https://duansheli.github.io/2019/09/07/zero-width.html" title="给文章加水印-零宽字符" >给文章加水印-零宽字符</a>
-                                </h1>
-                            </header>
-                            <date class="post-meta meta-date">
-                                2019年9月3日
-                            </date>
-                            
-                            <div class="post-content">
-                                简述 一般的防盗图手段 给图片加水印 高级点则是隐形水印 阿里查到泄露内网截图的员工 美团和大众点评的盗图官司 最近了解到针对文本的水印技术：零宽字符  示例 加密的文本
-tom‍‌‌‌​‍‌‍‍​‍‌‌‌‍​‍‌‌​‌‌‍​‌‍​‍‌​‌‌‌​‌‌‌‌​‌​‌‍‌‌​‌‌cat  解密后
-by duansheli  项目源码 https://github.com/rover95/morse-encrypt 在线服务 http://morse.……
-                            </div>
-                            <p class="readmore"><a href="https://duansheli.github.io/2019/09/07/zero-width.html">阅读全文</a></p>
                         </article>
                     
                     
@@ -351,6 +356,14 @@ by duansheli  项目源码 https://github.com/rover95/morse-encrypt 在线服务
     </li>
     
     <li>
+        <a href="https://duansheli.github.io/2019/10/13/download-m3u8-video-02.html" title="下载m3u8加密视频-02">下载m3u8加密视频-02</a>
+    </li>
+    
+    <li>
+        <a href="https://duansheli.github.io/2019/10/13/download-m3u8-video-01.html" title="下载m3u8加密视频-01">下载m3u8加密视频-01</a>
+    </li>
+    
+    <li>
         <a href="https://duansheli.github.io/2019/10/03/k8s-cluster-setup-03.html" title="k8s的相关项目">k8s的相关项目</a>
     </li>
     
@@ -360,14 +373,6 @@ by duansheli  项目源码 https://github.com/rover95/morse-encrypt 在线服务
     
     <li>
         <a href="https://duansheli.github.io/2019/09/11/kotlin-null-check.html" title="kotlin空指针校验">kotlin空指针校验</a>
-    </li>
-    
-    <li>
-        <a href="https://duansheli.github.io/2019/09/03/hashids-usage.html" title="使用hashids创建短链服务">使用hashids创建短链服务</a>
-    </li>
-    
-    <li>
-        <a href="https://duansheli.github.io/2019/09/07/zero-width.html" title="给文章加水印-零宽字符">给文章加水印-零宽字符</a>
     </li>
     
 </ul>
@@ -385,6 +390,10 @@ by duansheli  项目源码 https://github.com/rover95/morse-encrypt 在线服务
     
     <li>
         <a href="https://duansheli.github.io/categories/k8s%E9%9B%86%E7%BE%A4/">k8s集群(5)</a>
+    </li>
+    
+    <li>
+        <a href="https://duansheli.github.io/categories/scala%E5%B9%B6%E5%8F%91%E7%BC%96%E7%A8%8B/">scala并发编程(7)</a>
     </li>
     
 </ul>
@@ -407,6 +416,8 @@ by duansheli  项目源码 https://github.com/rover95/morse-encrypt 在线服务
     <a href="https://duansheli.github.io/tags/dubbo/">dubbo</a>
     
     <a href="https://duansheli.github.io/tags/elasticsearch/">elasticsearch</a>
+    
+    <a href="https://duansheli.github.io/tags/ffmpeg/">ffmpeg</a>
     
     <a href="https://duansheli.github.io/tags/gc/">gc</a>
     
