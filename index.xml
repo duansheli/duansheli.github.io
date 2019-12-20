@@ -6,22 +6,10 @@
     <description>Recent content on 断舍离的博客</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>zh-CN</language>
-    <lastBuildDate>Tue, 26 Nov 2019 17:28:13 +0800</lastBuildDate>
+    <lastBuildDate>Sat, 16 Nov 2019 17:28:13 +0800</lastBuildDate>
     
 	<atom:link href="https://duansheli.github.io/index.xml" rel="self" type="application/rss+xml" />
     
-    
-    <item>
-      <title>scala调用系统命令</title>
-      <link>https://duansheli.github.io/2019/11/26/scala-process.html</link>
-      <pubDate>Tue, 26 Nov 2019 17:28:13 +0800</pubDate>
-      
-      <guid>https://duansheli.github.io/2019/11/26/scala-process.html</guid>
-      <description>操作演示 启动scala docker run --rm -it hseeberger/scala-sbt:11.0.4_1.3.4_2.12.10 bash scala -language:postfixOps  命令里面不能直接用管道或重定向符号
-需要用#来拼接
-报错解决 scala代码中如果使用 !执行命令时， 会有一段警告
-scala&amp;gt; import scala.</description>
-    </item>
     
     <item>
       <title>JMH-测试动态执行代码效率</title>
@@ -122,6 +110,18 @@ drools-workbench 用来管理规则</description>
 同时m3u8中的ts也通过aes128加密 密码则也被包含起来
 手动下载方式 video_m3u8_url=http://aa.bb.com/xx/001/play.m3u8  获取key 如果被加密了则 在 play.m3u8 中前几行可看到
 #EXT-X-KEY:METHOD=AES-128,URI=&amp;quot;https://aa.bb.com/yy/001/key&amp;quot;,IV=0x5901307461D2D72A5EA7F1B2269C33DC  可得 ts_iv=5901307461D2D72A5EA7F1B2269C33DC &amp;amp;&amp;amp; ts_key_url=https://aa.</description>
+    </item>
+    
+    <item>
+      <title>scala调用系统命令</title>
+      <link>https://duansheli.github.io/2019/10/09/scala-process.html</link>
+      <pubDate>Wed, 09 Oct 2019 17:28:13 +0800</pubDate>
+      
+      <guid>https://duansheli.github.io/2019/10/09/scala-process.html</guid>
+      <description>操作演示 启动scala docker run --rm -it hseeberger/scala-sbt:11.0.3_1.2.8_2.13.0 bash scala -language:postfixOps  命令里面不能直接用管道或重定向符号
+需要用#来拼接
+报错解决 scala代码中如果使用 !执行命令时， 会有一段警告
+scala&amp;gt; import scala.</description>
     </item>
     
     <item>

@@ -3,31 +3,6 @@
   xmlns:xhtml="http://www.w3.org/1999/xhtml">
   
   <url>
-    <loc>https://duansheli.github.io/tags/linux/</loc>
-    <lastmod>2019-11-26T17:28:13+08:00</lastmod>
-  </url>
-  
-  <url>
-    <loc>https://duansheli.github.io/posts/</loc>
-    <lastmod>2019-11-26T17:28:13+08:00</lastmod>
-  </url>
-  
-  <url>
-    <loc>https://duansheli.github.io/2019/11/26/scala-process.html</loc>
-    <lastmod>2019-11-26T17:28:13+08:00</lastmod>
-  </url>
-  
-  <url>
-    <loc>https://duansheli.github.io/tags/</loc>
-    <lastmod>2019-11-26T17:28:13+08:00</lastmod>
-  </url>
-  
-  <url>
-    <loc>https://duansheli.github.io/</loc>
-    <lastmod>2019-11-26T17:28:13+08:00</lastmod>
-  </url>
-  
-  <url>
     <loc>https://duansheli.github.io/categories/</loc>
     <lastmod>2019-11-16T17:28:13+08:00</lastmod>
   </url>
@@ -44,6 +19,21 @@
   
   <url>
     <loc>https://duansheli.github.io/2019/11/16/jmh-dynamic-run.html</loc>
+    <lastmod>2019-11-16T17:28:13+08:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>https://duansheli.github.io/posts/</loc>
+    <lastmod>2019-11-16T17:28:13+08:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>https://duansheli.github.io/tags/</loc>
+    <lastmod>2019-11-16T17:28:13+08:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>https://duansheli.github.io/</loc>
     <lastmod>2019-11-16T17:28:13+08:00</lastmod>
   </url>
   
@@ -93,6 +83,11 @@
   </url>
   
   <url>
+    <loc>https://duansheli.github.io/tags/linux/</loc>
+    <lastmod>2019-10-13T22:28:13+08:00</lastmod>
+  </url>
+  
+  <url>
     <loc>https://duansheli.github.io/tags/scala/</loc>
     <lastmod>2019-10-13T22:28:13+08:00</lastmod>
   </url>
@@ -110,6 +105,11 @@
   <url>
     <loc>https://duansheli.github.io/2019/10/13/download-m3u8-video-01.html</loc>
     <lastmod>2019-10-12T17:28:13+08:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>https://duansheli.github.io/2019/10/09/scala-process.html</loc>
+    <lastmod>2019-10-09T17:28:13+08:00</lastmod>
   </url>
   
   <url>
