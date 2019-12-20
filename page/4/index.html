@@ -67,6 +67,66 @@
                         <article class="post">
                             <header>
                                 <h1 class="post-title">
+                                    <a href="https://duansheli.github.io/2019/04/08/login-nature.html" title="登录流程的本质" >登录流程的本质</a>
+                                </h1>
+                            </header>
+                            <date class="post-meta meta-date">
+                                2019年4月8日
+                            </date>
+                            
+                            <div class="post-content">
+                                登录的本质  在登录页面 输入用户名与密码 后台核对无误后，将用户信息放入会话中 在访问需要登录的页面时，系统在会话中查找用户信息 找到了，就放行 没找到，将页面重定向到登录页面  Java代码如何实现 登录 针对 /login 请求 接收页面的表单信息，即用户名与密码
+核对无误， 则将用户信息放入会话
+request.getSession().setAttribute(&ldquo;currentUser&rdquo;,&ldquo;tom&rdquo;);
+登录成功……
+                            </div>
+                            <p class="readmore"><a href="https://duansheli.github.io/2019/04/08/login-nature.html">阅读全文</a></p>
+                        </article>
+                    
+                    
+		    
+                        <article class="post">
+                            <header>
+                                <h1 class="post-title">
+                                    <a href="https://duansheli.github.io/2019/04/06/zipkin-dubbo-tracing.html" title="通过zipkin对dubbo进行链路追踪" >通过zipkin对dubbo进行链路追踪</a>
+                                </h1>
+                            </header>
+                            <date class="post-meta meta-date">
+                                2019年4月6日
+                            </date>
+                            
+                            <div class="post-content">
+                                <p>通过zipkin实现dubbo下的链路追踪</p>……
+                            </div>
+                            <p class="readmore"><a href="https://duansheli.github.io/2019/04/06/zipkin-dubbo-tracing.html">阅读全文</a></p>
+                        </article>
+                    
+                    
+		    
+                        <article class="post">
+                            <header>
+                                <h1 class="post-title">
+                                    <a href="https://duansheli.github.io/2019/03/28/download-RedisDesktopManager.html" title="dev-redis客户端-RedisDesktopManager" >dev-redis客户端-RedisDesktopManager</a>
+                                </h1>
+                            </header>
+                            <date class="post-meta meta-date">
+                                2019年3月28日
+                            </date>
+                            
+                            <div class="post-content">
+                                下载 RedisDesktopManager 收费了 不提供下载地址
+但提供了源码 可以自己编译
+有网友提供了编译好的版本，
+官方源码 https://github.com/uglide/RedisDesktopManager 编译好的版本 https://github.com/lework/RedisDesktopManager-Windows/releases 编译教程 https://github.com/lloy1231/RedisDesktopManager-Windows http://docs.redisdesktop.com/en/latest/install/#build-from-source  由nodejs写的redis客户端 https://github.com/qishibo/AnotherRedisDesktopManager/releases……
+                            </div>
+                            <p class="readmore"><a href="https://duansheli.github.io/2019/03/28/download-RedisDesktopManager.html">阅读全文</a></p>
+                        </article>
+                    
+                    
+		    
+                        <article class="post">
+                            <header>
+                                <h1 class="post-title">
                                     <a href="https://duansheli.github.io/2019/03/17/linux-ram-filesystem.html" title="linux内存文件系统使用" >linux内存文件系统使用</a>
                                 </h1>
                             </header>
@@ -81,6 +141,29 @@
 mkdir /mnt/m01 /mnt/m02 /mnt/m03  方案1-格式化内存 linux系统 目前有16个ram块……
                             </div>
                             <p class="readmore"><a href="https://duansheli.github.io/2019/03/17/linux-ram-filesystem.html">阅读全文</a></p>
+                        </article>
+                    
+                    
+		    
+                        <article class="post">
+                            <header>
+                                <h1 class="post-title">
+                                    <a href="https://duansheli.github.io/2019/03/16/redis-lua-buy.html" title="redis-lua-秒杀" >redis-lua-秒杀</a>
+                                </h1>
+                            </header>
+                            <date class="post-meta meta-date">
+                                2019年3月16日
+                            </date>
+                            
+                            <div class="post-content">
+                                简介 做秒杀的商品数量一般计较少
+该方案使用set存储 一定库存
+每个用户抢购时，从redis申请序号， 取到了则创建订单。
+可与前端缓存方案 限流 熔断一起使用
+测试
+cat &gt; test.lua &lt;&lt;EOF local t1 = redis.call('scard', &quot;aaa&quot;) local t2 = tonumber(t1) local t3 = redis.……
+                            </div>
+                            <p class="readmore"><a href="https://duansheli.github.io/2019/03/16/redis-lua-buy.html">阅读全文</a></p>
                         </article>
                     
                     
@@ -190,96 +273,6 @@ serviceA 中会调用serviceB，serviceC，serviceD
                         </article>
                     
                     
-		    
-                        <article class="post">
-                            <header>
-                                <h1 class="post-title">
-                                    <a href="https://duansheli.github.io/2019/01/16/gradle-init-learn.html" title="gradle-全局init" >gradle-全局init</a>
-                                </h1>
-                            </header>
-                            <date class="post-meta meta-date">
-                                2019年1月16日
-                            </date>
-                            
-                            <div class="post-content">
-                                官方文档 https://docs.gradle.org/5.1.1/userguide/init_scripts.html
-全局脚本位置 通过参数指定脚本 &ndash;init-script 或 -I （大写的i） 如 gradle -I init.gradle package
-存放在 USER_HOME/.gradle/ 目录下
-文件名为 init.gradle 或者 init.……
-                            </div>
-                            <p class="readmore"><a href="https://duansheli.github.io/2019/01/16/gradle-init-learn.html">阅读全文</a></p>
-                        </article>
-                    
-                    
-		    
-                        <article class="post">
-                            <header>
-                                <h1 class="post-title">
-                                    <a href="https://duansheli.github.io/2019/01/15/docker-useful-cmd.html" title="docker常用操作" >docker常用操作</a>
-                                </h1>
-                            </header>
-                            <date class="post-meta meta-date">
-                                2019年1月15日
-                            </date>
-                            
-                            <div class="post-content">
-                                docker常用操作 Dockerfile编写 编写一般不会一次就完成，常常会出错
-Sending build context to Docker daemon 5.902MB Step 1/10 : FROM docker:git as builder ---&gt; 9be5c3cd302c Step 2/10 : RUN git clone https://github.……
-                            </div>
-                            <p class="readmore"><a href="https://duansheli.github.io/2019/01/15/docker-useful-cmd.html">阅读全文</a></p>
-                        </article>
-                    
-                    
-		    
-                        <article class="post">
-                            <header>
-                                <h1 class="post-title">
-                                    <a href="https://duansheli.github.io/2018/01/06/unzip-no-copy.html" title="压缩包解压时不使用临时目录" >压缩包解压时不使用临时目录</a>
-                                </h1>
-                            </header>
-                            <date class="post-meta meta-date">
-                                2019年1月6日
-                            </date>
-                            
-                            <div class="post-content">
-                                平时主要用 firefox 和 chrome
-举例描述 比如下载了一个压缩包 apache-tomcat-7.0.96-windows-x86.zip
-文件放在C盘的download文件夹下
-通常的操作是 双击打开压缩包 文件浏览器打开希望解压的位置 比如 d://myprogram 此时再从压缩包中拖动要解压的文件到 d://myprogram 文件夹中
-在解压的过程中 d://myprogram 中不会有文件夹 apache-tomcat-7.……
-                            </div>
-                            <p class="readmore"><a href="https://duansheli.github.io/2018/01/06/unzip-no-copy.html">阅读全文</a></p>
-                        </article>
-                    
-                    
-		    
-                        <article class="post">
-                            <header>
-                                <h1 class="post-title">
-                                    <a href="https://duansheli.github.io/2019/01/03/k8s-cluster-setup-03.html" title="k8s搭建集群3-异常解决" >k8s搭建集群3-异常解决</a>
-                                </h1>
-                            </header>
-                            <date class="post-meta meta-date">
-                                2019年1月3日
-                            </date>
-                            
-                            <div class="post-meta">
-                                <span>|</span>
-                                
-                                <span class="meta-category"><a href="https://duansheli.github.io/categories/k8s%E9%9B%86%E7%BE%A4">k8s集群</a></span>
-                                
-                            </div>
-                            
-                            <div class="post-content">
-                                出错恢复 没遇到报错可以跳过
-安装过程中可能有一些异常
-查看所有的pod分布情况 kubectl get pods -n kube-system -o wide -l k8s-app=kubernetes-dashboard  查看失败的镜像
-imageName=`kubectl describe -n kube-system pod -l k8s-app=kubernetes-dashboard | grep Image: | awk '{print $2 }' ` kubectl describe -n kube-system pod -l k8s-app=kubernetes-dashboard  某个pod的详情 kubectl describe pod -l k8s-app=kubernetes-dashboard -n kube-system  出错日志 kubectl logs `kubectl get pods -n kube-system -l k8s-app=kubernetes-dashboard -o name` -n kube-system  报错描述提到 addr cni0 failed to set bridge addr: &ldquo;cni0&rdquo; already has an IP address different from 10.……
-                            </div>
-                            <p class="readmore"><a href="https://duansheli.github.io/2019/01/03/k8s-cluster-setup-03.html">阅读全文</a></p>
-                        </article>
-                    
-                    
                     
 
 
@@ -316,6 +309,10 @@ imageName=`kubectl describe -n kube-system pod -l k8s-app=kubernetes-dashboard |
         <a href="https://duansheli.github.io/page/6/">6</a>
     </li>
     
+    <li >
+        <a href="https://duansheli.github.io/page/7/">7</a>
+    </li>
+    
 
     
     <li class="next">
@@ -348,7 +345,15 @@ imageName=`kubectl describe -n kube-system pod -l k8s-app=kubernetes-dashboard |
     </li>
     
     <li>
+        <a href="https://duansheli.github.io/2019/11/16/jmh-dynamic-run.html" title="JMH-测试动态执行代码效率">JMH-测试动态执行代码效率</a>
+    </li>
+    
+    <li>
         <a href="https://duansheli.github.io/2019/11/12/doh.html" title="群晖两步验证的关闭">群晖两步验证的关闭</a>
+    </li>
+    
+    <li>
+        <a href="https://duansheli.github.io/2019/11/10/benchmark-java-jmh.html" title="基准测试工具JMH-示例">基准测试工具JMH-示例</a>
     </li>
     
     <li>
@@ -364,23 +369,15 @@ imageName=`kubectl describe -n kube-system pod -l k8s-app=kubernetes-dashboard |
     </li>
     
     <li>
-        <a href="https://duansheli.github.io/2019/10/13/download-m3u8-video-02.html" title="下载m3u8加密视频-02">下载m3u8加密视频-02</a>
+        <a href="https://duansheli.github.io/2019/10/13/download-m3u8-video-02.html" title="下载m3u8-aes128加密视频-02">下载m3u8-aes128加密视频-02</a>
     </li>
     
     <li>
-        <a href="https://duansheli.github.io/2019/10/13/download-m3u8-video-01.html" title="下载m3u8加密视频-01">下载m3u8加密视频-01</a>
+        <a href="https://duansheli.github.io/2019/10/13/download-m3u8-video-01.html" title="下载m3u8-aes128加密视频-01">下载m3u8-aes128加密视频-01</a>
     </li>
     
     <li>
         <a href="https://duansheli.github.io/2019/10/03/k8s-cluster-setup-03.html" title="k8s的相关项目">k8s的相关项目</a>
-    </li>
-    
-    <li>
-        <a href="https://duansheli.github.io/2019/09/12/doh.html" title="浏览器启用dns-over-https(DoH)">浏览器启用dns-over-https(DoH)</a>
-    </li>
-    
-    <li>
-        <a href="https://duansheli.github.io/2019/09/11/kotlin-null-check.html" title="kotlin空指针校验">kotlin空指针校验</a>
     </li>
     
 </ul>
@@ -391,6 +388,14 @@ imageName=`kubectl describe -n kube-system pod -l k8s-app=kubernetes-dashboard |
     <section class="widget">
         <h3 class="widget-title">分类</h3>
 <ul class="widget-list">
+    
+    <li>
+        <a href="https://duansheli.github.io/categories/JHM/">JHM(1)</a>
+    </li>
+    
+    <li>
+        <a href="https://duansheli.github.io/categories/JMH/">JMH(1)</a>
+    </li>
     
     <li>
         <a href="https://duansheli.github.io/categories/Java%E6%B7%B1%E5%85%A5/">Java深入(8)</a>
@@ -410,6 +415,10 @@ imageName=`kubectl describe -n kube-system pod -l k8s-app=kubernetes-dashboard |
     <section class="widget">
         <h3 class="widget-title">标签</h3>
 <div class="tagcloud">
+    
+    <a href="https://duansheli.github.io/tags/JHM/">JHM</a>
+    
+    <a href="https://duansheli.github.io/tags/JMH/">JMH</a>
     
     <a href="https://duansheli.github.io/tags/Java/">Java</a>
     
@@ -454,6 +463,8 @@ imageName=`kubectl describe -n kube-system pod -l k8s-app=kubernetes-dashboard |
     <a href="https://duansheli.github.io/tags/mysql/">mysql</a>
     
     <a href="https://duansheli.github.io/tags/proxy/">proxy</a>
+    
+    <a href="https://duansheli.github.io/tags/redis/">redis</a>
     
     <a href="https://duansheli.github.io/tags/rocketmq/">rocketmq</a>
     

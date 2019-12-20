@@ -42,6 +42,18 @@ http://gsxt.saic.gov.cn/</description>
     </item>
     
     <item>
+      <title>dev-redis客户端-RedisDesktopManager</title>
+      <link>https://duansheli.github.io/2019/03/28/download-RedisDesktopManager.html</link>
+      <pubDate>Thu, 28 Mar 2019 13:13:13 +0800</pubDate>
+      
+      <guid>https://duansheli.github.io/2019/03/28/download-RedisDesktopManager.html</guid>
+      <description>下载 RedisDesktopManager 收费了 不提供下载地址
+但提供了源码 可以自己编译
+有网友提供了编译好的版本，
+官方源码 https://github.com/uglide/RedisDesktopManager 编译好的版本 https://github.com/lework/RedisDesktopManager-Windows/releases 编译教程 https://github.com/lloy1231/RedisDesktopManager-Windows http://docs.redisdesktop.com/en/latest/install/#build-from-source  由nodejs写的redis客户端 https://github.com/qishibo/AnotherRedisDesktopManager/releases</description>
+    </item>
+    
+    <item>
       <title>压缩包解压时不使用临时目录</title>
       <link>https://duansheli.github.io/2018/01/06/unzip-no-copy.html</link>
       <pubDate>Sun, 06 Jan 2019 13:13:13 +0800</pubDate>

@@ -1,0 +1,901 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+
+    <meta charset="utf-8">
+    <meta name="generator" content="Hugo 0.59.0" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <title>redis使用lua脚本 | 断舍离的博客</title>
+    <meta property="og:title" content="redis使用lua脚本 - 断舍离的博客">
+    <meta property="og:type" content="article">
+        
+    <meta property="article:published_time" content="2018-08-11T13:13:13&#43;08:00">
+        
+        
+    <meta property="article:modified_time" content="2018-08-11T13:13:13&#43;08:00">
+        
+    <meta name="Keywords" content="java,scala,spark,kubernetes">
+    <meta name="description" content="redis使用lua脚本">
+        
+    <meta name="author" content="断舍离">
+    <meta property="og:url" content="https://duansheli.github.io/2018/08/11/redis-lua.html">
+    <link rel="shortcut icon" href="/favicon.ico" type="image/x-icon">
+
+    <link rel="stylesheet" href="/css/normalize.css">
+    
+        <link rel="stylesheet" href="/css/prism.css">
+    
+    <link rel="stylesheet" href="/css/style.css">
+    <script type="text/javascript" src="//cdnjs.cloudflare.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+
+    
+
+
+    
+    
+</head>
+
+<body>
+<header id="header" class="clearfix">
+    <div class="container">
+        <div class="col-group">
+            <div class="site-name ">
+                
+                    <a id="logo" href="https://duansheli.github.io">
+                        断舍离的博客
+                    </a>
+                
+                <p class="description">java, scala, spark, kubernetes</p>
+            </div>
+            <div>
+                <nav id="nav-menu" class="clearfix">
+                    <a class="" href="https://duansheli.github.io">首页</a>
+                    
+                    <a  href="https://duansheli.github.io/archives/" title="归档">归档</a>
+                    
+                </nav>
+            </div>
+        </div>
+    </div>
+</header>
+
+
+<div id="body">
+        
+        <div id="virtual_toc_list" style="display: none">
+            <nav id="TableOfContents">
+<ul>
+<li><a href="#脚本">脚本</a>
+<ul>
+<li><a href="#hello-lua">hello lua</a></li>
+<li><a href="#使用参数">使用参数</a></li>
+<li><a href="#参数keys与argv区别">参数KEYS与ARGV区别</a></li>
+<li><a href="#缓存脚本">缓存脚本</a></li>
+<li><a href="#原子性">原子性</a></li>
+<li><a href="#调试脚本">调试脚本</a>
+<ul>
+<li><a href="#同步-异步">同步、异步</a></li>
+<li><a href="#更多参数">更多参数</a></li>
+</ul></li>
+<li><a href="#数据类型转换">数据类型转换</a>
+<ul>
+<li><a href="#数据类型转换规则">数据类型转换规则</a></li>
+</ul></li>
+<li><a href="#redis中提供的lua包">redis中提供的lua包</a></li>
+</ul></li>
+</ul>
+</nav>
+        </div>
+        <div id="float_toc_div" style="margin: 10px;border: 1px solid gray;z-index:99999;display: none;">
+            <header style="background-color: #f3f3f3;color: black;border-bottom: 1px solid gray;padding: 10px 10px 10px 10px;">
+                <strong id="toc_btn_open" style="color: black;font-size: large;">目录</strong>
+                <strong id="toc_btn_close" style="color: black;font-size: large;float: right">╳</strong>
+            </header>
+            <div id="toc_list" style="background-color: #f3f3f3;color: black;padding: 10px;">
+        
+            </div>
+        </div>
+        <style type="text/css">
+            #float_toc_div {
+                position: fixed;
+                display: none;
+                 
+                height: auto;
+                font-size: 13px;
+            }
+        
+            #toc_list a:hover,
+            #toc_list a:active {
+                color: #ba3925;
+            }
+        </style>
+        <script>
+            window.onload = function () {
+                let tocNavElem = document.getElementById("TableOfContents");
+                let floatTocDivElem = document.getElementById("float_toc_div");
+                let tocListElem = floatTocDivElem.getElementsByTagName('div')[0];
+                let colGroupElem = document.getElementById("body").getElementsByClassName("col-group")[0]
+                let floatTocWidth = (document.body.clientWidth - colGroupElem.offsetWidth) / 2 - 16;
+                var useFloatToc = false;
+
+                if (floatTocWidth >= 100) {
+                    useFloatToc = true;
+                    document.getElementById("toc_list").appendChild(tocNavElem);
+                    floatTocDivElem.style.display = 'block';
+                    floatTocDivElem.style.width = floatTocWidth + 'px';
+                    top();
+                    floatTocDivElem.style.left = '0px';
+
+                    function top() {
+                        if (document.getElementsByClassName('container')[0].offsetWidth <= 720) {
+                            floatTocDivElem.style.top = '0px';
+                        } else {
+                            floatTocDivElem.style.top = window.innerHeight / 9 + 'px';
+                        }
+                    }
+
+                    function ishide() {
+                        if (document.getElementsByClassName('container')[0].offsetWidth <= 720) {
+                            floatTocDivElem.style.top = '0px';
+                        } else {
+                            floatTocDivElem.style.display = 'block';
+                        }
+                    }
+
+                    window.onscroll = function () {
+                        ishide();
+                        if ((document.documentElement.scrollTop != 0) && (floatTocDivElem.style.display == 'block')) {
+                            top();
+                        }
+                    };
+
+                    window.onresize = function () {
+                        ishide();
+                    }
+
+                    document.getElementById("toc_btn_open").addEventListener('click', function () {
+                        switch (tocListElem.style.display) {
+                            case "none":
+                                document.getElementById("toc_btn_close").style.display = "";
+                                tocListElem.style.display = "";
+                                floatTocDivElem.getElementsByTagName("header")[0].style.borderBottom = "1px solid gray";
+                                break;
+                            default:
+                                break;
+                        }
+                    }, false);
+
+                    document.getElementById("toc_btn_close").addEventListener('click', function () {
+                        switch (tocListElem.style.display) {
+                            case "":
+                                document.getElementById("toc_btn_close").style.display = "none";
+                                tocListElem.style.display = "none";
+                                floatTocDivElem.getElementsByTagName("header")[0].style.borderBottom = "";
+                                break;
+                            default:
+                                break;
+                        }
+                    }, false);
+                } else {
+                    let fixedTocElem = document.getElementsByClassName("toc-article")[0];
+                    fixedTocElem.appendChild(tocNavElem);
+                    fixedTocElem.parentElement.style.display = "";
+                }
+                document.getElementById("virtual_toc_list").remove();
+            };   
+        </script>
+        
+    <div class="container">
+        <div class="col-group">
+
+            <div class="col-8" id="main">
+                <div class="res-cons">
+                    <article class="post">
+                        <header>
+                            <h1 class="post-title">redis使用lua脚本</h1>
+                        </header>
+                        <date class="post-meta meta-date">
+                            2018年8月11日
+                        </date>
+                        
+                        
+                        
+                        <div class="clear" style="display: none">
+                            <div class="toc-article">
+                                <div class="toc-title">文章目录</div>
+                            </div>
+                        </div>
+                        
+                        <div class="post-content">
+                            
+
+<h1 id="脚本">脚本</h1>
+
+<pre><code>
+</code></pre>
+
+<h2 id="hello-lua">hello lua</h2>
+
+<pre><code>cat &gt; test01.lua &lt;&lt;EOF
+local msg = &quot;Hello, lua&quot;
+return msg  
+EOF
+
+redis-cli EVAL &quot;$(cat test01.lua)&quot; 0 
+</code></pre>
+
+<h2 id="使用参数">使用参数</h2>
+
+<p>数字2声明keys有2个 后面跟着两个keys参数<br />
+之后就是argv参数</p>
+
+<pre><code>cat &gt; test02.lua &lt;&lt;EOF
+local link_id = redis.call(&quot;INCR&quot;, KEY[1])
+redis.call(&quot;HSET&quot;, KEYS[2], link_id, ARGV[1]+1)
+return msg  
+EOF
+
+redis-cli EVAL &quot;$(cat test02.lua)&quot; 0 req-count tom 
+</code></pre>
+
+<p>不用写key个数</p>
+
+<pre><code>cat &gt; test03.lua &lt;&lt;EOF
+local keys, values = KEYS, ARGV
+   for i, k in ipairs(keys) do
+      redis.call('SET', k, values[i])
+   end
+return &quot;added 数量 == &quot; ..tostring(table.getn(keys)) ;
+EOF
+
+
+redis-cli --raw --eval test03.lua t1 t2 , apple milk
+#--raw 保证中文能正常显示
+</code></pre>
+
+<p>key和argv的数量任意， 不是必须个数相同</p>
+
+<pre><code>eval &quot;return {KEYS[1],KEYS[2],ARGV[1],ARGV[2],ARGV[3]}&quot; 2 k1 k2 a01 a02 a03
+</code></pre>
+
+<pre><code>cat &gt; test04.lua &lt;&lt;EOF
+FUNCTION LIMIT_API_CALL(ip)
+ts = CURRENT_UNIX_TIME()
+keyname = ip+&quot;:&quot;+ts
+current = GET(keyname)
+
+IF current != NULL AND current &gt; 10 THEN
+    ERROR &quot;too many requests per second&quot;
+END
+
+IF current == NULL THEN
+    MULTI
+        INCR(keyname, 1)
+        EXPIRE(keyname, 1)
+    EXEC
+ELSE
+    INCR(keyname, 1)
+END
+
+PERFORM_API_CALL()
+EOF
+
+redis-cli EVAL &quot;$(cat test04.lua)&quot; 1 aa
+</code></pre>
+
+<h2 id="参数keys与argv区别">参数KEYS与ARGV区别</h2>
+
+<p>KEYS 与 ARGV 有啥区别么
+所有的 key 会被hash计算，以决定在哪个节点执行该脚本。</p>
+
+<p>执行执行lua脚本时
+如果是单节点的redis ， 那没啥可想的。
+但如果是个redis集群时， java程序调用的脚本会送去哪个节点执行呢
+key参数就是用来计算hash槽的</p>
+
+<p>在向redis中存取数据， redis会对key做hash，来决定数据存在哪个节点上。<br />
+而在使用lua脚本时， 这段命令</p>
+
+<pre><code>redis-cli EVAL &quot;return {KEYS[1],KEYS[2]}&quot; 2 aa bb
+</code></pre>
+
+<p>如果碰巧 redis对 aa, bb计算hash后认为二者会存放在同一个节点上<br />
+则可顺利执行， 如果计算hash后认为二者会放在不同的redis节点， 则报错</p>
+
+<p>而如果某脚本没有key参数， 并且脚本内操作某个key，
+并且当前执行脚本的节点不是存放该key的节点， 又会报错。</p>
+
+<p>解决方案</p>
+
+<pre><code>redis-cli EVAL &quot;return {KEYS[1],KEYS[2]}&quot; 2 aa{p001} bb{p001}
+</code></pre>
+
+<p>原先是使用aa 或 bb来计算脚本在哪个节点执行<br />
+在key中添加{p001}后， 会使用 p001 来计算hash槽 ，redis存数据也是用的该操作。</p>
+
+<h2 id="缓存脚本">缓存脚本</h2>
+
+<ul>
+<li>eval</li>
+<li>evalsha</li>
+<li>script load</li>
+</ul>
+
+<p>在redis中缓存脚本， 可降低每次调用时的网络传输开销。</p>
+
+<pre><code class="language-bash">root@14f65f9493f9:/data# redis-cli
+127.0.0.1:6379&gt; eval &quot;return 'hello lua' &quot; 0
+&quot;hello lua&quot;
+127.0.0.1:6379&gt; SCRIPT LOAD &quot;return 'hello lua' &quot;
+&quot;f5af5790869c1e2e22a7323a495df22361869cb3&quot;
+127.0.0.1:6379&gt; EVALSHA f5af5790869c1e2e22a7323a495df22361869cb3 0
+&quot;hello lua&quot;
+</code></pre>
+
+<p>清空脚本， 查询脚本是否存在</p>
+
+<pre><code class="language-bash">SCRIPT LOAD &quot;return 'script-01' &quot;
+SCRIPT LOAD &quot;return 'script-02' &quot;
+SCRIPT LOAD &quot;return 'script-03' &quot;
+SCRIPT FLUSH
+SCRIPT EXISTS
+
+root@14f65f9493f9:/data# redis-cli
+127.0.0.1:6379&gt; SCRIPT LOAD &quot;return 'script-01' &quot;
+&quot;a4dc1a08bdb719a36ef7024631b9f52f3aeb4bb8&quot;
+127.0.0.1:6379&gt; SCRIPT FLUSH
+OK
+127.0.0.1:6379&gt; SCRIPT LOAD &quot;return 'script-02' &quot;
+&quot;51fde76dc5a18a281860810e647bed0ec8b51a1a&quot;
+127.0.0.1:6379&gt; SCRIPT LOAD &quot;return 'script-03' &quot;
+&quot;f31e93b333d0724260b9d6d00a8f3a93393f9280&quot;
+127.0.0.1:6379&gt; SCRIPT EXISTS  a4dc1a08bdb719a36ef7024631b9f52f3aeb4bb8 51fde76dc5a18a281860810e647bed0ec8b51a1a f31e93b333d0724260b9d6d00a8f3a93393f9280
+1) (integer) 0
+2) (integer) 1
+3) (integer) 1
+127.0.0.1:6379&gt;
+</code></pre>
+
+<p>先缓存了脚本01， 然后清空了缓存，接着加载脚本02，03
+然后查询脚本 01，02，03 是否存在
+返回值是个数组对应查询参数的数组  0表示不存在，1则存在</p>
+
+<p>java代码在使用 evalsha 时， 应先使用 evalsha 执行调用<br />
+如正常执行， 则继续业务逻辑<br />
+如报错 说脚本不存在，则再使用 eval 执行调用  (spring-data-redis就是这么做的)
+原因是，redis虽然能缓存脚本， 但有脚本可以被清空。
+另外集群下，每个节点起初都是没有缓存该脚本的。</p>
+
+<h2 id="原子性">原子性</h2>
+
+<p>原子性说的是每条语句</p>
+
+<pre><code>set a1 cat
+set a2 cat
+
+redis.call('SET', 'a1', 'pig'); 
+assert(1 == 2) ; //通过断言打断程序
+redis.call('SET', 'a2', 'pig');
+
+
+
+127.0.0.1:6379&gt; set a1 cat
+OK
+127.0.0.1:6379&gt; set a2 cat
+OK
+127.0.0.1:6379&gt; eval &quot;redis.call('SET', 'a1', 'pig'); assert(1 == 2) ; redis.call('SET', 'a2', 'pig'); return 8; &quot; 0
+(error) ERR Error running script (call to f_45ed8b0eaab2e214f43d761a58f5c1e4c263c24d): @user_script:1: user_script:1: assertion failed!
+127.0.0.1:6379&gt;
+127.0.0.1:6379&gt; get a1
+&quot;pig&quot;
+127.0.0.1:6379&gt; get a2
+&quot;cat&quot;
+127.0.0.1:6379&gt;
+</code></pre>
+
+<p>程序先设置 a1, a2 都为 cat
+然后通过lua脚本将二者更新为pig  执行到中途挂了<br />
+遇上a1 更新成功， a2更新失败了<br />
+并不是想象的要么a1, a2都变成pig 要是都还是cat</p>
+
+<h2 id="调试脚本">调试脚本</h2>
+
+<pre><code class="language-bash">cat &gt; debug01.lua &lt;&lt;EOF
+local k1 = ARGV[1]
+local k2 = ARGV[2]
+redis.debug(k1)
+redis.debug(k2)
+print(&quot;Hello 01&quot;)
+print(&quot;Hello 02&quot;)
+redis.breakpoint()
+return &quot;hello lua&quot;
+EOF
+
+redis-cli --ldb  --eval  debug01.lua aa bb , ag1 ag2
+</code></pre>
+
+<p>测试</p>
+
+<pre><code class="language-bash">root@14f65f9493f9:/data# redis-cli --ldb  --eval  debug01.lua aa bb , ag1
+Lua debugging session started, please use:
+quit    -- End the session.
+restart -- Restart the script in debug mode again.
+help    -- Show Lua script debugging commands.
+
+* Stopped at 1, stop reason = step over
+-&gt; 1   local k1 = ARGV[1]
+lua debugger&gt; n
+* Stopped at 2, stop reason = step over
+-&gt; 2   local k2 = ARGV[2]
+lua debugger&gt; s
+* Stopped at 3, stop reason = step over
+-&gt; 3   redis.debug(k1)
+lua debugger&gt; s
+&lt;debug&gt; line 3: &quot;ag1&quot;
+* Stopped at 4, stop reason = step over
+-&gt; 4   redis.debug(k2)
+lua debugger&gt; c
+&lt;debug&gt; line 4: nil
+* Stopped at 8, stop reason = redis.breakpoint() called
+-&gt; 8   return &quot;hello lua&quot;
+lua debugger&gt;
+</code></pre>
+
+<p>输入n 或 s 执行单行
+输入c 执行到 redis.breakpoint()</p>
+
+<pre><code class="language-bash">lua debugger&gt; p
+&lt;value&gt; k1 = &quot;ag1&quot;
+&lt;value&gt; k2 = nil
+lua debugger&gt; p keys
+No such variable.
+lua debugger&gt; p KEYS
+&lt;value&gt; {&quot;aa&quot;; &quot;bb&quot;}
+
+</code></pre>
+
+<p>打印变量</p>
+
+<h3 id="同步-异步">同步、异步</h3>
+
+<p>LDB调试基于client、server模式</p>
+
+<p>&ndash;ldb   异步同步， 所有操作都会被回滚，支持多个调试程序同时调试<br />
+&ndash;ldb-sync-mode  同步模式，会阻塞其他请求，且操作不会被回滚</p>
+
+<p>当心不要在生产环境进行调试操作</p>
+
+<h3 id="更多参数">更多参数</h3>
+
+<pre><code class="language-bash">lua debugger&gt; help
+Redis Lua debugger help:
+[h]elp               Show this help.
+[s]tep               Run current line and stop again.
+[n]ext               Alias for step.
+[c]continue          Run till next breakpoint.
+[l]list              List source code around current line.
+[l]list [line]       List source code around [line].
+                     line = 0 means: current position.
+[l]list [line] [ctx] In this form [ctx] specifies how many lines
+                     to show before/after [line].
+[w]hole              List all source code. Alias for 'list 1 1000000'.
+[p]rint              Show all the local variables.
+[p]rint &lt;var&gt;        Show the value of the specified variable.
+                     Can also show global vars KEYS and ARGV.
+[b]reak              Show all breakpoints.
+[b]reak &lt;line&gt;       Add a breakpoint to the specified line.
+[b]reak -&lt;line&gt;      Remove breakpoint from the specified line.
+[b]reak 0            Remove all breakpoints.
+[t]race              Show a backtrace.
+[e]eval &lt;code&gt;       Execute some Lua code (in a different callframe).
+[r]edis &lt;cmd&gt;        Execute a Redis command.
+[m]axlen [len]       Trim logged Redis replies and Lua var dumps to len.
+                     Specifying zero as &lt;len&gt; means unlimited.
+[a]bort              Stop the execution of the script. In sync
+                     mode dataset changes will be retained.
+
+Debugger functions you can call from Lua scripts:
+redis.debug()        Produce logs in the debugger console.
+redis.breakpoint()   Stop execution like if there was a breakpoing.
+                     in the next line of code.
+</code></pre>
+
+<h2 id="数据类型转换">数据类型转换</h2>
+
+<pre><code class="language-bash">eval &quot;return redis.call('get', 'xxyy');&quot; 0
+eval &quot;local a = redis.call('get', 'xxyy'); if a == nil then return 0; else return 1; end&quot; 0
+
+eval &quot;local a = redis.call('get', 'xxyy'); if a == false then return 0; else return 1; end&quot; 0
+
+127.0.0.1:6379&gt; get xxyy
+(nil)
+127.0.0.1:6379&gt; eval &quot;return redis.call('get', 'xxyy');&quot; 0
+(nil)
+127.0.0.1:6379&gt; eval &quot;local a = redis.call('get', 'xxyy'); if a == nil then return 0; else return 1; end&quot; 0
+(integer) 1
+127.0.0.1:6379&gt; eval &quot;local a = redis.call('get', 'xxyy'); if a == false then return 0; else return 1; end&quot; 0
+(integer) 0
+127.0.0.1:6379&gt;
+</code></pre>
+
+<p>redis中 不存在该key时， 则查出一个<br />
+从redis中查出空（即nil类型）时， lua脚本中后被转为false</p>
+
+<pre><code class="language-bash">set num1 66
+object encoding num1
+eval &quot;local t = redis.call('get', 'num1'); return type(t);&quot; 0
+
+
+127.0.0.1:6379&gt; set num1 66
+OK
+127.0.0.1:6379&gt; object encoding num1
+&quot;int&quot;
+127.0.0.1:6379&gt; eval &quot;local t = redis.call('get', 'num1'); return type(t);&quot; 0
+&quot;string&quot;
+</code></pre>
+
+<p>按照类型转换 redis-int 应该变成 lua-number 才对</p>
+
+<p>从官方文档</p>
+
+<pre><code>https://redis.io/commands/get
+Return value
+Bulk string reply: the value of key, or nil when key does not exist.
+</code></pre>
+
+<p>以及帮助命令</p>
+
+<pre><code>127.0.0.1:6379&gt; help get
+
+  GET key
+  summary: Get the value of a key
+  since: 1.0.0
+  group: string
+</code></pre>
+
+<p>可得 <code>GET</code> 命令的返回值为 <code>Bulk string</code></p>
+
+<h3 id="数据类型转换规则">数据类型转换规则</h3>
+
+<p>当lua脚本中使用从redis中加载的数据 ， 或lua脚本中的变量作为返回值返回时，<br />
+就会出现数据类型转换。</p>
+
+<pre><code>Redis数据 转为 Lua数据
+
+    Redis integer reply -&gt; Lua number
+    Redis bulk reply -&gt; Lua string
+    Redis multi bulk reply -&gt; Lua table (may have other Redis data types nested)
+    Redis status reply -&gt; Lua table with a single ok field containing the status
+    Redis error reply -&gt; Lua table with a single err field containing the error
+    Redis Nil bulk reply and Nil multi bulk reply -&gt; Lua false boolean type
+
+Lua数据 转为 Redis数据
+
+    Lua number -&gt; Redis integer reply (the number is converted into an integer)
+    Lua string -&gt; Redis bulk reply
+    Lua table (array) -&gt; Redis multi bulk reply (truncated to the first nil inside the Lua array if any)
+    Lua table with a single ok field -&gt; Redis status reply
+    Lua table with a single err field -&gt; Redis error reply
+    Lua boolean false -&gt; Redis Nil bulk reply.
+    
+    Lua boolean true -&gt; Redis integer reply with value of 1.
+
+https://redis.io/commands/eval#conversion-between-lua-and-redis-data-types
+</code></pre>
+
+<ul>
+<li><p>lua只有一种数字类型 number 没有 integer 和 float差异<br />
+因此redis会把lua-number的小数部分丢弃， 变成integer<br />
+因此如果希望返回值是 float 类型 ， 应该把它变成字符串返回</p></li>
+
+<li><p>当从lua中返回的table中包含nil时， nil后面的数据都会被丢弃</p></li>
+
+<li><p>如果返回的table中 含有 kv数据时，该元素会被丢弃</p></li>
+</ul>
+
+<p>下面这个例子演示了这几种情况</p>
+
+<pre><code>eval &quot;return {1, 2, {3.99, 'tom'}, 4, nil, 5}&quot; 0
+
+
+127.0.0.1:6379&gt; eval &quot;local array = {'aa', 'bb', nil, 'cc'}; local alength= table.getn(array); return alength; &quot; 0
+(integer) 4
+127.0.0.1:6379&gt; eval &quot;local array = {'aa', 'bb', nil, 'cc'};  return array; &quot; 0
+1) &quot;aa&quot;
+2) &quot;bb&quot;
+127.0.0.1:6379&gt;
+127.0.0.1:6379&gt; eval &quot;return {1, 2, {3.99, 'tom'}, 4, nil, 5}&quot; 0
+1) (integer) 1
+2) (integer) 2
+3) 1) (integer) 3
+   2) &quot;tom&quot;
+4) (integer) 4
+</code></pre>
+
+<h2 id="redis中提供的lua包">redis中提供的lua包</h2>
+
+<ul>
+<li>base lib.</li>
+<li>table lib.</li>
+<li>string lib.</li>
+<li>math lib.</li>
+<li>struct lib.</li>
+<li>cjson lib.</li>
+<li>cmsgpack lib.</li>
+<li>bitop lib.</li>
+<li>redis.sha1hex function.</li>
+<li>redis.breakpoint and redis.debug function in the context of the Redis Lua debugger.</li>
+</ul>
+
+                        </div>
+
+                        
+
+
+                        
+
+<div class="post-archive">
+    <h2>See Also</h2>
+    <ul class="listing">
+        
+        <li><a href="/2018/07/14/jvm-memory-gc.html">JVM的垃圾回收</a></li>
+        
+        <li><a href="/2018/07/08/classloader-modifiers-exception.html">类加载器加载的类不能创建对象</a></li>
+        
+        <li><a href="/2018/06/27/classloader-spi.html">SPI与contextclassloader</a></li>
+        
+        <li><a href="/2018/06/21/classloader-start.html">类加载器使用</a></li>
+        
+        <li><a href="/2018/06/05/proxy-rpc-01.html">动态代理-rpc示例-01</a></li>
+        
+    </ul>
+</div>
+
+
+                        <div class="post-meta meta-tags">
+                            
+                            <ul class="clearfix">
+                                
+                                <li><a href="https://duansheli.github.io/tags/redis">redis</a></li>
+                                
+                            </ul>
+                            
+                        </div>
+                    </article>
+                    
+    
+
+    
+    
+                </div>
+            </div>
+            <div id="secondary">
+    <section class="widget">
+        <form id="search" action="//www.google.com/search" method="get" accept-charset="utf-8" target="_blank" _lpchecked="1">
+      
+      <input type="text" name="q" maxlength="20" placeholder="Search">
+      <input type="hidden" name="sitesearch" value="https://duansheli.github.io">
+      <button type="submit" class="submit icon-search"></button>
+</form>
+    </section>
+    
+    <section class="widget">
+        <h3 class="widget-title">最近文章</h3>
+<ul class="widget-list">
+    
+    <li>
+        <a href="https://duansheli.github.io/2019/11/26/scala-process.html" title="scala调用系统命令">scala调用系统命令</a>
+    </li>
+    
+    <li>
+        <a href="https://duansheli.github.io/2019/11/16/jmh-dynamic-run.html" title="JMH-测试动态执行代码效率">JMH-测试动态执行代码效率</a>
+    </li>
+    
+    <li>
+        <a href="https://duansheli.github.io/2019/11/12/doh.html" title="群晖两步验证的关闭">群晖两步验证的关闭</a>
+    </li>
+    
+    <li>
+        <a href="https://duansheli.github.io/2019/11/10/benchmark-java-jmh.html" title="基准测试工具JMH-示例">基准测试工具JMH-示例</a>
+    </li>
+    
+    <li>
+        <a href="https://duansheli.github.io/2019/10/28/update-rule-by-scanner.html" title="使用drools的规则管理平台-02">使用drools的规则管理平台-02</a>
+    </li>
+    
+    <li>
+        <a href="https://duansheli.github.io/2019/10/27/update-rule-by-scanner.html" title="使用drools的规则管理平台-01">使用drools的规则管理平台-01</a>
+    </li>
+    
+    <li>
+        <a href="https://duansheli.github.io/2019/10/26/update-rule-by-scanner.html" title="自定义动态更新drools规则">自定义动态更新drools规则</a>
+    </li>
+    
+    <li>
+        <a href="https://duansheli.github.io/2019/10/13/download-m3u8-video-02.html" title="下载m3u8-aes128加密视频-02">下载m3u8-aes128加密视频-02</a>
+    </li>
+    
+    <li>
+        <a href="https://duansheli.github.io/2019/10/13/download-m3u8-video-01.html" title="下载m3u8-aes128加密视频-01">下载m3u8-aes128加密视频-01</a>
+    </li>
+    
+    <li>
+        <a href="https://duansheli.github.io/2019/10/03/k8s-cluster-setup-03.html" title="k8s的相关项目">k8s的相关项目</a>
+    </li>
+    
+</ul>
+    </section>
+
+    
+
+    <section class="widget">
+        <h3 class="widget-title">分类</h3>
+<ul class="widget-list">
+    
+    <li>
+        <a href="https://duansheli.github.io/categories/JHM/">JHM(1)</a>
+    </li>
+    
+    <li>
+        <a href="https://duansheli.github.io/categories/JMH/">JMH(1)</a>
+    </li>
+    
+    <li>
+        <a href="https://duansheli.github.io/categories/Java%E6%B7%B1%E5%85%A5/">Java深入(8)</a>
+    </li>
+    
+    <li>
+        <a href="https://duansheli.github.io/categories/k8s%E9%9B%86%E7%BE%A4/">k8s集群(5)</a>
+    </li>
+    
+    <li>
+        <a href="https://duansheli.github.io/categories/scala%E5%B9%B6%E5%8F%91%E7%BC%96%E7%A8%8B/">scala并发编程(7)</a>
+    </li>
+    
+</ul>
+    </section>
+
+    <section class="widget">
+        <h3 class="widget-title">标签</h3>
+<div class="tagcloud">
+    
+    <a href="https://duansheli.github.io/tags/JHM/">JHM</a>
+    
+    <a href="https://duansheli.github.io/tags/JMH/">JMH</a>
+    
+    <a href="https://duansheli.github.io/tags/Java/">Java</a>
+    
+    <a href="https://duansheli.github.io/tags/classloader/">classloader</a>
+    
+    <a href="https://duansheli.github.io/tags/docker/">docker</a>
+    
+    <a href="https://duansheli.github.io/tags/drone/">drone</a>
+    
+    <a href="https://duansheli.github.io/tags/drools/">drools</a>
+    
+    <a href="https://duansheli.github.io/tags/dubbo/">dubbo</a>
+    
+    <a href="https://duansheli.github.io/tags/elasticsearch/">elasticsearch</a>
+    
+    <a href="https://duansheli.github.io/tags/ffmpeg/">ffmpeg</a>
+    
+    <a href="https://duansheli.github.io/tags/gc/">gc</a>
+    
+    <a href="https://duansheli.github.io/tags/git/">git</a>
+    
+    <a href="https://duansheli.github.io/tags/gradle/">gradle</a>
+    
+    <a href="https://duansheli.github.io/tags/hashids/">hashids</a>
+    
+    <a href="https://duansheli.github.io/tags/id/">id</a>
+    
+    <a href="https://duansheli.github.io/tags/java/">java</a>
+    
+    <a href="https://duansheli.github.io/tags/jdk/">jdk</a>
+    
+    <a href="https://duansheli.github.io/tags/jvm/">jvm</a>
+    
+    <a href="https://duansheli.github.io/tags/k8s/">k8s</a>
+    
+    <a href="https://duansheli.github.io/tags/kotlin/">kotlin</a>
+    
+    <a href="https://duansheli.github.io/tags/life/">life</a>
+    
+    <a href="https://duansheli.github.io/tags/linux/">linux</a>
+    
+    <a href="https://duansheli.github.io/tags/mysql/">mysql</a>
+    
+    <a href="https://duansheli.github.io/tags/proxy/">proxy</a>
+    
+    <a href="https://duansheli.github.io/tags/redis/">redis</a>
+    
+    <a href="https://duansheli.github.io/tags/rocketmq/">rocketmq</a>
+    
+    <a href="https://duansheli.github.io/tags/route/">route</a>
+    
+    <a href="https://duansheli.github.io/tags/scala/">scala</a>
+    
+    <a href="https://duansheli.github.io/tags/session/">session</a>
+    
+    <a href="https://duansheli.github.io/tags/shell/">shell</a>
+    
+    <a href="https://duansheli.github.io/tags/spring-boot/">spring-boot</a>
+    
+    <a href="https://duansheli.github.io/tags/spring-security/">spring-security</a>
+    
+    <a href="https://duansheli.github.io/tags/springboot/">springboot</a>
+    
+    <a href="https://duansheli.github.io/tags/zipkin/">zipkin</a>
+    
+    <a href="https://duansheli.github.io/tags/%E5%88%86%E5%B8%83%E5%BC%8F%E4%BA%8B%E5%8A%A1/">分布式事务</a>
+    
+    <a href="https://duansheli.github.io/tags/%E6%8C%81%E7%BB%AD%E9%9B%86%E6%88%90/">持续集成</a>
+    
+    <a href="https://duansheli.github.io/tags/%E7%99%BB%E5%BD%95/">登录</a>
+    
+</div>
+    </section>
+
+    
+
+    <section class="widget">
+        <h3 class="widget-title">其它</h3>
+        <ul class="widget-list">
+            <li><a href="https://duansheli.github.io/index.xml">文章 RSS</a></li>
+        </ul>
+    </section>
+</div>
+        </div>
+    </div>
+</div>
+<footer id="footer">
+    <div class="container">
+        &copy; 2019 <a href="https://duansheli.github.io">断舍离的博客 By 断舍离</a>.
+        Powered by <a rel="nofollow noreferer noopener" href="https://gohugo.io" target="_blank">Hugo</a>.
+        <a href="https://www.flysnow.org/" target="_blank">Theme</a> based on <a href="https://github.com/rujews/maupassant-hugo" target="_blank">maupassant</a>.
+        
+    </div>
+</footer>
+
+
+    
+    <script type="text/javascript">
+        
+        (function () {
+            $("pre code").parent().addClass("line-numbers")
+        }());
+
+        window.MathJax = {
+            tex2jax: {
+                inlineMath: [['$', '$']],
+                processEscapes: true
+                }
+            };
+    </script>
+    <script type="text/javascript" src="/js/prism.js" async="true"></script>
+    <script src='https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/MathJax.js?config=TeX-MML-AM_CHTML' async></script>
+
+
+<a id="rocket" href="#top"></a>
+<script type="text/javascript" src="/js/totop.js?v=0.0.0" async=""></script>
+
+<script type="application/javascript">
+var doNotTrack = false;
+if (!doNotTrack) {
+	window.ga=window.ga||function(){(ga.q=ga.q||[]).push(arguments)};ga.l=+new Date;
+	ga('create', 'GTM-NPJC8J2', 'auto');
+	
+	ga('send', 'pageview');
+}
+</script>
+<script async src='https://www.google-analytics.com/analytics.js'></script>
+
+
+
+
+
+
+</body>
+</html>

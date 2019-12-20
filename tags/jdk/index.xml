@@ -17,7 +17,7 @@
       <pubDate>Sat, 25 May 2019 17:28:13 +0800</pubDate>
       
       <guid>https://duansheli.github.io/2019/05/25/download-openjdk.html</guid>
-      <description>openjdk oracle原版 jdk 之前在可通过命令从官网下载，现在行不通了，必须用oracle账号登录才能下载。 https://www.oracle.com/technetwork/java/javase/downloads/jdk11-downloads-5066655.html oracle的共享账号 http://bugmenot.com/view/oracle.com adobe网站下载jdk不需要登录 https://www.adobe.com/support/coldfusion/downloads.html 过期渠道 https://github.com/frekele/oracle-java/releases https://github.com/ZachCheung/oracle-java-downloads 有一种 oracle版的openjdk http://jdk.java.net/archive/ oracle还有一个跨语言的通用虚拟机 GraalVM https://github.com/oracle/graal/releases 从java 8开始 oracle开始收费，虽然对个人免费， 但对企业是收费的，虽然不知道怎么收，但收费肯定是不菲的。 如果生产环境不用oracle的jdk，最好平时开发就别用oracle，改用openjdk  部分下载地址 没整明白算是哪个厂商的openjdk https://mirrors.</description>
+      <description>openjdk oracle原版 jdk 之前在可通过命令从官网下载，现在行不通了，必须用oracle账号登录才能下载。 https://www.oracle.com/technetwork/java/javase/downloads/jdk11-downloads-5066655.html oracle的共享账号 http://bugmenot.com/view/oracle.com adobe网站下载jdk不需要登录 https://www.adobe.com/support/coldfusion/downloads.html 过期渠道 https://github.com/frekele/oracle-java/releases https://github.com/ZachCheung/oracle-java-downloads 有一种 oracle版的openjdk http://jdk.java.net/archive/ oracle还有一个跨语言的通用虚拟机 GraalVM https://github.com/oracle/graal/releases 从java 8开始 oracle开始收费，虽然对个人免费， 但对企业是收费的，虽然不知道怎么收，但收费肯定是不菲的。 如果生产环境不用oracle的jdk，最好平时开发就别用oracle，改用openjdk  亚马逊jdk https://amazonaws-china.</description>
     </item>
     
   </channel>

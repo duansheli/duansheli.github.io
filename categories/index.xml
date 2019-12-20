@@ -6,10 +6,28 @@
     <description>Recent content in Categories on 断舍离的博客</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>zh-CN</language>
-    <lastBuildDate>Thu, 03 Oct 2019 17:28:13 +0800</lastBuildDate>
+    <lastBuildDate>Sat, 16 Nov 2019 17:28:13 +0800</lastBuildDate>
     
 	<atom:link href="https://duansheli.github.io/categories/index.xml" rel="self" type="application/rss+xml" />
     
+    
+    <item>
+      <title>JMH</title>
+      <link>https://duansheli.github.io/categories/JMH/</link>
+      <pubDate>Sat, 16 Nov 2019 17:28:13 +0800</pubDate>
+      
+      <guid>https://duansheli.github.io/categories/JMH/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>JHM</title>
+      <link>https://duansheli.github.io/categories/JHM/</link>
+      <pubDate>Sun, 10 Nov 2019 17:28:13 +0800</pubDate>
+      
+      <guid>https://duansheli.github.io/categories/JHM/</guid>
+      <description></description>
+    </item>
     
     <item>
       <title>k8s集群</title>

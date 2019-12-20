@@ -88,6 +88,32 @@ scala&gt; import scala.……
                         <article class="post">
                             <header>
                                 <h1 class="post-title">
+                                    <a href="https://duansheli.github.io/2019/11/16/jmh-dynamic-run.html" title="JMH-测试动态执行代码效率" >JMH-测试动态执行代码效率</a>
+                                </h1>
+                            </header>
+                            <date class="post-meta meta-date">
+                                2019年11月16日
+                            </date>
+                            
+                            <div class="post-meta">
+                                <span>|</span>
+                                
+                                <span class="meta-category"><a href="https://duansheli.github.io/categories/JMH">JMH</a></span>
+                                
+                            </div>
+                            
+                            <div class="post-content">
+                                测试比较几种动态代码的速度  Java原生代码执行 使用janino编译Java代码执行 groovy加载类 以反射创建后，直接调用 groovy加载类 以反射创建后，反射调用 使用groovy脚本 执行计算 使用groovy+创建类对象调用 阿里的ql表达式计算  6种代码都计算sum(x,y)
+jar补充 groovy 与 阿里的ql 坐标……
+                            </div>
+                            <p class="readmore"><a href="https://duansheli.github.io/2019/11/16/jmh-dynamic-run.html">阅读全文</a></p>
+                        </article>
+                    
+                    
+		    
+                        <article class="post">
+                            <header>
+                                <h1 class="post-title">
                                     <a href="https://duansheli.github.io/2019/11/12/doh.html" title="群晖两步验证的关闭" >群晖两步验证的关闭</a>
                                 </h1>
                             </header>
@@ -101,6 +127,39 @@ scala&gt; import scala.……
 官方的解决方案是 用回形针轻按住 RESET 按钮约 4 秒 , 然后重新配置账户 https://www.……
                             </div>
                             <p class="readmore"><a href="https://duansheli.github.io/2019/11/12/doh.html">阅读全文</a></p>
+                        </article>
+                    
+                    
+		    
+                        <article class="post">
+                            <header>
+                                <h1 class="post-title">
+                                    <a href="https://duansheli.github.io/2019/11/10/benchmark-java-jmh.html" title="基准测试工具JMH-示例" >基准测试工具JMH-示例</a>
+                                </h1>
+                            </header>
+                            <date class="post-meta meta-date">
+                                2019年11月10日
+                            </date>
+                            
+                            <div class="post-meta">
+                                <span>|</span>
+                                
+                                <span class="meta-category"><a href="https://duansheli.github.io/categories/JHM">JHM</a></span>
+                                
+                            </div>
+                            
+                            <div class="post-content">
+                                基准测试工具JHM junit用来测方法对不对 ab用来压测http服务
+jhm是用测java方法性能的， 比如每秒能运行多少次，每次执行的耗时
+jhm是写jdk的那些人整的
+所以还是很可靠的
+参考 官方介绍
+https://openjdk.java.net/projects/code-tools/jmh/
+官方示例代码&ndash; 点击左侧zip打包下载
+https://hg.openjdk.java.net/code-tools/jmh/file/tip/jmh-samples/src/main/java/org/openjdk/jmh/samples/
+工程创建 mvn archetype:generate \ -DinteractiveMode=false \ -DarchetypeGroupId=org.……
+                            </div>
+                            <p class="readmore"><a href="https://duansheli.github.io/2019/11/10/benchmark-java-jmh.html">阅读全文</a></p>
                         </article>
                     
                     
@@ -172,7 +231,7 @@ drools-workbench 用来管理规则……
                         <article class="post">
                             <header>
                                 <h1 class="post-title">
-                                    <a href="https://duansheli.github.io/2019/10/13/download-m3u8-video-02.html" title="下载m3u8加密视频-02" >下载m3u8加密视频-02</a>
+                                    <a href="https://duansheli.github.io/2019/10/13/download-m3u8-video-02.html" title="下载m3u8-aes128加密视频-02" >下载m3u8-aes128加密视频-02</a>
                                 </h1>
                             </header>
                             <date class="post-meta meta-date">
@@ -195,7 +254,7 @@ drools-workbench 用来管理规则……
                         <article class="post">
                             <header>
                                 <h1 class="post-title">
-                                    <a href="https://duansheli.github.io/2019/10/13/download-m3u8-video-01.html" title="下载m3u8加密视频-01" >下载m3u8加密视频-01</a>
+                                    <a href="https://duansheli.github.io/2019/10/13/download-m3u8-video-01.html" title="下载m3u8-aes128加密视频-01" >下载m3u8-aes128加密视频-01</a>
                                 </h1>
                             </header>
                             <date class="post-meta meta-date">
@@ -239,43 +298,6 @@ rancher公司 https://github.com/rancher/k3s/releases
                         </article>
                     
                     
-		    
-                        <article class="post">
-                            <header>
-                                <h1 class="post-title">
-                                    <a href="https://duansheli.github.io/2019/09/12/doh.html" title="浏览器启用dns-over-https(DoH)" >浏览器启用dns-over-https(DoH)</a>
-                                </h1>
-                            </header>
-                            <date class="post-meta meta-date">
-                                2019年9月12日
-                            </date>
-                            
-                            <div class="post-content">
-                                firefox chrome://flags Secure DNS lookups. 启用该选项 重启浏览器  chrome chrome://flags Secure DNS lookups. 启用该选项 重启浏览器  修改chrome快捷方式的参数 增加以下参数 --enable-features=&quot;dns-over-https&lt;DoHTrial&quot; --force-fieldtrials=&quot;DoHTrial/Group1&quot; --force-fieldtrial-params=&quot;DoHTrial.……
-                            </div>
-                            <p class="readmore"><a href="https://duansheli.github.io/2019/09/12/doh.html">阅读全文</a></p>
-                        </article>
-                    
-                    
-		    
-                        <article class="post">
-                            <header>
-                                <h1 class="post-title">
-                                    <a href="https://duansheli.github.io/2019/09/11/kotlin-null-check.html" title="kotlin空指针校验" >kotlin空指针校验</a>
-                                </h1>
-                            </header>
-                            <date class="post-meta meta-date">
-                                2019年9月11日
-                            </date>
-                            
-                            <div class="post-content">
-                                kotlin空指针校验 类型的说明 变量声明方式 val a: String=&quot;tom&quot; 通常会写成val a = &quot;tom&quot; 但还有另一种 val a: String?=&quot;tom&quot; 表示非空类型
-fun test1() { val a1 = 2; // val a2 = ss as String // 抛出转换失败的异常 val a2 = a1 as?……
-                            </div>
-                            <p class="readmore"><a href="https://duansheli.github.io/2019/09/11/kotlin-null-check.html">阅读全文</a></p>
-                        </article>
-                    
-                    
                     
 
 
@@ -306,6 +328,10 @@ fun test1() { val a1 = 2; // val a2 = ss as String // 抛出转换失败的异�
     
     <li >
         <a href="https://duansheli.github.io/page/6/">6</a>
+    </li>
+    
+    <li >
+        <a href="https://duansheli.github.io/page/7/">7</a>
     </li>
     
 
@@ -340,7 +366,15 @@ fun test1() { val a1 = 2; // val a2 = ss as String // 抛出转换失败的异�
     </li>
     
     <li>
+        <a href="https://duansheli.github.io/2019/11/16/jmh-dynamic-run.html" title="JMH-测试动态执行代码效率">JMH-测试动态执行代码效率</a>
+    </li>
+    
+    <li>
         <a href="https://duansheli.github.io/2019/11/12/doh.html" title="群晖两步验证的关闭">群晖两步验证的关闭</a>
+    </li>
+    
+    <li>
+        <a href="https://duansheli.github.io/2019/11/10/benchmark-java-jmh.html" title="基准测试工具JMH-示例">基准测试工具JMH-示例</a>
     </li>
     
     <li>
@@ -356,23 +390,15 @@ fun test1() { val a1 = 2; // val a2 = ss as String // 抛出转换失败的异�
     </li>
     
     <li>
-        <a href="https://duansheli.github.io/2019/10/13/download-m3u8-video-02.html" title="下载m3u8加密视频-02">下载m3u8加密视频-02</a>
+        <a href="https://duansheli.github.io/2019/10/13/download-m3u8-video-02.html" title="下载m3u8-aes128加密视频-02">下载m3u8-aes128加密视频-02</a>
     </li>
     
     <li>
-        <a href="https://duansheli.github.io/2019/10/13/download-m3u8-video-01.html" title="下载m3u8加密视频-01">下载m3u8加密视频-01</a>
+        <a href="https://duansheli.github.io/2019/10/13/download-m3u8-video-01.html" title="下载m3u8-aes128加密视频-01">下载m3u8-aes128加密视频-01</a>
     </li>
     
     <li>
         <a href="https://duansheli.github.io/2019/10/03/k8s-cluster-setup-03.html" title="k8s的相关项目">k8s的相关项目</a>
-    </li>
-    
-    <li>
-        <a href="https://duansheli.github.io/2019/09/12/doh.html" title="浏览器启用dns-over-https(DoH)">浏览器启用dns-over-https(DoH)</a>
-    </li>
-    
-    <li>
-        <a href="https://duansheli.github.io/2019/09/11/kotlin-null-check.html" title="kotlin空指针校验">kotlin空指针校验</a>
     </li>
     
 </ul>
@@ -383,6 +409,14 @@ fun test1() { val a1 = 2; // val a2 = ss as String // 抛出转换失败的异�
     <section class="widget">
         <h3 class="widget-title">分类</h3>
 <ul class="widget-list">
+    
+    <li>
+        <a href="https://duansheli.github.io/categories/JHM/">JHM(1)</a>
+    </li>
+    
+    <li>
+        <a href="https://duansheli.github.io/categories/JMH/">JMH(1)</a>
+    </li>
     
     <li>
         <a href="https://duansheli.github.io/categories/Java%E6%B7%B1%E5%85%A5/">Java深入(8)</a>
@@ -402,6 +436,10 @@ fun test1() { val a1 = 2; // val a2 = ss as String // 抛出转换失败的异�
     <section class="widget">
         <h3 class="widget-title">标签</h3>
 <div class="tagcloud">
+    
+    <a href="https://duansheli.github.io/tags/JHM/">JHM</a>
+    
+    <a href="https://duansheli.github.io/tags/JMH/">JMH</a>
     
     <a href="https://duansheli.github.io/tags/Java/">Java</a>
     
@@ -446,6 +484,8 @@ fun test1() { val a1 = 2; // val a2 = ss as String // 抛出转换失败的异�
     <a href="https://duansheli.github.io/tags/mysql/">mysql</a>
     
     <a href="https://duansheli.github.io/tags/proxy/">proxy</a>
+    
+    <a href="https://duansheli.github.io/tags/redis/">redis</a>
     
     <a href="https://duansheli.github.io/tags/rocketmq/">rocketmq</a>
     

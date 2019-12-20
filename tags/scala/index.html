@@ -76,7 +76,7 @@
                         <article class="post">
                             <header>
                                 <h1 class="post-title">
-                                    <a href="https://duansheli.github.io/2019/10/13/download-m3u8-video-02.html">下载m3u8加密视频-02</a>
+                                    <a href="https://duansheli.github.io/2019/10/13/download-m3u8-video-02.html">下载m3u8-aes128加密视频-02</a>
                                 </h1>
                             </header>
                             <date class="post-meta meta-date">
@@ -131,7 +131,8 @@ implicit是scala中的概念<br />
                             
                             <div class="post-content">
                                 操作演示 简单上手 转换需要额外的包
-&lt;dependency&gt; &lt;groupId&gt;org.scala-lang.modules&lt;/groupId&gt; &lt;artifactId&gt;scala-java8-compat_2.12&lt;/artifactId&gt; &lt;version&gt;0.8.0&lt;/version&gt; &lt;/dependency&gt;  import java.time.{Duration =&gt; jduration} val request = HttpRequest.newBuilder.uri(URI.create(&quot;https://www.baidu.com/&quot;)) .timeout(jduration.ofMinutes(2)) .build val java8Future: CompletableFuture[HttpResponse[String]] = HttpClient.……
+&lt;dependency&gt; &lt;groupId&gt;org.scala-lang.modules&lt;/groupId&gt; &lt;artifactId&gt;scala-java8-compat_2.12&lt;/artifactId&gt; &lt;version&gt;0.8.0&lt;/version&gt; &lt;/dependency&gt;  主要是 FutureConverters 的 .toScala() .toJava() 两个方法
+import java.time.{Duration =&gt; jduration} val request = HttpRequest.……
                                 <p class="readmore"><a href="https://duansheli.github.io/2018/10/15/future-convert-to-scala.html">阅读全文</a></p>
                             </div>
                         </article>
@@ -317,7 +318,15 @@ import java.time.LocalTime import java.util.concurrent.TimeUnit import scala.con
     </li>
     
     <li>
+        <a href="https://duansheli.github.io/2019/11/16/jmh-dynamic-run.html" title="JMH-测试动态执行代码效率">JMH-测试动态执行代码效率</a>
+    </li>
+    
+    <li>
         <a href="https://duansheli.github.io/2019/11/12/doh.html" title="群晖两步验证的关闭">群晖两步验证的关闭</a>
+    </li>
+    
+    <li>
+        <a href="https://duansheli.github.io/2019/11/10/benchmark-java-jmh.html" title="基准测试工具JMH-示例">基准测试工具JMH-示例</a>
     </li>
     
     <li>
@@ -333,23 +342,15 @@ import java.time.LocalTime import java.util.concurrent.TimeUnit import scala.con
     </li>
     
     <li>
-        <a href="https://duansheli.github.io/2019/10/13/download-m3u8-video-02.html" title="下载m3u8加密视频-02">下载m3u8加密视频-02</a>
+        <a href="https://duansheli.github.io/2019/10/13/download-m3u8-video-02.html" title="下载m3u8-aes128加密视频-02">下载m3u8-aes128加密视频-02</a>
     </li>
     
     <li>
-        <a href="https://duansheli.github.io/2019/10/13/download-m3u8-video-01.html" title="下载m3u8加密视频-01">下载m3u8加密视频-01</a>
+        <a href="https://duansheli.github.io/2019/10/13/download-m3u8-video-01.html" title="下载m3u8-aes128加密视频-01">下载m3u8-aes128加密视频-01</a>
     </li>
     
     <li>
         <a href="https://duansheli.github.io/2019/10/03/k8s-cluster-setup-03.html" title="k8s的相关项目">k8s的相关项目</a>
-    </li>
-    
-    <li>
-        <a href="https://duansheli.github.io/2019/09/12/doh.html" title="浏览器启用dns-over-https(DoH)">浏览器启用dns-over-https(DoH)</a>
-    </li>
-    
-    <li>
-        <a href="https://duansheli.github.io/2019/09/11/kotlin-null-check.html" title="kotlin空指针校验">kotlin空指针校验</a>
     </li>
     
 </ul>
@@ -360,6 +361,14 @@ import java.time.LocalTime import java.util.concurrent.TimeUnit import scala.con
     <section class="widget">
         <h3 class="widget-title">分类</h3>
 <ul class="widget-list">
+    
+    <li>
+        <a href="https://duansheli.github.io/categories/JHM/">JHM(1)</a>
+    </li>
+    
+    <li>
+        <a href="https://duansheli.github.io/categories/JMH/">JMH(1)</a>
+    </li>
     
     <li>
         <a href="https://duansheli.github.io/categories/Java%E6%B7%B1%E5%85%A5/">Java深入(8)</a>
@@ -379,6 +388,10 @@ import java.time.LocalTime import java.util.concurrent.TimeUnit import scala.con
     <section class="widget">
         <h3 class="widget-title">标签</h3>
 <div class="tagcloud">
+    
+    <a href="https://duansheli.github.io/tags/JHM/">JHM</a>
+    
+    <a href="https://duansheli.github.io/tags/JMH/">JMH</a>
     
     <a href="https://duansheli.github.io/tags/Java/">Java</a>
     
@@ -423,6 +436,8 @@ import java.time.LocalTime import java.util.concurrent.TimeUnit import scala.con
     <a href="https://duansheli.github.io/tags/mysql/">mysql</a>
     
     <a href="https://duansheli.github.io/tags/proxy/">proxy</a>
+    
+    <a href="https://duansheli.github.io/tags/redis/">redis</a>
     
     <a href="https://duansheli.github.io/tags/rocketmq/">rocketmq</a>
     

@@ -24,6 +24,16 @@ scala&amp;gt; import scala.</description>
     </item>
     
     <item>
+      <title>JMH-测试动态执行代码效率</title>
+      <link>https://duansheli.github.io/2019/11/16/jmh-dynamic-run.html</link>
+      <pubDate>Sat, 16 Nov 2019 17:28:13 +0800</pubDate>
+      
+      <guid>https://duansheli.github.io/2019/11/16/jmh-dynamic-run.html</guid>
+      <description>测试比较几种动态代码的速度  Java原生代码执行 使用janino编译Java代码执行 groovy加载类 以反射创建后，直接调用 groovy加载类 以反射创建后，反射调用 使用groovy脚本 执行计算 使用groovy+创建类对象调用 阿里的ql表达式计算  6种代码都计算sum(x,y)
+jar补充 groovy 与 阿里的ql 坐标</description>
+    </item>
+    
+    <item>
       <title>群晖两步验证的关闭</title>
       <link>https://duansheli.github.io/2019/11/12/doh.html</link>
       <pubDate>Tue, 12 Nov 2019 13:13:13 +0800</pubDate>
@@ -32,6 +42,23 @@ scala&amp;gt; import scala.</description>
       <description>家里的网络用的是软路由拨号的，软路由装在群晖的虚拟机里 突然断网了 于是登上软路由看看是咋了， 发现访问不了 估计死机了，那就重启下虚拟机好了，访问群晖时发现二次验证的软件不在身边 找软件找半天，突然想起来重启群晖主机，虚拟机一样重启
 群晖主机的关闭  可以在web管理界面关机，但目前无法登录 可以直接按住开机键等一会就关机了 虽然web界面无法访问，但ssh可以连上 shutdown命令关机  web界面的登录 虽然重启主机解决了网络问题 但登录问题咋整 网上搜了下
 官方的解决方案是 用回形针轻按住 RESET 按钮约 4 秒 , 然后重新配置账户 https://www.</description>
+    </item>
+    
+    <item>
+      <title>基准测试工具JMH-示例</title>
+      <link>https://duansheli.github.io/2019/11/10/benchmark-java-jmh.html</link>
+      <pubDate>Sun, 10 Nov 2019 17:28:13 +0800</pubDate>
+      
+      <guid>https://duansheli.github.io/2019/11/10/benchmark-java-jmh.html</guid>
+      <description>基准测试工具JHM junit用来测方法对不对 ab用来压测http服务
+jhm是用测java方法性能的， 比如每秒能运行多少次，每次执行的耗时
+jhm是写jdk的那些人整的
+所以还是很可靠的
+参考 官方介绍
+https://openjdk.java.net/projects/code-tools/jmh/
+官方示例代码&amp;ndash; 点击左侧zip打包下载
+https://hg.openjdk.java.net/code-tools/jmh/file/tip/jmh-samples/src/main/java/org/openjdk/jmh/samples/
+工程创建 mvn archetype:generate \ -DinteractiveMode=false \ -DarchetypeGroupId=org.</description>
     </item>
     
     <item>
@@ -72,7 +99,7 @@ drools-workbench 用来管理规则</description>
     </item>
     
     <item>
-      <title>下载m3u8加密视频-02</title>
+      <title>下载m3u8-aes128加密视频-02</title>
       <link>https://duansheli.github.io/2019/10/13/download-m3u8-video-02.html</link>
       <pubDate>Sun, 13 Oct 2019 22:28:13 +0800</pubDate>
       
@@ -86,7 +113,7 @@ drools-workbench 用来管理规则</description>
     </item>
     
     <item>
-      <title>下载m3u8加密视频-01</title>
+      <title>下载m3u8-aes128加密视频-01</title>
       <link>https://duansheli.github.io/2019/10/13/download-m3u8-video-01.html</link>
       <pubDate>Sat, 12 Oct 2019 17:28:13 +0800</pubDate>
       
@@ -286,7 +313,7 @@ http://gsxt.saic.gov.cn/</description>
       <pubDate>Sat, 25 May 2019 17:28:13 +0800</pubDate>
       
       <guid>https://duansheli.github.io/2019/05/25/download-openjdk.html</guid>
-      <description>openjdk oracle原版 jdk 之前在可通过命令从官网下载，现在行不通了，必须用oracle账号登录才能下载。 https://www.oracle.com/technetwork/java/javase/downloads/jdk11-downloads-5066655.html oracle的共享账号 http://bugmenot.com/view/oracle.com adobe网站下载jdk不需要登录 https://www.adobe.com/support/coldfusion/downloads.html 过期渠道 https://github.com/frekele/oracle-java/releases https://github.com/ZachCheung/oracle-java-downloads 有一种 oracle版的openjdk http://jdk.java.net/archive/ oracle还有一个跨语言的通用虚拟机 GraalVM https://github.com/oracle/graal/releases 从java 8开始 oracle开始收费，虽然对个人免费， 但对企业是收费的，虽然不知道怎么收，但收费肯定是不菲的。 如果生产环境不用oracle的jdk，最好平时开发就别用oracle，改用openjdk  部分下载地址 没整明白算是哪个厂商的openjdk https://mirrors.</description>
+      <description>openjdk oracle原版 jdk 之前在可通过命令从官网下载，现在行不通了，必须用oracle账号登录才能下载。 https://www.oracle.com/technetwork/java/javase/downloads/jdk11-downloads-5066655.html oracle的共享账号 http://bugmenot.com/view/oracle.com adobe网站下载jdk不需要登录 https://www.adobe.com/support/coldfusion/downloads.html 过期渠道 https://github.com/frekele/oracle-java/releases https://github.com/ZachCheung/oracle-java-downloads 有一种 oracle版的openjdk http://jdk.java.net/archive/ oracle还有一个跨语言的通用虚拟机 GraalVM https://github.com/oracle/graal/releases 从java 8开始 oracle开始收费，虽然对个人免费， 但对企业是收费的，虽然不知道怎么收，但收费肯定是不菲的。 如果生产环境不用oracle的jdk，最好平时开发就别用oracle，改用openjdk  亚马逊jdk https://amazonaws-china.</description>
     </item>
     
     <item>
@@ -353,6 +380,18 @@ request.getSession().setAttribute(&amp;ldquo;currentUser&amp;rdquo;,&amp;ldquo;t
     </item>
     
     <item>
+      <title>dev-redis客户端-RedisDesktopManager</title>
+      <link>https://duansheli.github.io/2019/03/28/download-RedisDesktopManager.html</link>
+      <pubDate>Thu, 28 Mar 2019 13:13:13 +0800</pubDate>
+      
+      <guid>https://duansheli.github.io/2019/03/28/download-RedisDesktopManager.html</guid>
+      <description>下载 RedisDesktopManager 收费了 不提供下载地址
+但提供了源码 可以自己编译
+有网友提供了编译好的版本，
+官方源码 https://github.com/uglide/RedisDesktopManager 编译好的版本 https://github.com/lework/RedisDesktopManager-Windows/releases 编译教程 https://github.com/lloy1231/RedisDesktopManager-Windows http://docs.redisdesktop.com/en/latest/install/#build-from-source  由nodejs写的redis客户端 https://github.com/qishibo/AnotherRedisDesktopManager/releases</description>
+    </item>
+    
+    <item>
       <title>linux内存文件系统使用</title>
       <link>https://duansheli.github.io/2019/03/17/linux-ram-filesystem.html</link>
       <pubDate>Sun, 17 Mar 2019 17:28:13 +0800</pubDate>
@@ -362,6 +401,20 @@ request.getSession().setAttribute(&amp;ldquo;currentUser&amp;rdquo;,&amp;ldquo;t
 操作演示 3种创建内存文件系统的方式 tmpfs 使用操作比较友好 ramfs 比较快，但危险 格式化内存 步骤稍微繁琐
 创建几个文件夹用来演示挂载
 mkdir /mnt/m01 /mnt/m02 /mnt/m03  方案1-格式化内存 linux系统 目前有16个ram块</description>
+    </item>
+    
+    <item>
+      <title>redis-lua-秒杀</title>
+      <link>https://duansheli.github.io/2019/03/16/redis-lua-buy.html</link>
+      <pubDate>Sat, 16 Mar 2019 17:28:13 +0800</pubDate>
+      
+      <guid>https://duansheli.github.io/2019/03/16/redis-lua-buy.html</guid>
+      <description>简介 做秒杀的商品数量一般计较少
+该方案使用set存储 一定库存
+每个用户抢购时，从redis申请序号， 取到了则创建订单。
+可与前端缓存方案 限流 熔断一起使用
+测试
+cat &amp;gt; test.lua &amp;lt;&amp;lt;EOF local t1 = redis.call(&#39;scard&#39;, &amp;quot;aaa&amp;quot;) local t2 = tonumber(t1) local t3 = redis.</description>
     </item>
     
     <item>
@@ -500,13 +553,23 @@ k8s=v1.12.6
     </item>
     
     <item>
+      <title>ipv4下的回环地址在ipv6下的表示</title>
+      <link>https://duansheli.github.io/2018/10/16/ipv6-ip.html</link>
+      <pubDate>Tue, 16 Oct 2018 13:13:13 +0800</pubDate>
+      
+      <guid>https://duansheli.github.io/2018/10/16/ipv6-ip.html</guid>
+      <description> 回环地址 ipv4 127.0.0.1 ipv6 0:0:0:0:0:0:0:1 ipv6下简写 ::1  所有地址 ipv4 0.0.0.0 ipv6 0:0:0:0:0:0:0:0 ipv6下简写 ::  </description>
+    </item>
+    
+    <item>
       <title>scala并发编程-scala的future与java的互相转换</title>
       <link>https://duansheli.github.io/2018/10/15/future-convert-to-scala.html</link>
       <pubDate>Mon, 15 Oct 2018 17:28:13 +0800</pubDate>
       
       <guid>https://duansheli.github.io/2018/10/15/future-convert-to-scala.html</guid>
       <description>操作演示 简单上手 转换需要额外的包
-&amp;lt;dependency&amp;gt; &amp;lt;groupId&amp;gt;org.scala-lang.modules&amp;lt;/groupId&amp;gt; &amp;lt;artifactId&amp;gt;scala-java8-compat_2.12&amp;lt;/artifactId&amp;gt; &amp;lt;version&amp;gt;0.8.0&amp;lt;/version&amp;gt; &amp;lt;/dependency&amp;gt;  import java.time.{Duration =&amp;gt; jduration} val request = HttpRequest.newBuilder.uri(URI.create(&amp;quot;https://www.baidu.com/&amp;quot;)) .timeout(jduration.ofMinutes(2)) .build val java8Future: CompletableFuture[HttpResponse[String]] = HttpClient.</description>
+&amp;lt;dependency&amp;gt; &amp;lt;groupId&amp;gt;org.scala-lang.modules&amp;lt;/groupId&amp;gt; &amp;lt;artifactId&amp;gt;scala-java8-compat_2.12&amp;lt;/artifactId&amp;gt; &amp;lt;version&amp;gt;0.8.0&amp;lt;/version&amp;gt; &amp;lt;/dependency&amp;gt;  主要是 FutureConverters 的 .toScala() .toJava() 两个方法
+import java.time.{Duration =&amp;gt; jduration} val request = HttpRequest.</description>
     </item>
     
     <item>
@@ -575,6 +638,15 @@ val f1 = Future { TimeUnit.SECONDS.sleep(1) &amp;quot;f1&amp;quot; } f1 onSucces
       <guid>https://duansheli.github.io/2018/08/11/scala-concurrent-future.html</guid>
       <description>操作演示 简单上手 scala版Future 和java版是一个意思 将任务放在线程池中去执行
 import java.time.LocalTime import java.util.concurrent.TimeUnit import scala.concurrent.duration.Duration import scala.concurrent.{Await, Future} import scala.util.{Failure, Success} // @formatter:off object Demo01_future extends App{ import scala.</description>
+    </item>
+    
+    <item>
+      <title>redis使用lua脚本</title>
+      <link>https://duansheli.github.io/2018/08/11/redis-lua.html</link>
+      <pubDate>Sat, 11 Aug 2018 13:13:13 +0800</pubDate>
+      
+      <guid>https://duansheli.github.io/2018/08/11/redis-lua.html</guid>
+      <description>脚本   hello lua cat &amp;gt; test01.lua &amp;lt;&amp;lt;EOF local msg = &amp;quot;Hello, lua&amp;quot; return msg EOF redis-cli EVAL &amp;quot;$(cat test01.</description>
     </item>
     
     <item>

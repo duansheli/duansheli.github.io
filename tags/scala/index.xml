@@ -12,7 +12,7 @@
     
     
     <item>
-      <title>下载m3u8加密视频-02</title>
+      <title>下载m3u8-aes128加密视频-02</title>
       <link>https://duansheli.github.io/2019/10/13/download-m3u8-video-02.html</link>
       <pubDate>Sun, 13 Oct 2019 22:28:13 +0800</pubDate>
       
@@ -43,7 +43,8 @@ implicit是scala中的概念&lt;br /&gt;
       
       <guid>https://duansheli.github.io/2018/10/15/future-convert-to-scala.html</guid>
       <description>操作演示 简单上手 转换需要额外的包
-&amp;lt;dependency&amp;gt; &amp;lt;groupId&amp;gt;org.scala-lang.modules&amp;lt;/groupId&amp;gt; &amp;lt;artifactId&amp;gt;scala-java8-compat_2.12&amp;lt;/artifactId&amp;gt; &amp;lt;version&amp;gt;0.8.0&amp;lt;/version&amp;gt; &amp;lt;/dependency&amp;gt;  import java.time.{Duration =&amp;gt; jduration} val request = HttpRequest.newBuilder.uri(URI.create(&amp;quot;https://www.baidu.com/&amp;quot;)) .timeout(jduration.ofMinutes(2)) .build val java8Future: CompletableFuture[HttpResponse[String]] = HttpClient.</description>
+&amp;lt;dependency&amp;gt; &amp;lt;groupId&amp;gt;org.scala-lang.modules&amp;lt;/groupId&amp;gt; &amp;lt;artifactId&amp;gt;scala-java8-compat_2.12&amp;lt;/artifactId&amp;gt; &amp;lt;version&amp;gt;0.8.0&amp;lt;/version&amp;gt; &amp;lt;/dependency&amp;gt;  主要是 FutureConverters 的 .toScala() .toJava() 两个方法
+import java.time.{Duration =&amp;gt; jduration} val request = HttpRequest.</description>
     </item>
     
     <item>

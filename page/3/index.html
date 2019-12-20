@@ -67,6 +67,45 @@
                         <article class="post">
                             <header>
                                 <h1 class="post-title">
+                                    <a href="https://duansheli.github.io/2019/06/21/gradle-task-learn.html" title="gradle-task使用" >gradle-task使用</a>
+                                </h1>
+                            </header>
+                            <date class="post-meta meta-date">
+                                2019年6月21日
+                            </date>
+                            
+                            <div class="post-content">
+                                gradle-task的使用 新建一个gradle-Java项目
+工程创建 默认的 build.gradle 文件
+plugins { id 'java' } group 'fluffy.mo' version '1.0-SNAPSHOT' sourceCompatibility = 1.8 repositories { mavenCentral() } dependencies { testCompile group: 'junit', name: 'junit', version: '4.……
+                            </div>
+                            <p class="readmore"><a href="https://duansheli.github.io/2019/06/21/gradle-task-learn.html">阅读全文</a></p>
+                        </article>
+                    
+                    
+		    
+                        <article class="post">
+                            <header>
+                                <h1 class="post-title">
+                                    <a href="https://duansheli.github.io/2019/02/10/jstack-demo.html" title="使用jstack分析线程-示例" >使用jstack分析线程-示例</a>
+                                </h1>
+                            </header>
+                            <date class="post-meta meta-date">
+                                2019年6月10日
+                            </date>
+                            
+                            <div class="post-content">
+                                1. 使用jstack分析线程-示例 通过两个demo来学习如何使用jstack
+1.1. 死锁 1.1.1. 死锁示例代码 import java.util.concurrent.TimeUnit; import java.util.concurrent.locks.LockSupport; import java.util.concurrent.locks.ReentrantLock; class DeadLockDemo { public static void main(String[] args) throws Exception { dead1(); dead2(); System.……
+                            </div>
+                            <p class="readmore"><a href="https://duansheli.github.io/2019/02/10/jstack-demo.html">阅读全文</a></p>
+                        </article>
+                    
+                    
+		    
+                        <article class="post">
+                            <header>
+                                <h1 class="post-title">
                                     <a href="https://duansheli.github.io/2019/06/05/check-credit.html" title="查查查-各类信用查询" >查查查-各类信用查询</a>
                                 </h1>
                             </header>
@@ -141,7 +180,7 @@ http://gsxt.saic.gov.cn/……
                             </date>
                             
                             <div class="post-content">
-                                openjdk oracle原版 jdk 之前在可通过命令从官网下载，现在行不通了，必须用oracle账号登录才能下载。 https://www.oracle.com/technetwork/java/javase/downloads/jdk11-downloads-5066655.html oracle的共享账号 http://bugmenot.com/view/oracle.com adobe网站下载jdk不需要登录 https://www.adobe.com/support/coldfusion/downloads.html 过期渠道 https://github.com/frekele/oracle-java/releases https://github.com/ZachCheung/oracle-java-downloads 有一种 oracle版的openjdk http://jdk.java.net/archive/ oracle还有一个跨语言的通用虚拟机 GraalVM https://github.com/oracle/graal/releases 从java 8开始 oracle开始收费，虽然对个人免费， 但对企业是收费的，虽然不知道怎么收，但收费肯定是不菲的。 如果生产环境不用oracle的jdk，最好平时开发就别用oracle，改用openjdk  部分下载地址 没整明白算是哪个厂商的openjdk https://mirrors.……
+                                openjdk oracle原版 jdk 之前在可通过命令从官网下载，现在行不通了，必须用oracle账号登录才能下载。 https://www.oracle.com/technetwork/java/javase/downloads/jdk11-downloads-5066655.html oracle的共享账号 http://bugmenot.com/view/oracle.com adobe网站下载jdk不需要登录 https://www.adobe.com/support/coldfusion/downloads.html 过期渠道 https://github.com/frekele/oracle-java/releases https://github.com/ZachCheung/oracle-java-downloads 有一种 oracle版的openjdk http://jdk.java.net/archive/ oracle还有一个跨语言的通用虚拟机 GraalVM https://github.com/oracle/graal/releases 从java 8开始 oracle开始收费，虽然对个人免费， 但对企业是收费的，虽然不知道怎么收，但收费肯定是不菲的。 如果生产环境不用oracle的jdk，最好平时开发就别用oracle，改用openjdk  亚马逊jdk https://amazonaws-china.……
                             </div>
                             <p class="readmore"><a href="https://duansheli.github.io/2019/05/25/download-openjdk.html">阅读全文</a></p>
                         </article>
@@ -225,45 +264,6 @@ java.lang.IllegalArgumentException: Mapper for [publishDate] conflicts with exis
                         </article>
                     
                     
-		    
-                        <article class="post">
-                            <header>
-                                <h1 class="post-title">
-                                    <a href="https://duansheli.github.io/2019/04/08/login-nature.html" title="登录流程的本质" >登录流程的本质</a>
-                                </h1>
-                            </header>
-                            <date class="post-meta meta-date">
-                                2019年4月8日
-                            </date>
-                            
-                            <div class="post-content">
-                                登录的本质  在登录页面 输入用户名与密码 后台核对无误后，将用户信息放入会话中 在访问需要登录的页面时，系统在会话中查找用户信息 找到了，就放行 没找到，将页面重定向到登录页面  Java代码如何实现 登录 针对 /login 请求 接收页面的表单信息，即用户名与密码
-核对无误， 则将用户信息放入会话
-request.getSession().setAttribute(&ldquo;currentUser&rdquo;,&ldquo;tom&rdquo;);
-登录成功……
-                            </div>
-                            <p class="readmore"><a href="https://duansheli.github.io/2019/04/08/login-nature.html">阅读全文</a></p>
-                        </article>
-                    
-                    
-		    
-                        <article class="post">
-                            <header>
-                                <h1 class="post-title">
-                                    <a href="https://duansheli.github.io/2019/04/06/zipkin-dubbo-tracing.html" title="通过zipkin对dubbo进行链路追踪" >通过zipkin对dubbo进行链路追踪</a>
-                                </h1>
-                            </header>
-                            <date class="post-meta meta-date">
-                                2019年4月6日
-                            </date>
-                            
-                            <div class="post-content">
-                                <p>通过zipkin实现dubbo下的链路追踪</p>……
-                            </div>
-                            <p class="readmore"><a href="https://duansheli.github.io/2019/04/06/zipkin-dubbo-tracing.html">阅读全文</a></p>
-                        </article>
-                    
-                    
                     
 
 
@@ -300,6 +300,10 @@ request.getSession().setAttribute(&ldquo;currentUser&rdquo;,&ldquo;tom&rdquo;);
         <a href="https://duansheli.github.io/page/6/">6</a>
     </li>
     
+    <li >
+        <a href="https://duansheli.github.io/page/7/">7</a>
+    </li>
+    
 
     
     <li class="next">
@@ -332,7 +336,15 @@ request.getSession().setAttribute(&ldquo;currentUser&rdquo;,&ldquo;tom&rdquo;);
     </li>
     
     <li>
+        <a href="https://duansheli.github.io/2019/11/16/jmh-dynamic-run.html" title="JMH-测试动态执行代码效率">JMH-测试动态执行代码效率</a>
+    </li>
+    
+    <li>
         <a href="https://duansheli.github.io/2019/11/12/doh.html" title="群晖两步验证的关闭">群晖两步验证的关闭</a>
+    </li>
+    
+    <li>
+        <a href="https://duansheli.github.io/2019/11/10/benchmark-java-jmh.html" title="基准测试工具JMH-示例">基准测试工具JMH-示例</a>
     </li>
     
     <li>
@@ -348,23 +360,15 @@ request.getSession().setAttribute(&ldquo;currentUser&rdquo;,&ldquo;tom&rdquo;);
     </li>
     
     <li>
-        <a href="https://duansheli.github.io/2019/10/13/download-m3u8-video-02.html" title="下载m3u8加密视频-02">下载m3u8加密视频-02</a>
+        <a href="https://duansheli.github.io/2019/10/13/download-m3u8-video-02.html" title="下载m3u8-aes128加密视频-02">下载m3u8-aes128加密视频-02</a>
     </li>
     
     <li>
-        <a href="https://duansheli.github.io/2019/10/13/download-m3u8-video-01.html" title="下载m3u8加密视频-01">下载m3u8加密视频-01</a>
+        <a href="https://duansheli.github.io/2019/10/13/download-m3u8-video-01.html" title="下载m3u8-aes128加密视频-01">下载m3u8-aes128加密视频-01</a>
     </li>
     
     <li>
         <a href="https://duansheli.github.io/2019/10/03/k8s-cluster-setup-03.html" title="k8s的相关项目">k8s的相关项目</a>
-    </li>
-    
-    <li>
-        <a href="https://duansheli.github.io/2019/09/12/doh.html" title="浏览器启用dns-over-https(DoH)">浏览器启用dns-over-https(DoH)</a>
-    </li>
-    
-    <li>
-        <a href="https://duansheli.github.io/2019/09/11/kotlin-null-check.html" title="kotlin空指针校验">kotlin空指针校验</a>
     </li>
     
 </ul>
@@ -375,6 +379,14 @@ request.getSession().setAttribute(&ldquo;currentUser&rdquo;,&ldquo;tom&rdquo;);
     <section class="widget">
         <h3 class="widget-title">分类</h3>
 <ul class="widget-list">
+    
+    <li>
+        <a href="https://duansheli.github.io/categories/JHM/">JHM(1)</a>
+    </li>
+    
+    <li>
+        <a href="https://duansheli.github.io/categories/JMH/">JMH(1)</a>
+    </li>
     
     <li>
         <a href="https://duansheli.github.io/categories/Java%E6%B7%B1%E5%85%A5/">Java深入(8)</a>
@@ -394,6 +406,10 @@ request.getSession().setAttribute(&ldquo;currentUser&rdquo;,&ldquo;tom&rdquo;);
     <section class="widget">
         <h3 class="widget-title">标签</h3>
 <div class="tagcloud">
+    
+    <a href="https://duansheli.github.io/tags/JHM/">JHM</a>
+    
+    <a href="https://duansheli.github.io/tags/JMH/">JMH</a>
     
     <a href="https://duansheli.github.io/tags/Java/">Java</a>
     
@@ -438,6 +454,8 @@ request.getSession().setAttribute(&ldquo;currentUser&rdquo;,&ldquo;tom&rdquo;);
     <a href="https://duansheli.github.io/tags/mysql/">mysql</a>
     
     <a href="https://duansheli.github.io/tags/proxy/">proxy</a>
+    
+    <a href="https://duansheli.github.io/tags/redis/">redis</a>
     
     <a href="https://duansheli.github.io/tags/rocketmq/">rocketmq</a>
     

@@ -42,5 +42,14 @@
 curl -X PUT &amp;quot;https://api.cloudflare.com/client/v4/zones/$tzone_id/dns_records/$trecord_id&amp;quot; \ -H &amp;quot;X-Auth-Email: $auth_email&amp;quot; \ -H &amp;quot;X-Auth-Key: $auth_key&amp;quot; \ -H &amp;quot;Content-Type: application/json&amp;quot; \ --data &#39;{&amp;quot;type&amp;quot;:&amp;quot;A&amp;quot;,&amp;quot;name&amp;quot;:&amp;quot;file.</description>
     </item>
     
+    <item>
+      <title>ipv4下的回环地址在ipv6下的表示</title>
+      <link>https://duansheli.github.io/2018/10/16/ipv6-ip.html</link>
+      <pubDate>Tue, 16 Oct 2018 13:13:13 +0800</pubDate>
+      
+      <guid>https://duansheli.github.io/2018/10/16/ipv6-ip.html</guid>
+      <description> 回环地址 ipv4 127.0.0.1 ipv6 0:0:0:0:0:0:0:1 ipv6下简写 ::1  所有地址 ipv4 0.0.0.0 ipv6 0:0:0:0:0:0:0:0 ipv6下简写 ::  </description>
+    </item>
+    
   </channel>
 </rss>

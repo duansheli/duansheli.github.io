@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>JMH on 断舍离的博客</title>
+    <link>https://duansheli.github.io/categories/JMH/</link>
+    <description>Recent content in JMH on 断舍离的博客</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>zh-CN</language>
+    <lastBuildDate>Sat, 16 Nov 2019 17:28:13 +0800</lastBuildDate>
+    
+	<atom:link href="https://duansheli.github.io/categories/JMH/index.xml" rel="self" type="application/rss+xml" />
+    
+    
+    <item>
+      <title>JMH-测试动态执行代码效率</title>
+      <link>https://duansheli.github.io/2019/11/16/jmh-dynamic-run.html</link>
+      <pubDate>Sat, 16 Nov 2019 17:28:13 +0800</pubDate>
+      
+      <guid>https://duansheli.github.io/2019/11/16/jmh-dynamic-run.html</guid>
+      <description>测试比较几种动态代码的速度  Java原生代码执行 使用janino编译Java代码执行 groovy加载类 以反射创建后，直接调用 groovy加载类 以反射创建后，反射调用 使用groovy脚本 执行计算 使用groovy+创建类对象调用 阿里的ql表达式计算  6种代码都计算sum(x,y)
+jar补充 groovy 与 阿里的ql 坐标</description>
+    </item>
+    
+  </channel>
+</rss>
