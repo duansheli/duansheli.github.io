@@ -76,6 +76,33 @@
                         <article class="post">
                             <header>
                                 <h1 class="post-title">
+                                    <a href="https://duansheli.github.io/2019/12/20/akka-demo-concurrent.html">akka-并发任务</a>
+                                </h1>
+                            </header>
+                            <date class="post-meta meta-date">
+                                2019年12月20日
+                            </date>
+                            
+                            <div class="post-meta meta-category">
+                                |
+                                
+                                    <a href="https://duansheli.github.io/categories/scala%E5%B9%B6%E5%8F%91%E7%BC%96%E7%A8%8B">scala并发编程</a>
+                                
+                            </div>
+                            
+                            <div class="post-content">
+                                描述 akka的编程模型 本身是不建议等待返回结果的
+通过给 actor加状态给任务计数 + 消息的回传 达到获取结果的目的
+该文演示了此操作方式
+版本1 该版本是通过异步回调的方式获得结果
+消息类 case object StartJob case class DownloadMsg(str: String) case class NodeTaskDone(savePath: String)  执行文件下载的actor package fluffy.……
+                                <p class="readmore"><a href="https://duansheli.github.io/2019/12/20/akka-demo-concurrent.html">阅读全文</a></p>
+                            </div>
+                        </article>
+                    
+                        <article class="post">
+                            <header>
+                                <h1 class="post-title">
                                     <a href="https://duansheli.github.io/2018/10/15/future-convert-to-scala.html">scala并发编程-scala的future与java的互相转换</a>
                                 </h1>
                             </header>
@@ -275,6 +302,14 @@ import java.time.LocalTime import java.util.concurrent.TimeUnit import scala.con
 <ul class="widget-list">
     
     <li>
+        <a href="https://duansheli.github.io/2019/12/20/akka-demo-concurrent.html" title="akka-并发任务">akka-并发任务</a>
+    </li>
+    
+    <li>
+        <a href="https://duansheli.github.io/2019/12/15/HOCON-java.html" title="HOCON配置文件读取">HOCON配置文件读取</a>
+    </li>
+    
+    <li>
         <a href="https://duansheli.github.io/2019/11/16/jmh-dynamic-run.html" title="JMH-测试动态执行代码效率">JMH-测试动态执行代码效率</a>
     </li>
     
@@ -306,14 +341,6 @@ import java.time.LocalTime import java.util.concurrent.TimeUnit import scala.con
         <a href="https://duansheli.github.io/2019/10/13/download-m3u8-video-01.html" title="下载m3u8-aes128加密视频-01">下载m3u8-aes128加密视频-01</a>
     </li>
     
-    <li>
-        <a href="https://duansheli.github.io/2019/10/09/scala-process.html" title="scala调用系统命令">scala调用系统命令</a>
-    </li>
-    
-    <li>
-        <a href="https://duansheli.github.io/2019/10/03/k8s-cluster-setup-03.html" title="k8s的相关项目">k8s的相关项目</a>
-    </li>
-    
 </ul>
     </section>
 
@@ -340,7 +367,7 @@ import java.time.LocalTime import java.util.concurrent.TimeUnit import scala.con
     </li>
     
     <li>
-        <a href="https://duansheli.github.io/categories/scala%E5%B9%B6%E5%8F%91%E7%BC%96%E7%A8%8B/">scala并发编程(7)</a>
+        <a href="https://duansheli.github.io/categories/scala%E5%B9%B6%E5%8F%91%E7%BC%96%E7%A8%8B/">scala并发编程(8)</a>
     </li>
     
 </ul>

@@ -67,6 +67,49 @@
                         <article class="post">
                             <header>
                                 <h1 class="post-title">
+                                    <a href="https://duansheli.github.io/2019/02/03/drone-ci-github-pages.html" title="drone持续集成-发布github pages" >drone持续集成-发布github pages</a>
+                                </h1>
+                            </header>
+                            <date class="post-meta meta-date">
+                                2019年2月3日
+                            </date>
+                            
+                            <div class="post-content">
+                                <p>docker持续集成-drone发布静态博客<br />
+将hugo产生的静态页面推送到github<br />
+并通知到钉钉群</p>……
+                            </div>
+                            <p class="readmore"><a href="https://duansheli.github.io/2019/02/03/drone-ci-github-pages.html">阅读全文</a></p>
+                        </article>
+                    
+                    
+		    
+                        <article class="post">
+                            <header>
+                                <h1 class="post-title">
+                                    <a href="https://duansheli.github.io/2019/01/01/connect-container-ip.html" title="跨宿主机与docker容器通信" >跨宿主机与docker容器通信</a>
+                                </h1>
+                            </header>
+                            <date class="post-meta meta-date">
+                                2019年2月1日
+                            </date>
+                            
+                            <div class="post-content">
+                                <p>有一些应用只需要1个端口就能访问<br />
+比如 nginx</p>
+
+<p>而有一些应用的搭建都是由多个节点搭建的<br />
+比如hadoop 当访问hdfs的时候 访问的不仅仅用port还会用ip<br />
+这时后端口映射就不那么好使了</p>……
+                            </div>
+                            <p class="readmore"><a href="https://duansheli.github.io/2019/01/01/connect-container-ip.html">阅读全文</a></p>
+                        </article>
+                    
+                    
+		    
+                        <article class="post">
+                            <header>
+                                <h1 class="post-title">
                                     <a href="https://duansheli.github.io/2019/01/16/gradle-init-learn.html" title="gradle-全局init" >gradle-全局init</a>
                                 </h1>
                             </header>
@@ -257,61 +300,6 @@ import java.time.{Duration =&gt; jduration} val request = HttpRequest.……
                         </article>
                     
                     
-		    
-                        <article class="post">
-                            <header>
-                                <h1 class="post-title">
-                                    <a href="https://duansheli.github.io/2018/09/21/scala-concurrent-async.html" title="scala并发编程-async" >scala并发编程-async</a>
-                                </h1>
-                            </header>
-                            <date class="post-meta meta-date">
-                                2018年9月21日
-                            </date>
-                            
-                            <div class="post-meta">
-                                <span>|</span>
-                                
-                                <span class="meta-category"><a href="https://duansheli.github.io/categories/scala%E5%B9%B6%E5%8F%91%E7%BC%96%E7%A8%8B">scala并发编程</a></span>
-                                
-                            </div>
-                            
-                            <div class="post-content">
-                                描述 async是另一个jar包里的， 用来更简洁的处理 多个future之间的任务衔接
-原理是以宏的方式编译代码 可以说是个二道贩子
-相似的东西: java库的lombok
-由于是二次编译，如果需要调试的话，可能会有问题，慎用。
-简单上手 &lt;dependency&gt; &lt;groupId&gt;org.scala-lang.modules&lt;/groupId&gt; &lt;artifactId&gt;scala-async_2.12&lt;/artifactId&gt; &lt;version&gt;0.9.7&lt;/version&gt; &lt;/dependency&gt;  示例1 val f1 = async { val ff1 = async { println(11); true } val ff2 = async { println(22); 322 } if (await(ff1)) await(ff2) else 0 }  示例2 def slowCalcFuture: Future[Int] = Future { TimeUnit.……
-                            </div>
-                            <p class="readmore"><a href="https://duansheli.github.io/2018/09/21/scala-concurrent-async.html">阅读全文</a></p>
-                        </article>
-                    
-                    
-		    
-                        <article class="post">
-                            <header>
-                                <h1 class="post-title">
-                                    <a href="https://duansheli.github.io/2018/08/22/scala-concurrent-blocking.html" title="scala并发编程-blocking" >scala并发编程-blocking</a>
-                                </h1>
-                            </header>
-                            <date class="post-meta meta-date">
-                                2018年8月22日
-                            </date>
-                            
-                            <div class="post-meta">
-                                <span>|</span>
-                                
-                                <span class="meta-category"><a href="https://duansheli.github.io/categories/scala%E5%B9%B6%E5%8F%91%E7%BC%96%E7%A8%8B">scala并发编程</a></span>
-                                
-                            </div>
-                            
-                            <div class="post-content">
-                                blocking描述 blocking 中的代码块 与future不在同一线程中，是阻塞等待。 但是阻塞的方式调用在遇上线程池的线程不足时， 会创建新的线程
-测试效果 package com.fluffy.test_concurrent import java.util.concurrent.{CountDownLatch, TimeUnit} object Demo_blocking extends App { import scala.concurrent.{Future, blocking} import scala.……
-                            </div>
-                            <p class="readmore"><a href="https://duansheli.github.io/2018/08/22/scala-concurrent-blocking.html">阅读全文</a></p>
-                        </article>
-                    
-                    
                     
 
 
@@ -380,6 +368,14 @@ import java.time.{Duration =&gt; jduration} val request = HttpRequest.……
 <ul class="widget-list">
     
     <li>
+        <a href="https://duansheli.github.io/2019/12/20/akka-demo-concurrent.html" title="akka-并发任务">akka-并发任务</a>
+    </li>
+    
+    <li>
+        <a href="https://duansheli.github.io/2019/12/15/HOCON-java.html" title="HOCON配置文件读取">HOCON配置文件读取</a>
+    </li>
+    
+    <li>
         <a href="https://duansheli.github.io/2019/11/16/jmh-dynamic-run.html" title="JMH-测试动态执行代码效率">JMH-测试动态执行代码效率</a>
     </li>
     
@@ -411,14 +407,6 @@ import java.time.{Duration =&gt; jduration} val request = HttpRequest.……
         <a href="https://duansheli.github.io/2019/10/13/download-m3u8-video-01.html" title="下载m3u8-aes128加密视频-01">下载m3u8-aes128加密视频-01</a>
     </li>
     
-    <li>
-        <a href="https://duansheli.github.io/2019/10/09/scala-process.html" title="scala调用系统命令">scala调用系统命令</a>
-    </li>
-    
-    <li>
-        <a href="https://duansheli.github.io/2019/10/03/k8s-cluster-setup-03.html" title="k8s的相关项目">k8s的相关项目</a>
-    </li>
-    
 </ul>
     </section>
 
@@ -445,7 +433,7 @@ import java.time.{Duration =&gt; jduration} val request = HttpRequest.……
     </li>
     
     <li>
-        <a href="https://duansheli.github.io/categories/scala%E5%B9%B6%E5%8F%91%E7%BC%96%E7%A8%8B/">scala并发编程(7)</a>
+        <a href="https://duansheli.github.io/categories/scala%E5%B9%B6%E5%8F%91%E7%BC%96%E7%A8%8B/">scala并发编程(8)</a>
     </li>
     
 </ul>

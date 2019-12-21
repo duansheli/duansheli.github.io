@@ -6,10 +6,23 @@
     <description>Recent content in scala并发编程 on 断舍离的博客</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>zh-CN</language>
-    <lastBuildDate>Mon, 15 Oct 2018 17:28:13 +0800</lastBuildDate>
+    <lastBuildDate>Fri, 20 Dec 2019 17:28:13 +0800</lastBuildDate>
     
 	<atom:link href="https://duansheli.github.io/categories/scala%E5%B9%B6%E5%8F%91%E7%BC%96%E7%A8%8B/index.xml" rel="self" type="application/rss+xml" />
     
+    
+    <item>
+      <title>akka-并发任务</title>
+      <link>https://duansheli.github.io/2019/12/20/akka-demo-concurrent.html</link>
+      <pubDate>Fri, 20 Dec 2019 17:28:13 +0800</pubDate>
+      
+      <guid>https://duansheli.github.io/2019/12/20/akka-demo-concurrent.html</guid>
+      <description>描述 akka的编程模型 本身是不建议等待返回结果的
+通过给 actor加状态给任务计数 + 消息的回传 达到获取结果的目的
+该文演示了此操作方式
+版本1 该版本是通过异步回调的方式获得结果
+消息类 case object StartJob case class DownloadMsg(str: String) case class NodeTaskDone(savePath: String)  执行文件下载的actor package fluffy.</description>
+    </item>
     
     <item>
       <title>scala并发编程-scala的future与java的互相转换</title>

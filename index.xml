@@ -6,10 +6,36 @@
     <description>Recent content on 断舍离的博客</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>zh-CN</language>
-    <lastBuildDate>Sat, 16 Nov 2019 17:28:13 +0800</lastBuildDate>
+    <lastBuildDate>Fri, 20 Dec 2019 17:28:13 +0800</lastBuildDate>
     
 	<atom:link href="https://duansheli.github.io/index.xml" rel="self" type="application/rss+xml" />
     
+    
+    <item>
+      <title>akka-并发任务</title>
+      <link>https://duansheli.github.io/2019/12/20/akka-demo-concurrent.html</link>
+      <pubDate>Fri, 20 Dec 2019 17:28:13 +0800</pubDate>
+      
+      <guid>https://duansheli.github.io/2019/12/20/akka-demo-concurrent.html</guid>
+      <description>描述 akka的编程模型 本身是不建议等待返回结果的
+通过给 actor加状态给任务计数 + 消息的回传 达到获取结果的目的
+该文演示了此操作方式
+版本1 该版本是通过异步回调的方式获得结果
+消息类 case object StartJob case class DownloadMsg(str: String) case class NodeTaskDone(savePath: String)  执行文件下载的actor package fluffy.</description>
+    </item>
+    
+    <item>
+      <title>HOCON配置文件读取</title>
+      <link>https://duansheli.github.io/2019/12/15/HOCON-java.html</link>
+      <pubDate>Sun, 15 Dec 2019 17:28:13 +0800</pubDate>
+      
+      <guid>https://duansheli.github.io/2019/12/15/HOCON-java.html</guid>
+      <description>简述 HOCON（Human-Optimized Config Object Notation）是一个易于使用的配置文件格式，具有面向对象风格。
+akka的配置文件就是用的conf格式
+该篇演示使用方式
+解析库 &amp;lt;dependency&amp;gt; &amp;lt;groupId&amp;gt;com.typesafe&amp;lt;/groupId&amp;gt; &amp;lt;artifactId&amp;gt;config&amp;lt;/artifactId&amp;gt; &amp;lt;version&amp;gt;1.4.0&amp;lt;/version&amp;gt; &amp;lt;/dependency&amp;gt;  使用演示 样例
+akka { loggers = [&amp;quot;akka.</description>
+    </item>
     
     <item>
       <title>JMH-测试动态执行代码效率</title>

@@ -3,7 +3,47 @@
   xmlns:xhtml="http://www.w3.org/1999/xhtml">
   
   <url>
+    <loc>https://duansheli.github.io/2019/12/20/akka-demo-concurrent.html</loc>
+    <lastmod>2019-12-20T17:28:13+08:00</lastmod>
+  </url>
+  
+  <url>
     <loc>https://duansheli.github.io/categories/</loc>
+    <lastmod>2019-12-20T17:28:13+08:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>https://duansheli.github.io/posts/</loc>
+    <lastmod>2019-12-20T17:28:13+08:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>https://duansheli.github.io/tags/scala/</loc>
+    <lastmod>2019-12-20T17:28:13+08:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>https://duansheli.github.io/categories/scala%E5%B9%B6%E5%8F%91%E7%BC%96%E7%A8%8B/</loc>
+    <lastmod>2019-12-20T17:28:13+08:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>https://duansheli.github.io/tags/</loc>
+    <lastmod>2019-12-20T17:28:13+08:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>https://duansheli.github.io/</loc>
+    <lastmod>2019-12-20T17:28:13+08:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>https://duansheli.github.io/2019/12/15/HOCON-java.html</loc>
+    <lastmod>2019-12-15T17:28:13+08:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>https://duansheli.github.io/categories/JMH/</loc>
     <lastmod>2019-11-16T17:28:13+08:00</lastmod>
   </url>
   
@@ -13,27 +53,7 @@
   </url>
   
   <url>
-    <loc>https://duansheli.github.io/categories/JMH/</loc>
-    <lastmod>2019-11-16T17:28:13+08:00</lastmod>
-  </url>
-  
-  <url>
     <loc>https://duansheli.github.io/2019/11/16/jmh-dynamic-run.html</loc>
-    <lastmod>2019-11-16T17:28:13+08:00</lastmod>
-  </url>
-  
-  <url>
-    <loc>https://duansheli.github.io/posts/</loc>
-    <lastmod>2019-11-16T17:28:13+08:00</lastmod>
-  </url>
-  
-  <url>
-    <loc>https://duansheli.github.io/tags/</loc>
-    <lastmod>2019-11-16T17:28:13+08:00</lastmod>
-  </url>
-  
-  <url>
-    <loc>https://duansheli.github.io/</loc>
     <lastmod>2019-11-16T17:28:13+08:00</lastmod>
   </url>
   
@@ -84,11 +104,6 @@
   
   <url>
     <loc>https://duansheli.github.io/tags/linux/</loc>
-    <lastmod>2019-10-13T22:28:13+08:00</lastmod>
-  </url>
-  
-  <url>
-    <loc>https://duansheli.github.io/tags/scala/</loc>
     <lastmod>2019-10-13T22:28:13+08:00</lastmod>
   </url>
   
@@ -268,11 +283,6 @@
   </url>
   
   <url>
-    <loc>https://duansheli.github.io/tags/java/</loc>
-    <lastmod>2019-05-17T17:28:13+08:00</lastmod>
-  </url>
-  
-  <url>
     <loc>https://duansheli.github.io/2019/05/17/thinking-autoboxing-implicit.html</loc>
     <lastmod>2019-05-17T17:28:13+08:00</lastmod>
   </url>
@@ -438,11 +448,6 @@
   </url>
   
   <url>
-    <loc>https://duansheli.github.io/categories/scala%E5%B9%B6%E5%8F%91%E7%BC%96%E7%A8%8B/</loc>
-    <lastmod>2018-10-15T17:28:13+08:00</lastmod>
-  </url>
-  
-  <url>
     <loc>https://duansheli.github.io/2018/10/15/future-convert-to-scala.html</loc>
     <lastmod>2018-10-15T17:28:13+08:00</lastmod>
   </url>
@@ -484,6 +489,11 @@
   
   <url>
     <loc>https://duansheli.github.io/tags/gc/</loc>
+    <lastmod>2018-07-14T15:13:13+08:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>https://duansheli.github.io/tags/Java/</loc>
     <lastmod>2018-07-14T15:13:13+08:00</lastmod>
   </url>
   

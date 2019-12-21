@@ -1,0 +1,697 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+
+    <meta charset="utf-8">
+    <meta name="generator" content="Hugo 0.59.0" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <title>akka-并发任务 | 断舍离的博客</title>
+    <meta property="og:title" content="akka-并发任务 - 断舍离的博客">
+    <meta property="og:type" content="article">
+        
+    <meta property="article:published_time" content="2019-12-20T17:28:13&#43;08:00">
+        
+        
+    <meta property="article:modified_time" content="2019-12-20T17:28:13&#43;08:00">
+        
+    <meta name="Keywords" content="java,scala,spark,kubernetes">
+    <meta name="description" content="akka-并发任务">
+        
+    <meta name="author" content="断舍离">
+    <meta property="og:url" content="https://duansheli.github.io/2019/12/20/akka-demo-concurrent.html">
+    <link rel="shortcut icon" href="/favicon.ico" type="image/x-icon">
+
+    <link rel="stylesheet" href="/css/normalize.css">
+    
+        <link rel="stylesheet" href="/css/prism.css">
+    
+    <link rel="stylesheet" href="/css/style.css">
+    <script type="text/javascript" src="//cdnjs.cloudflare.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+
+    
+
+
+    
+    
+</head>
+
+<body>
+<header id="header" class="clearfix">
+    <div class="container">
+        <div class="col-group">
+            <div class="site-name ">
+                
+                    <a id="logo" href="https://duansheli.github.io">
+                        断舍离的博客
+                    </a>
+                
+                <p class="description">java, scala, spark, kubernetes</p>
+            </div>
+            <div>
+                <nav id="nav-menu" class="clearfix">
+                    <a class="" href="https://duansheli.github.io">首页</a>
+                    
+                    <a  href="https://duansheli.github.io/archives/" title="归档">归档</a>
+                    
+                </nav>
+            </div>
+        </div>
+    </div>
+</header>
+
+
+<div id="body">
+        
+        <div id="virtual_toc_list" style="display: none">
+            <nav id="TableOfContents">
+<ul>
+<li><a href="#描述">描述</a></li>
+<li><a href="#版本1">版本1</a>
+<ul>
+<li><a href="#消息类">消息类</a></li>
+<li><a href="#执行文件下载的actor">执行文件下载的actor</a></li>
+<li><a href="#任务分发的actor">任务分发的actor</a></li>
+<li><a href="#启动任务">启动任务</a></li>
+</ul></li>
+<li><a href="#版本2">版本2</a>
+<ul>
+<li><a href="#消息类-1">消息类</a></li>
+<li><a href="#执行文件下载的actor-1">执行文件下载的actor</a></li>
+<li><a href="#任务分发的actor-1">任务分发的actor</a></li>
+<li><a href="#启动任务-1">启动任务</a></li>
+</ul></li>
+</ul>
+</nav>
+        </div>
+        <div id="float_toc_div" style="margin: 10px;border: 1px solid gray;z-index:99999;display: none;">
+            <header style="background-color: #f3f3f3;color: black;border-bottom: 1px solid gray;padding: 10px 10px 10px 10px;">
+                <strong id="toc_btn_open" style="color: black;font-size: large;">目录</strong>
+                <strong id="toc_btn_close" style="color: black;font-size: large;float: right">╳</strong>
+            </header>
+            <div id="toc_list" style="background-color: #f3f3f3;color: black;padding: 10px;">
+        
+            </div>
+        </div>
+        <style type="text/css">
+            #float_toc_div {
+                position: fixed;
+                display: none;
+                 
+                height: auto;
+                font-size: 13px;
+            }
+        
+            #toc_list a:hover,
+            #toc_list a:active {
+                color: #ba3925;
+            }
+        </style>
+        <script>
+            window.onload = function () {
+                let tocNavElem = document.getElementById("TableOfContents");
+                let floatTocDivElem = document.getElementById("float_toc_div");
+                let tocListElem = floatTocDivElem.getElementsByTagName('div')[0];
+                let colGroupElem = document.getElementById("body").getElementsByClassName("col-group")[0]
+                let floatTocWidth = (document.body.clientWidth - colGroupElem.offsetWidth) / 2 - 16;
+                var useFloatToc = false;
+
+                if (floatTocWidth >= 100) {
+                    useFloatToc = true;
+                    document.getElementById("toc_list").appendChild(tocNavElem);
+                    floatTocDivElem.style.display = 'block';
+                    floatTocDivElem.style.width = floatTocWidth + 'px';
+                    top();
+                    floatTocDivElem.style.left = '0px';
+
+                    function top() {
+                        if (document.getElementsByClassName('container')[0].offsetWidth <= 720) {
+                            floatTocDivElem.style.top = '0px';
+                        } else {
+                            floatTocDivElem.style.top = window.innerHeight / 9 + 'px';
+                        }
+                    }
+
+                    function ishide() {
+                        if (document.getElementsByClassName('container')[0].offsetWidth <= 720) {
+                            floatTocDivElem.style.top = '0px';
+                        } else {
+                            floatTocDivElem.style.display = 'block';
+                        }
+                    }
+
+                    window.onscroll = function () {
+                        ishide();
+                        if ((document.documentElement.scrollTop != 0) && (floatTocDivElem.style.display == 'block')) {
+                            top();
+                        }
+                    };
+
+                    window.onresize = function () {
+                        ishide();
+                    }
+
+                    document.getElementById("toc_btn_open").addEventListener('click', function () {
+                        switch (tocListElem.style.display) {
+                            case "none":
+                                document.getElementById("toc_btn_close").style.display = "";
+                                tocListElem.style.display = "";
+                                floatTocDivElem.getElementsByTagName("header")[0].style.borderBottom = "1px solid gray";
+                                break;
+                            default:
+                                break;
+                        }
+                    }, false);
+
+                    document.getElementById("toc_btn_close").addEventListener('click', function () {
+                        switch (tocListElem.style.display) {
+                            case "":
+                                document.getElementById("toc_btn_close").style.display = "none";
+                                tocListElem.style.display = "none";
+                                floatTocDivElem.getElementsByTagName("header")[0].style.borderBottom = "";
+                                break;
+                            default:
+                                break;
+                        }
+                    }, false);
+                } else {
+                    let fixedTocElem = document.getElementsByClassName("toc-article")[0];
+                    fixedTocElem.appendChild(tocNavElem);
+                    fixedTocElem.parentElement.style.display = "";
+                }
+                document.getElementById("virtual_toc_list").remove();
+            };   
+        </script>
+        
+    <div class="container">
+        <div class="col-group">
+
+            <div class="col-8" id="main">
+                <div class="res-cons">
+                    <article class="post">
+                        <header>
+                            <h1 class="post-title">akka-并发任务</h1>
+                        </header>
+                        <date class="post-meta meta-date">
+                            2019年12月20日
+                        </date>
+                        
+                        <div class="post-meta">
+                            <span>|</span>
+                            
+                                <span class="meta-category"><a href="https://duansheli.github.io/categories/scala%E5%B9%B6%E5%8F%91%E7%BC%96%E7%A8%8B">scala并发编程</a></span>
+                            
+                        </div>
+                        
+                        
+                        
+                        <div class="clear" style="display: none">
+                            <div class="toc-article">
+                                <div class="toc-title">文章目录</div>
+                            </div>
+                        </div>
+                        
+                        <div class="post-content">
+                            
+
+<h1 id="描述">描述</h1>
+
+<p>akka的编程模型 本身是不建议等待返回结果的<br />
+ 通过给 actor加状态给任务计数 + 消息的回传
+ 达到获取结果的目的</p>
+
+<p>该文演示了此操作方式</p>
+
+<h1 id="版本1">版本1</h1>
+
+<p>该版本是通过异步回调的方式获得结果</p>
+
+<h2 id="消息类">消息类</h2>
+
+<pre><code class="language-scala">case object StartJob
+
+case class DownloadMsg(str: String)
+case class NodeTaskDone(savePath: String)
+</code></pre>
+
+<h2 id="执行文件下载的actor">执行文件下载的actor</h2>
+
+<pre><code class="language-scala">package fluffy.mo.akkaCase.downloadFile01
+
+import java.util.concurrent.TimeUnit
+
+import akka.actor.Actor
+
+class FileDownloaActor extends Actor {
+  def receive = {
+    case DownloadMsg(url) =&gt; {
+      println(&quot;下载文件&quot;)
+      TimeUnit.MICROSECONDS.sleep(300)
+      sender ! NodeTaskDone(&quot;下载完成--返回存储位置&quot;)
+    }
+    case x  =&gt; println(&quot;FileDownloaActor-- unkown msg-- &quot; + x)
+  }
+}
+</code></pre>
+
+<h2 id="任务分发的actor">任务分发的actor</h2>
+
+<pre><code class="language-scala">package fluffy.mo.akkaCase.downloadFile01
+
+import akka.actor.{Actor, ActorRef, Props}
+
+import scala.collection.mutable.ArrayBuffer
+
+class DownloadJob(urls: Array[String]) extends Actor {
+
+  private var running = false
+  private var taskNum = 0
+  private var downloadNum = 0
+  private val result = ArrayBuffer[String]()
+  private var taskSender: Option[ActorRef] = None
+
+  def receive = {
+    // 启动任务
+    case StartJob =&gt; {
+      if (running) {
+        throw new Exception()
+      }
+
+      running = true
+      taskSender = Some(sender)
+
+      for (url &lt;- urls) {
+        context.actorOf(Props[FileDownloaActor]) ! DownloadMsg(url)
+        taskNum += 1
+      }
+    }
+    // child-actor 完成任务回调通知
+    case NodeTaskDone(savePath) =&gt; {
+      result += savePath
+      downloadNum += 1
+      if (downloadNum == taskNum) {
+        // 通知任务发起人任务结束
+        taskSender.map(_ ! result)
+      }
+    }
+    case x =&gt; println(&quot;DownloadJob-- unkown msg-- &quot; + x)
+  }
+}
+</code></pre>
+
+<h2 id="启动任务">启动任务</h2>
+
+<pre><code class="language-scala">package fluffy.mo.akkaCase.downloadFile01
+
+import akka.actor.{ActorSystem, Props}
+
+object AppRun extends App {
+  import akka.util.Timeout
+  import scala.concurrent.duration._
+  import akka.pattern.ask
+
+  implicit val ec = akka.dispatch.ExecutionContexts.global
+
+  val system = ActorSystem(&quot;System&quot;)
+  val array = Array(&quot;http://file.com/aa.txt&quot;,&quot;http://file.com/bb.txt&quot;,&quot;http://file.com/cc.txt&quot;)
+
+  val actor = system.actorOf(Props(classOf[DownloadJob], array))
+
+  implicit val timeout = Timeout(25 seconds)
+  val future = actor ? StartJob
+
+  future.map { result =&gt;
+    println(&quot;文件下载完成 &quot; + result)
+    system.terminate()
+  }
+}
+</code></pre>
+
+<h1 id="版本2">版本2</h1>
+
+<p>该版本是通过线程阻塞的方式等待结果</p>
+
+<h2 id="消息类-1">消息类</h2>
+
+<p>通过 CountDownLatch 完成线程的阻塞与唤醒</p>
+
+<pre><code class="language-scala">case object StartJob
+
+case class DownloadMsg(str: String)
+
+case class NodeTaskDone(savePath: String)
+
+class JobBox(turls: Array[String]) {
+  val urls = turls
+  val countDownLatch = new CountDownLatch(1)
+  var data: Array[String] = null
+
+  def waitingForResponse() = {
+    countDownLatch.await()
+    data
+  }
+
+  def done() = countDownLatch.countDown();
+}
+</code></pre>
+
+<h2 id="执行文件下载的actor-1">执行文件下载的actor</h2>
+
+<p>同版本1 无变化</p>
+
+<h2 id="任务分发的actor-1">任务分发的actor</h2>
+
+<pre><code class="language-scala">package fluffy.mo.akkaCase.downloadFile02
+
+import akka.actor.{Actor, Props}
+
+import scala.collection.mutable.ArrayBuffer
+
+class DownloadJob(box: JobBox) extends Actor {
+
+  private var running = false
+  private var taskNum = 0
+  private var downloadNum = 0
+  private val result = ArrayBuffer[String]()
+
+  def receive = {
+    // 启动任务
+    case StartJob =&gt; {
+      if (running) {
+        throw new Exception()
+      }
+
+      running = true
+
+      for (url &lt;- box.urls) {
+        context.actorOf(Props[FileDownloaActor]) ! DownloadMsg(url)
+        taskNum += 1
+      }
+    }
+    // child-actor 完成任务回调通知
+    case NodeTaskDone(savePath) =&gt; {
+      result += savePath
+      downloadNum += 1
+      if (downloadNum == taskNum) {
+        // 通知任务发起人任务结束
+        box.data = result.toArray
+        box.done();
+      }
+    }
+    case x =&gt; println(&quot;DownloadJob-- unkown msg-- &quot; + x)
+  }
+}
+</code></pre>
+
+<h2 id="启动任务-1">启动任务</h2>
+
+<pre><code class="language-scala">package fluffy.mo.akkaCase.downloadFile02
+
+import akka.actor.{ActorSystem, Props}
+
+object AppRun extends App {
+
+  implicit val ec = akka.dispatch.ExecutionContexts.global
+
+  val system = ActorSystem(&quot;System&quot;)
+  val array = Array(&quot;http://file.com/aa.txt&quot;, &quot;http://file.com/bb.txt&quot;, &quot;http://file.com/cc.txt&quot;)
+  val box = new JobBox(array)
+  system.actorOf(Props(classOf[DownloadJob], box)) ! StartJob
+
+  val savePaths: Array[String] = box.waitingForResponse()
+  println(&quot;文件下载完成 &quot; + savePaths.length)
+  system.terminate()
+}
+</code></pre>
+
+                        </div>
+
+                        
+
+
+                        
+
+<div class="post-archive">
+    <h2>See Also</h2>
+    <ul class="listing">
+        
+        <li><a href="/2019/10/13/download-m3u8-video-02.html">下载m3u8-aes128加密视频-02</a></li>
+        
+        <li><a href="/2019/05/17/thinking-autoboxing-implicit.html">自动装箱拆箱在scala中的表现</a></li>
+        
+        <li><a href="/2018/10/15/future-convert-to-scala.html">scala并发编程-scala的future与java的互相转换</a></li>
+        
+        <li><a href="/2018/09/21/scala-concurrent-async.html">scala并发编程-async</a></li>
+        
+        <li><a href="/2018/08/22/scala-concurrent-blocking.html">scala并发编程-blocking</a></li>
+        
+    </ul>
+</div>
+
+
+                        <div class="post-meta meta-tags">
+                            
+                            <ul class="clearfix">
+                                
+                                <li><a href="https://duansheli.github.io/tags/scala">scala</a></li>
+                                
+                            </ul>
+                            
+                        </div>
+                    </article>
+                    
+    
+
+    
+    
+                </div>
+            </div>
+            <div id="secondary">
+    <section class="widget">
+        <form id="search" action="//www.google.com/search" method="get" accept-charset="utf-8" target="_blank" _lpchecked="1">
+      
+      <input type="text" name="q" maxlength="20" placeholder="Search">
+      <input type="hidden" name="sitesearch" value="https://duansheli.github.io">
+      <button type="submit" class="submit icon-search"></button>
+</form>
+    </section>
+    
+    <section class="widget">
+        <h3 class="widget-title">最近文章</h3>
+<ul class="widget-list">
+    
+    <li>
+        <a href="https://duansheli.github.io/2019/12/20/akka-demo-concurrent.html" title="akka-并发任务">akka-并发任务</a>
+    </li>
+    
+    <li>
+        <a href="https://duansheli.github.io/2019/12/15/HOCON-java.html" title="HOCON配置文件读取">HOCON配置文件读取</a>
+    </li>
+    
+    <li>
+        <a href="https://duansheli.github.io/2019/11/16/jmh-dynamic-run.html" title="JMH-测试动态执行代码效率">JMH-测试动态执行代码效率</a>
+    </li>
+    
+    <li>
+        <a href="https://duansheli.github.io/2019/11/12/doh.html" title="群晖两步验证的关闭">群晖两步验证的关闭</a>
+    </li>
+    
+    <li>
+        <a href="https://duansheli.github.io/2019/11/10/benchmark-java-jmh.html" title="基准测试工具JMH-示例">基准测试工具JMH-示例</a>
+    </li>
+    
+    <li>
+        <a href="https://duansheli.github.io/2019/10/28/update-rule-by-scanner.html" title="使用drools的规则管理平台-02">使用drools的规则管理平台-02</a>
+    </li>
+    
+    <li>
+        <a href="https://duansheli.github.io/2019/10/27/update-rule-by-scanner.html" title="使用drools的规则管理平台-01">使用drools的规则管理平台-01</a>
+    </li>
+    
+    <li>
+        <a href="https://duansheli.github.io/2019/10/26/update-rule-by-scanner.html" title="自定义动态更新drools规则">自定义动态更新drools规则</a>
+    </li>
+    
+    <li>
+        <a href="https://duansheli.github.io/2019/10/13/download-m3u8-video-02.html" title="下载m3u8-aes128加密视频-02">下载m3u8-aes128加密视频-02</a>
+    </li>
+    
+    <li>
+        <a href="https://duansheli.github.io/2019/10/13/download-m3u8-video-01.html" title="下载m3u8-aes128加密视频-01">下载m3u8-aes128加密视频-01</a>
+    </li>
+    
+</ul>
+    </section>
+
+    
+
+    <section class="widget">
+        <h3 class="widget-title">分类</h3>
+<ul class="widget-list">
+    
+    <li>
+        <a href="https://duansheli.github.io/categories/JHM/">JHM(1)</a>
+    </li>
+    
+    <li>
+        <a href="https://duansheli.github.io/categories/JMH/">JMH(1)</a>
+    </li>
+    
+    <li>
+        <a href="https://duansheli.github.io/categories/Java%E6%B7%B1%E5%85%A5/">Java深入(8)</a>
+    </li>
+    
+    <li>
+        <a href="https://duansheli.github.io/categories/k8s%E9%9B%86%E7%BE%A4/">k8s集群(5)</a>
+    </li>
+    
+    <li>
+        <a href="https://duansheli.github.io/categories/scala%E5%B9%B6%E5%8F%91%E7%BC%96%E7%A8%8B/">scala并发编程(8)</a>
+    </li>
+    
+</ul>
+    </section>
+
+    <section class="widget">
+        <h3 class="widget-title">标签</h3>
+<div class="tagcloud">
+    
+    <a href="https://duansheli.github.io/tags/JHM/">JHM</a>
+    
+    <a href="https://duansheli.github.io/tags/JMH/">JMH</a>
+    
+    <a href="https://duansheli.github.io/tags/Java/">Java</a>
+    
+    <a href="https://duansheli.github.io/tags/classloader/">classloader</a>
+    
+    <a href="https://duansheli.github.io/tags/docker/">docker</a>
+    
+    <a href="https://duansheli.github.io/tags/drone/">drone</a>
+    
+    <a href="https://duansheli.github.io/tags/drools/">drools</a>
+    
+    <a href="https://duansheli.github.io/tags/dubbo/">dubbo</a>
+    
+    <a href="https://duansheli.github.io/tags/elasticsearch/">elasticsearch</a>
+    
+    <a href="https://duansheli.github.io/tags/ffmpeg/">ffmpeg</a>
+    
+    <a href="https://duansheli.github.io/tags/gc/">gc</a>
+    
+    <a href="https://duansheli.github.io/tags/git/">git</a>
+    
+    <a href="https://duansheli.github.io/tags/gradle/">gradle</a>
+    
+    <a href="https://duansheli.github.io/tags/hashids/">hashids</a>
+    
+    <a href="https://duansheli.github.io/tags/id/">id</a>
+    
+    <a href="https://duansheli.github.io/tags/java/">java</a>
+    
+    <a href="https://duansheli.github.io/tags/jdk/">jdk</a>
+    
+    <a href="https://duansheli.github.io/tags/jvm/">jvm</a>
+    
+    <a href="https://duansheli.github.io/tags/k8s/">k8s</a>
+    
+    <a href="https://duansheli.github.io/tags/kotlin/">kotlin</a>
+    
+    <a href="https://duansheli.github.io/tags/life/">life</a>
+    
+    <a href="https://duansheli.github.io/tags/linux/">linux</a>
+    
+    <a href="https://duansheli.github.io/tags/mysql/">mysql</a>
+    
+    <a href="https://duansheli.github.io/tags/proxy/">proxy</a>
+    
+    <a href="https://duansheli.github.io/tags/redis/">redis</a>
+    
+    <a href="https://duansheli.github.io/tags/rocketmq/">rocketmq</a>
+    
+    <a href="https://duansheli.github.io/tags/route/">route</a>
+    
+    <a href="https://duansheli.github.io/tags/scala/">scala</a>
+    
+    <a href="https://duansheli.github.io/tags/session/">session</a>
+    
+    <a href="https://duansheli.github.io/tags/shell/">shell</a>
+    
+    <a href="https://duansheli.github.io/tags/spring-boot/">spring-boot</a>
+    
+    <a href="https://duansheli.github.io/tags/spring-security/">spring-security</a>
+    
+    <a href="https://duansheli.github.io/tags/springboot/">springboot</a>
+    
+    <a href="https://duansheli.github.io/tags/zipkin/">zipkin</a>
+    
+    <a href="https://duansheli.github.io/tags/%E5%88%86%E5%B8%83%E5%BC%8F%E4%BA%8B%E5%8A%A1/">分布式事务</a>
+    
+    <a href="https://duansheli.github.io/tags/%E6%8C%81%E7%BB%AD%E9%9B%86%E6%88%90/">持续集成</a>
+    
+    <a href="https://duansheli.github.io/tags/%E7%99%BB%E5%BD%95/">登录</a>
+    
+</div>
+    </section>
+
+    
+
+    <section class="widget">
+        <h3 class="widget-title">其它</h3>
+        <ul class="widget-list">
+            <li><a href="https://duansheli.github.io/index.xml">文章 RSS</a></li>
+        </ul>
+    </section>
+</div>
+        </div>
+    </div>
+</div>
+<footer id="footer">
+    <div class="container">
+        &copy; 2019 <a href="https://duansheli.github.io">断舍离的博客 By 断舍离</a>.
+        Powered by <a rel="nofollow noreferer noopener" href="https://gohugo.io" target="_blank">Hugo</a>.
+        <a href="https://www.flysnow.org/" target="_blank">Theme</a> based on <a href="https://github.com/rujews/maupassant-hugo" target="_blank">maupassant</a>.
+        
+    </div>
+</footer>
+
+
+    
+    <script type="text/javascript">
+        
+        (function () {
+            $("pre code").parent().addClass("line-numbers")
+        }());
+
+        window.MathJax = {
+            tex2jax: {
+                inlineMath: [['$', '$']],
+                processEscapes: true
+                }
+            };
+    </script>
+    <script type="text/javascript" src="/js/prism.js" async="true"></script>
+    <script src='https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/MathJax.js?config=TeX-MML-AM_CHTML' async></script>
+
+
+<a id="rocket" href="#top"></a>
+<script type="text/javascript" src="/js/totop.js?v=0.0.0" async=""></script>
+
+<script type="application/javascript">
+var doNotTrack = false;
+if (!doNotTrack) {
+	window.ga=window.ga||function(){(ga.q=ga.q||[]).push(arguments)};ga.l=+new Date;
+	ga('create', 'GTM-NPJC8J2', 'auto');
+	
+	ga('send', 'pageview');
+}
+</script>
+<script async src='https://www.google-analytics.com/analytics.js'></script>
+
+
+
+
+
+
+</body>
+</html>

@@ -1,0 +1,711 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+
+    <meta charset="utf-8">
+    <meta name="generator" content="Hugo 0.59.0" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <title>HOCON配置文件读取 | 断舍离的博客</title>
+    <meta property="og:title" content="HOCON配置文件读取 - 断舍离的博客">
+    <meta property="og:type" content="article">
+        
+    <meta property="article:published_time" content="2019-12-15T17:28:13&#43;08:00">
+        
+        
+    <meta property="article:modified_time" content="2019-12-15T17:28:13&#43;08:00">
+        
+    <meta name="Keywords" content="java,scala,spark,kubernetes">
+    <meta name="description" content="HOCON配置文件读取">
+        
+    <meta name="author" content="断舍离">
+    <meta property="og:url" content="https://duansheli.github.io/2019/12/15/HOCON-java.html">
+    <link rel="shortcut icon" href="/favicon.ico" type="image/x-icon">
+
+    <link rel="stylesheet" href="/css/normalize.css">
+    
+        <link rel="stylesheet" href="/css/prism.css">
+    
+    <link rel="stylesheet" href="/css/style.css">
+    <script type="text/javascript" src="//cdnjs.cloudflare.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+
+    
+
+
+    
+    
+</head>
+
+<body>
+<header id="header" class="clearfix">
+    <div class="container">
+        <div class="col-group">
+            <div class="site-name ">
+                
+                    <a id="logo" href="https://duansheli.github.io">
+                        断舍离的博客
+                    </a>
+                
+                <p class="description">java, scala, spark, kubernetes</p>
+            </div>
+            <div>
+                <nav id="nav-menu" class="clearfix">
+                    <a class="" href="https://duansheli.github.io">首页</a>
+                    
+                    <a  href="https://duansheli.github.io/archives/" title="归档">归档</a>
+                    
+                </nav>
+            </div>
+        </div>
+    </div>
+</header>
+
+
+<div id="body">
+        
+        <div id="virtual_toc_list" style="display: none">
+            <nav id="TableOfContents">
+<ul>
+<li><a href="#简述">简述</a></li>
+<li><a href="#解析库">解析库</a></li>
+<li><a href="#使用演示">使用演示</a>
+<ul>
+<li><a href="#akka使用的配置">akka使用的配置</a></li>
+<li><a href="#待解析配置文件">待解析配置文件</a></li>
+<li><a href="#代码解析">代码解析</a>
+<ul>
+<li><a href="#对于3种配置文件格式的支持">对于3种配置文件格式的支持</a></li>
+<li><a href="#配置信息的读取">配置信息的读取</a></li>
+<li><a href="#默认加载位置可覆盖">默认加载位置可覆盖</a></li>
+<li><a href="#还可从其他方式加载配置">还可从其他方式加载配置</a></li>
+<li><a href="#配置的合并-提取">配置的合并、提取</a></li>
+</ul></li>
+<li><a href="#more">more</a></li>
+</ul></li>
+</ul>
+</nav>
+        </div>
+        <div id="float_toc_div" style="margin: 10px;border: 1px solid gray;z-index:99999;display: none;">
+            <header style="background-color: #f3f3f3;color: black;border-bottom: 1px solid gray;padding: 10px 10px 10px 10px;">
+                <strong id="toc_btn_open" style="color: black;font-size: large;">目录</strong>
+                <strong id="toc_btn_close" style="color: black;font-size: large;float: right">╳</strong>
+            </header>
+            <div id="toc_list" style="background-color: #f3f3f3;color: black;padding: 10px;">
+        
+            </div>
+        </div>
+        <style type="text/css">
+            #float_toc_div {
+                position: fixed;
+                display: none;
+                 
+                height: auto;
+                font-size: 13px;
+            }
+        
+            #toc_list a:hover,
+            #toc_list a:active {
+                color: #ba3925;
+            }
+        </style>
+        <script>
+            window.onload = function () {
+                let tocNavElem = document.getElementById("TableOfContents");
+                let floatTocDivElem = document.getElementById("float_toc_div");
+                let tocListElem = floatTocDivElem.getElementsByTagName('div')[0];
+                let colGroupElem = document.getElementById("body").getElementsByClassName("col-group")[0]
+                let floatTocWidth = (document.body.clientWidth - colGroupElem.offsetWidth) / 2 - 16;
+                var useFloatToc = false;
+
+                if (floatTocWidth >= 100) {
+                    useFloatToc = true;
+                    document.getElementById("toc_list").appendChild(tocNavElem);
+                    floatTocDivElem.style.display = 'block';
+                    floatTocDivElem.style.width = floatTocWidth + 'px';
+                    top();
+                    floatTocDivElem.style.left = '0px';
+
+                    function top() {
+                        if (document.getElementsByClassName('container')[0].offsetWidth <= 720) {
+                            floatTocDivElem.style.top = '0px';
+                        } else {
+                            floatTocDivElem.style.top = window.innerHeight / 9 + 'px';
+                        }
+                    }
+
+                    function ishide() {
+                        if (document.getElementsByClassName('container')[0].offsetWidth <= 720) {
+                            floatTocDivElem.style.top = '0px';
+                        } else {
+                            floatTocDivElem.style.display = 'block';
+                        }
+                    }
+
+                    window.onscroll = function () {
+                        ishide();
+                        if ((document.documentElement.scrollTop != 0) && (floatTocDivElem.style.display == 'block')) {
+                            top();
+                        }
+                    };
+
+                    window.onresize = function () {
+                        ishide();
+                    }
+
+                    document.getElementById("toc_btn_open").addEventListener('click', function () {
+                        switch (tocListElem.style.display) {
+                            case "none":
+                                document.getElementById("toc_btn_close").style.display = "";
+                                tocListElem.style.display = "";
+                                floatTocDivElem.getElementsByTagName("header")[0].style.borderBottom = "1px solid gray";
+                                break;
+                            default:
+                                break;
+                        }
+                    }, false);
+
+                    document.getElementById("toc_btn_close").addEventListener('click', function () {
+                        switch (tocListElem.style.display) {
+                            case "":
+                                document.getElementById("toc_btn_close").style.display = "none";
+                                tocListElem.style.display = "none";
+                                floatTocDivElem.getElementsByTagName("header")[0].style.borderBottom = "";
+                                break;
+                            default:
+                                break;
+                        }
+                    }, false);
+                } else {
+                    let fixedTocElem = document.getElementsByClassName("toc-article")[0];
+                    fixedTocElem.appendChild(tocNavElem);
+                    fixedTocElem.parentElement.style.display = "";
+                }
+                document.getElementById("virtual_toc_list").remove();
+            };   
+        </script>
+        
+    <div class="container">
+        <div class="col-group">
+
+            <div class="col-8" id="main">
+                <div class="res-cons">
+                    <article class="post">
+                        <header>
+                            <h1 class="post-title">HOCON配置文件读取</h1>
+                        </header>
+                        <date class="post-meta meta-date">
+                            2019年12月15日
+                        </date>
+                        
+                        
+                        
+                        <div class="clear" style="display: none">
+                            <div class="toc-article">
+                                <div class="toc-title">文章目录</div>
+                            </div>
+                        </div>
+                        
+                        <div class="post-content">
+                            
+
+<h1 id="简述">简述</h1>
+
+<p>HOCON（Human-Optimized Config Object Notation）是一个易于使用的配置文件格式，具有面向对象风格。</p>
+
+<p>akka的配置文件就是用的conf格式</p>
+
+<p>该篇演示使用方式</p>
+
+<h1 id="解析库">解析库</h1>
+
+<pre><code class="language-xml">&lt;dependency&gt;
+    &lt;groupId&gt;com.typesafe&lt;/groupId&gt;
+    &lt;artifactId&gt;config&lt;/artifactId&gt;
+    &lt;version&gt;1.4.0&lt;/version&gt;
+&lt;/dependency&gt;
+</code></pre>
+
+<h1 id="使用演示">使用演示</h1>
+
+<p>样例</p>
+
+<pre><code>akka {
+  loggers = [&quot;akka.event.slf4j.Slf4jLogger&quot;]
+  loglevel = &quot;DEBUG&quot;
+  actor {
+    provider = &quot;cluster&quot;
+    default-dispatcher {
+      throughput = 10
+    }
+  }
+
+  remote {
+    netty.tcp{
+      port = 4711
+    }
+  }
+}
+</code></pre>
+
+<h2 id="akka使用的配置">akka使用的配置</h2>
+
+<p>ConfigFactory 支持解析 conf、json、properties格式的配置文件</p>
+
+<pre><code class="language-scala">  def case01 {
+    val sysName = &quot;dizangwang&quot;
+    // 默认加载application.*
+    // resources目录下放 application.conf、 application.json、 application.properties 任意一个都行
+    val config: Config = ConfigFactory.load()
+    // 二者效果相同
+    val system01: ActorSystem = ActorSystem.create(sysName)
+    val system02: ActorSystem = ActorSystem.create(sysName, config)
+    val system03: ActorSystem = ActorSystem.create(sysName, ConfigFactory.load(&quot;application.conf&quot;))
+  }
+</code></pre>
+
+<h2 id="待解析配置文件">待解析配置文件</h2>
+
+<pre><code class="language-bash">resources
+├── application.conf
+└── usecfg
+    ├── app-01.conf
+    ├── app-02.conf
+    ├── app-03.json
+    └── app-04.properties
+</code></pre>
+
+<p>app-01.conf</p>
+
+<pre><code>akka {
+  loggers = [&quot;akka.event.slf4j.Slf4jLogger&quot;]
+  loglevel = &quot;DEBUG&quot;
+  actor {
+    provider = &quot;cluster&quot;
+    default-dispatcher {
+      throughput = 10
+    }
+  }
+
+  remote {
+    netty.tcp{
+      port = 4711
+    }
+  }
+}
+</code></pre>
+
+<p>app-02.conf</p>
+
+<pre><code>app1{
+  akka {
+    loglevel = &quot;DEBUG&quot;
+  }
+}
+
+app2.akka {
+  loglevel = &quot;DEBUG&quot;
+}
+</code></pre>
+
+<p>app-03.conf</p>
+
+<pre><code>{
+  &quot;akka&quot;: {&quot;loglevel&quot; : &quot;DEBUG&quot;}
+}
+</code></pre>
+
+<p>app-04.properties</p>
+
+<pre><code>app1.akka.loglevel=DEBUG
+app2.akka.loglevel=DEBUG
+</code></pre>
+
+<h2 id="代码解析">代码解析</h2>
+
+<h3 id="对于3种配置文件格式的支持">对于3种配置文件格式的支持</h3>
+
+<pre><code class="language-scala">val cfg01: Config = ConfigFactory.load(&quot;usecfg/app-01.conf&quot;)
+val cfg02: Config = ConfigFactory.load(&quot;usecfg/app-02.conf&quot;)
+val cfg03: Config = ConfigFactory.load(&quot;usecfg/app-03.json&quot;)
+val cfg04: Config = ConfigFactory.load(&quot;usecfg/app-04.properties&quot;)
+</code></pre>
+
+<h3 id="配置信息的读取">配置信息的读取</h3>
+
+<pre><code class="language-scala">def case02() { // 效果相同
+  assert(&quot;DEBUG&quot; equals cfg01.getString(&quot;akka.loglevel&quot;))
+  assert(&quot;DEBUG&quot; equals cfg02.getString(&quot;app1.akka.loglevel&quot;))
+  assert(&quot;DEBUG&quot; equals cfg02.getString(&quot;app2.akka.loglevel&quot;))
+  assert(&quot;DEBUG&quot; equals cfg03.getString(&quot;akka.loglevel&quot;))
+  assert(&quot;DEBUG&quot; equals cfg04.getString(&quot;app1.akka.loglevel&quot;))
+  assert(&quot;DEBUG&quot; equals cfg04.getString(&quot;app2.akka.loglevel&quot;))
+}
+</code></pre>
+
+<h3 id="默认加载位置可覆盖">默认加载位置可覆盖</h3>
+
+<pre><code class="language-scala">def case03() { // 效果相同
+  println(&quot;通过启动参数覆盖默认加载位置&quot;)
+  // ConfigFactory.load() 默认是找classpath*:application.conf 文件
+  // jvm启动时的附加参数可以调整默认位置 -Dconfig.resource=xx, -Dconfig.file=xx, -Dconfig.url=xx
+  System.setProperty(&quot;config.resource&quot;, &quot;usecfg/app-03.json&quot;)
+  val cfg0003: Config = ConfigFactory.load()
+  assert(&quot;DEBUG&quot; equals cfg0003.getString(&quot;akka.loglevel&quot;))
+}
+</code></pre>
+
+<h3 id="还可从其他方式加载配置">还可从其他方式加载配置</h3>
+
+<p>从字符串解析、 从文件加载、 从url加载</p>
+
+<pre><code class="language-scala">  var config: Config = null;
+  val cs01 =
+    &quot;&quot;&quot;
+      |app1{
+      |  akka {
+      |    loglevel = &quot;DEBUG&quot;
+      |  }
+      |}
+      |&quot;&quot;&quot;.stripMargin
+  val cs02 =
+    &quot;&quot;&quot;
+      |{
+      |  &quot;akka&quot;: {&quot;loglevel&quot; : &quot;DEBUG&quot;}
+      |}
+      |
+      |&quot;&quot;&quot;.stripMargin
+
+  println(&quot;解析字符串的方式装载配置 -- 可从多种来源加载[ .parseString .parseFile .parseURL ...more ]&quot;)
+  val cfg01: Config = ConfigFactory.parseString(cs01)
+  val cfg02: Config = ConfigFactory.parseString(cs02)
+
+  println(cfg02.getString(&quot;akka.loglevel&quot;))
+  assert(cfg01.getString(&quot;app1.akka.loglevel&quot;).equals(cfg02.getString(&quot;akka.loglevel&quot;)))
+
+</code></pre>
+
+<h3 id="配置的合并-提取">配置的合并、提取</h3>
+
+<pre><code class="language-scala">val cs03 =
+  &quot;&quot;&quot;
+    |db.a1.name=tom
+    |db.a2.name=peter
+    |log.zz=apple
+    |&quot;&quot;&quot;.stripMargin
+val cfg03: Config = ConfigFactory.parseString(cs03)
+// 值保留该路径的配置, 还剩一条记录
+val xx: Config = cfg03.withOnlyPath(&quot;db.a2&quot;)
+assert(xx.root().size() == 1)
+
+// 只剔除该路径的配置, 还剩两条记录
+val yy: Config = cfg03.withoutPath(&quot;db.a2&quot;)
+assert(yy.root().size() == 2)
+
+// 提取路径下的 config
+config = cfg01.getConfig(&quot;app1&quot;)
+assert(config.getString(&quot;akka.loglevel&quot;).equals(&quot;DEBUG&quot;))
+</code></pre>
+
+<p>合并config</p>
+
+<pre><code class="language-scala">val cs04 =
+  &quot;&quot;&quot;
+    |aa=11
+    |bb=22
+    |&quot;&quot;&quot;.stripMargin
+val cs05 =
+  &quot;&quot;&quot;
+    |bb=2222
+    |cc=33
+    |&quot;&quot;&quot;.stripMargin
+val cfg04: Config = ConfigFactory.parseString(cs04)
+val cfg05: Config = ConfigFactory.parseString(cs05)
+// 二者合并， 有冲突则使用cfg08的值
+config = cfg04.withFallback(cfg05)
+assert(config.getString(&quot;bb&quot;).equals(&quot;22&quot;))
+assert(config.getString(&quot;cc&quot;).equals(&quot;33&quot;))
+println(&quot;done --&quot;)
+</code></pre>
+
+<h2 id="more">more</h2>
+
+<pre><code class="language-scala">ConfigFactory.defaultOverrides() // 仅加载了系统属性
+ConfigFactory.defaultReference() // 所有路径下 reference.conf 的合并结果
+ConfigFactory.defaultApplication() //  == defaultReference() + defaultOverrides()
+ConfigFactory.load() // == defaultApplication() + resolve
+ConfigFactory.systemEnvironment()
+ConfigFactory.systemProperties() // 返回的是单例对象， 在清除缓存后，再调用可刷新
+ConfigFactory.invalidateCaches() // 清除缓存， 加载的系统属性、环境变量都被缓存过
+</code></pre>
+
+                        </div>
+
+                        
+
+
+                        
+
+<div class="post-archive">
+    <h2>See Also</h2>
+    <ul class="listing">
+        
+        <li><a href="/2019/05/17/thinking-autoboxing-implicit.html">自动装箱拆箱在scala中的表现</a></li>
+        
+        <li><a href="/2019/11/16/jmh-dynamic-run.html">JMH-测试动态执行代码效率</a></li>
+        
+        <li><a href="/2019/11/12/doh.html">群晖两步验证的关闭</a></li>
+        
+        <li><a href="/2019/11/10/benchmark-java-jmh.html">基准测试工具JMH-示例</a></li>
+        
+        <li><a href="/2019/10/28/update-rule-by-scanner.html">使用drools的规则管理平台-02</a></li>
+        
+    </ul>
+</div>
+
+
+                        <div class="post-meta meta-tags">
+                            
+                            <ul class="clearfix">
+                                
+                                <li><a href="https://duansheli.github.io/tags/java">java</a></li>
+                                
+                            </ul>
+                            
+                        </div>
+                    </article>
+                    
+    
+
+    
+    
+                </div>
+            </div>
+            <div id="secondary">
+    <section class="widget">
+        <form id="search" action="//www.google.com/search" method="get" accept-charset="utf-8" target="_blank" _lpchecked="1">
+      
+      <input type="text" name="q" maxlength="20" placeholder="Search">
+      <input type="hidden" name="sitesearch" value="https://duansheli.github.io">
+      <button type="submit" class="submit icon-search"></button>
+</form>
+    </section>
+    
+    <section class="widget">
+        <h3 class="widget-title">最近文章</h3>
+<ul class="widget-list">
+    
+    <li>
+        <a href="https://duansheli.github.io/2019/12/20/akka-demo-concurrent.html" title="akka-并发任务">akka-并发任务</a>
+    </li>
+    
+    <li>
+        <a href="https://duansheli.github.io/2019/12/15/HOCON-java.html" title="HOCON配置文件读取">HOCON配置文件读取</a>
+    </li>
+    
+    <li>
+        <a href="https://duansheli.github.io/2019/11/16/jmh-dynamic-run.html" title="JMH-测试动态执行代码效率">JMH-测试动态执行代码效率</a>
+    </li>
+    
+    <li>
+        <a href="https://duansheli.github.io/2019/11/12/doh.html" title="群晖两步验证的关闭">群晖两步验证的关闭</a>
+    </li>
+    
+    <li>
+        <a href="https://duansheli.github.io/2019/11/10/benchmark-java-jmh.html" title="基准测试工具JMH-示例">基准测试工具JMH-示例</a>
+    </li>
+    
+    <li>
+        <a href="https://duansheli.github.io/2019/10/28/update-rule-by-scanner.html" title="使用drools的规则管理平台-02">使用drools的规则管理平台-02</a>
+    </li>
+    
+    <li>
+        <a href="https://duansheli.github.io/2019/10/27/update-rule-by-scanner.html" title="使用drools的规则管理平台-01">使用drools的规则管理平台-01</a>
+    </li>
+    
+    <li>
+        <a href="https://duansheli.github.io/2019/10/26/update-rule-by-scanner.html" title="自定义动态更新drools规则">自定义动态更新drools规则</a>
+    </li>
+    
+    <li>
+        <a href="https://duansheli.github.io/2019/10/13/download-m3u8-video-02.html" title="下载m3u8-aes128加密视频-02">下载m3u8-aes128加密视频-02</a>
+    </li>
+    
+    <li>
+        <a href="https://duansheli.github.io/2019/10/13/download-m3u8-video-01.html" title="下载m3u8-aes128加密视频-01">下载m3u8-aes128加密视频-01</a>
+    </li>
+    
+</ul>
+    </section>
+
+    
+
+    <section class="widget">
+        <h3 class="widget-title">分类</h3>
+<ul class="widget-list">
+    
+    <li>
+        <a href="https://duansheli.github.io/categories/JHM/">JHM(1)</a>
+    </li>
+    
+    <li>
+        <a href="https://duansheli.github.io/categories/JMH/">JMH(1)</a>
+    </li>
+    
+    <li>
+        <a href="https://duansheli.github.io/categories/Java%E6%B7%B1%E5%85%A5/">Java深入(8)</a>
+    </li>
+    
+    <li>
+        <a href="https://duansheli.github.io/categories/k8s%E9%9B%86%E7%BE%A4/">k8s集群(5)</a>
+    </li>
+    
+    <li>
+        <a href="https://duansheli.github.io/categories/scala%E5%B9%B6%E5%8F%91%E7%BC%96%E7%A8%8B/">scala并发编程(8)</a>
+    </li>
+    
+</ul>
+    </section>
+
+    <section class="widget">
+        <h3 class="widget-title">标签</h3>
+<div class="tagcloud">
+    
+    <a href="https://duansheli.github.io/tags/JHM/">JHM</a>
+    
+    <a href="https://duansheli.github.io/tags/JMH/">JMH</a>
+    
+    <a href="https://duansheli.github.io/tags/Java/">Java</a>
+    
+    <a href="https://duansheli.github.io/tags/classloader/">classloader</a>
+    
+    <a href="https://duansheli.github.io/tags/docker/">docker</a>
+    
+    <a href="https://duansheli.github.io/tags/drone/">drone</a>
+    
+    <a href="https://duansheli.github.io/tags/drools/">drools</a>
+    
+    <a href="https://duansheli.github.io/tags/dubbo/">dubbo</a>
+    
+    <a href="https://duansheli.github.io/tags/elasticsearch/">elasticsearch</a>
+    
+    <a href="https://duansheli.github.io/tags/ffmpeg/">ffmpeg</a>
+    
+    <a href="https://duansheli.github.io/tags/gc/">gc</a>
+    
+    <a href="https://duansheli.github.io/tags/git/">git</a>
+    
+    <a href="https://duansheli.github.io/tags/gradle/">gradle</a>
+    
+    <a href="https://duansheli.github.io/tags/hashids/">hashids</a>
+    
+    <a href="https://duansheli.github.io/tags/id/">id</a>
+    
+    <a href="https://duansheli.github.io/tags/java/">java</a>
+    
+    <a href="https://duansheli.github.io/tags/jdk/">jdk</a>
+    
+    <a href="https://duansheli.github.io/tags/jvm/">jvm</a>
+    
+    <a href="https://duansheli.github.io/tags/k8s/">k8s</a>
+    
+    <a href="https://duansheli.github.io/tags/kotlin/">kotlin</a>
+    
+    <a href="https://duansheli.github.io/tags/life/">life</a>
+    
+    <a href="https://duansheli.github.io/tags/linux/">linux</a>
+    
+    <a href="https://duansheli.github.io/tags/mysql/">mysql</a>
+    
+    <a href="https://duansheli.github.io/tags/proxy/">proxy</a>
+    
+    <a href="https://duansheli.github.io/tags/redis/">redis</a>
+    
+    <a href="https://duansheli.github.io/tags/rocketmq/">rocketmq</a>
+    
+    <a href="https://duansheli.github.io/tags/route/">route</a>
+    
+    <a href="https://duansheli.github.io/tags/scala/">scala</a>
+    
+    <a href="https://duansheli.github.io/tags/session/">session</a>
+    
+    <a href="https://duansheli.github.io/tags/shell/">shell</a>
+    
+    <a href="https://duansheli.github.io/tags/spring-boot/">spring-boot</a>
+    
+    <a href="https://duansheli.github.io/tags/spring-security/">spring-security</a>
+    
+    <a href="https://duansheli.github.io/tags/springboot/">springboot</a>
+    
+    <a href="https://duansheli.github.io/tags/zipkin/">zipkin</a>
+    
+    <a href="https://duansheli.github.io/tags/%E5%88%86%E5%B8%83%E5%BC%8F%E4%BA%8B%E5%8A%A1/">分布式事务</a>
+    
+    <a href="https://duansheli.github.io/tags/%E6%8C%81%E7%BB%AD%E9%9B%86%E6%88%90/">持续集成</a>
+    
+    <a href="https://duansheli.github.io/tags/%E7%99%BB%E5%BD%95/">登录</a>
+    
+</div>
+    </section>
+
+    
+
+    <section class="widget">
+        <h3 class="widget-title">其它</h3>
+        <ul class="widget-list">
+            <li><a href="https://duansheli.github.io/index.xml">文章 RSS</a></li>
+        </ul>
+    </section>
+</div>
+        </div>
+    </div>
+</div>
+<footer id="footer">
+    <div class="container">
+        &copy; 2019 <a href="https://duansheli.github.io">断舍离的博客 By 断舍离</a>.
+        Powered by <a rel="nofollow noreferer noopener" href="https://gohugo.io" target="_blank">Hugo</a>.
+        <a href="https://www.flysnow.org/" target="_blank">Theme</a> based on <a href="https://github.com/rujews/maupassant-hugo" target="_blank">maupassant</a>.
+        
+    </div>
+</footer>
+
+
+    
+    <script type="text/javascript">
+        
+        (function () {
+            $("pre code").parent().addClass("line-numbers")
+        }());
+
+        window.MathJax = {
+            tex2jax: {
+                inlineMath: [['$', '$']],
+                processEscapes: true
+                }
+            };
+    </script>
+    <script type="text/javascript" src="/js/prism.js" async="true"></script>
+    <script src='https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/MathJax.js?config=TeX-MML-AM_CHTML' async></script>
+
+
+<a id="rocket" href="#top"></a>
+<script type="text/javascript" src="/js/totop.js?v=0.0.0" async=""></script>
+
+<script type="application/javascript">
+var doNotTrack = false;
+if (!doNotTrack) {
+	window.ga=window.ga||function(){(ga.q=ga.q||[]).push(arguments)};ga.l=+new Date;
+	ga('create', 'GTM-NPJC8J2', 'auto');
+	
+	ga('send', 'pageview');
+}
+</script>
+<script async src='https://www.google-analytics.com/analytics.js'></script>
+
+
+
+
+
+
+</body>
+</html>

@@ -1,0 +1,99 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>Java on 断舍离的博客</title>
+    <link>https://duansheli.github.io/tags/Java/</link>
+    <description>Recent content in Java on 断舍离的博客</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>zh-CN</language>
+    <lastBuildDate>Sat, 14 Jul 2018 15:13:13 +0800</lastBuildDate>
+    
+	<atom:link href="https://duansheli.github.io/tags/Java/index.xml" rel="self" type="application/rss+xml" />
+    
+    
+    <item>
+      <title>JVM的垃圾回收</title>
+      <link>https://duansheli.github.io/2018/07/14/jvm-memory-gc.html</link>
+      <pubDate>Sat, 14 Jul 2018 15:13:13 +0800</pubDate>
+      
+      <guid>https://duansheli.github.io/2018/07/14/jvm-memory-gc.html</guid>
+      <description>JVM内存结构 JVM是java代码的运行环境， 用来加载 .class和jar文件 , 运行代码。
+内存区域 +------------------------------------------------------+ | | | +-------------+ +---------------+ | | | xxxA.class | | | | | | xxxB.</description>
+    </item>
+    
+    <item>
+      <title>类加载器加载的类不能创建对象</title>
+      <link>https://duansheli.github.io/2018/07/08/classloader-modifiers-exception.html</link>
+      <pubDate>Sun, 08 Jul 2018 15:13:13 +0800</pubDate>
+      
+      <guid>https://duansheli.github.io/2018/07/08/classloader-modifiers-exception.html</guid>
+      <description>IllegalAccessException 异常信息 Exception in thread &amp;quot;main&amp;quot; java.lang.IllegalAccessException: Class fluffy.mo.MyClassloader can not access a member of class fluffy.mo.Car with modifiers &amp;quot;public&amp;quot; at sun.</description>
+    </item>
+    
+    <item>
+      <title>SPI与contextclassloader</title>
+      <link>https://duansheli.github.io/2018/06/27/classloader-spi.html</link>
+      <pubDate>Wed, 27 Jun 2018 14:13:13 +0800</pubDate>
+      
+      <guid>https://duansheli.github.io/2018/06/27/classloader-spi.html</guid>
+      <description>目标 通过SPI学习setContextClassLoader，getContextClassLoader的用法
+SPI概念 SPI（Service Provider Interface）是JDK内置的一种提供服务发现的机制。 也可以看成是一种服务注册或者ioc
+自定义SPI方式
+ 定义一个接口 fluffy.mo.CarPlugin 定义两个实现类 fluffy.mo.RedCar、 fluffy.mo.BlueCar 配置文件 【META-INF/services/文件名=接口全名】 &amp;gt; META-INF/services/fluffy.mo.CarPlugin &amp;gt;  &amp;gt; fluffy.</description>
+    </item>
+    
+    <item>
+      <title>类加载器使用</title>
+      <link>https://duansheli.github.io/2018/06/21/classloader-start.html</link>
+      <pubDate>Thu, 21 Jun 2018 13:13:13 +0800</pubDate>
+      
+      <guid>https://duansheli.github.io/2018/06/21/classloader-start.html</guid>
+      <description>类加载器 引入 一般开发都不会接触classloader的概念，但程序的运行却是建立在classloader之上的 为什么要有类加载器： java程序的启动首先就需要jvm去加载class 而代码中的对象创建类调用【new Person(); Autil.currentTime();】 都需要class被jvm加载 使用类的静态方法，或者创建对象前，需要先加载class 而每个class必然由一个classloader加载  方向 貌似类加载的事情不需要我们操心，虚拟机已经帮我们解决了 那学这个能干嘛： * 更了解虚拟机; * 在复杂的生产环境可能遇到class找不到异常,了解这个有助于排查错误; * 自研服务/插件，动态加载代码; * tomcat的项目代码热部署，jsp热部署; * 各种热部署插件; * 软件破解;  划重点 一个class在内存中只存一份，以及限定条件 defineClass决定class的类加载器是谁 线程上下文类加载器用于隐式传参 一个对象的类由哪个类加载器去加载，取决于显示使用类或显示使用类加载器</description>
+    </item>
+    
+    <item>
+      <title>动态代理-rpc示例-01</title>
+      <link>https://duansheli.github.io/2018/06/05/proxy-rpc-01.html</link>
+      <pubDate>Tue, 05 Jun 2018 13:13:13 +0800</pubDate>
+      
+      <guid>https://duansheli.github.io/2018/06/05/proxy-rpc-01.html</guid>
+      <description>目标 写个简单的rpc 调用
+Rpc大致思路 定义一个接口HelloService 放在iface.jar中 应用P中引用iface.jar 实现接口HelloService进行处理任务 注册bean到spring中 应用C中, 通过spring获取HelloService的实例phService 调用phService.echo(xxx)方法，获得返回结果 应用P运行在1个jvm中 应用C运行在另1个jvm中 phService实质为一个代理对象 该代理对象通过把调用的参数封装，序列化后，通过网络传输给应用P 应用P根据收到参数后，调用处理接口相应的实现类，并将结果回传给应用C端 最终代理对象返回收到的运行结果  序列化-知识点补充 进行RPC调用必然要涉及对方法参数的序列化。 序列化框架有很多， 如protobuf、thrift、hession等 dubbo的rpc是支持多种序列化方式，如Java原生、Kryo、webservice等 spring cloud的http调用也算一种序列化方式 有了序列化工具，不仅仅是跨JVM的方法调用，还能跨语言调用。 本次示例使用java原生序列化  初版代码 所用到包 import java.</description>
+    </item>
+    
+    <item>
+      <title>动态代理-rpc示例-02</title>
+      <link>https://duansheli.github.io/2018/06/05/proxy-rpc-02.html</link>
+      <pubDate>Tue, 05 Jun 2018 13:13:13 +0800</pubDate>
+      
+      <guid>https://duansheli.github.io/2018/06/05/proxy-rpc-02.html</guid>
+      <description>上个版本的代码看着比较生肉，与平时开发时的写法差别较大。 接下来这版，加入了动态代理后
+动态代理-guava版 import com.google.common.reflect.Reflection; class DemoGuava { interface MyMath1 { public Integer sum(Integer a, Integer b); } static class MyMathImpl implements MyMath1 { @Override public Integer sum(Integer a, Integer b) { return a + b; } } public static void main(String[] args) { MyMath1 tg = new MyMathImpl(); // 创建对象代理 MyMath1 math = (MyMath1) Reflection.</description>
+    </item>
+    
+    <item>
+      <title>动态代理</title>
+      <link>https://duansheli.github.io/2018/06/02/proxy-start.html</link>
+      <pubDate>Sat, 02 Jun 2018 13:13:13 +0800</pubDate>
+      
+      <guid>https://duansheli.github.io/2018/06/02/proxy-start.html</guid>
+      <description>目标 通过代码示例了解动态代理语法
+示例代码 import java.lang.reflect.InvocationHandler; import java.lang.reflect.Method; import java.lang.reflect.Proxy; public class Demo { interface MyMath1 { public Integer sum(Integer a, Integer b); } static class MyMathImpl implements MyMath1 { @Override public Integer sum(Integer a, Integer b) { return a + b; } } public static void main(String[] args) { MyMath1 tg = new MyMathImpl(); // 创建对象代理 MyMath1 math = (MyMath1) Proxy.</description>
+    </item>
+    
+    <item>
+      <title>反射使用</title>
+      <link>https://duansheli.github.io/2018/04/02/reflect-start.html</link>
+      <pubDate>Mon, 02 Apr 2018 13:13:13 +0800</pubDate>
+      
+      <guid>https://duansheli.github.io/2018/04/02/reflect-start.html</guid>
+      <description>反射介绍 可以不直接new 对象，或调用方法。 用另一种创建某个对象（字符串的方式），或调用某个对象的方法（字符串的方式）。 反射这种间接调用效率肯定是不如直接调用的。
+程序不知道具体要创建接口的哪个实现类， 在启动时，通过读取配置文件才知道要创建那个实现类。
+先学习语法，然后可以通过结合动态代理加深理解。
+反射的场景 一般的开发很少直接用到，不过在各类框架中基本离不开。
+另外如果要自研框架，或者对框架定制功能，通常也会用到。
+ spring以xml配置去注册bean 动态代理以及其衍生的各类服务  远程调用 日志，监控 缓存 权限 spring-事务注解  使用注解的实现的各种功能 软件破解。。。等等  语法示例 普通的bean package com.</description>
+    </item>
+    
+  </channel>
+</rss>

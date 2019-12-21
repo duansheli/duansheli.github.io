@@ -67,6 +67,54 @@
                         <article class="post">
                             <header>
                                 <h1 class="post-title">
+                                    <a href="https://duansheli.github.io/2019/10/09/scala-process.html" title="scala调用系统命令" >scala调用系统命令</a>
+                                </h1>
+                            </header>
+                            <date class="post-meta meta-date">
+                                2019年10月9日
+                            </date>
+                            
+                            <div class="post-content">
+                                操作演示 启动scala docker run --rm -it hseeberger/scala-sbt:11.0.3_1.2.8_2.13.0 bash scala -language:postfixOps  命令里面不能直接用管道或重定向符号
+需要用#来拼接
+报错解决 scala代码中如果使用 !执行命令时， 会有一段警告
+scala&gt; import scala.……
+                            </div>
+                            <p class="readmore"><a href="https://duansheli.github.io/2019/10/09/scala-process.html">阅读全文</a></p>
+                        </article>
+                    
+                    
+		    
+                        <article class="post">
+                            <header>
+                                <h1 class="post-title">
+                                    <a href="https://duansheli.github.io/2019/10/03/k8s-cluster-setup-03.html" title="k8s的相关项目" >k8s的相关项目</a>
+                                </h1>
+                            </header>
+                            <date class="post-meta meta-date">
+                                2019年10月3日
+                            </date>
+                            
+                            <div class="post-meta">
+                                <span>|</span>
+                                
+                                <span class="meta-category"><a href="https://duansheli.github.io/categories/k8s%E9%9B%86%E7%BE%A4">k8s集群</a></span>
+                                
+                            </div>
+                            
+                            <div class="post-content">
+                                其他厂商版本 Canonical 公司为自家的 ubuntu 提供的 适配版 k8s 单机版 MicroK8s 集群版 Charmed Kubernetes
+rancher公司 https://github.com/rancher/k3s/releases
+工具 helm 包管理工具 就好比360软件管家、yum、apt等软件 可快速在k8s集群部署应用 https://github.……
+                            </div>
+                            <p class="readmore"><a href="https://duansheli.github.io/2019/10/03/k8s-cluster-setup-03.html">阅读全文</a></p>
+                        </article>
+                    
+                    
+		    
+                        <article class="post">
+                            <header>
+                                <h1 class="post-title">
                                     <a href="https://duansheli.github.io/2019/09/12/doh.html" title="浏览器启用dns-over-https(DoH)" >浏览器启用dns-over-https(DoH)</a>
                                 </h1>
                             </header>
@@ -219,59 +267,6 @@ linux下dd、split演示 测试文件 testfile 大小为 1004k 使用 split 命�
                         </article>
                     
                     
-		    
-                        <article class="post">
-                            <header>
-                                <h1 class="post-title">
-                                    <a href="https://duansheli.github.io/2019/07/06/check-credit.html" title="github搜开源项目技巧" >github搜开源项目技巧</a>
-                                </h1>
-                            </header>
-                            <date class="post-meta meta-date">
-                                2019年7月6日
-                            </date>
-                            
-                            <div class="post-content">
-                                主要使用高级搜索来实现精准搜索开源项目
-一个仓库主要以下几部分 项目名称，项目描述 项目主要是什么语言的 根目录下的README.md 描述一些详情
-常用示例 #名字包含spring spring in:name #描述中包含流量控制的 flow control in:description #文件readme.md包含xx spring in:readme #语言当然选你会的 language:java #作者是国内的 location:China #点赞数大说明大家比较认可 stars:&gt;=800 #点赞数在10到50之间的 stars:10.……
-                            </div>
-                            <p class="readmore"><a href="https://duansheli.github.io/2019/07/06/check-credit.html">阅读全文</a></p>
-                        </article>
-                    
-                    
-		    
-                        <article class="post">
-                            <header>
-                                <h1 class="post-title">
-                                    <a href="https://duansheli.github.io/2019/06/27/k8s-ingress-controller.html" title="k8s-外部访问ingress" >k8s-外部访问ingress</a>
-                                </h1>
-                            </header>
-                            <date class="post-meta meta-date">
-                                2019年6月27日
-                            </date>
-                            
-                            <div class="post-meta">
-                                <span>|</span>
-                                
-                                <span class="meta-category"><a href="https://duansheli.github.io/categories/k8s%E9%9B%86%E7%BE%A4">k8s集群</a></span>
-                                
-                            </div>
-                            
-                            <div class="post-content">
-                                对外暴露服务 通常使用ingress作为前置入口 那如何配置 ingress-controller 与外界通信？
-LoadBalancer 如果有云厂商的LoadBalancer， 那自然方便
-各云厂商的实现可能有所不同
-但使用后效果 应该都是高可用的vip入口
-其他方案 如果是自建的k8s集群
-或者云厂商没有LoadBalancer
-又或者不想用云厂商的LoadBalancer
-那这个时候整，之间nodePort么
-自建-LoadBalance 基于开源项目自建 LoadBalance……
-                            </div>
-                            <p class="readmore"><a href="https://duansheli.github.io/2019/06/27/k8s-ingress-controller.html">阅读全文</a></p>
-                        </article>
-                    
-                    
                     
 
 
@@ -340,6 +335,14 @@ LoadBalancer 如果有云厂商的LoadBalancer， 那自然方便
 <ul class="widget-list">
     
     <li>
+        <a href="https://duansheli.github.io/2019/12/20/akka-demo-concurrent.html" title="akka-并发任务">akka-并发任务</a>
+    </li>
+    
+    <li>
+        <a href="https://duansheli.github.io/2019/12/15/HOCON-java.html" title="HOCON配置文件读取">HOCON配置文件读取</a>
+    </li>
+    
+    <li>
         <a href="https://duansheli.github.io/2019/11/16/jmh-dynamic-run.html" title="JMH-测试动态执行代码效率">JMH-测试动态执行代码效率</a>
     </li>
     
@@ -371,14 +374,6 @@ LoadBalancer 如果有云厂商的LoadBalancer， 那自然方便
         <a href="https://duansheli.github.io/2019/10/13/download-m3u8-video-01.html" title="下载m3u8-aes128加密视频-01">下载m3u8-aes128加密视频-01</a>
     </li>
     
-    <li>
-        <a href="https://duansheli.github.io/2019/10/09/scala-process.html" title="scala调用系统命令">scala调用系统命令</a>
-    </li>
-    
-    <li>
-        <a href="https://duansheli.github.io/2019/10/03/k8s-cluster-setup-03.html" title="k8s的相关项目">k8s的相关项目</a>
-    </li>
-    
 </ul>
     </section>
 
@@ -405,7 +400,7 @@ LoadBalancer 如果有云厂商的LoadBalancer， 那自然方便
     </li>
     
     <li>
-        <a href="https://duansheli.github.io/categories/scala%E5%B9%B6%E5%8F%91%E7%BC%96%E7%A8%8B/">scala并发编程(7)</a>
+        <a href="https://duansheli.github.io/categories/scala%E5%B9%B6%E5%8F%91%E7%BC%96%E7%A8%8B/">scala并发编程(8)</a>
     </li>
     
 </ul>

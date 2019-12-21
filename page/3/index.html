@@ -67,6 +67,59 @@
                         <article class="post">
                             <header>
                                 <h1 class="post-title">
+                                    <a href="https://duansheli.github.io/2019/07/06/check-credit.html" title="github搜开源项目技巧" >github搜开源项目技巧</a>
+                                </h1>
+                            </header>
+                            <date class="post-meta meta-date">
+                                2019年7月6日
+                            </date>
+                            
+                            <div class="post-content">
+                                主要使用高级搜索来实现精准搜索开源项目
+一个仓库主要以下几部分 项目名称，项目描述 项目主要是什么语言的 根目录下的README.md 描述一些详情
+常用示例 #名字包含spring spring in:name #描述中包含流量控制的 flow control in:description #文件readme.md包含xx spring in:readme #语言当然选你会的 language:java #作者是国内的 location:China #点赞数大说明大家比较认可 stars:&gt;=800 #点赞数在10到50之间的 stars:10.……
+                            </div>
+                            <p class="readmore"><a href="https://duansheli.github.io/2019/07/06/check-credit.html">阅读全文</a></p>
+                        </article>
+                    
+                    
+		    
+                        <article class="post">
+                            <header>
+                                <h1 class="post-title">
+                                    <a href="https://duansheli.github.io/2019/06/27/k8s-ingress-controller.html" title="k8s-外部访问ingress" >k8s-外部访问ingress</a>
+                                </h1>
+                            </header>
+                            <date class="post-meta meta-date">
+                                2019年6月27日
+                            </date>
+                            
+                            <div class="post-meta">
+                                <span>|</span>
+                                
+                                <span class="meta-category"><a href="https://duansheli.github.io/categories/k8s%E9%9B%86%E7%BE%A4">k8s集群</a></span>
+                                
+                            </div>
+                            
+                            <div class="post-content">
+                                对外暴露服务 通常使用ingress作为前置入口 那如何配置 ingress-controller 与外界通信？
+LoadBalancer 如果有云厂商的LoadBalancer， 那自然方便
+各云厂商的实现可能有所不同
+但使用后效果 应该都是高可用的vip入口
+其他方案 如果是自建的k8s集群
+或者云厂商没有LoadBalancer
+又或者不想用云厂商的LoadBalancer
+那这个时候整，之间nodePort么
+自建-LoadBalance 基于开源项目自建 LoadBalance……
+                            </div>
+                            <p class="readmore"><a href="https://duansheli.github.io/2019/06/27/k8s-ingress-controller.html">阅读全文</a></p>
+                        </article>
+                    
+                    
+		    
+                        <article class="post">
+                            <header>
+                                <h1 class="post-title">
                                     <a href="https://duansheli.github.io/2019/06/21/gradle-task-learn.html" title="gradle-task使用" >gradle-task使用</a>
                                 </h1>
                             </header>
@@ -226,44 +279,6 @@ implicit是scala中的概念<br />
                         </article>
                     
                     
-		    
-                        <article class="post">
-                            <header>
-                                <h1 class="post-title">
-                                    <a href="https://duansheli.github.io/2019/05/10/spring-data-elasticsearch-error-date.html" title="spring data elasticsearch日期类型冲突" >spring data elasticsearch日期类型冲突</a>
-                                </h1>
-                            </header>
-                            <date class="post-meta meta-date">
-                                2019年5月10日
-                            </date>
-                            
-                            <div class="post-content">
-                                IllegalArgumentException 环境 spring-data-elasticsearch 3.1.6
-java.lang.IllegalArgumentException: Mapper for [publishDate] conflicts with existing mapping in other types: [mapper [publishDate] has different [format] values……
-                            </div>
-                            <p class="readmore"><a href="https://duansheli.github.io/2019/05/10/spring-data-elasticsearch-error-date.html">阅读全文</a></p>
-                        </article>
-                    
-                    
-		    
-                        <article class="post">
-                            <header>
-                                <h1 class="post-title">
-                                    <a href="https://duansheli.github.io/2019/04/09/spring-security-login-by-mobile-code.html" title="使用spring security实现手机验证码登录" >使用spring security实现手机验证码登录</a>
-                                </h1>
-                            </header>
-                            <date class="post-meta meta-date">
-                                2019年4月9日
-                            </date>
-                            
-                            <div class="post-content">
-                                目标 使用spring security添加两种登录方式 * 手机号，验证码登录 * 用户名 密码 图形验证码登录
-运行环境  win10-x64 jdk-v1.8 springboot-v2.1.4 springsecurity-5.1.5  环境搭建 新建maven项目 配置pom.xml依赖项……
-                            </div>
-                            <p class="readmore"><a href="https://duansheli.github.io/2019/04/09/spring-security-login-by-mobile-code.html">阅读全文</a></p>
-                        </article>
-                    
-                    
                     
 
 
@@ -332,6 +347,14 @@ java.lang.IllegalArgumentException: Mapper for [publishDate] conflicts with exis
 <ul class="widget-list">
     
     <li>
+        <a href="https://duansheli.github.io/2019/12/20/akka-demo-concurrent.html" title="akka-并发任务">akka-并发任务</a>
+    </li>
+    
+    <li>
+        <a href="https://duansheli.github.io/2019/12/15/HOCON-java.html" title="HOCON配置文件读取">HOCON配置文件读取</a>
+    </li>
+    
+    <li>
         <a href="https://duansheli.github.io/2019/11/16/jmh-dynamic-run.html" title="JMH-测试动态执行代码效率">JMH-测试动态执行代码效率</a>
     </li>
     
@@ -363,14 +386,6 @@ java.lang.IllegalArgumentException: Mapper for [publishDate] conflicts with exis
         <a href="https://duansheli.github.io/2019/10/13/download-m3u8-video-01.html" title="下载m3u8-aes128加密视频-01">下载m3u8-aes128加密视频-01</a>
     </li>
     
-    <li>
-        <a href="https://duansheli.github.io/2019/10/09/scala-process.html" title="scala调用系统命令">scala调用系统命令</a>
-    </li>
-    
-    <li>
-        <a href="https://duansheli.github.io/2019/10/03/k8s-cluster-setup-03.html" title="k8s的相关项目">k8s的相关项目</a>
-    </li>
-    
 </ul>
     </section>
 
@@ -397,7 +412,7 @@ java.lang.IllegalArgumentException: Mapper for [publishDate] conflicts with exis
     </li>
     
     <li>
-        <a href="https://duansheli.github.io/categories/scala%E5%B9%B6%E5%8F%91%E7%BC%96%E7%A8%8B/">scala并发编程(7)</a>
+        <a href="https://duansheli.github.io/categories/scala%E5%B9%B6%E5%8F%91%E7%BC%96%E7%A8%8B/">scala并发编程(8)</a>
     </li>
     
 </ul>
