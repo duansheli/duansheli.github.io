@@ -1,0 +1,339 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>Tags on 断舍离的博客</title>
+    <link>https://www.awslop.com/tags/</link>
+    <description>Recent content in Tags on 断舍离的博客</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>zh-cn</language>
+    <lastBuildDate>Fri, 20 Dec 2019 17:28:13 +0800</lastBuildDate>
+    
+	<atom:link href="https://www.awslop.com/tags/index.xml" rel="self" type="application/rss+xml" />
+    
+    
+    <item>
+      <title>scala</title>
+      <link>https://www.awslop.com/tags/scala/</link>
+      <pubDate>Fri, 20 Dec 2019 17:28:13 +0800</pubDate>
+      
+      <guid>https://www.awslop.com/tags/scala/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>Java</title>
+      <link>https://www.awslop.com/tags/java/</link>
+      <pubDate>Sun, 15 Dec 2019 17:28:13 +0800</pubDate>
+      
+      <guid>https://www.awslop.com/tags/java/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>JMH</title>
+      <link>https://www.awslop.com/tags/jmh/</link>
+      <pubDate>Sat, 16 Nov 2019 17:28:13 +0800</pubDate>
+      
+      <guid>https://www.awslop.com/tags/jmh/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>route</title>
+      <link>https://www.awslop.com/tags/route/</link>
+      <pubDate>Tue, 12 Nov 2019 13:13:13 +0800</pubDate>
+      
+      <guid>https://www.awslop.com/tags/route/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>JHM</title>
+      <link>https://www.awslop.com/tags/jhm/</link>
+      <pubDate>Sun, 10 Nov 2019 17:28:13 +0800</pubDate>
+      
+      <guid>https://www.awslop.com/tags/jhm/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>drools</title>
+      <link>https://www.awslop.com/tags/drools/</link>
+      <pubDate>Mon, 28 Oct 2019 17:28:13 +0800</pubDate>
+      
+      <guid>https://www.awslop.com/tags/drools/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>linux</title>
+      <link>https://www.awslop.com/tags/linux/</link>
+      <pubDate>Sun, 13 Oct 2019 22:28:13 +0800</pubDate>
+      
+      <guid>https://www.awslop.com/tags/linux/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>ffmpeg</title>
+      <link>https://www.awslop.com/tags/ffmpeg/</link>
+      <pubDate>Sat, 12 Oct 2019 17:28:13 +0800</pubDate>
+      
+      <guid>https://www.awslop.com/tags/ffmpeg/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>docker</title>
+      <link>https://www.awslop.com/tags/docker/</link>
+      <pubDate>Thu, 03 Oct 2019 17:28:13 +0800</pubDate>
+      
+      <guid>https://www.awslop.com/tags/docker/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>k8s</title>
+      <link>https://www.awslop.com/tags/k8s/</link>
+      <pubDate>Thu, 03 Oct 2019 17:28:13 +0800</pubDate>
+      
+      <guid>https://www.awslop.com/tags/k8s/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>kotlin</title>
+      <link>https://www.awslop.com/tags/kotlin/</link>
+      <pubDate>Wed, 11 Sep 2019 17:28:13 +0800</pubDate>
+      
+      <guid>https://www.awslop.com/tags/kotlin/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>hashids</title>
+      <link>https://www.awslop.com/tags/hashids/</link>
+      <pubDate>Tue, 03 Sep 2019 17:28:13 +0800</pubDate>
+      
+      <guid>https://www.awslop.com/tags/hashids/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>id</title>
+      <link>https://www.awslop.com/tags/id/</link>
+      <pubDate>Tue, 03 Sep 2019 17:28:13 +0800</pubDate>
+      
+      <guid>https://www.awslop.com/tags/id/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>shell</title>
+      <link>https://www.awslop.com/tags/shell/</link>
+      <pubDate>Wed, 07 Aug 2019 17:28:13 +0800</pubDate>
+      
+      <guid>https://www.awslop.com/tags/shell/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>mysql</title>
+      <link>https://www.awslop.com/tags/mysql/</link>
+      <pubDate>Fri, 02 Aug 2019 17:28:13 +0800</pubDate>
+      
+      <guid>https://www.awslop.com/tags/mysql/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>git</title>
+      <link>https://www.awslop.com/tags/git/</link>
+      <pubDate>Sat, 06 Jul 2019 16:13:13 +0800</pubDate>
+      
+      <guid>https://www.awslop.com/tags/git/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>gradle</title>
+      <link>https://www.awslop.com/tags/gradle/</link>
+      <pubDate>Fri, 21 Jun 2019 16:13:13 +0800</pubDate>
+      
+      <guid>https://www.awslop.com/tags/gradle/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>jvm</title>
+      <link>https://www.awslop.com/tags/jvm/</link>
+      <pubDate>Mon, 10 Jun 2019 17:28:13 +0800</pubDate>
+      
+      <guid>https://www.awslop.com/tags/jvm/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>life</title>
+      <link>https://www.awslop.com/tags/life/</link>
+      <pubDate>Wed, 05 Jun 2019 16:13:13 +0800</pubDate>
+      
+      <guid>https://www.awslop.com/tags/life/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>jdk</title>
+      <link>https://www.awslop.com/tags/jdk/</link>
+      <pubDate>Sat, 25 May 2019 17:28:13 +0800</pubDate>
+      
+      <guid>https://www.awslop.com/tags/jdk/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>elasticsearch</title>
+      <link>https://www.awslop.com/tags/elasticsearch/</link>
+      <pubDate>Fri, 10 May 2019 17:28:13 +0800</pubDate>
+      
+      <guid>https://www.awslop.com/tags/elasticsearch/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>spring-boot</title>
+      <link>https://www.awslop.com/tags/spring-boot/</link>
+      <pubDate>Tue, 09 Apr 2019 17:28:13 +0800</pubDate>
+      
+      <guid>https://www.awslop.com/tags/spring-boot/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>spring-security</title>
+      <link>https://www.awslop.com/tags/spring-security/</link>
+      <pubDate>Tue, 09 Apr 2019 17:28:13 +0800</pubDate>
+      
+      <guid>https://www.awslop.com/tags/spring-security/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>登录</title>
+      <link>https://www.awslop.com/tags/%E7%99%BB%E5%BD%95/</link>
+      <pubDate>Tue, 09 Apr 2019 17:28:13 +0800</pubDate>
+      
+      <guid>https://www.awslop.com/tags/%E7%99%BB%E5%BD%95/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>dubbo</title>
+      <link>https://www.awslop.com/tags/dubbo/</link>
+      <pubDate>Sat, 06 Apr 2019 17:28:13 +0800</pubDate>
+      
+      <guid>https://www.awslop.com/tags/dubbo/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>zipkin</title>
+      <link>https://www.awslop.com/tags/zipkin/</link>
+      <pubDate>Sat, 06 Apr 2019 17:28:13 +0800</pubDate>
+      
+      <guid>https://www.awslop.com/tags/zipkin/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>redis</title>
+      <link>https://www.awslop.com/tags/redis/</link>
+      <pubDate>Sat, 16 Mar 2019 17:28:13 +0800</pubDate>
+      
+      <guid>https://www.awslop.com/tags/redis/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>session</title>
+      <link>https://www.awslop.com/tags/session/</link>
+      <pubDate>Sat, 02 Mar 2019 17:28:13 +0800</pubDate>
+      
+      <guid>https://www.awslop.com/tags/session/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>springboot</title>
+      <link>https://www.awslop.com/tags/springboot/</link>
+      <pubDate>Sat, 02 Mar 2019 17:28:13 +0800</pubDate>
+      
+      <guid>https://www.awslop.com/tags/springboot/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>rocketmq</title>
+      <link>https://www.awslop.com/tags/rocketmq/</link>
+      <pubDate>Sat, 16 Feb 2019 17:28:13 +0800</pubDate>
+      
+      <guid>https://www.awslop.com/tags/rocketmq/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>分布式事务</title>
+      <link>https://www.awslop.com/tags/%E5%88%86%E5%B8%83%E5%BC%8F%E4%BA%8B%E5%8A%A1/</link>
+      <pubDate>Sat, 16 Feb 2019 17:28:13 +0800</pubDate>
+      
+      <guid>https://www.awslop.com/tags/%E5%88%86%E5%B8%83%E5%BC%8F%E4%BA%8B%E5%8A%A1/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>drone</title>
+      <link>https://www.awslop.com/tags/drone/</link>
+      <pubDate>Sun, 03 Feb 2019 17:28:13 +0800</pubDate>
+      
+      <guid>https://www.awslop.com/tags/drone/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>持续集成</title>
+      <link>https://www.awslop.com/tags/%E6%8C%81%E7%BB%AD%E9%9B%86%E6%88%90/</link>
+      <pubDate>Sun, 03 Feb 2019 17:28:13 +0800</pubDate>
+      
+      <guid>https://www.awslop.com/tags/%E6%8C%81%E7%BB%AD%E9%9B%86%E6%88%90/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>gc</title>
+      <link>https://www.awslop.com/tags/gc/</link>
+      <pubDate>Sat, 14 Jul 2018 15:13:13 +0800</pubDate>
+      
+      <guid>https://www.awslop.com/tags/gc/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>classloader</title>
+      <link>https://www.awslop.com/tags/classloader/</link>
+      <pubDate>Sun, 08 Jul 2018 15:13:13 +0800</pubDate>
+      
+      <guid>https://www.awslop.com/tags/classloader/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>proxy</title>
+      <link>https://www.awslop.com/tags/proxy/</link>
+      <pubDate>Tue, 05 Jun 2018 13:13:13 +0800</pubDate>
+      
+      <guid>https://www.awslop.com/tags/proxy/</guid>
+      <description></description>
+    </item>
+    
+  </channel>
+</rss>

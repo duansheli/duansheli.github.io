@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>kotlin on 断舍离的博客</title>
+    <link>https://www.awslop.com/tags/kotlin/</link>
+    <description>Recent content in kotlin on 断舍离的博客</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>zh-cn</language>
+    <lastBuildDate>Wed, 11 Sep 2019 17:28:13 +0800</lastBuildDate>
+    
+	<atom:link href="https://www.awslop.com/tags/kotlin/index.xml" rel="self" type="application/rss+xml" />
+    
+    
+    <item>
+      <title>kotlin空指针校验</title>
+      <link>https://www.awslop.com/2019/09/11/kotlin-null-check.html</link>
+      <pubDate>Wed, 11 Sep 2019 17:28:13 +0800</pubDate>
+      
+      <guid>https://www.awslop.com/2019/09/11/kotlin-null-check.html</guid>
+      <description>kotlin空指针校验 类型的说明 变量声明方式 val a: String=&amp;quot;tom&amp;quot; 通常会写成val a = &amp;quot;tom&amp;quot; 但还有另一种 val a: String?=&amp;quot;tom&amp;quot; 表示非空类型 1 2 3 4 5 6 fun test1() { val a1 = 2; // val a2 = ss as</description>
+    </item>
+    
+    <item>
+      <title>java程序显示名字修改</title>
+      <link>https://www.awslop.com/2019/06/11/java-process-name.html</link>
+      <pubDate>Mon, 11 Jun 2018 17:28:13 +0800</pubDate>
+      
+      <guid>https://www.awslop.com/2019/06/11/java-process-name.html</guid>
+      <description>简述 当系统种运行多个Java程序时， 在系统种都显示为java.exe进程 ，不易区分。 修改进程名 比如原先是 java -jar aa.jar 通过 cp $JAVA_HOME\bin\java $JAVA_HOME\bin\jaaa 然后 jaaa -jar aa.jar 这样在系统</description>
+    </item>
+    
+  </channel>
+</rss>

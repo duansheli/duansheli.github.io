@@ -1,0 +1,375 @@
+<!DOCTYPE html>
+<html lang="zh-cn">
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+  <title>DinD模式下通过容器构建镜像-方案 - 断舍离的博客</title>
+  <meta name="renderer" content="webkit" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+<meta name="theme-color" content="#f8f5ec" />
+<meta name="msapplication-navbutton-color" content="#f8f5ec">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="#f8f5ec">
+
+
+<meta name="author" content="duansheli" /><meta name="description" content="持续集成时，构建镜像后，通常会产生一些临时镜像
+很不docker，一点也不绿色
+使用DinD的方案可以解决该问题
+" /><meta name="keywords" content="scala, java, even" />
+
+
+
+
+
+
+<meta name="generator" content="Hugo 0.62.0 with theme even" />
+
+
+<link rel="canonical" href="https://www.awslop.com/2019/05/18/dind-build-image-with-cache.html" />
+<link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
+<link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
+<link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png">
+<link rel="manifest" href="/manifest.json">
+<link rel="mask-icon" href="/safari-pinned-tab.svg" color="#5bbad5">
+
+
+<link href="/dist/even.c2a46f00.min.css" rel="stylesheet">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3.1.20/dist/jquery.fancybox.min.css" integrity="sha256-7TyXnr2YU040zfSP+rEcz29ggW4j56/ujTPwjMzyqFY=" crossorigin="anonymous">
+
+
+<meta property="og:title" content="DinD模式下通过容器构建镜像-方案" />
+<meta property="og:description" content="持续集成时，构建镜像后，通常会产生一些临时镜像
+很不docker，一点也不绿色
+使用DinD的方案可以解决该问题" />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="https://www.awslop.com/2019/05/18/dind-build-image-with-cache.html" />
+<meta property="article:published_time" content="2019-05-18T17:28:13+08:00" />
+<meta property="article:modified_time" content="2019-05-18T17:28:13+08:00" />
+<meta itemprop="name" content="DinD模式下通过容器构建镜像-方案">
+<meta itemprop="description" content="持续集成时，构建镜像后，通常会产生一些临时镜像
+很不docker，一点也不绿色
+使用DinD的方案可以解决该问题">
+<meta itemprop="datePublished" content="2019-05-18T17:28:13&#43;08:00" />
+<meta itemprop="dateModified" content="2019-05-18T17:28:13&#43;08:00" />
+<meta itemprop="wordCount" content="1158">
+
+
+
+<meta itemprop="keywords" content="docker," /><meta name="twitter:card" content="summary"/>
+<meta name="twitter:title" content="DinD模式下通过容器构建镜像-方案"/>
+<meta name="twitter:description" content="持续集成时，构建镜像后，通常会产生一些临时镜像
+很不docker，一点也不绿色
+使用DinD的方案可以解决该问题"/>
+
+<!--[if lte IE 9]>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/classlist/1.1.20170427/classList.min.js"></script>
+<![endif]-->
+
+<!--[if lt IE 9]>
+  <script src="https://cdn.jsdelivr.net/npm/html5shiv@3.7.3/dist/html5shiv.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/respond.js@1.4.2/dest/respond.min.js"></script>
+<![endif]-->
+
+</head>
+<body>
+  <div id="mobile-navbar" class="mobile-navbar">
+  <div class="mobile-header-logo">
+    <a href="/" class="logo">Even</a>
+  </div>
+  <div class="mobile-navbar-icon">
+    <span></span>
+    <span></span>
+    <span></span>
+  </div>
+</div>
+<nav id="mobile-menu" class="mobile-menu slideout-menu">
+  <ul class="mobile-menu-list">
+    <a href="/">
+        <li class="mobile-menu-item">主页</li>
+      </a><a href="/post/">
+        <li class="mobile-menu-item">归档</li>
+      </a><a href="/tags/">
+        <li class="mobile-menu-item">标签</li>
+      </a><a href="/categories/">
+        <li class="mobile-menu-item">Categories</li>
+      </a>
+  </ul>
+</nav>
+  <div class="container" id="mobile-panel">
+    <header id="header" class="header">
+        <div class="logo-wrapper">
+  <a href="/" class="logo">Even</a>
+</div>
+
+<nav class="site-navbar">
+  <ul id="menu" class="menu">
+    <li class="menu-item">
+        <a class="menu-item-link" href="/">主页</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/post/">归档</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/tags/">标签</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/categories/">Categories</a>
+      </li>
+  </ul>
+</nav>
+    </header>
+
+    <main id="main" class="main">
+      <div class="content-wrapper">
+        <div id="content" class="content">
+          <article class="post">
+    
+    <header class="post-header">
+      <h1 class="post-title">DinD模式下通过容器构建镜像-方案</h1>
+
+      <div class="post-meta">
+        <span class="post-time"> 2019-05-18 </span>
+        
+          <span class="more-meta"> 约 1158 字 </span>
+          <span class="more-meta"> 预计阅读 3 分钟 </span>
+        
+      </div>
+    </header>
+
+    <div class="post-toc" id="post-toc">
+  <h2 class="post-toc-title">文章目录</h2>
+  <div class="post-toc-content always-active">
+    <nav id="TableOfContents">
+  <ul>
+    <li><a href="#31-">3.1. 要点</a></li>
+  </ul>
+</nav>
+  </div>
+</div>
+    <div class="post-content">
+      <p>持续集成时，构建镜像后，通常会产生一些临时镜像<br>
+很不docker，一点也不绿色<br>
+使用DinD的方案可以解决该问题</p>
+<h1 id="1-">1. 手动构建的流程</h1>
+<ul>
+<li>代码提交到git仓库中</li>
+<li>在宿主机git pull最新代码</li>
+<li>通过docker build 使用Dockerfile进行多阶段构建
+<ul>
+<li>编译(*.java -&gt; .class -&gt; jar包, *.go -&gt; 可执行文件)</li>
+<li>使用上一步生成的文件构建镜像</li>
+</ul>
+</li>
+<li>将构建好的镜像推送到镜像私服</li>
+<li>在服务器上将容器替换成最新镜像运行</li>
+</ul>
+<p>在采用多阶段构建时，会产生中间镜像，一个tag为none的镜像。<br>
+而N个构建任务则导致N个tag为none的镜像 另外from的镜像通常也占磁盘空间<br>
+使用<code>docker image</code>可看到这些无用的镜像</p>
+<p>容器的一个特色就是能绿色的运行软件<br>
+既然用了docker 自然希望构建的步骤也在容器中执行</p>
+<h1 id="2--">2. 容器内构建镜像-两种方式</h1>
+<p>docker是一个c/s架构的程序</p>
+<ul>
+<li>docker-daemon 类似于mysql-server</li>
+<li>docker-client 类似于mysql-client</li>
+</ul>
+<p>DinD (Docker in Docker)</p>
+<pre><code>在该容器内的cmd-docker类似普通的容器服务
+运行 docker images 显示空 就好像一个全新的系统
+docker run --privileged --name some-docker -d docker:stable-dind
+</code></pre>
+<p>DooD (Docker-outside-of-Docker)</p>
+<pre><code>在该容器内的cmd(docker ...)调用的是宿主机的docker-daemon
+如运行 docker images 显示的就是宿主机的镜像列表
+docker run -v /var/run/docker.sock:/var/run/docker.sock ...
+</code></pre>
+<p>采用DooD的方案较简单<br>
+缺点:<br>
+由于<code>docker build</code>实际上还是连的宿主机的 docker-daemon<br>
+宿主机最终还是会有这些tag为none的镜像 并没有达到绿色的目的<br>
+此时考虑下DinD则比较绿色</p>
+<p>使用DinD
+缺点:<br>
+由于每次都是启动一个新的容器去构建镜像 ， 新的容器意味着其环境下没有任何的镜像<br>
+如果有N个任务都是<code>from amazoncorretto:8u212</code> 这一镜像 则每次任务都是重新拉取镜像<br>
+这种情况下的确绿色了，但重复下载镜像很浪费时间</p>
+<h1 id="3-">3. 更好的方案</h1>
+<p>单独创建一个容器运行 docker-deamon 开放2375端口
+所有的构建任务执行docker命令（docker ps, docker pull&hellip;）时都会被发送到此容器内执行
+这样既可以绿色运行，也能使用镜像的缓存</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span><span class="lnt">14
+</span><span class="lnt">15
+</span><span class="lnt">16
+</span><span class="lnt">17
+</span><span class="lnt">18
+</span><span class="lnt">19
+</span><span class="lnt">20
+</span><span class="lnt">21
+</span><span class="lnt">22
+</span><span class="lnt">23
+</span><span class="lnt">24
+</span><span class="lnt">25
+</span><span class="lnt">26
+</span><span class="lnt">27
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-fallback" data-lang="fallback">容器交互图
++-------------------------------------------+
+|  host-node                                |
+|                                           |
+|                                           |
+|  +-------------------------------+        |
+|  |                               |        |
+|  | container: docker-deamon      |        |
+|  |  dind-mode                    |        |
+|  +-------------------------------+        |
+|                                           |
+|                 ^      ^      ^           |
+|                 |      |      |           |
+|                 |      |      |           |
+|  +--------------+---+  |      |           |
+|  | container: task1 |  |      |           |
+|  +------------------+  |      |           |
+|                        |      |           |
+|       +----------------+-+    |           |
+|       | container: task2 |    |           |
+|       +------------------+    |           |
+|                               |           |
+|               +---------------+--+        |
+|               | container: task3 |        |
+|               +------------------+        |
+|                                           |
++-------------------------------------------+
+</code></pre></td></tr></table>
+</div>
+</div><p>每次执行构建任务时，依然是在一个新的容器（taskN）中进行构建镜像<br>
+只不过容器task-N中运行的<code>docker build</code>命令，会被发送到docker-deamon容器中执行</p>
+<h2 id="31-">3.1. 要点</h2>
+<ul>
+<li>给docker-deamon配置镜像加速器</li>
+<li>给docker-deamon开放2375端口 以提供外部访问服务</li>
+<li>执行构建任务的容器(task) 的docker需要配置<code>export DOCKER_HOST=&quot;tcp://192.168.6.7:2375&quot; </code> 以让其连接docker-deamon容器</li>
+<li>如果docker-deamon部署在k8s上， 还可考虑设置多个pod 应对并发的构建任务</li>
+</ul>
+    </div>
+
+    <div class="post-copyright">
+  <p class="copyright-item">
+    <span class="item-title">文章作者</span>
+    <span class="item-content">duansheli</span>
+  </p>
+  <p class="copyright-item">
+    <span class="item-title">上次更新</span>
+    <span class="item-content">
+        2019-05-18
+        
+    </span>
+  </p>
+  
+  
+</div>
+<footer class="post-footer">
+      <div class="post-tags">
+          <a href="/tags/docker/">docker</a>
+          </div>
+      <nav class="post-nav">
+        <a class="prev" href="/2019/05/25/download-openjdk.html">
+            <i class="iconfont icon-left"></i>
+            <span class="prev-text nav-default">各类openjdk下载地址</span>
+            <span class="prev-text nav-mobile">上一篇</span>
+          </a>
+        <a class="next" href="/2019/05/17/thinking-autoboxing-implicit.html">
+            <span class="next-text nav-default">自动装箱拆箱在scala中的表现</span>
+            <span class="next-text nav-mobile">下一篇</span>
+            <i class="iconfont icon-right"></i>
+          </a>
+      </nav>
+    </footer>
+  </article>
+        </div>
+        
+
+  
+
+  
+
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="social-links">
+      <a href="https://github.com/duansheli/" class="iconfont icon-github" title="github"></a>
+  <a href="https://www.awslop.com/index.xml" type="application/rss+xml" class="iconfont icon-rss" title="rss"></a>
+</div>
+
+<div class="copyright">
+  <span class="power-by">
+    由 <a class="hexo-link" href="https://gohugo.io">Hugo</a> 强力驱动
+  </span>
+  <span class="division">|</span>
+  <span class="theme-info">
+    主题 - 
+    <a class="theme-link" href="https://github.com/olOwOlo/hugo-theme-even">Even</a>
+  </span>
+
+  
+
+  <span class="copyright-year">
+    &copy; 
+    2017 - 
+    2019
+    <span class="heart">
+      <i class="iconfont icon-heart"></i>
+    </span>
+    <span class="author">duansheli</span>
+  </span>
+</div>
+    </footer>
+
+    <div class="back-to-top" id="back-to-top">
+      <i class="iconfont icon-up"></i>
+    </div>
+  </div>
+  
+  <script src="https://cdn.jsdelivr.net/npm/jquery@3.2.1/dist/jquery.min.js" integrity="sha256-hwg4gsxgFZhOsEEamdOYGBf13FyQuiTwlAQgxVSNgt4=" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/slideout@1.0.1/dist/slideout.min.js" integrity="sha256-t+zJ/g8/KXIJMjSVQdnibt4dlaDxc9zXr/9oNPeWqdg=" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3.1.20/dist/jquery.fancybox.min.js" integrity="sha256-XVLffZaxoWfGUEbdzuLi7pwaUJv1cecsQJQqGLe7axY=" crossorigin="anonymous"></script>
+<script type="text/javascript" src="/dist/even.26188efa.min.js"></script>
+
+
+<script type="application/javascript">
+var doNotTrack = false;
+if (!doNotTrack) {
+	window.ga=window.ga||function(){(ga.q=ga.q||[]).push(arguments)};ga.l=+new Date;
+	ga('create', 'GTM-NPJC8J2', 'auto');
+	ga('set', 'anonymizeIp', true);
+	ga('send', 'pageview');
+}
+</script>
+<script async src='https://www.google-analytics.com/analytics.js'></script>
+
+
+
+
+
+
+
+</body>
+</html>

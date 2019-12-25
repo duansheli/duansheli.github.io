@@ -1,0 +1,658 @@
+<!DOCTYPE html>
+<html lang="zh-cn">
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+  <title>mysql物理备份与还原示例 - 断舍离的博客</title>
+  <meta name="renderer" content="webkit" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+<meta name="theme-color" content="#f8f5ec" />
+<meta name="msapplication-navbutton-color" content="#f8f5ec">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="#f8f5ec">
+
+
+<meta name="author" content="duansheli" /><meta name="description" content="主要流程 1. 先建库建表 插入测试数据 2. 以物理方式备份数据 --数据备份完毕 3. 创建新的mysql-server 然后建库建表 移除表空间 4.停止mysq" /><meta name="keywords" content="scala, java, even" />
+
+
+
+
+
+
+<meta name="generator" content="Hugo 0.62.0 with theme even" />
+
+
+<link rel="canonical" href="https://www.awslop.com/2019/08/02/k8s-cluster-setup-02.html" />
+<link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
+<link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
+<link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png">
+<link rel="manifest" href="/manifest.json">
+<link rel="mask-icon" href="/safari-pinned-tab.svg" color="#5bbad5">
+
+
+<link href="/dist/even.c2a46f00.min.css" rel="stylesheet">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3.1.20/dist/jquery.fancybox.min.css" integrity="sha256-7TyXnr2YU040zfSP+rEcz29ggW4j56/ujTPwjMzyqFY=" crossorigin="anonymous">
+
+
+<meta property="og:title" content="mysql物理备份与还原示例" />
+<meta property="og:description" content="主要流程 1. 先建库建表 插入测试数据 2. 以物理方式备份数据 --数据备份完毕 3. 创建新的mysql-server 然后建库建表 移除表空间 4.停止mysq" />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="https://www.awslop.com/2019/08/02/k8s-cluster-setup-02.html" />
+<meta property="article:published_time" content="2019-08-02T17:28:13+08:00" />
+<meta property="article:modified_time" content="2019-08-02T17:28:13+08:00" />
+<meta itemprop="name" content="mysql物理备份与还原示例">
+<meta itemprop="description" content="主要流程 1. 先建库建表 插入测试数据 2. 以物理方式备份数据 --数据备份完毕 3. 创建新的mysql-server 然后建库建表 移除表空间 4.停止mysq">
+<meta itemprop="datePublished" content="2019-08-02T17:28:13&#43;08:00" />
+<meta itemprop="dateModified" content="2019-08-02T17:28:13&#43;08:00" />
+<meta itemprop="wordCount" content="1387">
+
+
+
+<meta itemprop="keywords" content="mysql," /><meta name="twitter:card" content="summary"/>
+<meta name="twitter:title" content="mysql物理备份与还原示例"/>
+<meta name="twitter:description" content="主要流程 1. 先建库建表 插入测试数据 2. 以物理方式备份数据 --数据备份完毕 3. 创建新的mysql-server 然后建库建表 移除表空间 4.停止mysq"/>
+
+<!--[if lte IE 9]>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/classlist/1.1.20170427/classList.min.js"></script>
+<![endif]-->
+
+<!--[if lt IE 9]>
+  <script src="https://cdn.jsdelivr.net/npm/html5shiv@3.7.3/dist/html5shiv.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/respond.js@1.4.2/dest/respond.min.js"></script>
+<![endif]-->
+
+</head>
+<body>
+  <div id="mobile-navbar" class="mobile-navbar">
+  <div class="mobile-header-logo">
+    <a href="/" class="logo">Even</a>
+  </div>
+  <div class="mobile-navbar-icon">
+    <span></span>
+    <span></span>
+    <span></span>
+  </div>
+</div>
+<nav id="mobile-menu" class="mobile-menu slideout-menu">
+  <ul class="mobile-menu-list">
+    <a href="/">
+        <li class="mobile-menu-item">主页</li>
+      </a><a href="/post/">
+        <li class="mobile-menu-item">归档</li>
+      </a><a href="/tags/">
+        <li class="mobile-menu-item">标签</li>
+      </a><a href="/categories/">
+        <li class="mobile-menu-item">Categories</li>
+      </a>
+  </ul>
+</nav>
+  <div class="container" id="mobile-panel">
+    <header id="header" class="header">
+        <div class="logo-wrapper">
+  <a href="/" class="logo">Even</a>
+</div>
+
+<nav class="site-navbar">
+  <ul id="menu" class="menu">
+    <li class="menu-item">
+        <a class="menu-item-link" href="/">主页</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/post/">归档</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/tags/">标签</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/categories/">Categories</a>
+      </li>
+  </ul>
+</nav>
+    </header>
+
+    <main id="main" class="main">
+      <div class="content-wrapper">
+        <div id="content" class="content">
+          <article class="post">
+    
+    <header class="post-header">
+      <h1 class="post-title">mysql物理备份与还原示例</h1>
+
+      <div class="post-meta">
+        <span class="post-time"> 2019-08-02 </span>
+        
+          <span class="more-meta"> 约 1387 字 </span>
+          <span class="more-meta"> 预计阅读 3 分钟 </span>
+        
+      </div>
+    </header>
+
+    <div class="post-toc" id="post-toc">
+  <h2 class="post-toc-title">文章目录</h2>
+  <div class="post-toc-content always-active">
+    <nav id="TableOfContents">
+  <ul>
+    <li><a href="#heading-2">数据准备</a></li>
+    <li><a href="#heading-3">创建待备份数据并备份</a></li>
+    <li><a href="#heading-4">创建新数据库并还原数据</a></li>
+    <li><a href="#heading-5">清理测试环境</a></li>
+    <li><a href="#heading-6">测试脚本整理</a></li>
+  </ul>
+</nav>
+  </div>
+</div>
+    <div class="post-content">
+      <h1 id="heading">主要流程</h1>
+<pre><code>1. 先建库建表 插入测试数据
+2. 以物理方式备份数据
+--数据备份完毕
+
+3. 创建新的mysql-server 然后建库建表
+移除表空间 
+4.停止mysql服务 将备份的数据还原 
+重新载入表空间
+--数据还原完毕
+
+ubuntu 中通过docker 运行mysql
+</code></pre>
+<h1 id="heading-1">测试过程</h1>
+<h2 id="heading-2">数据准备</h2>
+<p>两个sql脚本 一个是建表 一个是测试数据</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span><span class="lnt">14
+</span><span class="lnt">15
+</span><span class="lnt">16
+</span><span class="lnt">17
+</span><span class="lnt">18
+</span><span class="lnt">19
+</span><span class="lnt">20
+</span><span class="lnt">21
+</span><span class="lnt">22
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-bash" data-lang="bash">cat &gt; /root/mytable.sql <span class="s">&lt;&lt; \EOF
+</span><span class="s">CREATE DATABASE `myshop` CHARACTER SET &#39;utf8mb4&#39; COLLATE &#39;utf8mb4_general_ci&#39;;
+</span><span class="s">use myshop;
+</span><span class="s">
+</span><span class="s">-- table
+</span><span class="s">
+</span><span class="s">DROP TABLE IF EXISTS `person`;
+</span><span class="s">CREATE TABLE `person`  (
+</span><span class="s">  `id` int(11) NOT NULL AUTO_INCREMENT,
+</span><span class="s">  `name` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL,
+</span><span class="s">  `age` int(4) NULL DEFAULT NULL,
+</span><span class="s">  PRIMARY KEY (`id`) USING BTREE
+</span><span class="s">) ENGINE = InnoDB AUTO_INCREMENT = 4 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci ROW_FORMAT = Compact;
+</span><span class="s">
+</span><span class="s">DROP TABLE IF EXISTS `product`;
+</span><span class="s">CREATE TABLE `product`  (
+</span><span class="s">  `id` int(11) NOT NULL AUTO_INCREMENT,
+</span><span class="s">  `name` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL,
+</span><span class="s">  `price` bigint(10) NULL DEFAULT NULL,
+</span><span class="s">  PRIMARY KEY (`id`) USING BTREE
+</span><span class="s">) ENGINE = InnoDB AUTO_INCREMENT = 4 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci ROW_FORMAT = Compact;
+</span><span class="s">EOF</span>
+</code></pre></td></tr></table>
+</div>
+</div><div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span><span class="lnt">14
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-bash" data-lang="bash">cat &gt; /root/oldData.sql <span class="s">&lt;&lt; \EOF
+</span><span class="s">use myshop;
+</span><span class="s">-- data
+</span><span class="s">
+</span><span class="s">INSERT INTO `person` VALUES (1, &#39;tom110&#39;, 11);
+</span><span class="s">INSERT INTO `person` VALUES (2, &#39;tom220&#39;, 22);
+</span><span class="s">INSERT INTO `person` VALUES (3, &#39;tom330&#39;, 33);
+</span><span class="s">
+</span><span class="s">
+</span><span class="s">INSERT INTO `product` VALUES (1, &#39;book-a&#39;, 61);
+</span><span class="s">INSERT INTO `product` VALUES (2, &#39;book-b&#39;, 62);
+</span><span class="s">INSERT INTO `product` VALUES (3, &#39;book-c&#39;, 63);
+</span><span class="s">EOF</span>
+
+</code></pre></td></tr></table>
+</div>
+</div><h2 id="heading-3">创建待备份数据并备份</h2>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span><span class="lnt">14
+</span><span class="lnt">15
+</span><span class="lnt">16
+</span><span class="lnt">17
+</span><span class="lnt">18
+</span><span class="lnt">19
+</span><span class="lnt">20
+</span><span class="lnt">21
+</span><span class="lnt">22
+</span><span class="lnt">23
+</span><span class="lnt">24
+</span><span class="lnt">25
+</span><span class="lnt">26
+</span><span class="lnt">27
+</span><span class="lnt">28
+</span><span class="lnt">29
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-bash" data-lang="bash">root@nu18-vm:/# docker run --name online -d -p 6606:3306 <span class="se">\</span>
+&gt; -e <span class="nv">MYSQL_ROOT_PASSWORD</span><span class="o">=</span><span class="m">123</span> <span class="se">\</span>
+&gt; mysql:5.6.34
+e1290b4a2256c801752e421954cd033c200ca7215f589343b88db3397b6edde2
+root@nu18-vm:/# <span class="c1">## ------ 稍等一会，等待mysql服务初始化</span>
+root@nu18-vm:/# <span class="c1">## ------ 依次执行脚本 建库建表 导入测试数据</span>
+root@nu18-vm:/# docker <span class="nb">exec</span> -i online sh -c <span class="s1">&#39;exec mysql -uroot -p123&#39;</span> &lt; /root/mytable.sql
+Warning: Using a password on the <span class="nb">command</span> line interface can be insecure.
+root@nu18-vm:/# docker <span class="nb">exec</span> -i online sh -c <span class="s1">&#39;exec mysql -uroot -p123&#39;</span> &lt; /root/oldData.sql
+Warning: Using a password on the <span class="nb">command</span> line interface can be insecure.
+
+root@nu18-vm:/# <span class="c1">## ------ 查看状态</span>
+root@nu18-vm:/# docker <span class="nb">exec</span> -it online sh -c <span class="s1">&#39;exec mysql -uroot -p123 myshop -e &#34;show tables;&#34;&#39;</span>
+Warning: Using a password on the <span class="nb">command</span> line interface can be insecure.
++------------------+
+<span class="p">|</span> Tables_in_myshop <span class="p">|</span>
++------------------+
+<span class="p">|</span> person           <span class="p">|</span>
+<span class="p">|</span> product          <span class="p">|</span>
++------------------+
+root@nu18-vm:/# docker <span class="nb">exec</span> -i online ls -al /var/lib/mysql/myshop
+total 228
+drwx------ <span class="m">2</span> mysql mysql  <span class="m">4096</span> Oct <span class="m">15</span> 15:55 .
+drwxr-xr-x <span class="m">5</span> mysql mysql  <span class="m">4096</span> Oct <span class="m">15</span> 15:55 ..
+-rw-rw---- <span class="m">1</span> mysql mysql    <span class="m">67</span> Oct <span class="m">15</span> 15:55 db.opt
+-rw-rw---- <span class="m">1</span> mysql mysql  <span class="m">8614</span> Oct <span class="m">15</span> 15:55 person.frm
+-rw-rw---- <span class="m">1</span> mysql mysql <span class="m">98304</span> Oct <span class="m">15</span> 15:55 person.ibd
+-rw-rw---- <span class="m">1</span> mysql mysql  <span class="m">8618</span> Oct <span class="m">15</span> 15:55 product.frm
+-rw-rw---- <span class="m">1</span> mysql mysql <span class="m">98304</span> Oct <span class="m">15</span> 15:55 product.ibd
+</code></pre></td></tr></table>
+</div>
+</div><p>备份数据</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-bash" data-lang="bash">root@nu18-vm:/# mkdir /root/test-backup-mysql
+root@nu18-vm:/# docker cp online:/var/lib/mysql/myshop /root/test-backup-mysql/
+</code></pre></td></tr></table>
+</div>
+</div><h2 id="heading-4">创建新数据库并还原数据</h2>
+<p>创建数据库</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span><span class="lnt">14
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-bash" data-lang="bash">root@nu18-vm:/# docker run --name offline -d -p 8806:3306 <span class="se">\</span>
+&gt; -e <span class="nv">MYSQL_ROOT_PASSWORD</span><span class="o">=</span><span class="m">456</span> <span class="se">\</span>
+&gt; mysql:5.6.34
+dd6b83d9504fe9e247ca67cf495ae38859437cf58277c6640e0edda9dc2050d8
+root@nu18-vm:/# docker <span class="nb">exec</span> -i offline sh -c <span class="s1">&#39;exec mysql -uroot -p456&#39;</span> &lt; /root/mytable.sql
+Warning: Using a password on the <span class="nb">command</span> line interface can be insecure.
+root@nu18-vm:/# docker <span class="nb">exec</span> -it offline sh -c <span class="s1">&#39;exec mysql -uroot -p456 myshop -e &#34;show tables;&#34;&#39;</span>
+Warning: Using a password on the <span class="nb">command</span> line interface can be insecure.
++------------------+
+<span class="p">|</span> Tables_in_myshop <span class="p">|</span>
++------------------+
+<span class="p">|</span> person           <span class="p">|</span>
+<span class="p">|</span> product          <span class="p">|</span>
++------------------+
+</code></pre></td></tr></table>
+</div>
+</div><p>先移除表空间， 再将备份的ibd文件复制进来</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-bash" data-lang="bash">root@nu18-vm:/# docker <span class="nb">exec</span> -it offline sh -c <span class="se">\</span>
+&gt; <span class="s1">&#39;exec mysql -uroot -p456 myshop -e &#34;alter table person discard tablespace; alter table product discard tablespace;&#34;&#39;</span>
+Warning: Using a password on the <span class="nb">command</span> line interface can be insecure.
+root@nu18-vm:/# docker <span class="nb">exec</span> -i offline ls -al /var/lib/mysql/myshop
+total 36
+drwx------ <span class="m">2</span> mysql mysql <span class="m">4096</span> Oct <span class="m">15</span> 16:15 .
+drwxr-xr-x <span class="m">5</span> mysql mysql <span class="m">4096</span> Oct <span class="m">15</span> 16:14 ..
+-rw-rw---- <span class="m">1</span> mysql mysql   <span class="m">67</span> Oct <span class="m">15</span> 16:14 db.opt
+-rw-rw---- <span class="m">1</span> mysql mysql <span class="m">8614</span> Oct <span class="m">15</span> 16:14 person.frm
+-rw-rw---- <span class="m">1</span> mysql mysql <span class="m">8618</span> Oct <span class="m">15</span> 16:14 product.frm
+root@nu18-vm:/# <span class="nb">cd</span> /root/test-backup-mysql/ <span class="o">&amp;&amp;</span> mkdir myshop-ibd <span class="o">&amp;&amp;</span> cp myshop/*.ibd myshop-ibd/
+root@nu18-vm:~/test-backup-mysql# docker cp /root/test-backup-mysql/myshop-ibd/. offline:/var/lib/mysql/myshop
+
+</code></pre></td></tr></table>
+</div>
+</div><p>重启mysql服务 重新加载表空间</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span><span class="lnt">5
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-bash" data-lang="bash">root@nu18-vm:~/test-backup-mysql# docker restart offline
+offline
+root@nu18-vm:~/test-backup-mysql# docker <span class="nb">exec</span> -it offline sh -c <span class="se">\</span>
+&gt; <span class="s1">&#39;exec mysql -uroot -p456 myshop -e &#34;alter table person import tablespace; alter table product import tablespace;&#34;&#39;</span>
+Warning: Using a password on the <span class="nb">command</span> line interface can be insecure.
+</code></pre></td></tr></table>
+</div>
+</div><p>检查还原情况</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span><span class="lnt">14
+</span><span class="lnt">15
+</span><span class="lnt">16
+</span><span class="lnt">17
+</span><span class="lnt">18
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-bash" data-lang="bash">root@nu18-vm:~/test-backup-mysql# docker <span class="nb">exec</span> -it offline sh -c <span class="s1">&#39;exec mysql -uroot -p456 myshop -e &#34;select * from person;&#34;&#39;</span>
+Warning: Using a password on the <span class="nb">command</span> line interface can be insecure.
++----+--------+------+
+<span class="p">|</span> id <span class="p">|</span> name   <span class="p">|</span> age  <span class="p">|</span>
++----+--------+------+
+<span class="p">|</span>  <span class="m">1</span> <span class="p">|</span> tom110 <span class="p">|</span>   <span class="m">11</span> <span class="p">|</span>
+<span class="p">|</span>  <span class="m">2</span> <span class="p">|</span> tom220 <span class="p">|</span>   <span class="m">22</span> <span class="p">|</span>
+<span class="p">|</span>  <span class="m">3</span> <span class="p">|</span> tom330 <span class="p">|</span>   <span class="m">33</span> <span class="p">|</span>
++----+--------+------+
+root@nu18-vm:~/test-backup-mysql# docker <span class="nb">exec</span> -it offline sh -c <span class="s1">&#39;exec mysql -uroot -p456 myshop -e &#34;select * from product;&#34;&#39;</span>
+Warning: Using a password on the <span class="nb">command</span> line interface can be insecure.
++----+--------+-------+
+<span class="p">|</span> id <span class="p">|</span> name   <span class="p">|</span> price <span class="p">|</span>
++----+--------+-------+
+<span class="p">|</span>  <span class="m">1</span> <span class="p">|</span> book-a <span class="p">|</span>    <span class="m">61</span> <span class="p">|</span>
+<span class="p">|</span>  <span class="m">2</span> <span class="p">|</span> book-b <span class="p">|</span>    <span class="m">62</span> <span class="p">|</span>
+<span class="p">|</span>  <span class="m">3</span> <span class="p">|</span> book-c <span class="p">|</span>    <span class="m">63</span> <span class="p">|</span>
++----+--------+-------+
+</code></pre></td></tr></table>
+</div>
+</div><h2 id="heading-5">清理测试环境</h2>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-bash" data-lang="bash">root@nu18-vm:~/test-backup-mysql# docker rm -f online offline
+online
+offline
+root@nu18-vm:~/test-backup-mysql# rm -rf  /root/test-backup-mysql
+</code></pre></td></tr></table>
+</div>
+</div><h2 id="heading-6">测试脚本整理</h2>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span><span class="lnt">14
+</span><span class="lnt">15
+</span><span class="lnt">16
+</span><span class="lnt">17
+</span><span class="lnt">18
+</span><span class="lnt">19
+</span><span class="lnt">20
+</span><span class="lnt">21
+</span><span class="lnt">22
+</span><span class="lnt">23
+</span><span class="lnt">24
+</span><span class="lnt">25
+</span><span class="lnt">26
+</span><span class="lnt">27
+</span><span class="lnt">28
+</span><span class="lnt">29
+</span><span class="lnt">30
+</span><span class="lnt">31
+</span><span class="lnt">32
+</span><span class="lnt">33
+</span><span class="lnt">34
+</span><span class="lnt">35
+</span><span class="lnt">36
+</span><span class="lnt">37
+</span><span class="lnt">38
+</span><span class="lnt">39
+</span><span class="lnt">40
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-bash" data-lang="bash"><span class="c1">#老mysql</span>
+docker run --name online -d -p 6606:3306 <span class="se">\</span>
+-e <span class="nv">MYSQL_ROOT_PASSWORD</span><span class="o">=</span><span class="m">123</span> <span class="se">\</span>
+mysql:5.6.34
+
+docker <span class="nb">exec</span> -i online sh -c <span class="s1">&#39;exec mysql -uroot -p123&#39;</span> &lt; /root/mytable.sql
+docker <span class="nb">exec</span> -i online sh -c <span class="s1">&#39;exec mysql -uroot -p123&#39;</span> &lt; /root/oldData.sql
+
+docker <span class="nb">exec</span> -it online sh -c <span class="s1">&#39;exec mysql -uroot -p123 myshop -e &#34;show tables;&#34;&#39;</span> 
+docker <span class="nb">exec</span> -i online ls -al /var/lib/mysql/myshop
+
+mkdir /root/test-backup-mysql
+docker cp online:/var/lib/mysql/myshop /root/test-backup-mysql/
+
+<span class="c1">#新mysql</span>
+docker run --name offline -d -p 8806:3306 <span class="se">\</span>
+-e <span class="nv">MYSQL_ROOT_PASSWORD</span><span class="o">=</span><span class="m">456</span> <span class="se">\</span>
+mysql:5.6.34
+
+docker <span class="nb">exec</span> -i offline sh -c <span class="s1">&#39;exec mysql -uroot -p456&#39;</span> &lt; /root/mytable.sql
+docker <span class="nb">exec</span> -i offline sh -c <span class="s1">&#39;exec mysql -uroot -p456 myshop -e &#34;show tables;&#34;&#39;</span> 
+docker <span class="nb">exec</span> -it offline sh -c <span class="se">\</span>
+<span class="s1">&#39;exec mysql -uroot -p456 myshop -e &#34;alter table person discard tablespace; alter table product discard tablespace;&#34;&#39;</span> 
+
+docker <span class="nb">exec</span> -i offline ls -al /var/lib/mysql/myshop
+
+<span class="c1">#还原数据</span>
+<span class="nb">cd</span> /root/test-backup-mysql/ <span class="o">&amp;&amp;</span> mkdir myshop-ibd <span class="o">&amp;&amp;</span> cp myshop/*.ibd myshop-ibd/
+docker cp /root/test-backup-mysql/myshop-ibd/. offline:/var/lib/mysql/myshop 
+
+docker restart offline
+
+docker <span class="nb">exec</span> -it offline sh -c <span class="se">\</span>
+<span class="s1">&#39;exec mysql -uroot -p456 myshop -e &#34;alter table person import tablespace; alter table product import tablespace;&#34;&#39;</span> 
+
+<span class="c1">#查看还原情况</span>
+docker <span class="nb">exec</span> -it offline sh -c <span class="s1">&#39;exec mysql -uroot -p456 myshop -e &#34;select * from person;&#34;&#39;</span> 
+docker <span class="nb">exec</span> -it offline sh -c <span class="s1">&#39;exec mysql -uroot -p456 myshop -e &#34;select * from product;&#34;&#39;</span> 
+docker rm -f online offline
+rm -rf  /root/test-backup-mysql
+</code></pre></td></tr></table>
+</div>
+</div>
+    </div>
+
+    <div class="post-copyright">
+  <p class="copyright-item">
+    <span class="item-title">文章作者</span>
+    <span class="item-content">duansheli</span>
+  </p>
+  <p class="copyright-item">
+    <span class="item-title">上次更新</span>
+    <span class="item-content">
+        2019-08-02
+        
+    </span>
+  </p>
+  
+  
+</div>
+<footer class="post-footer">
+      <div class="post-tags">
+          <a href="/tags/mysql/">mysql</a>
+          </div>
+      <nav class="post-nav">
+        <a class="prev" href="/2019/08/07/split-merge-file.html">
+            <i class="iconfont icon-left"></i>
+            <span class="prev-text nav-default">文件分割与合并</span>
+            <span class="prev-text nav-mobile">上一篇</span>
+          </a>
+        <a class="next" href="/2019/07/06/check-credit.html">
+            <span class="next-text nav-default">Github 最简单的认证方式 - Access Token[转]</span>
+            <span class="next-text nav-mobile">下一篇</span>
+            <i class="iconfont icon-right"></i>
+          </a>
+      </nav>
+    </footer>
+  </article>
+        </div>
+        
+
+  
+
+  
+
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="social-links">
+      <a href="https://github.com/duansheli/" class="iconfont icon-github" title="github"></a>
+  <a href="https://www.awslop.com/index.xml" type="application/rss+xml" class="iconfont icon-rss" title="rss"></a>
+</div>
+
+<div class="copyright">
+  <span class="power-by">
+    由 <a class="hexo-link" href="https://gohugo.io">Hugo</a> 强力驱动
+  </span>
+  <span class="division">|</span>
+  <span class="theme-info">
+    主题 - 
+    <a class="theme-link" href="https://github.com/olOwOlo/hugo-theme-even">Even</a>
+  </span>
+
+  
+
+  <span class="copyright-year">
+    &copy; 
+    2017 - 
+    2019
+    <span class="heart">
+      <i class="iconfont icon-heart"></i>
+    </span>
+    <span class="author">duansheli</span>
+  </span>
+</div>
+    </footer>
+
+    <div class="back-to-top" id="back-to-top">
+      <i class="iconfont icon-up"></i>
+    </div>
+  </div>
+  
+  <script src="https://cdn.jsdelivr.net/npm/jquery@3.2.1/dist/jquery.min.js" integrity="sha256-hwg4gsxgFZhOsEEamdOYGBf13FyQuiTwlAQgxVSNgt4=" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/slideout@1.0.1/dist/slideout.min.js" integrity="sha256-t+zJ/g8/KXIJMjSVQdnibt4dlaDxc9zXr/9oNPeWqdg=" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3.1.20/dist/jquery.fancybox.min.js" integrity="sha256-XVLffZaxoWfGUEbdzuLi7pwaUJv1cecsQJQqGLe7axY=" crossorigin="anonymous"></script>
+<script type="text/javascript" src="/dist/even.26188efa.min.js"></script>
+
+
+<script type="application/javascript">
+var doNotTrack = false;
+if (!doNotTrack) {
+	window.ga=window.ga||function(){(ga.q=ga.q||[]).push(arguments)};ga.l=+new Date;
+	ga('create', 'GTM-NPJC8J2', 'auto');
+	ga('set', 'anonymizeIp', true);
+	ga('send', 'pageview');
+}
+</script>
+<script async src='https://www.google-analytics.com/analytics.js'></script>
+
+
+
+
+
+
+
+</body>
+</html>

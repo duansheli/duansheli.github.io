@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>登录 on 断舍离的博客</title>
+    <link>https://www.awslop.com/tags/%E7%99%BB%E5%BD%95/</link>
+    <description>Recent content in 登录 on 断舍离的博客</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>zh-cn</language>
+    <lastBuildDate>Tue, 09 Apr 2019 17:28:13 +0800</lastBuildDate>
+    
+	<atom:link href="https://www.awslop.com/tags/%E7%99%BB%E5%BD%95/index.xml" rel="self" type="application/rss+xml" />
+    
+    
+    <item>
+      <title>使用spring security实现手机验证码登录</title>
+      <link>https://www.awslop.com/2019/04/09/spring-security-login-by-mobile-code.html</link>
+      <pubDate>Tue, 09 Apr 2019 17:28:13 +0800</pubDate>
+      
+      <guid>https://www.awslop.com/2019/04/09/spring-security-login-by-mobile-code.html</guid>
+      <description>目标 使用spring security添加两种登录方式 手机号，验证码登录 用户名 密码 图形验证码登录 运行环境 win10-x64 jdk-v1.8 springboot-v2.1.4 springsecurity-5.1.5 环境搭建 新建maven项目 配置</description>
+    </item>
+    
+    <item>
+      <title>登录流程的本质</title>
+      <link>https://www.awslop.com/2019/04/08/login-nature.html</link>
+      <pubDate>Mon, 08 Apr 2019 17:28:13 +0800</pubDate>
+      
+      <guid>https://www.awslop.com/2019/04/08/login-nature.html</guid>
+      <description>登录的本质 在登录页面 输入用户名与密码 后台核对无误后，将用户信息放入会话中 在访问需要登录的页面时，系统在会话中查找用户信息 找到了，就放行 没找到</description>
+    </item>
+    
+    <item>
+      <title>spring-session实现分布式会话</title>
+      <link>https://www.awslop.com/2019/03/02/spring-session-in-action.html</link>
+      <pubDate>Sat, 02 Mar 2019 17:28:13 +0800</pubDate>
+      
+      <guid>https://www.awslop.com/2019/03/02/spring-session-in-action.html</guid>
+      <description>&lt;p&gt;通过spring session实现分布式会话&lt;br&gt;
+集群下不会丢失会话 集中管理session&lt;/p&gt;</description>
+    </item>
+    
+  </channel>
+</rss>

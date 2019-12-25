@@ -1,0 +1,409 @@
+<!DOCTYPE html>
+<html lang="zh-cn">
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+  <title>docker的复制文件操作 - 断舍离的博客</title>
+  <meta name="renderer" content="webkit" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+<meta name="theme-color" content="#f8f5ec" />
+<meta name="msapplication-navbutton-color" content="#f8f5ec">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="#f8f5ec">
+
+
+<meta name="author" content="duansheli" /><meta name="description" content="容器与宿主机之间的文件复制示例
+" /><meta name="keywords" content="scala, java, even" />
+
+
+
+
+
+
+<meta name="generator" content="Hugo 0.62.0 with theme even" />
+
+
+<link rel="canonical" href="https://www.awslop.com/2019/09/09/docker-cp.html" />
+<link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
+<link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
+<link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png">
+<link rel="manifest" href="/manifest.json">
+<link rel="mask-icon" href="/safari-pinned-tab.svg" color="#5bbad5">
+
+
+<link href="/dist/even.c2a46f00.min.css" rel="stylesheet">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3.1.20/dist/jquery.fancybox.min.css" integrity="sha256-7TyXnr2YU040zfSP+rEcz29ggW4j56/ujTPwjMzyqFY=" crossorigin="anonymous">
+
+
+<meta property="og:title" content="docker的复制文件操作" />
+<meta property="og:description" content="容器与宿主机之间的文件复制示例" />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="https://www.awslop.com/2019/09/09/docker-cp.html" />
+<meta property="article:published_time" content="2019-06-02T17:28:13+08:00" />
+<meta property="article:modified_time" content="2019-06-02T17:28:13+08:00" />
+<meta itemprop="name" content="docker的复制文件操作">
+<meta itemprop="description" content="容器与宿主机之间的文件复制示例">
+<meta itemprop="datePublished" content="2019-06-02T17:28:13&#43;08:00" />
+<meta itemprop="dateModified" content="2019-06-02T17:28:13&#43;08:00" />
+<meta itemprop="wordCount" content="440">
+
+
+
+<meta itemprop="keywords" content="docker," /><meta name="twitter:card" content="summary"/>
+<meta name="twitter:title" content="docker的复制文件操作"/>
+<meta name="twitter:description" content="容器与宿主机之间的文件复制示例"/>
+
+<!--[if lte IE 9]>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/classlist/1.1.20170427/classList.min.js"></script>
+<![endif]-->
+
+<!--[if lt IE 9]>
+  <script src="https://cdn.jsdelivr.net/npm/html5shiv@3.7.3/dist/html5shiv.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/respond.js@1.4.2/dest/respond.min.js"></script>
+<![endif]-->
+
+</head>
+<body>
+  <div id="mobile-navbar" class="mobile-navbar">
+  <div class="mobile-header-logo">
+    <a href="/" class="logo">Even</a>
+  </div>
+  <div class="mobile-navbar-icon">
+    <span></span>
+    <span></span>
+    <span></span>
+  </div>
+</div>
+<nav id="mobile-menu" class="mobile-menu slideout-menu">
+  <ul class="mobile-menu-list">
+    <a href="/">
+        <li class="mobile-menu-item">主页</li>
+      </a><a href="/post/">
+        <li class="mobile-menu-item">归档</li>
+      </a><a href="/tags/">
+        <li class="mobile-menu-item">标签</li>
+      </a><a href="/categories/">
+        <li class="mobile-menu-item">Categories</li>
+      </a>
+  </ul>
+</nav>
+  <div class="container" id="mobile-panel">
+    <header id="header" class="header">
+        <div class="logo-wrapper">
+  <a href="/" class="logo">Even</a>
+</div>
+
+<nav class="site-navbar">
+  <ul id="menu" class="menu">
+    <li class="menu-item">
+        <a class="menu-item-link" href="/">主页</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/post/">归档</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/tags/">标签</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/categories/">Categories</a>
+      </li>
+  </ul>
+</nav>
+    </header>
+
+    <main id="main" class="main">
+      <div class="content-wrapper">
+        <div id="content" class="content">
+          <article class="post">
+    
+    <header class="post-header">
+      <h1 class="post-title">docker的复制文件操作</h1>
+
+      <div class="post-meta">
+        <span class="post-time"> 2019-06-02 </span>
+        
+          <span class="more-meta"> 约 440 字 </span>
+          <span class="more-meta"> 预计阅读 1 分钟 </span>
+        
+      </div>
+    </header>
+
+    <div class="post-toc" id="post-toc">
+  <h2 class="post-toc-title">文章目录</h2>
+  <div class="post-toc-content always-active">
+    <nav id="TableOfContents">
+  <ul>
+    <li><a href="#heading-1">创建场景</a></li>
+    <li><a href="#cp">cp命令</a></li>
+    <li><a href="#tar">tar方式</a></li>
+  </ul>
+</nav>
+  </div>
+</div>
+    <div class="post-content">
+      <p>容器与宿主机之间的文件复制示例</p>
+<h1 id="heading">实测</h1>
+<p>主要是docker cp命令</p>
+<h2 id="heading-1">创建场景</h2>
+<p>在宿主机创建3个文件<br>
+启动两个容器 red1, red2</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span><span class="lnt">5
+</span><span class="lnt">6
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-bash" data-lang="bash">root@nu18-vm:~# <span class="nb">cd</span> /usr/local/games 
+root@nu18-vm:/usr/local/games# touch /usr/local/games/<span class="o">{</span>aa,bb.txt,cc.txt<span class="o">}</span>
+root@nu18-vm:/usr/local/games# docker run -d --name red1 redis
+ea7854c0c552567630d318f34e5727b7d14a94f76fde85d27539c359f24c8cae
+root@nu18-vm:/usr/local/games# docker run -d --name red2 redis
+4255fa735d906862cfe83659f2968846c8023b23b6d5fb7ea5827c831c825dfa
+</code></pre></td></tr></table>
+</div>
+</div><h2 id="cp">cp命令</h2>
+<p>从容器拷贝文件到宿主机<br>
+从宿主机拷贝文件到容器 用来测试文件复制</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span><span class="lnt">14
+</span><span class="lnt">15
+</span><span class="lnt">16
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-bash" data-lang="bash">root@nu18-vm:/usr/local/games# docker cp red1:/usr/local/bin/redis-cli ./
+root@nu18-vm:/usr/local/games# ls
+aa  bb.txt  cc.txt  redis-cli
+root@nu18-vm:/usr/local/games# docker cp aa red1:/tmp
+root@nu18-vm:/usr/local/games# docker <span class="nb">exec</span> -it red1 ls /tmp
+aa
+
+root@nu18-vm:/usr/local/games# docker cp /usr/local/games/. red1:/mnt
+root@nu18-vm:/usr/local/games# docker <span class="nb">exec</span> -it red1 ls /mnt
+aa  bb.txt  cc.txt
+root@nu18-vm:/usr/local/games#
+root@nu18-vm:/usr/local/games# docker cp /usr/local/games red1:/mnt
+root@nu18-vm:/usr/local/games# docker <span class="nb">exec</span> -it red1 ls /mnt
+aa  bb.txt  cc.txt  games
+root@nu18-vm:/usr/local/games# docker <span class="nb">exec</span> -it red1 ls /mnt/games
+aa  bb.txt  cc.txt
+</code></pre></td></tr></table>
+</div>
+</div><h2 id="tar">tar方式</h2>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span><span class="lnt">14
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-bash" data-lang="bash">root@nu18-vm:/usr/local/games# tar -c . <span class="p">|</span> docker cp - red2:/tmp
+root@nu18-vm:/usr/local/games# docker <span class="nb">exec</span> -it red2 ls /tmp
+aa  bb.txt  cc.txt
+
+root@nu18-vm:/usr/local/games#
+root@nu18-vm:/usr/local/games# tar -c /usr/local/games <span class="p">|</span> docker cp - red2:/mnt
+tar: 从成员名中删除开头的“/”
+root@nu18-vm:/usr/local/games# docker <span class="nb">exec</span> -it red2 ls /mnt/usr/local/games
+aa  bb.txt  cc.txt
+
+root@nu18-vm:/usr/local/games#
+root@nu18-vm:/usr/local/games# tar -c -C /usr/local/games . <span class="p">|</span> docker cp - red2:/mnt
+root@nu18-vm:/usr/local/games# docker <span class="nb">exec</span> -it red2 ls /mnt
+aa  bb.txt  cc.txt  usr
+</code></pre></td></tr></table>
+</div>
+</div><h1 id="heading-2">命令的过滤版</h1>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span><span class="lnt">14
+</span><span class="lnt">15
+</span><span class="lnt">16
+</span><span class="lnt">17
+</span><span class="lnt">18
+</span><span class="lnt">19
+</span><span class="lnt">20
+</span><span class="lnt">21
+</span><span class="lnt">22
+</span><span class="lnt">23
+</span><span class="lnt">24
+</span><span class="lnt">25
+</span><span class="lnt">26
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-bash" data-lang="bash">环境准备
+docker run -d --name red1 redis
+docker run -d --name red2 redis
+<span class="nb">cd</span> /usr/local/games 
+touch /usr/local/games/<span class="o">{</span>aa,bb.txt,cc.txt<span class="o">}</span>
+
+cp直接拷贝
+docker cp red:/usr/local/bin/redis-cli ./
+docker cp aa red1:/tmp
+docker <span class="nb">exec</span> -it red ls /tmp
+
+docker cp /usr/local/games/. red1:/mnt
+docker <span class="nb">exec</span> -it red1 ls /mnt
+docker cp /usr/local/games red1:/mnt
+docker <span class="nb">exec</span> -it red1 ls /mnt
+docker <span class="nb">exec</span> -it red1 ls /mnt/games
+
+采用tar拷贝
+tar -c . <span class="p">|</span> docker cp - red2:/tmp
+docker <span class="nb">exec</span> -it red2 ls /tmp
+
+tar -c /usr/local/games <span class="p">|</span> docker cp - red2:/mnt
+docker <span class="nb">exec</span> -it red2 ls /mnt/usr/local/games
+
+tar -c -C /usr/local/games . <span class="p">|</span> docker cp - red2:/mnt
+docker <span class="nb">exec</span> -it red2 ls /mnt
+</code></pre></td></tr></table>
+</div>
+</div>
+    </div>
+
+    <div class="post-copyright">
+  <p class="copyright-item">
+    <span class="item-title">文章作者</span>
+    <span class="item-content">duansheli</span>
+  </p>
+  <p class="copyright-item">
+    <span class="item-title">上次更新</span>
+    <span class="item-content">
+        2019-06-02
+        
+    </span>
+  </p>
+  
+  
+</div>
+<footer class="post-footer">
+      <div class="post-tags">
+          <a href="/tags/docker/">docker</a>
+          </div>
+      <nav class="post-nav">
+        <a class="prev" href="/2019/06/05/check-credit.html">
+            <i class="iconfont icon-left"></i>
+            <span class="prev-text nav-default">查查查-各类信用查询</span>
+            <span class="prev-text nav-mobile">上一篇</span>
+          </a>
+        <a class="next" href="/2019/06/05/relax.html">
+            <span class="next-text nav-default">休闲娱乐</span>
+            <span class="next-text nav-mobile">下一篇</span>
+            <i class="iconfont icon-right"></i>
+          </a>
+      </nav>
+    </footer>
+  </article>
+        </div>
+        
+
+  
+
+  
+
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="social-links">
+      <a href="https://github.com/duansheli/" class="iconfont icon-github" title="github"></a>
+  <a href="https://www.awslop.com/index.xml" type="application/rss+xml" class="iconfont icon-rss" title="rss"></a>
+</div>
+
+<div class="copyright">
+  <span class="power-by">
+    由 <a class="hexo-link" href="https://gohugo.io">Hugo</a> 强力驱动
+  </span>
+  <span class="division">|</span>
+  <span class="theme-info">
+    主题 - 
+    <a class="theme-link" href="https://github.com/olOwOlo/hugo-theme-even">Even</a>
+  </span>
+
+  
+
+  <span class="copyright-year">
+    &copy; 
+    2017 - 
+    2019
+    <span class="heart">
+      <i class="iconfont icon-heart"></i>
+    </span>
+    <span class="author">duansheli</span>
+  </span>
+</div>
+    </footer>
+
+    <div class="back-to-top" id="back-to-top">
+      <i class="iconfont icon-up"></i>
+    </div>
+  </div>
+  
+  <script src="https://cdn.jsdelivr.net/npm/jquery@3.2.1/dist/jquery.min.js" integrity="sha256-hwg4gsxgFZhOsEEamdOYGBf13FyQuiTwlAQgxVSNgt4=" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/slideout@1.0.1/dist/slideout.min.js" integrity="sha256-t+zJ/g8/KXIJMjSVQdnibt4dlaDxc9zXr/9oNPeWqdg=" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3.1.20/dist/jquery.fancybox.min.js" integrity="sha256-XVLffZaxoWfGUEbdzuLi7pwaUJv1cecsQJQqGLe7axY=" crossorigin="anonymous"></script>
+<script type="text/javascript" src="/dist/even.26188efa.min.js"></script>
+
+
+<script type="application/javascript">
+var doNotTrack = false;
+if (!doNotTrack) {
+	window.ga=window.ga||function(){(ga.q=ga.q||[]).push(arguments)};ga.l=+new Date;
+	ga('create', 'GTM-NPJC8J2', 'auto');
+	ga('set', 'anonymizeIp', true);
+	ga('send', 'pageview');
+}
+</script>
+<script async src='https://www.google-analytics.com/analytics.js'></script>
+
+
+
+
+
+
+
+</body>
+</html>

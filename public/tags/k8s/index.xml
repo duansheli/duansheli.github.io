@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>k8s on 断舍离的博客</title>
+    <link>https://www.awslop.com/tags/k8s/</link>
+    <description>Recent content in k8s on 断舍离的博客</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>zh-cn</language>
+    <lastBuildDate>Thu, 03 Oct 2019 17:28:13 +0800</lastBuildDate>
+    
+	<atom:link href="https://www.awslop.com/tags/k8s/index.xml" rel="self" type="application/rss+xml" />
+    
+    
+    <item>
+      <title>k8s的相关项目</title>
+      <link>https://www.awslop.com/2019/10/03/k8s-cluster-setup-03.html</link>
+      <pubDate>Thu, 03 Oct 2019 17:28:13 +0800</pubDate>
+      
+      <guid>https://www.awslop.com/2019/10/03/k8s-cluster-setup-03.html</guid>
+      <description>其他厂商版本 Canonical 公司为自家的 ubuntu 提供的 适配版 k8s 单机版 MicroK8s 集群版 Charmed Kubernetes rancher公司 https://github.com/rancher/k3s/releases 工具 helm 包管理工具 就好比360软件管家、yum、apt等软件 可</description>
+    </item>
+    
+    <item>
+      <title>k8s-外部访问ingress</title>
+      <link>https://www.awslop.com/2019/06/27/k8s-ingress-controller.html</link>
+      <pubDate>Thu, 27 Jun 2019 17:28:13 +0800</pubDate>
+      
+      <guid>https://www.awslop.com/2019/06/27/k8s-ingress-controller.html</guid>
+      <description>对外暴露服务 通常使用ingress作为前置入口 那如何配置 ingress-controller 与外界通信？ LoadBalancer 如果有云厂商的LoadBalancer， 那自然方便 各云厂商的实现可能</description>
+    </item>
+    
+    <item>
+      <title>k8s搭建集群3-异常解决</title>
+      <link>https://www.awslop.com/2019/01/03/k8s-cluster-setup-03.html</link>
+      <pubDate>Thu, 03 Jan 2019 17:28:13 +0800</pubDate>
+      
+      <guid>https://www.awslop.com/2019/01/03/k8s-cluster-setup-03.html</guid>
+      <description>出错恢复 没遇到报错可以跳过 安装过程中可能有一些异常 查看所有的pod分布情况 1 kubectl get pods -n kube-system -o wide -l k8s-app=kubernetes-dashboard 查看失败的镜像 1 2 imageName=`kubectl describe -n kube-system pod -l k8s-app=kubernetes-dashboard | grep Image: | awk &amp;#39;{print $2</description>
+    </item>
+    
+    <item>
+      <title>k8s集群搭建-02</title>
+      <link>https://www.awslop.com/2019/01/02/k8s-cluster-setup-02.html</link>
+      <pubDate>Wed, 02 Jan 2019 17:28:13 +0800</pubDate>
+      
+      <guid>https://www.awslop.com/2019/01/02/k8s-cluster-setup-02.html</guid>
+      <description>&lt;p&gt;k8s集群好了 再添加一些相关的组件&lt;br&gt;
+dashboard helm helm的webui&lt;/p&gt;</description>
+    </item>
+    
+    <item>
+      <title>k8s集群搭建-01</title>
+      <link>https://www.awslop.com/2019/01/01/k8s-cluster-setup-01.html</link>
+      <pubDate>Tue, 01 Jan 2019 17:28:13 +0800</pubDate>
+      
+      <guid>https://www.awslop.com/2019/01/01/k8s-cluster-setup-01.html</guid>
+      <description>1. 目标 通过虚拟机搭建一个kubernetes集群 共3个节点基于ubuntu 2. 组件安装规划 宿主机: win10 vmware-v15 ubuntu=v16.04.1 docker=v18.06 k8s=v1.12.6 3个虚拟机节点=master,no</description>
+    </item>
+    
+  </channel>
+</rss>

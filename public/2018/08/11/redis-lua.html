@@ -1,0 +1,968 @@
+<!DOCTYPE html>
+<html lang="zh-cn">
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+  <title>redis使用lua脚本 - 断舍离的博客</title>
+  <meta name="renderer" content="webkit" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+<meta name="theme-color" content="#f8f5ec" />
+<meta name="msapplication-navbutton-color" content="#f8f5ec">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="#f8f5ec">
+
+
+<meta name="author" content="duansheli" /><meta name="description" content="脚本 1 hello lua 1 2 3 4 5 6 cat &amp;gt; test01.lua &amp;lt;&amp;lt;EOF local msg = &amp;#34;Hello, lua&amp;#34; return msg EOF redis-cli EVAL &amp;#34;$(cat test01.lua)&amp;#34; 0 使用参数 数字2声明keys有2个 后面跟着两个keys参数 之后就是argv参数 1 2 3 4" /><meta name="keywords" content="scala, java, even" />
+
+
+
+
+
+
+<meta name="generator" content="Hugo 0.62.0 with theme even" />
+
+
+<link rel="canonical" href="https://www.awslop.com/2018/08/11/redis-lua.html" />
+<link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
+<link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
+<link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png">
+<link rel="manifest" href="/manifest.json">
+<link rel="mask-icon" href="/safari-pinned-tab.svg" color="#5bbad5">
+
+
+<link href="/dist/even.c2a46f00.min.css" rel="stylesheet">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3.1.20/dist/jquery.fancybox.min.css" integrity="sha256-7TyXnr2YU040zfSP+rEcz29ggW4j56/ujTPwjMzyqFY=" crossorigin="anonymous">
+
+
+<meta property="og:title" content="redis使用lua脚本" />
+<meta property="og:description" content="脚本 1 hello lua 1 2 3 4 5 6 cat &gt; test01.lua &lt;&lt;EOF local msg = &#34;Hello, lua&#34; return msg EOF redis-cli EVAL &#34;$(cat test01.lua)&#34; 0 使用参数 数字2声明keys有2个 后面跟着两个keys参数 之后就是argv参数 1 2 3 4" />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="https://www.awslop.com/2018/08/11/redis-lua.html" />
+<meta property="article:published_time" content="2018-08-11T13:13:13+08:00" />
+<meta property="article:modified_time" content="2018-08-11T13:13:13+08:00" />
+<meta itemprop="name" content="redis使用lua脚本">
+<meta itemprop="description" content="脚本 1 hello lua 1 2 3 4 5 6 cat &gt; test01.lua &lt;&lt;EOF local msg = &#34;Hello, lua&#34; return msg EOF redis-cli EVAL &#34;$(cat test01.lua)&#34; 0 使用参数 数字2声明keys有2个 后面跟着两个keys参数 之后就是argv参数 1 2 3 4">
+<meta itemprop="datePublished" content="2018-08-11T13:13:13&#43;08:00" />
+<meta itemprop="dateModified" content="2018-08-11T13:13:13&#43;08:00" />
+<meta itemprop="wordCount" content="2646">
+
+
+
+<meta itemprop="keywords" content="redis," /><meta name="twitter:card" content="summary"/>
+<meta name="twitter:title" content="redis使用lua脚本"/>
+<meta name="twitter:description" content="脚本 1 hello lua 1 2 3 4 5 6 cat &gt; test01.lua &lt;&lt;EOF local msg = &#34;Hello, lua&#34; return msg EOF redis-cli EVAL &#34;$(cat test01.lua)&#34; 0 使用参数 数字2声明keys有2个 后面跟着两个keys参数 之后就是argv参数 1 2 3 4"/>
+
+<!--[if lte IE 9]>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/classlist/1.1.20170427/classList.min.js"></script>
+<![endif]-->
+
+<!--[if lt IE 9]>
+  <script src="https://cdn.jsdelivr.net/npm/html5shiv@3.7.3/dist/html5shiv.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/respond.js@1.4.2/dest/respond.min.js"></script>
+<![endif]-->
+
+</head>
+<body>
+  <div id="mobile-navbar" class="mobile-navbar">
+  <div class="mobile-header-logo">
+    <a href="/" class="logo">Even</a>
+  </div>
+  <div class="mobile-navbar-icon">
+    <span></span>
+    <span></span>
+    <span></span>
+  </div>
+</div>
+<nav id="mobile-menu" class="mobile-menu slideout-menu">
+  <ul class="mobile-menu-list">
+    <a href="/">
+        <li class="mobile-menu-item">主页</li>
+      </a><a href="/post/">
+        <li class="mobile-menu-item">归档</li>
+      </a><a href="/tags/">
+        <li class="mobile-menu-item">标签</li>
+      </a><a href="/categories/">
+        <li class="mobile-menu-item">Categories</li>
+      </a>
+  </ul>
+</nav>
+  <div class="container" id="mobile-panel">
+    <header id="header" class="header">
+        <div class="logo-wrapper">
+  <a href="/" class="logo">Even</a>
+</div>
+
+<nav class="site-navbar">
+  <ul id="menu" class="menu">
+    <li class="menu-item">
+        <a class="menu-item-link" href="/">主页</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/post/">归档</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/tags/">标签</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/categories/">Categories</a>
+      </li>
+  </ul>
+</nav>
+    </header>
+
+    <main id="main" class="main">
+      <div class="content-wrapper">
+        <div id="content" class="content">
+          <article class="post">
+    
+    <header class="post-header">
+      <h1 class="post-title">redis使用lua脚本</h1>
+
+      <div class="post-meta">
+        <span class="post-time"> 2018-08-11 </span>
+        
+          <span class="more-meta"> 约 2646 字 </span>
+          <span class="more-meta"> 预计阅读 6 分钟 </span>
+        
+      </div>
+    </header>
+
+    <div class="post-toc" id="post-toc">
+  <h2 class="post-toc-title">文章目录</h2>
+  <div class="post-toc-content always-active">
+    <nav id="TableOfContents">
+  <ul>
+    <li><a href="#hello-lua">hello lua</a></li>
+    <li><a href="#heading-1">使用参数</a></li>
+    <li><a href="#keysargv">参数KEYS与ARGV区别</a></li>
+    <li><a href="#heading-2">缓存脚本</a></li>
+    <li><a href="#heading-3">原子性</a></li>
+    <li><a href="#heading-4">调试脚本</a>
+      <ul>
+        <li><a href="#heading-5">同步、异步</a></li>
+        <li><a href="#heading-6">更多参数</a></li>
+      </ul>
+    </li>
+    <li><a href="#heading-7">数据类型转换</a>
+      <ul>
+        <li><a href="#heading-8">数据类型转换规则</a></li>
+      </ul>
+    </li>
+    <li><a href="#redislua">redis中提供的lua包</a></li>
+  </ul>
+</nav>
+  </div>
+</div>
+    <div class="post-content">
+      <h1 id="heading">脚本</h1>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-fallback" data-lang="fallback">
+</code></pre></td></tr></table>
+</div>
+</div><h2 id="hello-lua">hello lua</h2>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span><span class="lnt">5
+</span><span class="lnt">6
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-fallback" data-lang="fallback">cat &gt; test01.lua &lt;&lt;EOF
+local msg = &#34;Hello, lua&#34;
+return msg  
+EOF
+
+redis-cli EVAL &#34;$(cat test01.lua)&#34; 0 
+</code></pre></td></tr></table>
+</div>
+</div><h2 id="heading-1">使用参数</h2>
+<p>数字2声明keys有2个 后面跟着两个keys参数<br>
+之后就是argv参数</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span><span class="lnt">5
+</span><span class="lnt">6
+</span><span class="lnt">7
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-fallback" data-lang="fallback">cat &gt; test02.lua &lt;&lt;EOF
+local link_id = redis.call(&#34;INCR&#34;, KEY[1])
+redis.call(&#34;HSET&#34;, KEYS[2], link_id, ARGV[1]+1)
+return msg  
+EOF
+
+redis-cli EVAL &#34;$(cat test02.lua)&#34; 0 req-count tom 
+</code></pre></td></tr></table>
+</div>
+</div><p>不用写key个数</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-fallback" data-lang="fallback">cat &gt; test03.lua &lt;&lt;EOF
+local keys, values = KEYS, ARGV
+   for i, k in ipairs(keys) do
+      redis.call(&#39;SET&#39;, k, values[i])
+   end
+return &#34;added 数量 == &#34; ..tostring(table.getn(keys)) ;
+EOF
+
+
+redis-cli --raw --eval test03.lua t1 t2 , apple milk
+#--raw 保证中文能正常显示
+</code></pre></td></tr></table>
+</div>
+</div><p>key和argv的数量任意， 不是必须个数相同</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-fallback" data-lang="fallback">eval &#34;return {KEYS[1],KEYS[2],ARGV[1],ARGV[2],ARGV[3]}&#34; 2 k1 k2 a01 a02 a03
+</code></pre></td></tr></table>
+</div>
+</div><div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span><span class="lnt">14
+</span><span class="lnt">15
+</span><span class="lnt">16
+</span><span class="lnt">17
+</span><span class="lnt">18
+</span><span class="lnt">19
+</span><span class="lnt">20
+</span><span class="lnt">21
+</span><span class="lnt">22
+</span><span class="lnt">23
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-fallback" data-lang="fallback">cat &gt; test04.lua &lt;&lt;EOF
+FUNCTION LIMIT_API_CALL(ip)
+ts = CURRENT_UNIX_TIME()
+keyname = ip+&#34;:&#34;+ts
+current = GET(keyname)
+
+IF current != NULL AND current &gt; 10 THEN
+    ERROR &#34;too many requests per second&#34;
+END
+
+IF current == NULL THEN
+    MULTI
+        INCR(keyname, 1)
+        EXPIRE(keyname, 1)
+    EXEC
+ELSE
+    INCR(keyname, 1)
+END
+
+PERFORM_API_CALL()
+EOF
+
+redis-cli EVAL &#34;$(cat test04.lua)&#34; 1 aa
+</code></pre></td></tr></table>
+</div>
+</div><h2 id="keysargv">参数KEYS与ARGV区别</h2>
+<p>KEYS 与 ARGV 有啥区别么
+所有的 key 会被hash计算，以决定在哪个节点执行该脚本。</p>
+<p>执行执行lua脚本时
+如果是单节点的redis ， 那没啥可想的。
+但如果是个redis集群时， java程序调用的脚本会送去哪个节点执行呢 
+key参数就是用来计算hash槽的</p>
+<p>在向redis中存取数据， redis会对key做hash，来决定数据存在哪个节点上。<br>
+而在使用lua脚本时， 这段命令</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-fallback" data-lang="fallback">redis-cli EVAL &#34;return {KEYS[1],KEYS[2]}&#34; 2 aa bb
+</code></pre></td></tr></table>
+</div>
+</div><p>如果碰巧 redis对 aa, bb计算hash后认为二者会存放在同一个节点上<br>
+则可顺利执行， 如果计算hash后认为二者会放在不同的redis节点， 则报错</p>
+<p>而如果某脚本没有key参数， 并且脚本内操作某个key，
+并且当前执行脚本的节点不是存放该key的节点， 又会报错。</p>
+<p>解决方案</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-fallback" data-lang="fallback">redis-cli EVAL &#34;return {KEYS[1],KEYS[2]}&#34; 2 aa{p001} bb{p001}
+</code></pre></td></tr></table>
+</div>
+</div><p>原先是使用aa 或 bb来计算脚本在哪个节点执行<br>
+在key中添加{p001}后， 会使用 p001 来计算hash槽 ，redis存数据也是用的该操作。</p>
+<h2 id="heading-2">缓存脚本</h2>
+<ul>
+<li>eval</li>
+<li>evalsha</li>
+<li>script load</li>
+</ul>
+<p>在redis中缓存脚本， 可降低每次调用时的网络传输开销。</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span><span class="lnt">5
+</span><span class="lnt">6
+</span><span class="lnt">7
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-bash" data-lang="bash">root@14f65f9493f9:/data# redis-cli
+127.0.0.1:6379&gt; <span class="nb">eval</span> <span class="s2">&#34;return &#39;hello lua&#39; &#34;</span> 0
+<span class="s2">&#34;hello lua&#34;</span>
+127.0.0.1:6379&gt; SCRIPT LOAD <span class="s2">&#34;return &#39;hello lua&#39; &#34;</span>
+<span class="s2">&#34;f5af5790869c1e2e22a7323a495df22361869cb3&#34;</span>
+127.0.0.1:6379&gt; EVALSHA f5af5790869c1e2e22a7323a495df22361869cb3 0
+<span class="s2">&#34;hello lua&#34;</span>
+</code></pre></td></tr></table>
+</div>
+</div><p>清空脚本， 查询脚本是否存在</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span><span class="lnt">14
+</span><span class="lnt">15
+</span><span class="lnt">16
+</span><span class="lnt">17
+</span><span class="lnt">18
+</span><span class="lnt">19
+</span><span class="lnt">20
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-bash" data-lang="bash">SCRIPT LOAD <span class="s2">&#34;return &#39;script-01&#39; &#34;</span>
+SCRIPT LOAD <span class="s2">&#34;return &#39;script-02&#39; &#34;</span>
+SCRIPT LOAD <span class="s2">&#34;return &#39;script-03&#39; &#34;</span>
+SCRIPT FLUSH
+SCRIPT EXISTS
+
+root@14f65f9493f9:/data# redis-cli
+127.0.0.1:6379&gt; SCRIPT LOAD <span class="s2">&#34;return &#39;script-01&#39; &#34;</span>
+<span class="s2">&#34;a4dc1a08bdb719a36ef7024631b9f52f3aeb4bb8&#34;</span>
+127.0.0.1:6379&gt; SCRIPT FLUSH
+OK
+127.0.0.1:6379&gt; SCRIPT LOAD <span class="s2">&#34;return &#39;script-02&#39; &#34;</span>
+<span class="s2">&#34;51fde76dc5a18a281860810e647bed0ec8b51a1a&#34;</span>
+127.0.0.1:6379&gt; SCRIPT LOAD <span class="s2">&#34;return &#39;script-03&#39; &#34;</span>
+<span class="s2">&#34;f31e93b333d0724260b9d6d00a8f3a93393f9280&#34;</span>
+127.0.0.1:6379&gt; SCRIPT EXISTS  a4dc1a08bdb719a36ef7024631b9f52f3aeb4bb8 51fde76dc5a18a281860810e647bed0ec8b51a1a f31e93b333d0724260b9d6d00a8f3a93393f9280
+1<span class="o">)</span> <span class="o">(</span>integer<span class="o">)</span> 0
+2<span class="o">)</span> <span class="o">(</span>integer<span class="o">)</span> 1
+3<span class="o">)</span> <span class="o">(</span>integer<span class="o">)</span> 1
+127.0.0.1:6379&gt;
+</code></pre></td></tr></table>
+</div>
+</div><p>先缓存了脚本01， 然后清空了缓存，接着加载脚本02，03 
+然后查询脚本 01，02，03 是否存在 
+返回值是个数组对应查询参数的数组  0表示不存在，1则存在</p>
+<p>java代码在使用 evalsha 时， 应先使用 evalsha 执行调用<br>
+如正常执行， 则继续业务逻辑<br>
+如报错 说脚本不存在，则再使用 eval 执行调用  (spring-data-redis就是这么做的)
+原因是，redis虽然能缓存脚本， 但有脚本可以被清空。
+另外集群下，每个节点起初都是没有缓存该脚本的。</p>
+<h2 id="heading-3">原子性</h2>
+<p>原子性说的是每条语句</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span><span class="lnt">14
+</span><span class="lnt">15
+</span><span class="lnt">16
+</span><span class="lnt">17
+</span><span class="lnt">18
+</span><span class="lnt">19
+</span><span class="lnt">20
+</span><span class="lnt">21
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-fallback" data-lang="fallback">set a1 cat
+set a2 cat
+
+redis.call(&#39;SET&#39;, &#39;a1&#39;, &#39;pig&#39;); 
+assert(1 == 2) ; //通过断言打断程序
+redis.call(&#39;SET&#39;, &#39;a2&#39;, &#39;pig&#39;);
+
+
+
+127.0.0.1:6379&gt; set a1 cat
+OK
+127.0.0.1:6379&gt; set a2 cat
+OK
+127.0.0.1:6379&gt; eval &#34;redis.call(&#39;SET&#39;, &#39;a1&#39;, &#39;pig&#39;); assert(1 == 2) ; redis.call(&#39;SET&#39;, &#39;a2&#39;, &#39;pig&#39;); return 8; &#34; 0
+(error) ERR Error running script (call to f_45ed8b0eaab2e214f43d761a58f5c1e4c263c24d): @user_script:1: user_script:1: assertion failed!
+127.0.0.1:6379&gt;
+127.0.0.1:6379&gt; get a1
+&#34;pig&#34;
+127.0.0.1:6379&gt; get a2
+&#34;cat&#34;
+127.0.0.1:6379&gt;
+</code></pre></td></tr></table>
+</div>
+</div><p>程序先设置 a1, a2 都为 cat 
+然后通过lua脚本将二者更新为pig  执行到中途挂了<br>
+遇上a1 更新成功， a2更新失败了<br>
+并不是想象的要么a1, a2都变成pig 要是都还是cat</p>
+<h2 id="heading-4">调试脚本</h2>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-bash" data-lang="bash">cat &gt; debug01.lua <span class="s">&lt;&lt;EOF
+</span><span class="s">local k1 = ARGV[1]
+</span><span class="s">local k2 = ARGV[2]
+</span><span class="s">redis.debug(k1)
+</span><span class="s">redis.debug(k2)
+</span><span class="s">print(&#34;Hello 01&#34;)
+</span><span class="s">print(&#34;Hello 02&#34;)
+</span><span class="s">redis.breakpoint()
+</span><span class="s">return &#34;hello lua&#34;
+</span><span class="s">EOF</span>
+
+redis-cli --ldb  --eval  debug01.lua aa bb , ag1 ag2
+</code></pre></td></tr></table>
+</div>
+</div><p>测试</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span><span class="lnt">14
+</span><span class="lnt">15
+</span><span class="lnt">16
+</span><span class="lnt">17
+</span><span class="lnt">18
+</span><span class="lnt">19
+</span><span class="lnt">20
+</span><span class="lnt">21
+</span><span class="lnt">22
+</span><span class="lnt">23
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-bash" data-lang="bash">root@14f65f9493f9:/data# redis-cli --ldb  --eval  debug01.lua aa bb , ag1
+Lua debugging session started, please use:
+quit    -- End the session.
+restart -- Restart the script in debug mode again.
+<span class="nb">help</span>    -- Show Lua script debugging commands.
+
+* Stopped at 1, stop <span class="nv">reason</span> <span class="o">=</span> step over
+-&gt; <span class="m">1</span>   <span class="nb">local</span> <span class="nv">k1</span> <span class="o">=</span> ARGV<span class="o">[</span>1<span class="o">]</span>
+lua debugger&gt; n
+* Stopped at 2, stop <span class="nv">reason</span> <span class="o">=</span> step over
+-&gt; <span class="m">2</span>   <span class="nb">local</span> <span class="nv">k2</span> <span class="o">=</span> ARGV<span class="o">[</span>2<span class="o">]</span>
+lua debugger&gt; s
+* Stopped at 3, stop <span class="nv">reason</span> <span class="o">=</span> step over
+-&gt; <span class="m">3</span>   redis.debug<span class="o">(</span>k1<span class="o">)</span>
+lua debugger&gt; s
+&lt;debug&gt; line 3: <span class="s2">&#34;ag1&#34;</span>
+* Stopped at 4, stop <span class="nv">reason</span> <span class="o">=</span> step over
+-&gt; <span class="m">4</span>   redis.debug<span class="o">(</span>k2<span class="o">)</span>
+lua debugger&gt; c
+&lt;debug&gt; line 4: nil
+* Stopped at 8, stop <span class="nv">reason</span> <span class="o">=</span> redis.breakpoint<span class="o">(</span><span class="o">)</span> called
+-&gt; <span class="m">8</span>   <span class="k">return</span> <span class="s2">&#34;hello lua&#34;</span>
+lua debugger&gt;
+</code></pre></td></tr></table>
+</div>
+</div><p>输入n 或 s 执行单行
+输入c 执行到 redis.breakpoint()</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span><span class="lnt">5
+</span><span class="lnt">6
+</span><span class="lnt">7
+</span><span class="lnt">8
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-bash" data-lang="bash">lua debugger&gt; p
+&lt;value&gt; <span class="nv">k1</span> <span class="o">=</span> <span class="s2">&#34;ag1&#34;</span>
+&lt;value&gt; <span class="nv">k2</span> <span class="o">=</span> nil
+lua debugger&gt; p keys
+No such variable.
+lua debugger&gt; p KEYS
+&lt;value&gt; <span class="o">{</span><span class="s2">&#34;aa&#34;</span><span class="p">;</span> <span class="s2">&#34;bb&#34;</span><span class="o">}</span>
+
+</code></pre></td></tr></table>
+</div>
+</div><p>打印变量</p>
+<h3 id="heading-5">同步、异步</h3>
+<p>LDB调试基于client、server模式</p>
+<p>&ndash;ldb   异步同步， 所有操作都会被回滚，支持多个调试程序同时调试<br>
+&ndash;ldb-sync-mode  同步模式，会阻塞其他请求，且操作不会被回滚</p>
+<p>当心不要在生产环境进行调试操作</p>
+<h3 id="heading-6">更多参数</h3>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span><span class="lnt">14
+</span><span class="lnt">15
+</span><span class="lnt">16
+</span><span class="lnt">17
+</span><span class="lnt">18
+</span><span class="lnt">19
+</span><span class="lnt">20
+</span><span class="lnt">21
+</span><span class="lnt">22
+</span><span class="lnt">23
+</span><span class="lnt">24
+</span><span class="lnt">25
+</span><span class="lnt">26
+</span><span class="lnt">27
+</span><span class="lnt">28
+</span><span class="lnt">29
+</span><span class="lnt">30
+</span><span class="lnt">31
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-bash" data-lang="bash">lua debugger&gt; <span class="nb">help</span>
+Redis Lua debugger help:
+<span class="o">[</span>h<span class="o">]</span>elp               Show this help.
+<span class="o">[</span>s<span class="o">]</span>tep               Run current line and stop again.
+<span class="o">[</span>n<span class="o">]</span>ext               Alias <span class="k">for</span> step.
+<span class="o">[</span>c<span class="o">]</span><span class="k">continue</span>          Run till next breakpoint.
+<span class="o">[</span>l<span class="o">]</span>list              List <span class="nb">source</span> code around current line.
+<span class="o">[</span>l<span class="o">]</span>list <span class="o">[</span>line<span class="o">]</span>       List <span class="nb">source</span> code around <span class="o">[</span>line<span class="o">]</span>.
+                     <span class="nv">line</span> <span class="o">=</span> <span class="m">0</span> means: current position.
+<span class="o">[</span>l<span class="o">]</span>list <span class="o">[</span>line<span class="o">]</span> <span class="o">[</span>ctx<span class="o">]</span> In this form <span class="o">[</span>ctx<span class="o">]</span> specifies how many lines
+                     to show before/after <span class="o">[</span>line<span class="o">]</span>.
+<span class="o">[</span>w<span class="o">]</span>hole              List all <span class="nb">source</span> code. Alias <span class="k">for</span> <span class="s1">&#39;list 1 1000000&#39;</span>.
+<span class="o">[</span>p<span class="o">]</span>rint              Show all the <span class="nb">local</span> variables.
+<span class="o">[</span>p<span class="o">]</span>rint &lt;var&gt;        Show the value of the specified variable.
+                     Can also show global vars KEYS and ARGV.
+<span class="o">[</span>b<span class="o">]</span>reak              Show all breakpoints.
+<span class="o">[</span>b<span class="o">]</span>reak &lt;line&gt;       Add a breakpoint to the specified line.
+<span class="o">[</span>b<span class="o">]</span>reak -&lt;line&gt;      Remove breakpoint from the specified line.
+<span class="o">[</span>b<span class="o">]</span>reak <span class="m">0</span>            Remove all breakpoints.
+<span class="o">[</span>t<span class="o">]</span>race              Show a backtrace.
+<span class="o">[</span>e<span class="o">]</span><span class="nb">eval</span> &lt;code&gt;       Execute some Lua code <span class="o">(</span>in a different callframe<span class="o">)</span>.
+<span class="o">[</span>r<span class="o">]</span>edis &lt;cmd&gt;        Execute a Redis command.
+<span class="o">[</span>m<span class="o">]</span>axlen <span class="o">[</span>len<span class="o">]</span>       Trim logged Redis replies and Lua var dumps to len.
+                     Specifying zero as &lt;len&gt; means unlimited.
+<span class="o">[</span>a<span class="o">]</span>bort              Stop the execution of the script. In sync
+                     mode dataset changes will be retained.
+
+Debugger functions you can call from Lua scripts:
+redis.debug<span class="o">(</span><span class="o">)</span>        Produce logs in the debugger console.
+redis.breakpoint<span class="o">(</span><span class="o">)</span>   Stop execution like <span class="k">if</span> there was a breakpoing.
+                     in the next line of code.
+</code></pre></td></tr></table>
+</div>
+</div><h2 id="heading-7">数据类型转换</h2>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span><span class="lnt">14
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-bash" data-lang="bash"><span class="nb">eval</span> <span class="s2">&#34;return redis.call(&#39;get&#39;, &#39;xxyy&#39;);&#34;</span> 0
+<span class="nb">eval</span> <span class="s2">&#34;local a = redis.call(&#39;get&#39;, &#39;xxyy&#39;); if a == nil then return 0; else return 1; end&#34;</span> 0
+
+<span class="nb">eval</span> <span class="s2">&#34;local a = redis.call(&#39;get&#39;, &#39;xxyy&#39;); if a == false then return 0; else return 1; end&#34;</span> 0
+
+127.0.0.1:6379&gt; get xxyy
+<span class="o">(</span>nil<span class="o">)</span>
+127.0.0.1:6379&gt; <span class="nb">eval</span> <span class="s2">&#34;return redis.call(&#39;get&#39;, &#39;xxyy&#39;);&#34;</span> 0
+<span class="o">(</span>nil<span class="o">)</span>
+127.0.0.1:6379&gt; <span class="nb">eval</span> <span class="s2">&#34;local a = redis.call(&#39;get&#39;, &#39;xxyy&#39;); if a == nil then return 0; else return 1; end&#34;</span> 0
+<span class="o">(</span>integer<span class="o">)</span> 1
+127.0.0.1:6379&gt; <span class="nb">eval</span> <span class="s2">&#34;local a = redis.call(&#39;get&#39;, &#39;xxyy&#39;); if a == false then return 0; else return 1; end&#34;</span> 0
+<span class="o">(</span>integer<span class="o">)</span> 0
+127.0.0.1:6379&gt;
+</code></pre></td></tr></table>
+</div>
+</div><p>redis中 不存在该key时， 则查出一个<br>
+从redis中查出空（即nil类型）时， lua脚本中后被转为false</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-bash" data-lang="bash"><span class="nb">set</span> num1 66
+object encoding num1
+<span class="nb">eval</span> <span class="s2">&#34;local t = redis.call(&#39;get&#39;, &#39;num1&#39;); return type(t);&#34;</span> 0
+
+
+127.0.0.1:6379&gt; <span class="nb">set</span> num1 66
+OK
+127.0.0.1:6379&gt; object encoding num1
+<span class="s2">&#34;int&#34;</span>
+127.0.0.1:6379&gt; <span class="nb">eval</span> <span class="s2">&#34;local t = redis.call(&#39;get&#39;, &#39;num1&#39;); return type(t);&#34;</span> 0
+<span class="s2">&#34;string&#34;</span>
+</code></pre></td></tr></table>
+</div>
+</div><p>按照类型转换 redis-int 应该变成 lua-number 才对</p>
+<p>从官方文档</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-fallback" data-lang="fallback">https://redis.io/commands/get
+Return value
+Bulk string reply: the value of key, or nil when key does not exist.
+</code></pre></td></tr></table>
+</div>
+</div><p>以及帮助命令</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span><span class="lnt">5
+</span><span class="lnt">6
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-fallback" data-lang="fallback">127.0.0.1:6379&gt; help get
+
+  GET key
+  summary: Get the value of a key
+  since: 1.0.0
+  group: string
+</code></pre></td></tr></table>
+</div>
+</div><p>可得 <code>GET</code> 命令的返回值为 <code>Bulk string</code></p>
+<h3 id="heading-8">数据类型转换规则</h3>
+<p>当lua脚本中使用从redis中加载的数据 ， 或lua脚本中的变量作为返回值返回时，<br>
+就会出现数据类型转换。</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span><span class="lnt">14
+</span><span class="lnt">15
+</span><span class="lnt">16
+</span><span class="lnt">17
+</span><span class="lnt">18
+</span><span class="lnt">19
+</span><span class="lnt">20
+</span><span class="lnt">21
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-fallback" data-lang="fallback">Redis数据 转为 Lua数据
+
+    Redis integer reply -&gt; Lua number
+    Redis bulk reply -&gt; Lua string
+    Redis multi bulk reply -&gt; Lua table (may have other Redis data types nested)
+    Redis status reply -&gt; Lua table with a single ok field containing the status
+    Redis error reply -&gt; Lua table with a single err field containing the error
+    Redis Nil bulk reply and Nil multi bulk reply -&gt; Lua false boolean type
+
+Lua数据 转为 Redis数据
+
+    Lua number -&gt; Redis integer reply (the number is converted into an integer)
+    Lua string -&gt; Redis bulk reply
+    Lua table (array) -&gt; Redis multi bulk reply (truncated to the first nil inside the Lua array if any)
+    Lua table with a single ok field -&gt; Redis status reply
+    Lua table with a single err field -&gt; Redis error reply
+    Lua boolean false -&gt; Redis Nil bulk reply.
+    
+    Lua boolean true -&gt; Redis integer reply with value of 1.
+
+https://redis.io/commands/eval#conversion-between-lua-and-redis-data-types
+</code></pre></td></tr></table>
+</div>
+</div><ul>
+<li>
+<p>lua只有一种数字类型 number 没有 integer 和 float差异<br>
+因此redis会把lua-number的小数部分丢弃， 变成integer<br>
+因此如果希望返回值是 float 类型 ， 应该把它变成字符串返回</p>
+</li>
+<li>
+<p>当从lua中返回的table中包含nil时， nil后面的数据都会被丢弃</p>
+</li>
+<li>
+<p>如果返回的table中 含有 kv数据时，该元素会被丢弃</p>
+</li>
+</ul>
+<p>下面这个例子演示了这几种情况</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span><span class="lnt">14
+</span><span class="lnt">15
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-fallback" data-lang="fallback">eval &#34;return {1, 2, {3.99, &#39;tom&#39;}, 4, nil, 5}&#34; 0
+
+
+127.0.0.1:6379&gt; eval &#34;local array = {&#39;aa&#39;, &#39;bb&#39;, nil, &#39;cc&#39;}; local alength= table.getn(array); return alength; &#34; 0
+(integer) 4
+127.0.0.1:6379&gt; eval &#34;local array = {&#39;aa&#39;, &#39;bb&#39;, nil, &#39;cc&#39;};  return array; &#34; 0
+1) &#34;aa&#34;
+2) &#34;bb&#34;
+127.0.0.1:6379&gt;
+127.0.0.1:6379&gt; eval &#34;return {1, 2, {3.99, &#39;tom&#39;}, 4, nil, 5}&#34; 0
+1) (integer) 1
+2) (integer) 2
+3) 1) (integer) 3
+   2) &#34;tom&#34;
+4) (integer) 4
+</code></pre></td></tr></table>
+</div>
+</div><h2 id="redislua">redis中提供的lua包</h2>
+<ul>
+<li>base lib.</li>
+<li>table lib.</li>
+<li>string lib.</li>
+<li>math lib.</li>
+<li>struct lib.</li>
+<li>cjson lib.</li>
+<li>cmsgpack lib.</li>
+<li>bitop lib.</li>
+<li>redis.sha1hex function.</li>
+<li>redis.breakpoint and redis.debug function in the context of the Redis Lua debugger.</li>
+</ul>
+
+    </div>
+
+    <div class="post-copyright">
+  <p class="copyright-item">
+    <span class="item-title">文章作者</span>
+    <span class="item-content">duansheli</span>
+  </p>
+  <p class="copyright-item">
+    <span class="item-title">上次更新</span>
+    <span class="item-content">
+        2018-08-11
+        
+    </span>
+  </p>
+  
+  
+</div>
+<footer class="post-footer">
+      <div class="post-tags">
+          <a href="/tags/redis/">redis</a>
+          </div>
+      <nav class="post-nav">
+        <a class="prev" href="/2018/08/11/scala-concurrent-future.html">
+            <i class="iconfont icon-left"></i>
+            <span class="prev-text nav-default">scala并发编程-future</span>
+            <span class="prev-text nav-mobile">上一篇</span>
+          </a>
+        <a class="next" href="/2018/07/14/jvm-memory-gc.html">
+            <span class="next-text nav-default">JVM的垃圾回收</span>
+            <span class="next-text nav-mobile">下一篇</span>
+            <i class="iconfont icon-right"></i>
+          </a>
+      </nav>
+    </footer>
+  </article>
+        </div>
+        
+
+  
+
+  
+
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="social-links">
+      <a href="https://github.com/duansheli/" class="iconfont icon-github" title="github"></a>
+  <a href="https://www.awslop.com/index.xml" type="application/rss+xml" class="iconfont icon-rss" title="rss"></a>
+</div>
+
+<div class="copyright">
+  <span class="power-by">
+    由 <a class="hexo-link" href="https://gohugo.io">Hugo</a> 强力驱动
+  </span>
+  <span class="division">|</span>
+  <span class="theme-info">
+    主题 - 
+    <a class="theme-link" href="https://github.com/olOwOlo/hugo-theme-even">Even</a>
+  </span>
+
+  
+
+  <span class="copyright-year">
+    &copy; 
+    2017 - 
+    2019
+    <span class="heart">
+      <i class="iconfont icon-heart"></i>
+    </span>
+    <span class="author">duansheli</span>
+  </span>
+</div>
+    </footer>
+
+    <div class="back-to-top" id="back-to-top">
+      <i class="iconfont icon-up"></i>
+    </div>
+  </div>
+  
+  <script src="https://cdn.jsdelivr.net/npm/jquery@3.2.1/dist/jquery.min.js" integrity="sha256-hwg4gsxgFZhOsEEamdOYGBf13FyQuiTwlAQgxVSNgt4=" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/slideout@1.0.1/dist/slideout.min.js" integrity="sha256-t+zJ/g8/KXIJMjSVQdnibt4dlaDxc9zXr/9oNPeWqdg=" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3.1.20/dist/jquery.fancybox.min.js" integrity="sha256-XVLffZaxoWfGUEbdzuLi7pwaUJv1cecsQJQqGLe7axY=" crossorigin="anonymous"></script>
+<script type="text/javascript" src="/dist/even.26188efa.min.js"></script>
+
+
+<script type="application/javascript">
+var doNotTrack = false;
+if (!doNotTrack) {
+	window.ga=window.ga||function(){(ga.q=ga.q||[]).push(arguments)};ga.l=+new Date;
+	ga('create', 'GTM-NPJC8J2', 'auto');
+	ga('set', 'anonymizeIp', true);
+	ga('send', 'pageview');
+}
+</script>
+<script async src='https://www.google-analytics.com/analytics.js'></script>
+
+
+
+
+
+
+
+</body>
+</html>

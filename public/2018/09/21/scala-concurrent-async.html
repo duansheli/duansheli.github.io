@@ -1,0 +1,339 @@
+<!DOCTYPE html>
+<html lang="zh-cn">
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+  <title>scala并发编程-async - 断舍离的博客</title>
+  <meta name="renderer" content="webkit" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+<meta name="theme-color" content="#f8f5ec" />
+<meta name="msapplication-navbutton-color" content="#f8f5ec">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="#f8f5ec">
+
+
+<meta name="author" content="duansheli" /><meta name="description" content="描述 async是另一个jar包里的， 用来更简洁的处理 多个future之间的任务衔接 原理是以宏的方式编译代码 可以说是个二道贩子 相似的东西: ja" /><meta name="keywords" content="scala, java, even" />
+
+
+
+
+
+
+<meta name="generator" content="Hugo 0.62.0 with theme even" />
+
+
+<link rel="canonical" href="https://www.awslop.com/2018/09/21/scala-concurrent-async.html" />
+<link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
+<link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
+<link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png">
+<link rel="manifest" href="/manifest.json">
+<link rel="mask-icon" href="/safari-pinned-tab.svg" color="#5bbad5">
+
+
+<link href="/dist/even.c2a46f00.min.css" rel="stylesheet">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3.1.20/dist/jquery.fancybox.min.css" integrity="sha256-7TyXnr2YU040zfSP+rEcz29ggW4j56/ujTPwjMzyqFY=" crossorigin="anonymous">
+
+
+<meta property="og:title" content="scala并发编程-async" />
+<meta property="og:description" content="描述 async是另一个jar包里的， 用来更简洁的处理 多个future之间的任务衔接 原理是以宏的方式编译代码 可以说是个二道贩子 相似的东西: ja" />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="https://www.awslop.com/2018/09/21/scala-concurrent-async.html" />
+<meta property="article:published_time" content="2018-09-21T17:28:13+08:00" />
+<meta property="article:modified_time" content="2018-09-21T17:28:13+08:00" />
+<meta itemprop="name" content="scala并发编程-async">
+<meta itemprop="description" content="描述 async是另一个jar包里的， 用来更简洁的处理 多个future之间的任务衔接 原理是以宏的方式编译代码 可以说是个二道贩子 相似的东西: ja">
+<meta itemprop="datePublished" content="2018-09-21T17:28:13&#43;08:00" />
+<meta itemprop="dateModified" content="2018-09-21T17:28:13&#43;08:00" />
+<meta itemprop="wordCount" content="229">
+
+
+
+<meta itemprop="keywords" content="scala," /><meta name="twitter:card" content="summary"/>
+<meta name="twitter:title" content="scala并发编程-async"/>
+<meta name="twitter:description" content="描述 async是另一个jar包里的， 用来更简洁的处理 多个future之间的任务衔接 原理是以宏的方式编译代码 可以说是个二道贩子 相似的东西: ja"/>
+
+<!--[if lte IE 9]>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/classlist/1.1.20170427/classList.min.js"></script>
+<![endif]-->
+
+<!--[if lt IE 9]>
+  <script src="https://cdn.jsdelivr.net/npm/html5shiv@3.7.3/dist/html5shiv.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/respond.js@1.4.2/dest/respond.min.js"></script>
+<![endif]-->
+
+</head>
+<body>
+  <div id="mobile-navbar" class="mobile-navbar">
+  <div class="mobile-header-logo">
+    <a href="/" class="logo">Even</a>
+  </div>
+  <div class="mobile-navbar-icon">
+    <span></span>
+    <span></span>
+    <span></span>
+  </div>
+</div>
+<nav id="mobile-menu" class="mobile-menu slideout-menu">
+  <ul class="mobile-menu-list">
+    <a href="/">
+        <li class="mobile-menu-item">主页</li>
+      </a><a href="/post/">
+        <li class="mobile-menu-item">归档</li>
+      </a><a href="/tags/">
+        <li class="mobile-menu-item">标签</li>
+      </a><a href="/categories/">
+        <li class="mobile-menu-item">Categories</li>
+      </a>
+  </ul>
+</nav>
+  <div class="container" id="mobile-panel">
+    <header id="header" class="header">
+        <div class="logo-wrapper">
+  <a href="/" class="logo">Even</a>
+</div>
+
+<nav class="site-navbar">
+  <ul id="menu" class="menu">
+    <li class="menu-item">
+        <a class="menu-item-link" href="/">主页</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/post/">归档</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/tags/">标签</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/categories/">Categories</a>
+      </li>
+  </ul>
+</nav>
+    </header>
+
+    <main id="main" class="main">
+      <div class="content-wrapper">
+        <div id="content" class="content">
+          <article class="post">
+    
+    <header class="post-header">
+      <h1 class="post-title">scala并发编程-async</h1>
+
+      <div class="post-meta">
+        <span class="post-time"> 2018-09-21 </span>
+        <div class="post-category">
+            <a href="/categories/scala%E5%B9%B6%E5%8F%91%E7%BC%96%E7%A8%8B/"> scala并发编程 </a>
+            </div>
+          <span class="more-meta"> 约 229 字 </span>
+          <span class="more-meta"> 预计阅读 1 分钟 </span>
+        
+      </div>
+    </header>
+
+    <div class="post-toc" id="post-toc">
+  <h2 class="post-toc-title">文章目录</h2>
+  <div class="post-toc-content always-active">
+    <nav id="TableOfContents">
+  <ul>
+    <li><a href="#1">示例1</a></li>
+    <li><a href="#2">示例2</a></li>
+    <li><a href="#3">示例3</a></li>
+  </ul>
+</nav>
+  </div>
+</div>
+    <div class="post-content">
+      <h1 id="heading">描述</h1>
+<p>async是另一个jar包里的， 
+用来更简洁的处理 多个future之间的任务衔接<br>
+原理是以宏的方式编译代码 可以说是个二道贩子<br>
+相似的东西: java库的lombok</p>
+<p>由于是二次编译，如果需要调试的话，可能会有问题，慎用。</p>
+<h1 id="heading-1">简单上手</h1>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span><span class="lnt">5
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-xml" data-lang="xml"><span class="nt">&lt;dependency</span><span class="nt">&gt;</span>
+<span class="nt">&lt;groupId</span><span class="nt">&gt;</span>org.scala-lang.modules<span class="nt">&lt;/groupId&gt;</span>
+<span class="nt">&lt;artifactId</span><span class="nt">&gt;</span>scala-async_2.12<span class="nt">&lt;/artifactId&gt;</span>
+<span class="nt">&lt;version</span><span class="nt">&gt;</span>0.9.7<span class="nt">&lt;/version&gt;</span>
+<span class="nt">&lt;/dependency&gt;</span>
+</code></pre></td></tr></table>
+</div>
+</div><h2 id="1">示例1</h2>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span><span class="lnt">5
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-scala" data-lang="scala"><span class="k">val</span> <span class="n">f1</span> <span class="k">=</span> <span class="n">async</span> <span class="o">{</span>
+  <span class="k">val</span> <span class="n">ff1</span> <span class="k">=</span> <span class="n">async</span> <span class="o">{</span> <span class="n">println</span><span class="o">(</span><span class="mi">11</span><span class="o">)</span><span class="o">;</span> <span class="kc">true</span> <span class="o">}</span>
+  <span class="k">val</span> <span class="n">ff2</span> <span class="k">=</span> <span class="n">async</span> <span class="o">{</span> <span class="n">println</span><span class="o">(</span><span class="mi">22</span><span class="o">)</span><span class="o">;</span> <span class="mi">322</span> <span class="o">}</span>
+  <span class="k">if</span> <span class="o">(</span><span class="n">await</span><span class="o">(</span><span class="n">ff1</span><span class="o">)</span><span class="o">)</span> <span class="n">await</span><span class="o">(</span><span class="n">ff2</span><span class="o">)</span> <span class="k">else</span> <span class="mi">0</span>
+<span class="o">}</span>
+</code></pre></td></tr></table>
+</div>
+</div><h2 id="2">示例2</h2>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-scala" data-lang="scala"><span class="k">def</span> <span class="n">slowCalcFuture</span><span class="k">:</span> <span class="kt">Future</span><span class="o">[</span><span class="kt">Int</span><span class="o">]</span> <span class="k">=</span> <span class="nc">Future</span> <span class="o">{</span>
+<span class="nc">TimeUnit</span><span class="o">.</span><span class="nc">SECONDS</span><span class="o">.</span><span class="n">sleep</span><span class="o">(</span><span class="mi">5</span><span class="o">)</span>
+<span class="mi">11</span>
+<span class="o">}</span>
+
+<span class="k">val</span> <span class="n">future1</span> <span class="k">=</span> <span class="n">slowCalcFuture</span>
+<span class="k">val</span> <span class="n">future2</span> <span class="k">=</span> <span class="n">slowCalcFuture</span>
+
+<span class="k">def</span> <span class="n">combined</span><span class="k">:</span> <span class="kt">Future</span><span class="o">[</span><span class="kt">Int</span><span class="o">]</span> <span class="k">=</span> <span class="k">for</span> <span class="o">{</span>
+  <span class="n">r1</span> <span class="k">&lt;-</span> <span class="n">future1</span>
+  <span class="n">r2</span> <span class="k">&lt;-</span> <span class="n">future2</span>
+<span class="o">}</span> <span class="k">yield</span> <span class="n">r1</span> <span class="o">+</span> <span class="n">r2</span>
+</code></pre></td></tr></table>
+</div>
+</div><h2 id="3">示例3</h2>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span><span class="lnt">5
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-scala" data-lang="scala"><span class="k">def</span> <span class="n">combined</span><span class="k">:</span> <span class="kt">Future</span><span class="o">[</span><span class="kt">Int</span><span class="o">]</span> <span class="k">=</span> <span class="n">async</span> <span class="o">{</span>
+  <span class="n">await</span><span class="o">(</span><span class="n">slowCalcFuture</span><span class="o">)</span> <span class="o">+</span> <span class="n">await</span><span class="o">(</span><span class="n">slowCalcFuture</span><span class="o">)</span>
+<span class="o">}</span>
+
+<span class="k">val</span> <span class="n">x</span><span class="k">:</span> <span class="kt">Int</span> <span class="o">=</span> <span class="nc">Await</span><span class="o">.</span><span class="n">result</span><span class="o">(</span><span class="n">combined</span><span class="o">,</span> <span class="mf">10.</span><span class="n">seconds</span><span class="o">)</span>
+</code></pre></td></tr></table>
+</div>
+</div>
+    </div>
+
+    <div class="post-copyright">
+  <p class="copyright-item">
+    <span class="item-title">文章作者</span>
+    <span class="item-content">duansheli</span>
+  </p>
+  <p class="copyright-item">
+    <span class="item-title">上次更新</span>
+    <span class="item-content">
+        2018-09-21
+        
+    </span>
+  </p>
+  
+  
+</div>
+<footer class="post-footer">
+      <div class="post-tags">
+          <a href="/tags/scala/">scala</a>
+          </div>
+      <nav class="post-nav">
+        <a class="prev" href="/2018/10/15/future-convert-to-scala.html">
+            <i class="iconfont icon-left"></i>
+            <span class="prev-text nav-default">scala并发编程-scala的future与java的互相转换</span>
+            <span class="prev-text nav-mobile">上一篇</span>
+          </a>
+        <a class="next" href="/2018/08/22/scala-concurrent-blocking.html">
+            <span class="next-text nav-default">scala并发编程-blocking</span>
+            <span class="next-text nav-mobile">下一篇</span>
+            <i class="iconfont icon-right"></i>
+          </a>
+      </nav>
+    </footer>
+  </article>
+        </div>
+        
+
+  
+
+  
+
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="social-links">
+      <a href="https://github.com/duansheli/" class="iconfont icon-github" title="github"></a>
+  <a href="https://www.awslop.com/index.xml" type="application/rss+xml" class="iconfont icon-rss" title="rss"></a>
+</div>
+
+<div class="copyright">
+  <span class="power-by">
+    由 <a class="hexo-link" href="https://gohugo.io">Hugo</a> 强力驱动
+  </span>
+  <span class="division">|</span>
+  <span class="theme-info">
+    主题 - 
+    <a class="theme-link" href="https://github.com/olOwOlo/hugo-theme-even">Even</a>
+  </span>
+
+  
+
+  <span class="copyright-year">
+    &copy; 
+    2017 - 
+    2019
+    <span class="heart">
+      <i class="iconfont icon-heart"></i>
+    </span>
+    <span class="author">duansheli</span>
+  </span>
+</div>
+    </footer>
+
+    <div class="back-to-top" id="back-to-top">
+      <i class="iconfont icon-up"></i>
+    </div>
+  </div>
+  
+  <script src="https://cdn.jsdelivr.net/npm/jquery@3.2.1/dist/jquery.min.js" integrity="sha256-hwg4gsxgFZhOsEEamdOYGBf13FyQuiTwlAQgxVSNgt4=" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/slideout@1.0.1/dist/slideout.min.js" integrity="sha256-t+zJ/g8/KXIJMjSVQdnibt4dlaDxc9zXr/9oNPeWqdg=" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3.1.20/dist/jquery.fancybox.min.js" integrity="sha256-XVLffZaxoWfGUEbdzuLi7pwaUJv1cecsQJQqGLe7axY=" crossorigin="anonymous"></script>
+<script type="text/javascript" src="/dist/even.26188efa.min.js"></script>
+
+
+<script type="application/javascript">
+var doNotTrack = false;
+if (!doNotTrack) {
+	window.ga=window.ga||function(){(ga.q=ga.q||[]).push(arguments)};ga.l=+new Date;
+	ga('create', 'GTM-NPJC8J2', 'auto');
+	ga('set', 'anonymizeIp', true);
+	ga('send', 'pageview');
+}
+</script>
+<script async src='https://www.google-analytics.com/analytics.js'></script>
+
+
+
+
+
+
+
+</body>
+</html>

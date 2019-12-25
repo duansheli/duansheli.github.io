@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>jdk on 断舍离的博客</title>
+    <link>https://www.awslop.com/tags/jdk/</link>
+    <description>Recent content in jdk on 断舍离的博客</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>zh-cn</language>
+    <lastBuildDate>Sat, 25 May 2019 17:28:13 +0800</lastBuildDate>
+    
+	<atom:link href="https://www.awslop.com/tags/jdk/index.xml" rel="self" type="application/rss+xml" />
+    
+    
+    <item>
+      <title>各类openjdk下载地址</title>
+      <link>https://www.awslop.com/2019/05/25/download-openjdk.html</link>
+      <pubDate>Sat, 25 May 2019 17:28:13 +0800</pubDate>
+      
+      <guid>https://www.awslop.com/2019/05/25/download-openjdk.html</guid>
+      <description>openjdk oracle原版 jdk 之前在可通过命令从官网下载，现在行不通了，必须用oracle账号登录才能下载。 https://www.oracle.com/technetwork/java/javase/downloads/jdk11-downloads-5066655.html oracle的共享账号 http://bugmenot.com/view/oracle.com adobe网站下</description>
+    </item>
+    
+  </channel>
+</rss>
