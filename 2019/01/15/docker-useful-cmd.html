@@ -1,0 +1,336 @@
+<!DOCTYPE html>
+<html lang="zh-cn">
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+  <title>docker常用操作 - 断舍离的博客</title>
+  <meta name="renderer" content="webkit" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+<meta name="theme-color" content="#f8f5ec" />
+<meta name="msapplication-navbutton-color" content="#f8f5ec">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="#f8f5ec">
+
+
+<meta name="author" content="duansheli" /><meta name="description" content="docker常用操作 Dockerfile编写 编写一般不会一次就完成，常常会出错 1 2 3 4 5 6 7 8 9 10 11 12 13 14 15 16 17 Sending build context to Docker daemon 5.902MB Step 1/10 : FROM docker:git as builder" /><meta name="keywords" content="scala, java, even" />
+
+
+
+
+
+
+<meta name="generator" content="Hugo 0.62.0 with theme even" />
+
+
+<link rel="canonical" href="https://www.awslop.com/2019/01/15/docker-useful-cmd.html" />
+<link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
+<link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
+<link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png">
+<link rel="manifest" href="/manifest.json">
+<link rel="mask-icon" href="/safari-pinned-tab.svg" color="#5bbad5">
+
+
+<link href="/dist/even.c2a46f00.min.css" rel="stylesheet">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3.1.20/dist/jquery.fancybox.min.css" integrity="sha256-7TyXnr2YU040zfSP+rEcz29ggW4j56/ujTPwjMzyqFY=" crossorigin="anonymous">
+
+
+<meta property="og:title" content="docker常用操作" />
+<meta property="og:description" content="docker常用操作 Dockerfile编写 编写一般不会一次就完成，常常会出错 1 2 3 4 5 6 7 8 9 10 11 12 13 14 15 16 17 Sending build context to Docker daemon 5.902MB Step 1/10 : FROM docker:git as builder" />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="https://www.awslop.com/2019/01/15/docker-useful-cmd.html" />
+<meta property="article:published_time" content="2019-01-15T17:28:13+08:00" />
+<meta property="article:modified_time" content="2019-01-15T17:28:13+08:00" />
+<meta itemprop="name" content="docker常用操作">
+<meta itemprop="description" content="docker常用操作 Dockerfile编写 编写一般不会一次就完成，常常会出错 1 2 3 4 5 6 7 8 9 10 11 12 13 14 15 16 17 Sending build context to Docker daemon 5.902MB Step 1/10 : FROM docker:git as builder">
+<meta itemprop="datePublished" content="2019-01-15T17:28:13&#43;08:00" />
+<meta itemprop="dateModified" content="2019-01-15T17:28:13&#43;08:00" />
+<meta itemprop="wordCount" content="367">
+
+
+
+<meta itemprop="keywords" content="docker," /><meta name="twitter:card" content="summary"/>
+<meta name="twitter:title" content="docker常用操作"/>
+<meta name="twitter:description" content="docker常用操作 Dockerfile编写 编写一般不会一次就完成，常常会出错 1 2 3 4 5 6 7 8 9 10 11 12 13 14 15 16 17 Sending build context to Docker daemon 5.902MB Step 1/10 : FROM docker:git as builder"/>
+
+<!--[if lte IE 9]>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/classlist/1.1.20170427/classList.min.js"></script>
+<![endif]-->
+
+<!--[if lt IE 9]>
+  <script src="https://cdn.jsdelivr.net/npm/html5shiv@3.7.3/dist/html5shiv.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/respond.js@1.4.2/dest/respond.min.js"></script>
+<![endif]-->
+
+</head>
+<body>
+  <div id="mobile-navbar" class="mobile-navbar">
+  <div class="mobile-header-logo">
+    <a href="/" class="logo">Even</a>
+  </div>
+  <div class="mobile-navbar-icon">
+    <span></span>
+    <span></span>
+    <span></span>
+  </div>
+</div>
+<nav id="mobile-menu" class="mobile-menu slideout-menu">
+  <ul class="mobile-menu-list">
+    <a href="/">
+        <li class="mobile-menu-item">主页</li>
+      </a><a href="/post/">
+        <li class="mobile-menu-item">归档</li>
+      </a><a href="/tags/">
+        <li class="mobile-menu-item">标签</li>
+      </a><a href="/categories/">
+        <li class="mobile-menu-item">Categories</li>
+      </a>
+  </ul>
+</nav>
+  <div class="container" id="mobile-panel">
+    <header id="header" class="header">
+        <div class="logo-wrapper">
+  <a href="/" class="logo">Even</a>
+</div>
+
+<nav class="site-navbar">
+  <ul id="menu" class="menu">
+    <li class="menu-item">
+        <a class="menu-item-link" href="/">主页</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/post/">归档</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/tags/">标签</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/categories/">Categories</a>
+      </li>
+  </ul>
+</nav>
+    </header>
+
+    <main id="main" class="main">
+      <div class="content-wrapper">
+        <div id="content" class="content">
+          <article class="post">
+    
+    <header class="post-header">
+      <h1 class="post-title">docker常用操作</h1>
+
+      <div class="post-meta">
+        <span class="post-time"> 2019-01-15 </span>
+        
+          <span class="more-meta"> 约 367 字 </span>
+          <span class="more-meta"> 预计阅读 1 分钟 </span>
+        
+      </div>
+    </header>
+
+    <div class="post-toc" id="post-toc">
+  <h2 class="post-toc-title">文章目录</h2>
+  <div class="post-toc-content always-active">
+    <nav id="TableOfContents">
+  <ul>
+    <li><a href="#dockerfile">Dockerfile编写</a></li>
+  </ul>
+</nav>
+  </div>
+</div>
+    <div class="post-content">
+      <h1 id="docker">docker常用操作</h1>
+<h2 id="dockerfile">Dockerfile编写</h2>
+<p>编写一般不会一次就完成，常常会出错</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span><span class="lnt">14
+</span><span class="lnt">15
+</span><span class="lnt">16
+</span><span class="lnt">17
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-fallback" data-lang="fallback">Sending build context to Docker daemon  5.902MB
+Step 1/10 : FROM docker:git as builder
+ ---&gt; 9be5c3cd302c
+Step 2/10 : RUN git clone https://github.com/nkrode/RedisLive.git /redislive
+ ---&gt; Using cache
+ ---&gt; a0884ca42295
+Step 3/10 : COPY ./redis-live.conf /redislive/src
+ ---&gt; Using cache
+ ---&gt; 6aef0cf6bec6
+Step 4/10 : FROM python:2.7.16-slim-stretch
+ ---&gt; 48e3247f2a19
+Step 5/10 : COPY --from=builder /redislive /usr/src/redislive
+ ---&gt; ab68d08c25ab
+Removing intermediate container af6af2719327
+Step 6/10 : WORKDIR /usr/src/redislive/src
+ ---&gt; 1c5459430d7c
+Removing intermediate container b84bcb62e9a4
+</code></pre></td></tr></table>
+</div>
+</div><blockquote>
+<p>比当Step 6报错时，<br>
+可以进入第5步产生的镜像ab68d08c25ab查看详情或调试<br>
+docker run &ndash;rm -it ab68d08c25ab bash</p>
+</blockquote>
+<ul>
+<li>
+<p>bash 与 ash<br>
+进入容器通常是 docker exec -it redis bash<br>
+但有的容器里面不是bash 是ash 或其他shell<br>
+可先看看其内部是用的什么shell<br>
+docker exec redis ls /bin | grep sh</p>
+</li>
+<li>
+<p>遇到 entrypoint 的镜像<br>
+docker run -it &ndash;name jstorm-zookeeper &ndash;entrypoint /bin/bash zookeeper:3.4</p>
+</li>
+<li>
+<p>docker pause 或 unpause<br>
+docker run -d &ndash;name rds redis &amp;&amp;<br>
+sleep 0.1 &amp;&amp; docker pause rds &amp;&amp;<br>
+docker logs rds</p>
+</li>
+<li>
+<p>查看内存使用情况 与进程
+docker top redis<br>
+docker stats redis<br>
+docker stats &ndash;no-stream redis</p>
+</li>
+<li>
+<p>history 查看镜像层大小<br>
+docker history 镜像id</p>
+</li>
+<li>
+<p>查看容器的ip<br>
+docker inspect -f {{.NetworkSettings.IPAddress}}  redis</p>
+</li>
+<li>
+<p>批量删除停止的容器<br>
+docker ps -a | grep &ldquo;Exited&rdquo; | awk &lsquo;{print $1}&rsquo; | xargs docker rm</p>
+</li>
+<li>
+<p>批量删除无tag的镜像<br>
+docker rmi `docker images | grep none | awk &lsquo;{print $3}&lsquo;`</p>
+</li>
+</ul>
+
+    </div>
+
+    <div class="post-copyright">
+  <p class="copyright-item">
+    <span class="item-title">文章作者</span>
+    <span class="item-content">duansheli</span>
+  </p>
+  <p class="copyright-item">
+    <span class="item-title">上次更新</span>
+    <span class="item-content">
+        2019-01-15
+        
+    </span>
+  </p>
+  
+  
+</div>
+<footer class="post-footer">
+      <div class="post-tags">
+          <a href="/tags/docker/">docker</a>
+          </div>
+      <nav class="post-nav">
+        <a class="prev" href="/2019/01/16/gradle-init-learn.html">
+            <i class="iconfont icon-left"></i>
+            <span class="prev-text nav-default">gradle-全局init</span>
+            <span class="prev-text nav-mobile">上一篇</span>
+          </a>
+        <a class="next" href="/2018/01/06/unzip-no-copy.html">
+            <span class="next-text nav-default">压缩包解压时不使用临时目录</span>
+            <span class="next-text nav-mobile">下一篇</span>
+            <i class="iconfont icon-right"></i>
+          </a>
+      </nav>
+    </footer>
+  </article>
+        </div>
+        
+
+  
+
+  
+
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="social-links">
+      <a href="https://github.com/duansheli/" class="iconfont icon-github" title="github"></a>
+  <a href="https://www.awslop.com/index.xml" type="application/rss+xml" class="iconfont icon-rss" title="rss"></a>
+</div>
+
+<div class="copyright">
+  <span class="power-by">
+    由 <a class="hexo-link" href="https://gohugo.io">Hugo</a> 强力驱动
+  </span>
+  <span class="division">|</span>
+  <span class="theme-info">
+    主题 - 
+    <a class="theme-link" href="https://github.com/olOwOlo/hugo-theme-even">Even</a>
+  </span>
+
+  
+
+  <span class="copyright-year">
+    &copy; 
+    2017 - 
+    2019
+    <span class="heart">
+      <i class="iconfont icon-heart"></i>
+    </span>
+    <span class="author">duansheli</span>
+  </span>
+</div>
+    </footer>
+
+    <div class="back-to-top" id="back-to-top">
+      <i class="iconfont icon-up"></i>
+    </div>
+  </div>
+  
+  <script src="https://cdn.jsdelivr.net/npm/jquery@3.2.1/dist/jquery.min.js" integrity="sha256-hwg4gsxgFZhOsEEamdOYGBf13FyQuiTwlAQgxVSNgt4=" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/slideout@1.0.1/dist/slideout.min.js" integrity="sha256-t+zJ/g8/KXIJMjSVQdnibt4dlaDxc9zXr/9oNPeWqdg=" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3.1.20/dist/jquery.fancybox.min.js" integrity="sha256-XVLffZaxoWfGUEbdzuLi7pwaUJv1cecsQJQqGLe7axY=" crossorigin="anonymous"></script>
+<script type="text/javascript" src="/dist/even.26188efa.min.js"></script>
+
+
+<script type="application/javascript">
+var doNotTrack = false;
+if (!doNotTrack) {
+	window.ga=window.ga||function(){(ga.q=ga.q||[]).push(arguments)};ga.l=+new Date;
+	ga('create', 'GTM-NPJC8J2', 'auto');
+	ga('set', 'anonymizeIp', true);
+	ga('send', 'pageview');
+}
+</script>
+<script async src='https://www.google-analytics.com/analytics.js'></script>
+
+
+
+
+
+
+
+</body>
+</html>

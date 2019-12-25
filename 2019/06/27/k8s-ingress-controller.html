@@ -1,0 +1,287 @@
+<!DOCTYPE html>
+<html lang="zh-cn">
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+  <title>k8s-外部访问ingress - 断舍离的博客</title>
+  <meta name="renderer" content="webkit" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+<meta name="theme-color" content="#f8f5ec" />
+<meta name="msapplication-navbutton-color" content="#f8f5ec">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="#f8f5ec">
+
+
+<meta name="author" content="duansheli" /><meta name="description" content="对外暴露服务 通常使用ingress作为前置入口 那如何配置 ingress-controller 与外界通信？ LoadBalancer 如果有云厂商的LoadBalancer， 那自然方便 各云厂商的实现可能" /><meta name="keywords" content="scala, java, even" />
+
+
+
+
+
+
+<meta name="generator" content="Hugo 0.62.0 with theme even" />
+
+
+<link rel="canonical" href="https://www.awslop.com/2019/06/27/k8s-ingress-controller.html" />
+<link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
+<link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
+<link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png">
+<link rel="manifest" href="/manifest.json">
+<link rel="mask-icon" href="/safari-pinned-tab.svg" color="#5bbad5">
+
+
+<link href="/dist/even.c2a46f00.min.css" rel="stylesheet">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3.1.20/dist/jquery.fancybox.min.css" integrity="sha256-7TyXnr2YU040zfSP+rEcz29ggW4j56/ujTPwjMzyqFY=" crossorigin="anonymous">
+
+
+<meta property="og:title" content="k8s-外部访问ingress" />
+<meta property="og:description" content="对外暴露服务 通常使用ingress作为前置入口 那如何配置 ingress-controller 与外界通信？ LoadBalancer 如果有云厂商的LoadBalancer， 那自然方便 各云厂商的实现可能" />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="https://www.awslop.com/2019/06/27/k8s-ingress-controller.html" />
+<meta property="article:published_time" content="2019-06-27T17:28:13+08:00" />
+<meta property="article:modified_time" content="2019-06-27T17:28:13+08:00" />
+<meta itemprop="name" content="k8s-外部访问ingress">
+<meta itemprop="description" content="对外暴露服务 通常使用ingress作为前置入口 那如何配置 ingress-controller 与外界通信？ LoadBalancer 如果有云厂商的LoadBalancer， 那自然方便 各云厂商的实现可能">
+<meta itemprop="datePublished" content="2019-06-27T17:28:13&#43;08:00" />
+<meta itemprop="dateModified" content="2019-06-27T17:28:13&#43;08:00" />
+<meta itemprop="wordCount" content="484">
+
+
+
+<meta itemprop="keywords" content="k8s," /><meta name="twitter:card" content="summary"/>
+<meta name="twitter:title" content="k8s-外部访问ingress"/>
+<meta name="twitter:description" content="对外暴露服务 通常使用ingress作为前置入口 那如何配置 ingress-controller 与外界通信？ LoadBalancer 如果有云厂商的LoadBalancer， 那自然方便 各云厂商的实现可能"/>
+
+<!--[if lte IE 9]>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/classlist/1.1.20170427/classList.min.js"></script>
+<![endif]-->
+
+<!--[if lt IE 9]>
+  <script src="https://cdn.jsdelivr.net/npm/html5shiv@3.7.3/dist/html5shiv.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/respond.js@1.4.2/dest/respond.min.js"></script>
+<![endif]-->
+
+</head>
+<body>
+  <div id="mobile-navbar" class="mobile-navbar">
+  <div class="mobile-header-logo">
+    <a href="/" class="logo">Even</a>
+  </div>
+  <div class="mobile-navbar-icon">
+    <span></span>
+    <span></span>
+    <span></span>
+  </div>
+</div>
+<nav id="mobile-menu" class="mobile-menu slideout-menu">
+  <ul class="mobile-menu-list">
+    <a href="/">
+        <li class="mobile-menu-item">主页</li>
+      </a><a href="/post/">
+        <li class="mobile-menu-item">归档</li>
+      </a><a href="/tags/">
+        <li class="mobile-menu-item">标签</li>
+      </a><a href="/categories/">
+        <li class="mobile-menu-item">Categories</li>
+      </a>
+  </ul>
+</nav>
+  <div class="container" id="mobile-panel">
+    <header id="header" class="header">
+        <div class="logo-wrapper">
+  <a href="/" class="logo">Even</a>
+</div>
+
+<nav class="site-navbar">
+  <ul id="menu" class="menu">
+    <li class="menu-item">
+        <a class="menu-item-link" href="/">主页</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/post/">归档</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/tags/">标签</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/categories/">Categories</a>
+      </li>
+  </ul>
+</nav>
+    </header>
+
+    <main id="main" class="main">
+      <div class="content-wrapper">
+        <div id="content" class="content">
+          <article class="post">
+    
+    <header class="post-header">
+      <h1 class="post-title">k8s-外部访问ingress</h1>
+
+      <div class="post-meta">
+        <span class="post-time"> 2019-06-27 </span>
+        <div class="post-category">
+            <a href="/categories/k8s%E9%9B%86%E7%BE%A4/"> k8s集群 </a>
+            </div>
+          <span class="more-meta"> 约 484 字 </span>
+          <span class="more-meta"> 预计阅读 1 分钟 </span>
+        
+      </div>
+    </header>
+
+    <div class="post-toc" id="post-toc">
+  <h2 class="post-toc-title">文章目录</h2>
+  <div class="post-toc-content always-active">
+    <nav id="TableOfContents">
+  <ul>
+    <li><a href="#-loadbalance">自建-LoadBalance</a></li>
+    <li><a href="#heading-1">单节点方案</a></li>
+    <li><a href="#heading-2">高可用方案</a>
+      <ul>
+        <li><a href="#-a">统一入口-方案A</a></li>
+        <li><a href="#-b">统一入口-方案B</a></li>
+      </ul>
+    </li>
+  </ul>
+</nav>
+  </div>
+</div>
+    <div class="post-content">
+      <p>对外暴露服务 通常使用ingress作为前置入口
+那如何配置 ingress-controller 与外界通信？</p>
+<h1 id="loadbalancer">LoadBalancer</h1>
+<p>如果有云厂商的LoadBalancer， 那自然方便</p>
+<p>各云厂商的实现可能有所不同<br>
+但使用后效果 应该都是高可用的vip入口</p>
+<h1 id="heading">其他方案</h1>
+<p>如果是自建的k8s集群<br>
+或者云厂商没有LoadBalancer<br>
+又或者不想用云厂商的LoadBalancer</p>
+<p>那这个时候整，之间nodePort么</p>
+<h2 id="-loadbalance">自建-LoadBalance</h2>
+<p>基于开源项目自建 LoadBalance<br>
+<a href="https://github.com/danderson/metallb">https://github.com/danderson/metallb</a></p>
+<h2 id="heading-1">单节点方案</h2>
+<p>创建 nginx Ingress Controller 时， 只设置一个pod。</p>
+<p>设置service的type为 Nodeport （可能要调整Nodeport的范围来包含80端口）
+或者 直接基于pod的hostport、hostNetwork</p>
+<h2 id="heading-2">高可用方案</h2>
+<p>以DaemonSet方式，设置多个node作为边缘节点 只放网关pod<br>
+网络端口和上一步的方案相同<br>
+这时由于入口有多个节点 需要统一入口</p>
+<h3 id="-a">统一入口-方案A</h3>
+<p>通过设置dns 轮询方案<br>
+即一个域名对应n个ip<br>
+当某个节点挂了 会有短暂的部分请求丢失</p>
+<h3 id="-b">统一入口-方案B</h3>
+<p>通过keepalived的VIP 实现统一入口
+keepalived又有两种方案
+一种是基于 k8s的 kube-keepalived-vip 其仓库已封存，停止更新<br>
+另一种是宿主机(与k8s无关)的 keepalived</p>
+
+    </div>
+
+    <div class="post-copyright">
+  <p class="copyright-item">
+    <span class="item-title">文章作者</span>
+    <span class="item-content">duansheli</span>
+  </p>
+  <p class="copyright-item">
+    <span class="item-title">上次更新</span>
+    <span class="item-content">
+        2019-06-27
+        
+    </span>
+  </p>
+  
+  
+</div>
+<footer class="post-footer">
+      <div class="post-tags">
+          <a href="/tags/k8s/">k8s</a>
+          </div>
+      <nav class="post-nav">
+        <a class="prev" href="/2019/07/06/check-credit.html">
+            <i class="iconfont icon-left"></i>
+            <span class="prev-text nav-default">github搜开源项目技巧</span>
+            <span class="prev-text nav-mobile">上一篇</span>
+          </a>
+        <a class="next" href="/2019/06/21/gradle-task-learn.html">
+            <span class="next-text nav-default">gradle-task使用</span>
+            <span class="next-text nav-mobile">下一篇</span>
+            <i class="iconfont icon-right"></i>
+          </a>
+      </nav>
+    </footer>
+  </article>
+        </div>
+        
+
+  
+
+  
+
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="social-links">
+      <a href="https://github.com/duansheli/" class="iconfont icon-github" title="github"></a>
+  <a href="https://www.awslop.com/index.xml" type="application/rss+xml" class="iconfont icon-rss" title="rss"></a>
+</div>
+
+<div class="copyright">
+  <span class="power-by">
+    由 <a class="hexo-link" href="https://gohugo.io">Hugo</a> 强力驱动
+  </span>
+  <span class="division">|</span>
+  <span class="theme-info">
+    主题 - 
+    <a class="theme-link" href="https://github.com/olOwOlo/hugo-theme-even">Even</a>
+  </span>
+
+  
+
+  <span class="copyright-year">
+    &copy; 
+    2017 - 
+    2019
+    <span class="heart">
+      <i class="iconfont icon-heart"></i>
+    </span>
+    <span class="author">duansheli</span>
+  </span>
+</div>
+    </footer>
+
+    <div class="back-to-top" id="back-to-top">
+      <i class="iconfont icon-up"></i>
+    </div>
+  </div>
+  
+  <script src="https://cdn.jsdelivr.net/npm/jquery@3.2.1/dist/jquery.min.js" integrity="sha256-hwg4gsxgFZhOsEEamdOYGBf13FyQuiTwlAQgxVSNgt4=" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/slideout@1.0.1/dist/slideout.min.js" integrity="sha256-t+zJ/g8/KXIJMjSVQdnibt4dlaDxc9zXr/9oNPeWqdg=" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3.1.20/dist/jquery.fancybox.min.js" integrity="sha256-XVLffZaxoWfGUEbdzuLi7pwaUJv1cecsQJQqGLe7axY=" crossorigin="anonymous"></script>
+<script type="text/javascript" src="/dist/even.26188efa.min.js"></script>
+
+
+<script type="application/javascript">
+var doNotTrack = false;
+if (!doNotTrack) {
+	window.ga=window.ga||function(){(ga.q=ga.q||[]).push(arguments)};ga.l=+new Date;
+	ga('create', 'GTM-NPJC8J2', 'auto');
+	ga('set', 'anonymizeIp', true);
+	ga('send', 'pageview');
+}
+</script>
+<script async src='https://www.google-analytics.com/analytics.js'></script>
+
+
+
+
+
+
+
+</body>
+</html>
