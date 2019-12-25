@@ -2,30 +2,30 @@
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
     <title>Java on 断舍离的博客</title>
-    <link>/www.awslop.com/tags/java/</link>
+    <link>https://www.awslop.com/tags/java/</link>
     <description>Recent content in Java on 断舍离的博客</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>zh-cn</language>
     <lastBuildDate>Sun, 15 Dec 2019 17:28:13 +0800</lastBuildDate>
     
-	<atom:link href="/www.awslop.com/tags/java/index.xml" rel="self" type="application/rss+xml" />
+	<atom:link href="https://www.awslop.com/tags/java/index.xml" rel="self" type="application/rss+xml" />
     
     
     <item>
       <title>HOCON配置文件读取</title>
-      <link>/www.awslop.com/2019/12/15/hocon-java.html</link>
+      <link>https://www.awslop.com/2019/12/15/hocon-java.html</link>
       <pubDate>Sun, 15 Dec 2019 17:28:13 +0800</pubDate>
       
-      <guid>/www.awslop.com/2019/12/15/hocon-java.html</guid>
+      <guid>https://www.awslop.com/2019/12/15/hocon-java.html</guid>
       <description>简述 HOCON（Human-Optimized Config Object Notation）是一个易于使用的配置文件格式，具有面向对象风格。 akka的配置文件就是用</description>
     </item>
     
     <item>
       <title>自动装箱拆箱在scala中的表现</title>
-      <link>/www.awslop.com/2019/05/17/thinking-autoboxing-implicit.html</link>
+      <link>https://www.awslop.com/2019/05/17/thinking-autoboxing-implicit.html</link>
       <pubDate>Fri, 17 May 2019 17:28:13 +0800</pubDate>
       
-      <guid>/www.awslop.com/2019/05/17/thinking-autoboxing-implicit.html</guid>
+      <guid>https://www.awslop.com/2019/05/17/thinking-autoboxing-implicit.html</guid>
       <description>&lt;p&gt;自动装箱拆箱是java中的概念&lt;br&gt;
 implicit是scala中的概念&lt;br&gt;
 都有变量包装的特性&lt;/p&gt;</description>
@@ -33,73 +33,73 @@ implicit是scala中的概念&lt;br&gt;
     
     <item>
       <title>JVM的垃圾回收</title>
-      <link>/www.awslop.com/2018/07/14/jvm-memory-gc.html</link>
+      <link>https://www.awslop.com/2018/07/14/jvm-memory-gc.html</link>
       <pubDate>Sat, 14 Jul 2018 15:13:13 +0800</pubDate>
       
-      <guid>/www.awslop.com/2018/07/14/jvm-memory-gc.html</guid>
+      <guid>https://www.awslop.com/2018/07/14/jvm-memory-gc.html</guid>
       <description>JVM内存结构 JVM是java代码的运行环境， 用来加载 .class和jar文件 , 运行代码。 内存区域 1 2 3 4 5 6 7 8 9 10 11 12 13 14 15 16 17 18 19 20 21</description>
     </item>
     
     <item>
       <title>类加载器加载的类不能创建对象</title>
-      <link>/www.awslop.com/2018/07/08/classloader-modifiers-exception.html</link>
+      <link>https://www.awslop.com/2018/07/08/classloader-modifiers-exception.html</link>
       <pubDate>Sun, 08 Jul 2018 15:13:13 +0800</pubDate>
       
-      <guid>/www.awslop.com/2018/07/08/classloader-modifiers-exception.html</guid>
+      <guid>https://www.awslop.com/2018/07/08/classloader-modifiers-exception.html</guid>
       <description>IllegalAccessException 异常信息 1 2 3 4 5 6 7 Exception in thread &amp;#34;main&amp;#34; java.lang.IllegalAccessException: Class fluffy.mo.MyClassloader can not access a member of class fluffy.mo.Car with modifiers &amp;#34;public&amp;#34; at sun.reflect.Reflection.ensureMemberAccess(Reflection.java:102) at java.lang.reflect.AccessibleObject.slowCheckMemberAccess(AccessibleObject.java:296) at java.lang.reflect.AccessibleObject.checkAccess(AccessibleObject.java:288) at java.lang.reflect.Constructor.newInstance(Constructor.java:413) at fluffy.mo.MyClassloader.test4(MyClassloader.java:91) at fluffy.mo.MyClassloader.main(MyClassloader.java:68) 在使用反射创建对象时，被提示没权限 代码示例 1 2 3 package fluffy.mo; public class</description>
     </item>
     
     <item>
       <title>SPI与contextclassloader</title>
-      <link>/www.awslop.com/2018/06/27/classloader-spi.html</link>
+      <link>https://www.awslop.com/2018/06/27/classloader-spi.html</link>
       <pubDate>Wed, 27 Jun 2018 14:13:13 +0800</pubDate>
       
-      <guid>/www.awslop.com/2018/06/27/classloader-spi.html</guid>
+      <guid>https://www.awslop.com/2018/06/27/classloader-spi.html</guid>
       <description>目标 通过SPI学习setContextClassLoader，getContextClassLoader的用法 SPI概念 SPI（Servic</description>
     </item>
     
     <item>
       <title>类加载器使用</title>
-      <link>/www.awslop.com/2018/06/21/classloader-start.html</link>
+      <link>https://www.awslop.com/2018/06/21/classloader-start.html</link>
       <pubDate>Thu, 21 Jun 2018 13:13:13 +0800</pubDate>
       
-      <guid>/www.awslop.com/2018/06/21/classloader-start.html</guid>
+      <guid>https://www.awslop.com/2018/06/21/classloader-start.html</guid>
       <description>类加载器 引入 一般开发都不会接触classloader的概念，但程序的运行却是建立在classloader之上的 为什么要有类加载器： java程</description>
     </item>
     
     <item>
       <title>动态代理-rpc示例-01</title>
-      <link>/www.awslop.com/2018/06/05/proxy-rpc-01.html</link>
+      <link>https://www.awslop.com/2018/06/05/proxy-rpc-01.html</link>
       <pubDate>Tue, 05 Jun 2018 13:13:13 +0800</pubDate>
       
-      <guid>/www.awslop.com/2018/06/05/proxy-rpc-01.html</guid>
+      <guid>https://www.awslop.com/2018/06/05/proxy-rpc-01.html</guid>
       <description>目标 写个简单的rpc 调用 Rpc大致思路 定义一个接口HelloService 放在iface.jar中 应用P中引用iface.jar 实现接口He</description>
     </item>
     
     <item>
       <title>动态代理-rpc示例-02</title>
-      <link>/www.awslop.com/2018/06/05/proxy-rpc-02.html</link>
+      <link>https://www.awslop.com/2018/06/05/proxy-rpc-02.html</link>
       <pubDate>Tue, 05 Jun 2018 13:13:13 +0800</pubDate>
       
-      <guid>/www.awslop.com/2018/06/05/proxy-rpc-02.html</guid>
+      <guid>https://www.awslop.com/2018/06/05/proxy-rpc-02.html</guid>
       <description>上个版本的代码看着比较生肉，与平时开发时的写法差别较大。 接下来这版，加入了动态代理后 动态代理-guava版 1 2 3 4 5 6 7 8 9 10 11 12 13 14 15 16 17</description>
     </item>
     
     <item>
       <title>动态代理</title>
-      <link>/www.awslop.com/2018/06/02/proxy-start.html</link>
+      <link>https://www.awslop.com/2018/06/02/proxy-start.html</link>
       <pubDate>Sat, 02 Jun 2018 13:13:13 +0800</pubDate>
       
-      <guid>/www.awslop.com/2018/06/02/proxy-start.html</guid>
+      <guid>https://www.awslop.com/2018/06/02/proxy-start.html</guid>
       <description>目标 通过代码示例了解动态代理语法 示例代码 1 2 3 4 5 6 7 8 9 10 11 12 13 14 15 16 17 18 19 20 21 22 23 24 25 26 27 28 29 30 31 32 33 34 35 36 37 38 39 40 41 import java.lang.reflect.InvocationHandler; import java.lang.reflect.Method; import java.lang.reflect.Proxy; public class Demo</description>
     </item>
     
     <item>
       <title>反射使用</title>
-      <link>/www.awslop.com/2018/04/02/reflect-start.html</link>
+      <link>https://www.awslop.com/2018/04/02/reflect-start.html</link>
       <pubDate>Mon, 02 Apr 2018 13:13:13 +0800</pubDate>
       
-      <guid>/www.awslop.com/2018/04/02/reflect-start.html</guid>
+      <guid>https://www.awslop.com/2018/04/02/reflect-start.html</guid>
       <description>反射介绍 可以不直接new 对象，或调用方法。 用另一种创建某个对象（字符串的方式），或调用某个对象的方法（字符串的方式）。 反射这种间接调用效率肯</description>
     </item>
     

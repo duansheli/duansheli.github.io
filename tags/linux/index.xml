@@ -2,39 +2,39 @@
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
     <title>linux on 断舍离的博客</title>
-    <link>/www.awslop.com/tags/linux/</link>
+    <link>https://www.awslop.com/tags/linux/</link>
     <description>Recent content in linux on 断舍离的博客</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>zh-cn</language>
     <lastBuildDate>Sun, 13 Oct 2019 22:28:13 +0800</lastBuildDate>
     
-	<atom:link href="/www.awslop.com/tags/linux/index.xml" rel="self" type="application/rss+xml" />
+	<atom:link href="https://www.awslop.com/tags/linux/index.xml" rel="self" type="application/rss+xml" />
     
     
     <item>
       <title>下载m3u8-aes128加密视频-02</title>
-      <link>/www.awslop.com/2019/10/13/download-m3u8-video-02.html</link>
+      <link>https://www.awslop.com/2019/10/13/download-m3u8-video-02.html</link>
       <pubDate>Sun, 13 Oct 2019 22:28:13 +0800</pubDate>
       
-      <guid>/www.awslop.com/2019/10/13/download-m3u8-video-02.html</guid>
+      <guid>https://www.awslop.com/2019/10/13/download-m3u8-video-02.html</guid>
       <description>实例 流程为 装个抓包工具 浏览器配置代理为抓包工具 在页面上点击播放后，会加载m3u8文件 抓包工具检测到特定信息后，将该m3u8地址发送给spri</description>
     </item>
     
     <item>
       <title>scala调用系统命令</title>
-      <link>/www.awslop.com/2019/10/09/scala-process.html</link>
+      <link>https://www.awslop.com/2019/10/09/scala-process.html</link>
       <pubDate>Wed, 09 Oct 2019 17:28:13 +0800</pubDate>
       
-      <guid>/www.awslop.com/2019/10/09/scala-process.html</guid>
+      <guid>https://www.awslop.com/2019/10/09/scala-process.html</guid>
       <description>操作演示 启动scala 1 2 docker run --rm -it hseeberger/scala-sbt:11.0.3_1.2.8_2.13.0 bash scala -language:postfixOps 命令里面不能直接用管道或重定向符号 需要用#来拼接 报错解决 scala代码中如果使用 !执行命令时， 会有</description>
     </item>
     
     <item>
       <title>linux内存文件系统使用</title>
-      <link>/www.awslop.com/2019/03/17/linux-ram-filesystem.html</link>
+      <link>https://www.awslop.com/2019/03/17/linux-ram-filesystem.html</link>
       <pubDate>Sun, 17 Mar 2019 17:28:13 +0800</pubDate>
       
-      <guid>/www.awslop.com/2019/03/17/linux-ram-filesystem.html</guid>
+      <guid>https://www.awslop.com/2019/03/17/linux-ram-filesystem.html</guid>
       <description>使用内存文件系统 就是图它特别快 操作演示 3种创建内存文件系统的方式 tmpfs 使用操作比较友好 ramfs 比较快，但危险 格式化内存 步骤稍微繁琐 创建几个文件夹用来演</description>
     </item>
     

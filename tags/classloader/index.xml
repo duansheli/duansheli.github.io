@@ -2,48 +2,48 @@
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
     <title>classloader on 断舍离的博客</title>
-    <link>/www.awslop.com/tags/classloader/</link>
+    <link>https://www.awslop.com/tags/classloader/</link>
     <description>Recent content in classloader on 断舍离的博客</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>zh-cn</language>
     <lastBuildDate>Sun, 08 Jul 2018 15:13:13 +0800</lastBuildDate>
     
-	<atom:link href="/www.awslop.com/tags/classloader/index.xml" rel="self" type="application/rss+xml" />
+	<atom:link href="https://www.awslop.com/tags/classloader/index.xml" rel="self" type="application/rss+xml" />
     
     
     <item>
       <title>类加载器加载的类不能创建对象</title>
-      <link>/www.awslop.com/2018/07/08/classloader-modifiers-exception.html</link>
+      <link>https://www.awslop.com/2018/07/08/classloader-modifiers-exception.html</link>
       <pubDate>Sun, 08 Jul 2018 15:13:13 +0800</pubDate>
       
-      <guid>/www.awslop.com/2018/07/08/classloader-modifiers-exception.html</guid>
+      <guid>https://www.awslop.com/2018/07/08/classloader-modifiers-exception.html</guid>
       <description>IllegalAccessException 异常信息 1 2 3 4 5 6 7 Exception in thread &amp;#34;main&amp;#34; java.lang.IllegalAccessException: Class fluffy.mo.MyClassloader can not access a member of class fluffy.mo.Car with modifiers &amp;#34;public&amp;#34; at sun.reflect.Reflection.ensureMemberAccess(Reflection.java:102) at java.lang.reflect.AccessibleObject.slowCheckMemberAccess(AccessibleObject.java:296) at java.lang.reflect.AccessibleObject.checkAccess(AccessibleObject.java:288) at java.lang.reflect.Constructor.newInstance(Constructor.java:413) at fluffy.mo.MyClassloader.test4(MyClassloader.java:91) at fluffy.mo.MyClassloader.main(MyClassloader.java:68) 在使用反射创建对象时，被提示没权限 代码示例 1 2 3 package fluffy.mo; public class</description>
     </item>
     
     <item>
       <title>SPI与contextclassloader</title>
-      <link>/www.awslop.com/2018/06/27/classloader-spi.html</link>
+      <link>https://www.awslop.com/2018/06/27/classloader-spi.html</link>
       <pubDate>Wed, 27 Jun 2018 14:13:13 +0800</pubDate>
       
-      <guid>/www.awslop.com/2018/06/27/classloader-spi.html</guid>
+      <guid>https://www.awslop.com/2018/06/27/classloader-spi.html</guid>
       <description>目标 通过SPI学习setContextClassLoader，getContextClassLoader的用法 SPI概念 SPI（Servic</description>
     </item>
     
     <item>
       <title>类加载器使用</title>
-      <link>/www.awslop.com/2018/06/21/classloader-start.html</link>
+      <link>https://www.awslop.com/2018/06/21/classloader-start.html</link>
       <pubDate>Thu, 21 Jun 2018 13:13:13 +0800</pubDate>
       
-      <guid>/www.awslop.com/2018/06/21/classloader-start.html</guid>
+      <guid>https://www.awslop.com/2018/06/21/classloader-start.html</guid>
       <description>类加载器 引入 一般开发都不会接触classloader的概念，但程序的运行却是建立在classloader之上的 为什么要有类加载器： java程</description>
     </item>
     
     <item>
       <title>反射使用</title>
-      <link>/www.awslop.com/2018/04/02/reflect-start.html</link>
+      <link>https://www.awslop.com/2018/04/02/reflect-start.html</link>
       <pubDate>Mon, 02 Apr 2018 13:13:13 +0800</pubDate>
       
-      <guid>/www.awslop.com/2018/04/02/reflect-start.html</guid>
+      <guid>https://www.awslop.com/2018/04/02/reflect-start.html</guid>
       <description>反射介绍 可以不直接new 对象，或调用方法。 用另一种创建某个对象（字符串的方式），或调用某个对象的方法（字符串的方式）。 反射这种间接调用效率肯</description>
     </item>
     

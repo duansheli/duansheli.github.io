@@ -2,21 +2,21 @@
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
     <title>session on 断舍离的博客</title>
-    <link>/www.awslop.com/tags/session/</link>
+    <link>https://www.awslop.com/tags/session/</link>
     <description>Recent content in session on 断舍离的博客</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>zh-cn</language>
     <lastBuildDate>Sat, 02 Mar 2019 17:28:13 +0800</lastBuildDate>
     
-	<atom:link href="/www.awslop.com/tags/session/index.xml" rel="self" type="application/rss+xml" />
+	<atom:link href="https://www.awslop.com/tags/session/index.xml" rel="self" type="application/rss+xml" />
     
     
     <item>
       <title>spring-session实现分布式会话</title>
-      <link>/www.awslop.com/2019/03/02/spring-session-in-action.html</link>
+      <link>https://www.awslop.com/2019/03/02/spring-session-in-action.html</link>
       <pubDate>Sat, 02 Mar 2019 17:28:13 +0800</pubDate>
       
-      <guid>/www.awslop.com/2019/03/02/spring-session-in-action.html</guid>
+      <guid>https://www.awslop.com/2019/03/02/spring-session-in-action.html</guid>
       <description>&lt;p&gt;通过spring session实现分布式会话&lt;br&gt;
 集群下不会丢失会话 集中管理session&lt;/p&gt;</description>
     </item>

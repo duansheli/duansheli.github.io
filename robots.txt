@@ -1,2 +1,2 @@
 User-agent: *
-Sitemap: /www.awslop.com/sitemap.xml
+Sitemap: https://www.awslop.com/sitemap.xml

@@ -2,30 +2,30 @@
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
     <title>redis on 断舍离的博客</title>
-    <link>/www.awslop.com/tags/redis/</link>
+    <link>https://www.awslop.com/tags/redis/</link>
     <description>Recent content in redis on 断舍离的博客</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>zh-cn</language>
     <lastBuildDate>Sat, 16 Mar 2019 17:28:13 +0800</lastBuildDate>
     
-	<atom:link href="/www.awslop.com/tags/redis/index.xml" rel="self" type="application/rss+xml" />
+	<atom:link href="https://www.awslop.com/tags/redis/index.xml" rel="self" type="application/rss+xml" />
     
     
     <item>
       <title>redis-lua-秒杀</title>
-      <link>/www.awslop.com/2019/03/16/redis-lua-buy.html</link>
+      <link>https://www.awslop.com/2019/03/16/redis-lua-buy.html</link>
       <pubDate>Sat, 16 Mar 2019 17:28:13 +0800</pubDate>
       
-      <guid>/www.awslop.com/2019/03/16/redis-lua-buy.html</guid>
+      <guid>https://www.awslop.com/2019/03/16/redis-lua-buy.html</guid>
       <description>简介 做秒杀的商品数量一般计较少 该方案使用set存储 一定库存 每个用户抢购时，从redis申请序号， 取到了则创建订单。 可与前端缓存方案 限流 熔断一</description>
     </item>
     
     <item>
       <title>redis使用lua脚本</title>
-      <link>/www.awslop.com/2018/08/11/redis-lua.html</link>
+      <link>https://www.awslop.com/2018/08/11/redis-lua.html</link>
       <pubDate>Sat, 11 Aug 2018 13:13:13 +0800</pubDate>
       
-      <guid>/www.awslop.com/2018/08/11/redis-lua.html</guid>
+      <guid>https://www.awslop.com/2018/08/11/redis-lua.html</guid>
       <description>脚本 1 hello lua 1 2 3 4 5 6 cat &amp;gt; test01.lua &amp;lt;&amp;lt;EOF local msg = &amp;#34;Hello, lua&amp;#34; return msg EOF redis-cli EVAL &amp;#34;$(cat test01.lua)&amp;#34; 0 使用参数 数字2声明keys有2个 后面跟着两个keys参数 之后就是argv参数 1 2 3 4</description>
     </item>
     

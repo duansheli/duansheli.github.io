@@ -2,21 +2,21 @@
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
     <title>JHM on 断舍离的博客</title>
-    <link>/www.awslop.com/categories/jhm/</link>
+    <link>https://www.awslop.com/categories/jhm/</link>
     <description>Recent content in JHM on 断舍离的博客</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>zh-cn</language>
     <lastBuildDate>Sun, 10 Nov 2019 17:28:13 +0800</lastBuildDate>
     
-	<atom:link href="/www.awslop.com/categories/jhm/index.xml" rel="self" type="application/rss+xml" />
+	<atom:link href="https://www.awslop.com/categories/jhm/index.xml" rel="self" type="application/rss+xml" />
     
     
     <item>
       <title>基准测试工具JMH-示例</title>
-      <link>/www.awslop.com/2019/11/10/benchmark-java-jmh.html</link>
+      <link>https://www.awslop.com/2019/11/10/benchmark-java-jmh.html</link>
       <pubDate>Sun, 10 Nov 2019 17:28:13 +0800</pubDate>
       
-      <guid>/www.awslop.com/2019/11/10/benchmark-java-jmh.html</guid>
+      <guid>https://www.awslop.com/2019/11/10/benchmark-java-jmh.html</guid>
       <description>基准测试工具JHM junit用来测方法对不对 ab用来压测http服务 jhm是用测java方法性能的， 比如每秒能运行多少次，每次执行的耗时 jh</description>
     </item>
     

@@ -2,21 +2,21 @@
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
     <title>JMH on 断舍离的博客</title>
-    <link>/www.awslop.com/tags/jmh/</link>
+    <link>https://www.awslop.com/tags/jmh/</link>
     <description>Recent content in JMH on 断舍离的博客</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>zh-cn</language>
     <lastBuildDate>Sat, 16 Nov 2019 17:28:13 +0800</lastBuildDate>
     
-	<atom:link href="/www.awslop.com/tags/jmh/index.xml" rel="self" type="application/rss+xml" />
+	<atom:link href="https://www.awslop.com/tags/jmh/index.xml" rel="self" type="application/rss+xml" />
     
     
     <item>
       <title>JMH-测试动态执行代码效率</title>
-      <link>/www.awslop.com/2019/11/16/jmh-dynamic-run.html</link>
+      <link>https://www.awslop.com/2019/11/16/jmh-dynamic-run.html</link>
       <pubDate>Sat, 16 Nov 2019 17:28:13 +0800</pubDate>
       
-      <guid>/www.awslop.com/2019/11/16/jmh-dynamic-run.html</guid>
+      <guid>https://www.awslop.com/2019/11/16/jmh-dynamic-run.html</guid>
       <description>测试比较几种动态代码的速度 Java原生代码执行 使用janino编译Java代码执行 groovy加载类 以反射创建后，直接调用 groovy加载类</description>
     </item>
     

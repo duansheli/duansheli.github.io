@@ -1,792 +1,792 @@
-<?xml-stylesheet type="text/xsl" href="/www.awslop.com/sitemap.xsl"?>
+<?xml-stylesheet type="text/xsl" href="https://www.awslop.com/sitemap.xsl"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   
   <url>
-    <loc>/www.awslop.com/2019/12/20/akka-demo-concurrent.html</loc>
+    <loc>https://www.awslop.com/2019/12/20/akka-demo-concurrent.html</loc>
     <lastmod>2019-12-20T17:28:13+08:00</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.5</priority>
   </url>
   
   <url>
-    <loc>/www.awslop.com/categories/</loc>
+    <loc>https://www.awslop.com/categories/</loc>
     <lastmod>2019-12-20T17:28:13+08:00</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.5</priority>
   </url>
   
   <url>
-    <loc>/www.awslop.com/post/</loc>
+    <loc>https://www.awslop.com/post/</loc>
     <lastmod>2019-12-25T15:55:35+08:00</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.5</priority>
   </url>
   
   <url>
-    <loc>/www.awslop.com/tags/scala/</loc>
+    <loc>https://www.awslop.com/tags/scala/</loc>
     <lastmod>2019-12-20T17:28:13+08:00</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.5</priority>
   </url>
   
   <url>
-    <loc>/www.awslop.com/categories/scala%E5%B9%B6%E5%8F%91%E7%BC%96%E7%A8%8B/</loc>
+    <loc>https://www.awslop.com/categories/scala%E5%B9%B6%E5%8F%91%E7%BC%96%E7%A8%8B/</loc>
     <lastmod>2019-12-20T17:28:13+08:00</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.5</priority>
   </url>
   
   <url>
-    <loc>/www.awslop.com/tags/</loc>
+    <loc>https://www.awslop.com/tags/</loc>
     <lastmod>2019-12-25T15:55:35+08:00</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.5</priority>
   </url>
   
   <url>
-    <loc>/www.awslop.com/</loc>
+    <loc>https://www.awslop.com/</loc>
     <lastmod>2019-12-25T15:55:35+08:00</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.5</priority>
   </url>
   
   <url>
-    <loc>/www.awslop.com/2019/12/15/hocon-java.html</loc>
+    <loc>https://www.awslop.com/2019/12/15/hocon-java.html</loc>
     <lastmod>2019-12-15T17:28:13+08:00</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.5</priority>
   </url>
   
   <url>
-    <loc>/www.awslop.com/tags/java/</loc>
+    <loc>https://www.awslop.com/tags/java/</loc>
     <lastmod>2019-12-15T17:28:13+08:00</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.5</priority>
   </url>
   
   <url>
-    <loc>/www.awslop.com/tags/jmh/</loc>
+    <loc>https://www.awslop.com/tags/jmh/</loc>
     <lastmod>2019-11-16T17:28:13+08:00</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.5</priority>
   </url>
   
   <url>
-    <loc>/www.awslop.com/categories/jmh/</loc>
+    <loc>https://www.awslop.com/categories/jmh/</loc>
     <lastmod>2019-11-16T17:28:13+08:00</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.5</priority>
   </url>
   
   <url>
-    <loc>/www.awslop.com/2019/11/16/jmh-dynamic-run.html</loc>
+    <loc>https://www.awslop.com/2019/11/16/jmh-dynamic-run.html</loc>
     <lastmod>2019-11-16T17:28:13+08:00</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.5</priority>
   </url>
   
   <url>
-    <loc>/www.awslop.com/tags/route/</loc>
+    <loc>https://www.awslop.com/tags/route/</loc>
     <lastmod>2019-11-12T13:13:13+08:00</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.5</priority>
   </url>
   
   <url>
-    <loc>/www.awslop.com/2019/11/12/doh.html</loc>
+    <loc>https://www.awslop.com/2019/11/12/doh.html</loc>
     <lastmod>2019-11-12T13:13:13+08:00</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.5</priority>
   </url>
   
   <url>
-    <loc>/www.awslop.com/tags/jhm/</loc>
+    <loc>https://www.awslop.com/tags/jhm/</loc>
     <lastmod>2019-11-10T17:28:13+08:00</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.5</priority>
   </url>
   
   <url>
-    <loc>/www.awslop.com/categories/jhm/</loc>
+    <loc>https://www.awslop.com/categories/jhm/</loc>
     <lastmod>2019-11-10T17:28:13+08:00</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.5</priority>
   </url>
   
   <url>
-    <loc>/www.awslop.com/2019/11/10/benchmark-java-jmh.html</loc>
+    <loc>https://www.awslop.com/2019/11/10/benchmark-java-jmh.html</loc>
     <lastmod>2019-11-10T17:28:13+08:00</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.5</priority>
   </url>
   
   <url>
-    <loc>/www.awslop.com/tags/drools/</loc>
+    <loc>https://www.awslop.com/tags/drools/</loc>
     <lastmod>2019-10-28T17:28:13+08:00</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.5</priority>
   </url>
   
   <url>
-    <loc>/www.awslop.com/2019/10/28/update-rule-by-scanner.html</loc>
+    <loc>https://www.awslop.com/2019/10/28/update-rule-by-scanner.html</loc>
     <lastmod>2019-10-28T17:28:13+08:00</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.5</priority>
   </url>
   
   <url>
-    <loc>/www.awslop.com/2019/10/27/update-rule-by-scanner.html</loc>
+    <loc>https://www.awslop.com/2019/10/27/update-rule-by-scanner.html</loc>
     <lastmod>2019-10-27T17:28:13+08:00</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.5</priority>
   </url>
   
   <url>
-    <loc>/www.awslop.com/2019/10/26/update-rule-by-scanner.html</loc>
+    <loc>https://www.awslop.com/2019/10/26/update-rule-by-scanner.html</loc>
     <lastmod>2019-10-26T17:28:13+08:00</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.5</priority>
   </url>
   
   <url>
-    <loc>/www.awslop.com/tags/linux/</loc>
+    <loc>https://www.awslop.com/tags/linux/</loc>
     <lastmod>2019-10-13T22:28:13+08:00</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.5</priority>
   </url>
   
   <url>
-    <loc>/www.awslop.com/2019/10/13/download-m3u8-video-02.html</loc>
+    <loc>https://www.awslop.com/2019/10/13/download-m3u8-video-02.html</loc>
     <lastmod>2019-10-13T22:28:13+08:00</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.5</priority>
   </url>
   
   <url>
-    <loc>/www.awslop.com/tags/ffmpeg/</loc>
+    <loc>https://www.awslop.com/tags/ffmpeg/</loc>
     <lastmod>2019-10-12T17:28:13+08:00</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.5</priority>
   </url>
   
   <url>
-    <loc>/www.awslop.com/2019/10/13/download-m3u8-video-01.html</loc>
+    <loc>https://www.awslop.com/2019/10/13/download-m3u8-video-01.html</loc>
     <lastmod>2019-10-12T17:28:13+08:00</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.5</priority>
   </url>
   
   <url>
-    <loc>/www.awslop.com/2019/10/09/scala-process.html</loc>
+    <loc>https://www.awslop.com/2019/10/09/scala-process.html</loc>
     <lastmod>2019-10-09T17:28:13+08:00</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.5</priority>
   </url>
   
   <url>
-    <loc>/www.awslop.com/tags/docker/</loc>
+    <loc>https://www.awslop.com/tags/docker/</loc>
     <lastmod>2019-10-03T17:28:13+08:00</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.5</priority>
   </url>
   
   <url>
-    <loc>/www.awslop.com/tags/k8s/</loc>
+    <loc>https://www.awslop.com/tags/k8s/</loc>
     <lastmod>2019-10-03T17:28:13+08:00</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.5</priority>
   </url>
   
   <url>
-    <loc>/www.awslop.com/2019/10/03/k8s-cluster-setup-03.html</loc>
+    <loc>https://www.awslop.com/2019/10/03/k8s-cluster-setup-03.html</loc>
     <lastmod>2019-10-03T17:28:13+08:00</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.5</priority>
   </url>
   
   <url>
-    <loc>/www.awslop.com/categories/k8s%E9%9B%86%E7%BE%A4/</loc>
+    <loc>https://www.awslop.com/categories/k8s%E9%9B%86%E7%BE%A4/</loc>
     <lastmod>2019-10-03T17:28:13+08:00</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.5</priority>
   </url>
   
   <url>
-    <loc>/www.awslop.com/2019/09/12/doh.html</loc>
+    <loc>https://www.awslop.com/2019/09/12/doh.html</loc>
     <lastmod>2019-09-12T13:13:13+08:00</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.5</priority>
   </url>
   
   <url>
-    <loc>/www.awslop.com/tags/kotlin/</loc>
+    <loc>https://www.awslop.com/tags/kotlin/</loc>
     <lastmod>2019-09-11T17:28:13+08:00</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.5</priority>
   </url>
   
   <url>
-    <loc>/www.awslop.com/2019/09/11/kotlin-null-check.html</loc>
+    <loc>https://www.awslop.com/2019/09/11/kotlin-null-check.html</loc>
     <lastmod>2019-09-11T17:28:13+08:00</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.5</priority>
   </url>
   
   <url>
-    <loc>/www.awslop.com/tags/hashids/</loc>
+    <loc>https://www.awslop.com/tags/hashids/</loc>
     <lastmod>2019-09-03T17:28:13+08:00</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.5</priority>
   </url>
   
   <url>
-    <loc>/www.awslop.com/tags/id/</loc>
+    <loc>https://www.awslop.com/tags/id/</loc>
     <lastmod>2019-09-03T17:28:13+08:00</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.5</priority>
   </url>
   
   <url>
-    <loc>/www.awslop.com/2019/09/03/hashids-usage.html</loc>
+    <loc>https://www.awslop.com/2019/09/03/hashids-usage.html</loc>
     <lastmod>2019-09-03T17:28:13+08:00</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.5</priority>
   </url>
   
   <url>
-    <loc>/www.awslop.com/2019/09/07/zero-width.html</loc>
+    <loc>https://www.awslop.com/2019/09/07/zero-width.html</loc>
     <lastmod>2019-09-03T17:28:13+08:00</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.5</priority>
   </url>
   
   <url>
-    <loc>/www.awslop.com/2019/08/16/hashids-usage.html</loc>
+    <loc>https://www.awslop.com/2019/08/16/hashids-usage.html</loc>
     <lastmod>2019-08-16T17:28:13+08:00</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.5</priority>
   </url>
   
   <url>
-    <loc>/www.awslop.com/tags/shell/</loc>
+    <loc>https://www.awslop.com/tags/shell/</loc>
     <lastmod>2019-08-07T17:28:13+08:00</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.5</priority>
   </url>
   
   <url>
-    <loc>/www.awslop.com/2019/08/07/split-merge-file.html</loc>
+    <loc>https://www.awslop.com/2019/08/07/split-merge-file.html</loc>
     <lastmod>2019-08-07T17:28:13+08:00</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.5</priority>
   </url>
   
   <url>
-    <loc>/www.awslop.com/tags/mysql/</loc>
+    <loc>https://www.awslop.com/tags/mysql/</loc>
     <lastmod>2019-08-02T17:28:13+08:00</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.5</priority>
   </url>
   
   <url>
-    <loc>/www.awslop.com/2019/08/02/k8s-cluster-setup-02.html</loc>
+    <loc>https://www.awslop.com/2019/08/02/k8s-cluster-setup-02.html</loc>
     <lastmod>2019-08-02T17:28:13+08:00</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.5</priority>
   </url>
   
   <url>
-    <loc>/www.awslop.com/tags/git/</loc>
+    <loc>https://www.awslop.com/tags/git/</loc>
     <lastmod>2019-07-06T16:13:13+08:00</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.5</priority>
   </url>
   
   <url>
-    <loc>/www.awslop.com/2019/07/06/check-credit.html</loc>
+    <loc>https://www.awslop.com/2019/07/06/check-credit.html</loc>
     <lastmod>2019-07-06T16:13:13+08:00</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.5</priority>
   </url>
   
   <url>
-    <loc>/www.awslop.com/2019/07/06/check-credit.html</loc>
+    <loc>https://www.awslop.com/2019/07/06/check-credit.html</loc>
     <lastmod>2019-07-06T16:13:13+08:00</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.5</priority>
   </url>
   
   <url>
-    <loc>/www.awslop.com/2019/06/27/k8s-ingress-controller.html</loc>
+    <loc>https://www.awslop.com/2019/06/27/k8s-ingress-controller.html</loc>
     <lastmod>2019-06-27T17:28:13+08:00</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.5</priority>
   </url>
   
   <url>
-    <loc>/www.awslop.com/tags/gradle/</loc>
+    <loc>https://www.awslop.com/tags/gradle/</loc>
     <lastmod>2019-06-21T16:13:13+08:00</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.5</priority>
   </url>
   
   <url>
-    <loc>/www.awslop.com/2019/06/21/gradle-task-learn.html</loc>
+    <loc>https://www.awslop.com/2019/06/21/gradle-task-learn.html</loc>
     <lastmod>2019-06-21T16:13:13+08:00</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.5</priority>
   </url>
   
   <url>
-    <loc>/www.awslop.com/tags/jvm/</loc>
+    <loc>https://www.awslop.com/tags/jvm/</loc>
     <lastmod>2019-06-10T17:28:13+08:00</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.5</priority>
   </url>
   
   <url>
-    <loc>/www.awslop.com/2019/02/10/jstack-demo.html</loc>
+    <loc>https://www.awslop.com/2019/02/10/jstack-demo.html</loc>
     <lastmod>2019-06-10T17:28:13+08:00</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.5</priority>
   </url>
   
   <url>
-    <loc>/www.awslop.com/tags/life/</loc>
+    <loc>https://www.awslop.com/tags/life/</loc>
     <lastmod>2019-06-05T16:13:13+08:00</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.5</priority>
   </url>
   
   <url>
-    <loc>/www.awslop.com/2019/06/05/check-credit.html</loc>
+    <loc>https://www.awslop.com/2019/06/05/check-credit.html</loc>
     <lastmod>2019-06-05T16:13:13+08:00</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.5</priority>
   </url>
   
   <url>
-    <loc>/www.awslop.com/2019/09/09/docker-cp.html</loc>
+    <loc>https://www.awslop.com/2019/09/09/docker-cp.html</loc>
     <lastmod>2019-06-02T17:28:13+08:00</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.5</priority>
   </url>
   
   <url>
-    <loc>/www.awslop.com/2019/06/05/relax.html</loc>
+    <loc>https://www.awslop.com/2019/06/05/relax.html</loc>
     <lastmod>2019-05-30T13:13:13+08:00</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.5</priority>
   </url>
   
   <url>
-    <loc>/www.awslop.com/tags/jdk/</loc>
+    <loc>https://www.awslop.com/tags/jdk/</loc>
     <lastmod>2019-05-25T17:28:13+08:00</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.5</priority>
   </url>
   
   <url>
-    <loc>/www.awslop.com/2019/05/25/download-openjdk.html</loc>
+    <loc>https://www.awslop.com/2019/05/25/download-openjdk.html</loc>
     <lastmod>2019-05-25T17:28:13+08:00</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.5</priority>
   </url>
   
   <url>
-    <loc>/www.awslop.com/2019/05/18/dind-build-image-with-cache.html</loc>
+    <loc>https://www.awslop.com/2019/05/18/dind-build-image-with-cache.html</loc>
     <lastmod>2019-05-18T17:28:13+08:00</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.5</priority>
   </url>
   
   <url>
-    <loc>/www.awslop.com/2019/05/17/thinking-autoboxing-implicit.html</loc>
+    <loc>https://www.awslop.com/2019/05/17/thinking-autoboxing-implicit.html</loc>
     <lastmod>2019-05-17T17:28:13+08:00</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.5</priority>
   </url>
   
   <url>
-    <loc>/www.awslop.com/tags/elasticsearch/</loc>
+    <loc>https://www.awslop.com/tags/elasticsearch/</loc>
     <lastmod>2019-12-25T15:55:35+08:00</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.5</priority>
   </url>
   
   <url>
-    <loc>/www.awslop.com/2019/05/10/spring-data-elasticsearch-error-date.html</loc>
+    <loc>https://www.awslop.com/2019/05/10/spring-data-elasticsearch-error-date.html</loc>
     <lastmod>2019-12-25T15:55:35+08:00</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.5</priority>
   </url>
   
   <url>
-    <loc>/www.awslop.com/tags/spring-boot/</loc>
+    <loc>https://www.awslop.com/tags/spring-boot/</loc>
     <lastmod>2019-04-09T17:28:13+08:00</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.5</priority>
   </url>
   
   <url>
-    <loc>/www.awslop.com/tags/spring-security/</loc>
+    <loc>https://www.awslop.com/tags/spring-security/</loc>
     <lastmod>2019-04-09T17:28:13+08:00</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.5</priority>
   </url>
   
   <url>
-    <loc>/www.awslop.com/2019/04/09/spring-security-login-by-mobile-code.html</loc>
+    <loc>https://www.awslop.com/2019/04/09/spring-security-login-by-mobile-code.html</loc>
     <lastmod>2019-04-09T17:28:13+08:00</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.5</priority>
   </url>
   
   <url>
-    <loc>/www.awslop.com/tags/%E7%99%BB%E5%BD%95/</loc>
+    <loc>https://www.awslop.com/tags/%E7%99%BB%E5%BD%95/</loc>
     <lastmod>2019-04-09T17:28:13+08:00</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.5</priority>
   </url>
   
   <url>
-    <loc>/www.awslop.com/2019/04/08/login-nature.html</loc>
+    <loc>https://www.awslop.com/2019/04/08/login-nature.html</loc>
     <lastmod>2019-04-08T17:28:13+08:00</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.5</priority>
   </url>
   
   <url>
-    <loc>/www.awslop.com/tags/dubbo/</loc>
+    <loc>https://www.awslop.com/tags/dubbo/</loc>
     <lastmod>2019-04-06T17:28:13+08:00</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.5</priority>
   </url>
   
   <url>
-    <loc>/www.awslop.com/tags/zipkin/</loc>
+    <loc>https://www.awslop.com/tags/zipkin/</loc>
     <lastmod>2019-04-06T17:28:13+08:00</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.5</priority>
   </url>
   
   <url>
-    <loc>/www.awslop.com/2019/04/06/zipkin-dubbo-tracing.html</loc>
+    <loc>https://www.awslop.com/2019/04/06/zipkin-dubbo-tracing.html</loc>
     <lastmod>2019-04-06T17:28:13+08:00</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.5</priority>
   </url>
   
   <url>
-    <loc>/www.awslop.com/2019/03/28/download-redisdesktopmanager.html</loc>
+    <loc>https://www.awslop.com/2019/03/28/download-redisdesktopmanager.html</loc>
     <lastmod>2019-03-28T13:13:13+08:00</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.5</priority>
   </url>
   
   <url>
-    <loc>/www.awslop.com/2019/03/17/linux-ram-filesystem.html</loc>
+    <loc>https://www.awslop.com/2019/03/17/linux-ram-filesystem.html</loc>
     <lastmod>2019-03-17T17:28:13+08:00</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.5</priority>
   </url>
   
   <url>
-    <loc>/www.awslop.com/tags/redis/</loc>
+    <loc>https://www.awslop.com/tags/redis/</loc>
     <lastmod>2019-03-16T17:28:13+08:00</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.5</priority>
   </url>
   
   <url>
-    <loc>/www.awslop.com/2019/03/16/redis-lua-buy.html</loc>
+    <loc>https://www.awslop.com/2019/03/16/redis-lua-buy.html</loc>
     <lastmod>2019-03-16T17:28:13+08:00</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.5</priority>
   </url>
   
   <url>
-    <loc>/www.awslop.com/tags/session/</loc>
+    <loc>https://www.awslop.com/tags/session/</loc>
     <lastmod>2019-03-02T17:28:13+08:00</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.5</priority>
   </url>
   
   <url>
-    <loc>/www.awslop.com/2019/03/02/spring-session-in-action.html</loc>
+    <loc>https://www.awslop.com/2019/03/02/spring-session-in-action.html</loc>
     <lastmod>2019-03-02T17:28:13+08:00</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.5</priority>
   </url>
   
   <url>
-    <loc>/www.awslop.com/tags/springboot/</loc>
+    <loc>https://www.awslop.com/tags/springboot/</loc>
     <lastmod>2019-03-02T17:28:13+08:00</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.5</priority>
   </url>
   
   <url>
-    <loc>/www.awslop.com/2019/08/22/cloudflare-ddns.html</loc>
+    <loc>https://www.awslop.com/2019/08/22/cloudflare-ddns.html</loc>
     <lastmod>2019-02-22T13:13:13+08:00</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.5</priority>
   </url>
   
   <url>
-    <loc>/www.awslop.com/tags/rocketmq/</loc>
+    <loc>https://www.awslop.com/tags/rocketmq/</loc>
     <lastmod>2019-02-16T17:28:13+08:00</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.5</priority>
   </url>
   
   <url>
-    <loc>/www.awslop.com/tags/%E5%88%86%E5%B8%83%E5%BC%8F%E4%BA%8B%E5%8A%A1/</loc>
+    <loc>https://www.awslop.com/tags/%E5%88%86%E5%B8%83%E5%BC%8F%E4%BA%8B%E5%8A%A1/</loc>
     <lastmod>2019-02-16T17:28:13+08:00</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.5</priority>
   </url>
   
   <url>
-    <loc>/www.awslop.com/2019/02/16/rocketmq-transaction.html</loc>
+    <loc>https://www.awslop.com/2019/02/16/rocketmq-transaction.html</loc>
     <lastmod>2019-02-16T17:28:13+08:00</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.5</priority>
   </url>
   
   <url>
-    <loc>/www.awslop.com/tags/drone/</loc>
+    <loc>https://www.awslop.com/tags/drone/</loc>
     <lastmod>2019-02-03T17:28:13+08:00</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.5</priority>
   </url>
   
   <url>
-    <loc>/www.awslop.com/2019/02/03/drone-ci-github-pages.html</loc>
+    <loc>https://www.awslop.com/2019/02/03/drone-ci-github-pages.html</loc>
     <lastmod>2019-02-03T17:28:13+08:00</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.5</priority>
   </url>
   
   <url>
-    <loc>/www.awslop.com/tags/%E6%8C%81%E7%BB%AD%E9%9B%86%E6%88%90/</loc>
+    <loc>https://www.awslop.com/tags/%E6%8C%81%E7%BB%AD%E9%9B%86%E6%88%90/</loc>
     <lastmod>2019-02-03T17:28:13+08:00</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.5</priority>
   </url>
   
   <url>
-    <loc>/www.awslop.com/2019/01/01/connect-container-ip.html</loc>
+    <loc>https://www.awslop.com/2019/01/01/connect-container-ip.html</loc>
     <lastmod>2019-02-01T17:28:13+08:00</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.5</priority>
   </url>
   
   <url>
-    <loc>/www.awslop.com/2019/01/16/gradle-init-learn.html</loc>
+    <loc>https://www.awslop.com/2019/01/16/gradle-init-learn.html</loc>
     <lastmod>2019-01-16T16:13:13+08:00</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.5</priority>
   </url>
   
   <url>
-    <loc>/www.awslop.com/2019/01/15/docker-useful-cmd.html</loc>
+    <loc>https://www.awslop.com/2019/01/15/docker-useful-cmd.html</loc>
     <lastmod>2019-01-15T17:28:13+08:00</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.5</priority>
   </url>
   
   <url>
-    <loc>/www.awslop.com/2018/01/06/unzip-no-copy.html</loc>
+    <loc>https://www.awslop.com/2018/01/06/unzip-no-copy.html</loc>
     <lastmod>2019-01-06T13:13:13+08:00</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.5</priority>
   </url>
   
   <url>
-    <loc>/www.awslop.com/2019/01/03/k8s-cluster-setup-03.html</loc>
+    <loc>https://www.awslop.com/2019/01/03/k8s-cluster-setup-03.html</loc>
     <lastmod>2019-01-03T17:28:13+08:00</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.5</priority>
   </url>
   
   <url>
-    <loc>/www.awslop.com/2019/01/02/k8s-cluster-setup-02.html</loc>
+    <loc>https://www.awslop.com/2019/01/02/k8s-cluster-setup-02.html</loc>
     <lastmod>2019-01-02T17:28:13+08:00</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.5</priority>
   </url>
   
   <url>
-    <loc>/www.awslop.com/2019/01/01/k8s-cluster-setup-01.html</loc>
+    <loc>https://www.awslop.com/2019/01/01/k8s-cluster-setup-01.html</loc>
     <lastmod>2019-01-01T17:28:13+08:00</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.5</priority>
   </url>
   
   <url>
-    <loc>/www.awslop.com/2018/10/16/ipv6-ip.html</loc>
+    <loc>https://www.awslop.com/2018/10/16/ipv6-ip.html</loc>
     <lastmod>2018-10-16T13:13:13+08:00</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.5</priority>
   </url>
   
   <url>
-    <loc>/www.awslop.com/2018/10/15/future-convert-to-scala.html</loc>
+    <loc>https://www.awslop.com/2018/10/15/future-convert-to-scala.html</loc>
     <lastmod>2018-10-15T17:28:13+08:00</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.5</priority>
   </url>
   
   <url>
-    <loc>/www.awslop.com/2018/09/21/scala-concurrent-async.html</loc>
+    <loc>https://www.awslop.com/2018/09/21/scala-concurrent-async.html</loc>
     <lastmod>2018-09-21T17:28:13+08:00</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.5</priority>
   </url>
   
   <url>
-    <loc>/www.awslop.com/2018/08/22/scala-concurrent-blocking.html</loc>
+    <loc>https://www.awslop.com/2018/08/22/scala-concurrent-blocking.html</loc>
     <lastmod>2018-08-22T17:28:13+08:00</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.5</priority>
   </url>
   
   <url>
-    <loc>/www.awslop.com/2018/08/18/scala-concurrent-promise.html</loc>
+    <loc>https://www.awslop.com/2018/08/18/scala-concurrent-promise.html</loc>
     <lastmod>2018-08-18T17:28:13+08:00</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.5</priority>
   </url>
   
   <url>
-    <loc>/www.awslop.com/2018/08/13/scala-concurrent-duration.html</loc>
+    <loc>https://www.awslop.com/2018/08/13/scala-concurrent-duration.html</loc>
     <lastmod>2018-08-13T17:28:13+08:00</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.5</priority>
   </url>
   
   <url>
-    <loc>/www.awslop.com/2018/08/12/scala-concurrent-map.html</loc>
+    <loc>https://www.awslop.com/2018/08/12/scala-concurrent-map.html</loc>
     <lastmod>2018-08-12T17:28:13+08:00</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.5</priority>
   </url>
   
   <url>
-    <loc>/www.awslop.com/2018/08/11/scala-concurrent-future.html</loc>
+    <loc>https://www.awslop.com/2018/08/11/scala-concurrent-future.html</loc>
     <lastmod>2018-08-11T17:28:13+08:00</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.5</priority>
   </url>
   
   <url>
-    <loc>/www.awslop.com/2018/08/11/redis-lua.html</loc>
+    <loc>https://www.awslop.com/2018/08/11/redis-lua.html</loc>
     <lastmod>2018-08-11T13:13:13+08:00</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.5</priority>
   </url>
   
   <url>
-    <loc>/www.awslop.com/tags/gc/</loc>
+    <loc>https://www.awslop.com/tags/gc/</loc>
     <lastmod>2018-07-14T15:13:13+08:00</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.5</priority>
   </url>
   
   <url>
-    <loc>/www.awslop.com/categories/java%E6%B7%B1%E5%85%A5/</loc>
+    <loc>https://www.awslop.com/categories/java%E6%B7%B1%E5%85%A5/</loc>
     <lastmod>2018-07-14T15:13:13+08:00</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.5</priority>
   </url>
   
   <url>
-    <loc>/www.awslop.com/2018/07/14/jvm-memory-gc.html</loc>
+    <loc>https://www.awslop.com/2018/07/14/jvm-memory-gc.html</loc>
     <lastmod>2018-07-14T15:13:13+08:00</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.5</priority>
   </url>
   
   <url>
-    <loc>/www.awslop.com/tags/classloader/</loc>
+    <loc>https://www.awslop.com/tags/classloader/</loc>
     <lastmod>2018-07-08T15:13:13+08:00</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.5</priority>
   </url>
   
   <url>
-    <loc>/www.awslop.com/2018/07/08/classloader-modifiers-exception.html</loc>
+    <loc>https://www.awslop.com/2018/07/08/classloader-modifiers-exception.html</loc>
     <lastmod>2018-07-08T15:13:13+08:00</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.5</priority>
   </url>
   
   <url>
-    <loc>/www.awslop.com/2018/06/27/classloader-spi.html</loc>
+    <loc>https://www.awslop.com/2018/06/27/classloader-spi.html</loc>
     <lastmod>2018-06-27T14:13:13+08:00</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.5</priority>
   </url>
   
   <url>
-    <loc>/www.awslop.com/2018/06/21/classloader-start.html</loc>
+    <loc>https://www.awslop.com/2018/06/21/classloader-start.html</loc>
     <lastmod>2018-06-21T13:13:13+08:00</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.5</priority>
   </url>
   
   <url>
-    <loc>/www.awslop.com/tags/proxy/</loc>
+    <loc>https://www.awslop.com/tags/proxy/</loc>
     <lastmod>2018-06-05T13:13:13+08:00</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.5</priority>
   </url>
   
   <url>
-    <loc>/www.awslop.com/2018/06/05/proxy-rpc-01.html</loc>
+    <loc>https://www.awslop.com/2018/06/05/proxy-rpc-01.html</loc>
     <lastmod>2018-06-05T13:13:13+08:00</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.5</priority>
   </url>
   
   <url>
-    <loc>/www.awslop.com/2018/06/05/proxy-rpc-02.html</loc>
+    <loc>https://www.awslop.com/2018/06/05/proxy-rpc-02.html</loc>
     <lastmod>2018-06-05T13:13:13+08:00</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.5</priority>
   </url>
   
   <url>
-    <loc>/www.awslop.com/2018/06/02/proxy-start.html</loc>
+    <loc>https://www.awslop.com/2018/06/02/proxy-start.html</loc>
     <lastmod>2018-06-02T13:13:13+08:00</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.5</priority>
   </url>
   
   <url>
-    <loc>/www.awslop.com/2018/04/02/reflect-start.html</loc>
+    <loc>https://www.awslop.com/2018/04/02/reflect-start.html</loc>
     <lastmod>2018-04-02T13:13:13+08:00</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.5</priority>
   </url>
   
   <url>
-    <loc>/www.awslop.com/2018/03/17/dev-browser.html</loc>
+    <loc>https://www.awslop.com/2018/03/17/dev-browser.html</loc>
     <lastmod>2018-03-17T13:13:13+08:00</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.5</priority>
   </url>
   
   <url>
-    <loc>/www.awslop.com/archives/</loc>
+    <loc>https://www.awslop.com/archives/</loc>
     <lastmod>2019-12-25T15:55:35+08:00</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.5</priority>
   </url>
   
   <url>
-    <loc>/www.awslop.com/categories/</loc>
+    <loc>https://www.awslop.com/categories/</loc>
     <lastmod>2019-12-25T15:55:35+08:00</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.5</priority>
