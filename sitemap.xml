@@ -65,14 +65,14 @@
   </url>
   
   <url>
-    <loc>https://www.awslop.com/tags/jmh/</loc>
+    <loc>https://www.awslop.com/categories/jmh/</loc>
     <lastmod>2019-11-16T17:28:13+08:00</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.5</priority>
   </url>
   
   <url>
-    <loc>https://www.awslop.com/categories/jmh/</loc>
+    <loc>https://www.awslop.com/tags/jmh/</loc>
     <lastmod>2019-11-16T17:28:13+08:00</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.5</priority>
@@ -732,6 +732,13 @@
   <url>
     <loc>https://www.awslop.com/2018/06/21/classloader-start.html</loc>
     <lastmod>2018-06-21T13:13:13+08:00</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.5</priority>
+  </url>
+  
+  <url>
+    <loc>https://www.awslop.com/2019/06/11/java-process-name.html</loc>
+    <lastmod>2018-06-11T17:28:13+08:00</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.5</priority>
   </url>
