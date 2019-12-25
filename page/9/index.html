@@ -44,7 +44,7 @@
 <meta property="og:description" content="Hugo theme even example site." />
 <meta property="og:type" content="website" />
 <meta property="og:url" content="https://www.awslop.com/" />
-<meta property="og:updated_time" content="2019-12-22T13:13:13+08:00" />
+<meta property="og:updated_time" content="2019-12-25T13:13:13+08:00" />
 <meta itemprop="name" content="断舍离的博客">
 <meta itemprop="description" content="Hugo theme even example site."><meta name="twitter:card" content="summary"/>
 <meta name="twitter:title" content="断舍离的博客"/>
@@ -109,6 +109,27 @@
       <div class="content-wrapper">
         <div id="content" class="content">
           <section id="posts" class="posts">
+    <article class="post">
+  <header class="post-header">
+    <h1 class="post-title"><a class="post-link" href="/2019/08/22/cloudflare-ddns.html">cloudflare设置ddns</a></h1>
+    <div class="post-meta">
+      <span class="post-time"> 2019-02-22 </span>
+      
+        <span class="more-meta"> 约 631 字 </span>
+        <span class="more-meta"> 预计阅读 2 分钟 </span>
+    </div>
+  </header>
+  
+  <div class="post-content">
+    <div class="post-summary">
+      主要流程 最终目的是 让 movie.aaabbb.com 能解析成家中的公网ip 最终的api为 1 2 3 4 5 curl -X PUT &#34;https://api.cloudflare.com/client/v4/zones/$tzone_id/dns_records/$trecord_id&#34; \ -H &#34;X-Auth-Email: $auth_email&#34; \ -H &#34;X-Auth-Key: $auth_key&#34; \ -H &#34;Content-Type: application/json&#34; \ --data &#39;{&#34;type&#34;:&#34;A&#34;,&#34;name&#34;:&#34;file.awslop.com&#34;,&#34;content&#34;:&#34;$tip&#34;,&#34;ttl&#34;:{},&#34;proxied&#34;:false}&#39; ; 以上命令中需要的参数有 tzone
+    </div>
+    <div class="read-more">
+      <a href="/2019/08/22/cloudflare-ddns.html" class="read-more-link">阅读更多</a>
+    </div>
+  </div>
+</article>
+
     <article class="post">
   <header class="post-header">
     <h1 class="post-title"><a class="post-link" href="/2019/02/16/rocketmq-transaction.html">通过rocketmq实现分布式事务</a></h1>
@@ -195,27 +216,6 @@
     </div>
     <div class="read-more">
       <a href="/2019/01/16/gradle-init-learn.html" class="read-more-link">阅读更多</a>
-    </div>
-  </div>
-</article>
-
-    <article class="post">
-  <header class="post-header">
-    <h1 class="post-title"><a class="post-link" href="/2019/01/15/docker-useful-cmd.html">docker常用操作</a></h1>
-    <div class="post-meta">
-      <span class="post-time"> 2019-01-15 </span>
-      
-        <span class="more-meta"> 约 367 字 </span>
-        <span class="more-meta"> 预计阅读 1 分钟 </span>
-    </div>
-  </header>
-  
-  <div class="post-content">
-    <div class="post-summary">
-      docker常用操作 Dockerfile编写 编写一般不会一次就完成，常常会出错 1 2 3 4 5 6 7 8 9 10 11 12 13 14 15 16 17 Sending build context to Docker daemon 5.902MB Step 1/10 : FROM docker:git as builder
-    </div>
-    <div class="read-more">
-      <a href="/2019/01/15/docker-useful-cmd.html" class="read-more-link">阅读更多</a>
     </div>
   </div>
 </article>
