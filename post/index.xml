@@ -39,15 +39,6 @@
     </item>
     
     <item>
-      <title>ipv4下的回环地址在ipv6下的表示</title>
-      <link>https://www.awslop.com/2019/12/12/ipv6-iwzzp.html</link>
-      <pubDate>Thu, 12 Dec 2019 13:13:13 +0800</pubDate>
-      
-      <guid>https://www.awslop.com/2019/12/12/ipv6-iwzzp.html</guid>
-      <description>回环地址 1 2 3 ipv4 127.0.0.1 ipv6 0:0:0:0:0:0:0:1 ipv6下简写 ::1 所有地址 1 2 3 ipv4 0.0.0.0 ipv6 0:0:0:0:0:0:0:0 ipv6下简写 ::</description>
-    </item>
-    
-    <item>
       <title>JMH-测试动态执行代码效率</title>
       <link>https://www.awslop.com/2019/11/16/jmh-dynamic-run.html</link>
       <pubDate>Sat, 16 Nov 2019 17:28:13 +0800</pubDate>

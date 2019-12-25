@@ -111,29 +111,6 @@
           <section id="posts" class="posts">
     <article class="post">
   <header class="post-header">
-    <h1 class="post-title"><a class="post-link" href="/2018/08/13/scala-concurrent-use-duration.html">scala并发编程-Duration</a></h1>
-    <div class="post-meta">
-      <span class="post-time"> 2018-08-13 </span>
-      <div class="post-category">
-          <a href="/categories/scala%E5%B9%B6%E5%8F%91%E7%BC%96%E7%A8%8B/"> scala并发编程 </a>
-          </div>
-        <span class="more-meta"> 约 251 字 </span>
-        <span class="more-meta"> 预计阅读 1 分钟 </span>
-    </div>
-  </header>
-  
-  <div class="post-content">
-    <div class="post-summary">
-      操作步骤 Duration的几种创建方式 可以进行 加减乘除 的操作 java版Duration 与 Scala版Duration 互相转换 简单上手 1 2 3 4
-    </div>
-    <div class="read-more">
-      <a href="/2018/08/13/scala-concurrent-use-duration.html" class="read-more-link">阅读更多</a>
-    </div>
-  </div>
-</article>
-
-    <article class="post">
-  <header class="post-header">
     <h1 class="post-title"><a class="post-link" href="/2018/08/12/scala-concurrent-map.html">scala并发编程-future的map和flatmap</a></h1>
     <div class="post-meta">
       <span class="post-time"> 2018-08-12 </span>
@@ -218,6 +195,29 @@
     </div>
     <div class="read-more">
       <a href="/2018/07/14/jvm-memory-gc.html" class="read-more-link">阅读更多</a>
+    </div>
+  </div>
+</article>
+
+    <article class="post">
+  <header class="post-header">
+    <h1 class="post-title"><a class="post-link" href="/2018/07/08/classloader-modifiers-exception.html">类加载器加载的类不能创建对象</a></h1>
+    <div class="post-meta">
+      <span class="post-time"> 2018-07-08 </span>
+      <div class="post-category">
+          <a href="/categories/java%E6%B7%B1%E5%85%A5/"> Java深入 </a>
+          </div>
+        <span class="more-meta"> 约 916 字 </span>
+        <span class="more-meta"> 预计阅读 2 分钟 </span>
+    </div>
+  </header>
+  
+  <div class="post-content">
+    <div class="post-summary">
+      IllegalAccessException 异常信息 1 2 3 4 5 6 7 Exception in thread &#34;main&#34; java.lang.IllegalAccessException: Class fluffy.mo.MyClassloader can not access a member of class fluffy.mo.Car with modifiers &#34;public&#34; at sun.reflect.Reflection.ensureMemberAccess(Reflection.java:102) at java.lang.reflect.AccessibleObject.slowCheckMemberAccess(AccessibleObject.java:296) at java.lang.reflect.AccessibleObject.checkAccess(AccessibleObject.java:288) at java.lang.reflect.Constructor.newInstance(Constructor.java:413) at fluffy.mo.MyClassloader.test4(MyClassloader.java:91) at fluffy.mo.MyClassloader.main(MyClassloader.java:68) 在使用反射创建对象时，被提示没权限 代码示例 1 2 3 package fluffy.mo; public class
+    </div>
+    <div class="read-more">
+      <a href="/2018/07/08/classloader-modifiers-exception.html" class="read-more-link">阅读更多</a>
     </div>
   </div>
 </article>
