@@ -58,10 +58,10 @@
     
     <item>
       <title>scala并发编程-Duration</title>
-      <link>https://www.awslop.com/2018/08/13/scala-concurrent-duration.html</link>
+      <link>https://www.awslop.com/2018/08/13/scala-concurrent-use-duration.html</link>
       <pubDate>Mon, 13 Aug 2018 17:28:13 +0800</pubDate>
       
-      <guid>https://www.awslop.com/2018/08/13/scala-concurrent-duration.html</guid>
+      <guid>https://www.awslop.com/2018/08/13/scala-concurrent-use-duration.html</guid>
       <description>操作步骤 Duration的几种创建方式 可以进行 加减乘除 的操作 java版Duration 与 Scala版Duration 互相转换 简单上手 1 2 3 4</description>
     </item>
     

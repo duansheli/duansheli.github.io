@@ -6,10 +6,19 @@
     <description>Recent content on 断舍离的博客</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>zh-cn</language>
-    <lastBuildDate>Fri, 20 Dec 2019 17:28:13 +0800</lastBuildDate>
+    <lastBuildDate>Sun, 22 Dec 2019 13:13:13 +0800</lastBuildDate>
     
 	<atom:link href="https://www.awslop.com/index.xml" rel="self" type="application/rss+xml" />
     
+    
+    <item>
+      <title>浏览222</title>
+      <link>https://www.awslop.com/2019/12/22/doh.html</link>
+      <pubDate>Sun, 22 Dec 2019 13:13:13 +0800</pubDate>
+      
+      <guid>https://www.awslop.com/2019/12/22/doh.html</guid>
+      <description>firefox 1 2 3 4 chrome://flags Secure DNS lookups. 启用该选项 重启浏览器 chrome 1 2 3 4 chrome://flags Secure DNS lookups. 启用该选项 重启浏览器 1 2 3 4 5 6 7 8 9 修改chrome快捷方式的参数 增加以下参数 --enable-features=&amp;#34;dns-over-https&amp;lt;DoHTrial&amp;#34; --force-fieldtrials=&amp;#34;DoHTrial/Group1&amp;#34;</description>
+    </item>
     
     <item>
       <title>akka-并发任务</title>
@@ -22,10 +31,10 @@
     
     <item>
       <title>HOCON配置文件读取</title>
-      <link>https://www.awslop.com/2019/12/15/hocon-java.html</link>
+      <link>https://www.awslop.com/2019/12/15/hocon-java-read.html</link>
       <pubDate>Sun, 15 Dec 2019 17:28:13 +0800</pubDate>
       
-      <guid>https://www.awslop.com/2019/12/15/hocon-java.html</guid>
+      <guid>https://www.awslop.com/2019/12/15/hocon-java-read.html</guid>
       <description>简述 HOCON（Human-Optimized Config Object Notation）是一个易于使用的配置文件格式，具有面向对象风格。 akka的配置文件就是用</description>
     </item>
     
@@ -506,10 +515,10 @@ dashboard helm helm的webui&lt;/p&gt;</description>
     
     <item>
       <title>scala并发编程-Duration</title>
-      <link>https://www.awslop.com/2018/08/13/scala-concurrent-duration.html</link>
+      <link>https://www.awslop.com/2018/08/13/scala-concurrent-use-duration.html</link>
       <pubDate>Mon, 13 Aug 2018 17:28:13 +0800</pubDate>
       
-      <guid>https://www.awslop.com/2018/08/13/scala-concurrent-duration.html</guid>
+      <guid>https://www.awslop.com/2018/08/13/scala-concurrent-use-duration.html</guid>
       <description>操作步骤 Duration的几种创建方式 可以进行 加减乘除 的操作 java版Duration 与 Scala版Duration 互相转换 简单上手 1 2 3 4</description>
     </item>
     

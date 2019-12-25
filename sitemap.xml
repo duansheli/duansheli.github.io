@@ -2,20 +2,6 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   
   <url>
-    <loc>https://www.awslop.com/2019/12/20/akka-demo-concurrent.html</loc>
-    <lastmod>2019-12-20T17:28:13+08:00</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.5</priority>
-  </url>
-  
-  <url>
-    <loc>https://www.awslop.com/categories/</loc>
-    <lastmod>2019-12-20T17:28:13+08:00</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.5</priority>
-  </url>
-  
-  <url>
     <loc>https://www.awslop.com/post/</loc>
     <lastmod>2019-12-25T15:55:35+08:00</lastmod>
     <changefreq>weekly</changefreq>
@@ -23,15 +9,8 @@
   </url>
   
   <url>
-    <loc>https://www.awslop.com/tags/scala/</loc>
-    <lastmod>2019-12-20T17:28:13+08:00</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.5</priority>
-  </url>
-  
-  <url>
-    <loc>https://www.awslop.com/categories/scala%E5%B9%B6%E5%8F%91%E7%BC%96%E7%A8%8B/</loc>
-    <lastmod>2019-12-20T17:28:13+08:00</lastmod>
+    <loc>https://www.awslop.com/tags/route/</loc>
+    <lastmod>2019-12-22T13:13:13+08:00</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.5</priority>
   </url>
@@ -51,7 +30,42 @@
   </url>
   
   <url>
-    <loc>https://www.awslop.com/2019/12/15/hocon-java.html</loc>
+    <loc>https://www.awslop.com/2019/12/22/doh.html</loc>
+    <lastmod>2019-12-22T13:13:13+08:00</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.5</priority>
+  </url>
+  
+  <url>
+    <loc>https://www.awslop.com/2019/12/20/akka-demo-concurrent.html</loc>
+    <lastmod>2019-12-20T17:28:13+08:00</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.5</priority>
+  </url>
+  
+  <url>
+    <loc>https://www.awslop.com/categories/</loc>
+    <lastmod>2019-12-20T17:28:13+08:00</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.5</priority>
+  </url>
+  
+  <url>
+    <loc>https://www.awslop.com/tags/scala/</loc>
+    <lastmod>2019-12-20T17:28:13+08:00</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.5</priority>
+  </url>
+  
+  <url>
+    <loc>https://www.awslop.com/categories/scala%E5%B9%B6%E5%8F%91%E7%BC%96%E7%A8%8B/</loc>
+    <lastmod>2019-12-20T17:28:13+08:00</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.5</priority>
+  </url>
+  
+  <url>
+    <loc>https://www.awslop.com/2019/12/15/hocon-java-read.html</loc>
     <lastmod>2019-12-15T17:28:13+08:00</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.5</priority>
@@ -86,13 +100,6 @@
   </url>
   
   <url>
-    <loc>https://www.awslop.com/tags/route/</loc>
-    <lastmod>2019-11-12T13:13:13+08:00</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.5</priority>
-  </url>
-  
-  <url>
     <loc>https://www.awslop.com/2019/11/12/doh.html</loc>
     <lastmod>2019-11-12T13:13:13+08:00</lastmod>
     <changefreq>weekly</changefreq>
@@ -100,14 +107,14 @@
   </url>
   
   <url>
-    <loc>https://www.awslop.com/categories/jhm/</loc>
+    <loc>https://www.awslop.com/tags/jhm/</loc>
     <lastmod>2019-11-10T17:28:13+08:00</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.5</priority>
   </url>
   
   <url>
-    <loc>https://www.awslop.com/tags/jhm/</loc>
+    <loc>https://www.awslop.com/categories/jhm/</loc>
     <lastmod>2019-11-10T17:28:13+08:00</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.5</priority>
@@ -660,7 +667,7 @@
   </url>
   
   <url>
-    <loc>https://www.awslop.com/2018/08/13/scala-concurrent-duration.html</loc>
+    <loc>https://www.awslop.com/2018/08/13/scala-concurrent-use-duration.html</loc>
     <lastmod>2018-08-13T17:28:13+08:00</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.5</priority>
