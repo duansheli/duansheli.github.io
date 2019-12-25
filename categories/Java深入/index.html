@@ -1,483 +1,250 @@
-<!doctype html>
-<html lang="zh-CN">
+<!DOCTYPE html>
+<html lang="zh-cn">
 <head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+  <title>Java深入 · 断舍离的博客</title>
+  <meta name="renderer" content="webkit" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
 
-    <meta charset="utf-8">
-    <meta name="generator" content="Hugo 0.59.0" />
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
 
-    <title>Java深入 | 断舍离的博客</title>
-    <meta property="og:title" content="Java深入 - 断舍离的博客">
-    <meta property="og:type" content="article">
-        
-        
-    <meta name="Keywords" content="java,scala,spark,kubernetes">
-    <meta name="description" content="Java深入">
-        
-    <meta name="author" content="断舍离">
-    <meta property="og:url" content="https://duansheli.github.io/categories/Java%E6%B7%B1%E5%85%A5/">
-    <link rel="shortcut icon" href="/favicon.ico" type="image/x-icon">
-
-    <link rel="stylesheet" href="/css/normalize.css">
-    
-    <link rel="stylesheet" href="/css/style.css">
-    <link rel="alternate" type="application/rss+xml+xml" href="https://duansheli.github.io/categories/Java%E6%B7%B1%E5%85%A5/index.xml" title="断舍离的博客" />
-    <script type="text/javascript" src="//cdnjs.cloudflare.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
-
-    
+<meta name="theme-color" content="#f8f5ec" />
+<meta name="msapplication-navbutton-color" content="#f8f5ec">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="#f8f5ec">
 
 
-    
-    
+<meta name="author" content="duansheli" /><meta name="description" content="Hugo theme even example site." /><meta name="keywords" content="scala, java, even" />
+
+
+
+
+
+
+<meta name="generator" content="Hugo 0.62.0 with theme even" />
+
+
+<link rel="canonical" href="/www.awslop.com/categories/java%E6%B7%B1%E5%85%A5/" />
+  <link href="/www.awslop.com/categories/java%E6%B7%B1%E5%85%A5/index.xml" rel="alternate" type="application/rss+xml" title="断舍离的博客" />
+  <link href="/www.awslop.com/categories/java%E6%B7%B1%E5%85%A5/index.xml" rel="feed" type="application/rss+xml" title="断舍离的博客" />
+<link rel="apple-touch-icon" sizes="180x180" href="/www.awslop.com/apple-touch-icon.png">
+<link rel="icon" type="image/png" sizes="32x32" href="/www.awslop.com/favicon-32x32.png">
+<link rel="icon" type="image/png" sizes="16x16" href="/www.awslop.com/favicon-16x16.png">
+<link rel="manifest" href="/www.awslop.com/manifest.json">
+<link rel="mask-icon" href="/www.awslop.com/safari-pinned-tab.svg" color="#5bbad5">
+
+
+<link href="/www.awslop.com/dist/even.c2a46f00.min.css" rel="stylesheet">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3.1.20/dist/jquery.fancybox.min.css" integrity="sha256-7TyXnr2YU040zfSP+rEcz29ggW4j56/ujTPwjMzyqFY=" crossorigin="anonymous">
+
+
+<meta property="og:title" content="Java深入" />
+<meta property="og:description" content="Hugo theme even example site." />
+<meta property="og:type" content="website" />
+<meta property="og:url" content="/www.awslop.com/categories/java%E6%B7%B1%E5%85%A5/" />
+<meta property="og:updated_time" content="2018-07-14T15:13:13+08:00" />
+<meta itemprop="name" content="Java深入">
+<meta itemprop="description" content="Hugo theme even example site."><meta name="twitter:card" content="summary"/>
+<meta name="twitter:title" content="Java深入"/>
+<meta name="twitter:description" content="Hugo theme even example site."/>
+
+<!--[if lte IE 9]>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/classlist/1.1.20170427/classList.min.js"></script>
+<![endif]-->
+
+<!--[if lt IE 9]>
+  <script src="https://cdn.jsdelivr.net/npm/html5shiv@3.7.3/dist/html5shiv.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/respond.js@1.4.2/dest/respond.min.js"></script>
+<![endif]-->
+
 </head>
-
-
 <body>
-<header id="header" class="clearfix">
-    <div class="container">
-        <div class="col-group">
-            <div class="site-name ">
-                
-                    <a id="logo" href="https://duansheli.github.io">
-                        断舍离的博客
-                    </a>
-                
-                <p class="description">java, scala, spark, kubernetes</p>
-            </div>
-            <div>
-                <nav id="nav-menu" class="clearfix">
-                    <a class="" href="https://duansheli.github.io">首页</a>
-                    
-                    <a  href="https://duansheli.github.io/archives/" title="归档">归档</a>
-                    
-                </nav>
-            </div>
-        </div>
+  <div id="mobile-navbar" class="mobile-navbar">
+  <div class="mobile-header-logo">
+    <a href="/www.awslop.com/" class="logo">Even</a>
+  </div>
+  <div class="mobile-navbar-icon">
+    <span></span>
+    <span></span>
+    <span></span>
+  </div>
+</div>
+<nav id="mobile-menu" class="mobile-menu slideout-menu">
+  <ul class="mobile-menu-list">
+    <a href="/www.awslop.com/">
+        <li class="mobile-menu-item">主页</li>
+      </a><a href="/www.awslop.com/post/">
+        <li class="mobile-menu-item">归档</li>
+      </a><a href="/www.awslop.com/tags/">
+        <li class="mobile-menu-item">标签</li>
+      </a><a href="/www.awslop.com/categories/">
+        <li class="mobile-menu-item">Categories</li>
+      </a>
+  </ul>
+</nav>
+  <div class="container" id="mobile-panel">
+    <header id="header" class="header">
+        <div class="logo-wrapper">
+  <a href="/www.awslop.com/" class="logo">Even</a>
+</div>
+
+<nav class="site-navbar">
+  <ul id="menu" class="menu">
+    <li class="menu-item">
+        <a class="menu-item-link" href="/www.awslop.com/">主页</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/www.awslop.com/post/">归档</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/www.awslop.com/tags/">标签</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/www.awslop.com/categories/">Categories</a>
+      </li>
+  </ul>
+</nav>
+    </header>
+
+    <main id="main" class="main">
+      <div class="content-wrapper">
+        <div id="content" class="content">
+          <section id="archive" class="archive">
+  <div class="archive-title category">
+        <h2 class="archive-name">Java深入</h2>
+      </div>
+
+  <div class="archive-post">
+      <span class="archive-post-time">
+        2018-07-14
+      </span>
+      <span class="archive-post-title">
+        <a href="/www.awslop.com/2018/07/14/jvm-memory-gc.html" class="archive-post-link">
+          JVM的垃圾回收
+        </a>
+      </span>
+    </div><div class="archive-post">
+      <span class="archive-post-time">
+        2018-07-08
+      </span>
+      <span class="archive-post-title">
+        <a href="/www.awslop.com/2018/07/08/classloader-modifiers-exception.html" class="archive-post-link">
+          类加载器加载的类不能创建对象
+        </a>
+      </span>
+    </div><div class="archive-post">
+      <span class="archive-post-time">
+        2018-06-27
+      </span>
+      <span class="archive-post-title">
+        <a href="/www.awslop.com/2018/06/27/classloader-spi.html" class="archive-post-link">
+          SPI与contextclassloader
+        </a>
+      </span>
+    </div><div class="archive-post">
+      <span class="archive-post-time">
+        2018-06-21
+      </span>
+      <span class="archive-post-title">
+        <a href="/www.awslop.com/2018/06/21/classloader-start.html" class="archive-post-link">
+          类加载器使用
+        </a>
+      </span>
+    </div><div class="archive-post">
+      <span class="archive-post-time">
+        2018-06-05
+      </span>
+      <span class="archive-post-title">
+        <a href="/www.awslop.com/2018/06/05/proxy-rpc-02.html" class="archive-post-link">
+          动态代理-rpc示例-02
+        </a>
+      </span>
+    </div><div class="archive-post">
+      <span class="archive-post-time">
+        2018-06-05
+      </span>
+      <span class="archive-post-title">
+        <a href="/www.awslop.com/2018/06/05/proxy-rpc-01.html" class="archive-post-link">
+          动态代理-rpc示例-01
+        </a>
+      </span>
+    </div><div class="archive-post">
+      <span class="archive-post-time">
+        2018-06-02
+      </span>
+      <span class="archive-post-title">
+        <a href="/www.awslop.com/2018/06/02/proxy-start.html" class="archive-post-link">
+          动态代理
+        </a>
+      </span>
+    </div><div class="archive-post">
+      <span class="archive-post-time">
+        2018-04-02
+      </span>
+      <span class="archive-post-title">
+        <a href="/www.awslop.com/2018/04/02/reflect-start.html" class="archive-post-link">
+          反射使用
+        </a>
+      </span>
     </div>
-</header>
+</section>
 
-
-<div id="body">
-    <div class="container">
-        <div class="col-group">
-
-            <div class="col-8" id="main">
-                <div class="res-cons">
-                    
-                    <h3 class="archive-title">
-                        分类
-                        <span class="keyword">Java深入</span>
-                        中的文章
-                    </h3>
-                    
-
-                    
-                        <article class="post">
-                            <header>
-                                <h1 class="post-title">
-                                    <a href="https://duansheli.github.io/2018/07/14/jvm-memory-gc.html">JVM的垃圾回收</a>
-                                </h1>
-                            </header>
-                            <date class="post-meta meta-date">
-                                2018年7月14日
-                            </date>
-                            
-                            <div class="post-meta meta-category">
-                                |
-                                
-                                    <a href="https://duansheli.github.io/categories/Java%E6%B7%B1%E5%85%A5">Java深入</a>
-                                
-                            </div>
-                            
-                            <div class="post-content">
-                                JVM内存结构 JVM是java代码的运行环境， 用来加载 .class和jar文件 , 运行代码。
-内存区域 +------------------------------------------------------+ | | | +-------------+ +---------------+ | | | xxxA.class | | | | | | xxxB.……
-                                <p class="readmore"><a href="https://duansheli.github.io/2018/07/14/jvm-memory-gc.html">阅读全文</a></p>
-                            </div>
-                        </article>
-                    
-                        <article class="post">
-                            <header>
-                                <h1 class="post-title">
-                                    <a href="https://duansheli.github.io/2018/07/08/classloader-modifiers-exception.html">类加载器加载的类不能创建对象</a>
-                                </h1>
-                            </header>
-                            <date class="post-meta meta-date">
-                                2018年7月8日
-                            </date>
-                            
-                            <div class="post-meta meta-category">
-                                |
-                                
-                                    <a href="https://duansheli.github.io/categories/Java%E6%B7%B1%E5%85%A5">Java深入</a>
-                                
-                            </div>
-                            
-                            <div class="post-content">
-                                IllegalAccessException 异常信息 Exception in thread &quot;main&quot; java.lang.IllegalAccessException: Class fluffy.mo.MyClassloader can not access a member of class fluffy.mo.Car with modifiers &quot;public&quot; at sun.……
-                                <p class="readmore"><a href="https://duansheli.github.io/2018/07/08/classloader-modifiers-exception.html">阅读全文</a></p>
-                            </div>
-                        </article>
-                    
-                        <article class="post">
-                            <header>
-                                <h1 class="post-title">
-                                    <a href="https://duansheli.github.io/2018/06/27/classloader-spi.html">SPI与contextclassloader</a>
-                                </h1>
-                            </header>
-                            <date class="post-meta meta-date">
-                                2018年6月27日
-                            </date>
-                            
-                            <div class="post-meta meta-category">
-                                |
-                                
-                                    <a href="https://duansheli.github.io/categories/Java%E6%B7%B1%E5%85%A5">Java深入</a>
-                                
-                            </div>
-                            
-                            <div class="post-content">
-                                目标 通过SPI学习setContextClassLoader，getContextClassLoader的用法
-SPI概念 SPI（Service Provider Interface）是JDK内置的一种提供服务发现的机制。 也可以看成是一种服务注册或者ioc
-自定义SPI方式
- 定义一个接口 fluffy.mo.CarPlugin 定义两个实现类 fluffy.mo.RedCar、 fluffy.mo.BlueCar 配置文件 【META-INF/services/文件名=接口全名】 &gt; META-INF/services/fluffy.mo.CarPlugin &gt;  &gt; fluffy.……
-                                <p class="readmore"><a href="https://duansheli.github.io/2018/06/27/classloader-spi.html">阅读全文</a></p>
-                            </div>
-                        </article>
-                    
-                        <article class="post">
-                            <header>
-                                <h1 class="post-title">
-                                    <a href="https://duansheli.github.io/2018/06/21/classloader-start.html">类加载器使用</a>
-                                </h1>
-                            </header>
-                            <date class="post-meta meta-date">
-                                2018年6月21日
-                            </date>
-                            
-                            <div class="post-meta meta-category">
-                                |
-                                
-                                    <a href="https://duansheli.github.io/categories/Java%E6%B7%B1%E5%85%A5">Java深入</a>
-                                
-                            </div>
-                            
-                            <div class="post-content">
-                                类加载器 引入 一般开发都不会接触classloader的概念，但程序的运行却是建立在classloader之上的 为什么要有类加载器： java程序的启动首先就需要jvm去加载class 而代码中的对象创建类调用【new Person(); Autil.currentTime();】 都需要class被jvm加载 使用类的静态方法，或者创建对象前，需要先加载class 而每个class必然由一个classloader加载  方向 貌似类加载的事情不需要我们操心，虚拟机已经帮我们解决了 那学这个能干嘛： * 更了解虚拟机; * 在复杂的生产环境可能遇到class找不到异常,了解这个有助于排查错误; * 自研服务/插件，动态加载代码; * tomcat的项目代码热部署，jsp热部署; * 各种热部署插件; * 软件破解;  划重点 一个class在内存中只存一份，以及限定条件 defineClass决定class的类加载器是谁 线程上下文类加载器用于隐式传参 一个对象的类由哪个类加载器去加载，取决于显示使用类或显示使用类加载器……
-                                <p class="readmore"><a href="https://duansheli.github.io/2018/06/21/classloader-start.html">阅读全文</a></p>
-                            </div>
-                        </article>
-                    
-                        <article class="post">
-                            <header>
-                                <h1 class="post-title">
-                                    <a href="https://duansheli.github.io/2018/06/05/proxy-rpc-01.html">动态代理-rpc示例-01</a>
-                                </h1>
-                            </header>
-                            <date class="post-meta meta-date">
-                                2018年6月5日
-                            </date>
-                            
-                            <div class="post-meta meta-category">
-                                |
-                                
-                                    <a href="https://duansheli.github.io/categories/Java%E6%B7%B1%E5%85%A5">Java深入</a>
-                                
-                            </div>
-                            
-                            <div class="post-content">
-                                目标 写个简单的rpc 调用
-Rpc大致思路 定义一个接口HelloService 放在iface.jar中 应用P中引用iface.jar 实现接口HelloService进行处理任务 注册bean到spring中 应用C中, 通过spring获取HelloService的实例phService 调用phService.echo(xxx)方法，获得返回结果 应用P运行在1个jvm中 应用C运行在另1个jvm中 phService实质为一个代理对象 该代理对象通过把调用的参数封装，序列化后，通过网络传输给应用P 应用P根据收到参数后，调用处理接口相应的实现类，并将结果回传给应用C端 最终代理对象返回收到的运行结果  序列化-知识点补充 进行RPC调用必然要涉及对方法参数的序列化。 序列化框架有很多， 如protobuf、thrift、hession等 dubbo的rpc是支持多种序列化方式，如Java原生、Kryo、webservice等 spring cloud的http调用也算一种序列化方式 有了序列化工具，不仅仅是跨JVM的方法调用，还能跨语言调用。 本次示例使用java原生序列化  初版代码 所用到包 import java.……
-                                <p class="readmore"><a href="https://duansheli.github.io/2018/06/05/proxy-rpc-01.html">阅读全文</a></p>
-                            </div>
-                        </article>
-                    
-                        <article class="post">
-                            <header>
-                                <h1 class="post-title">
-                                    <a href="https://duansheli.github.io/2018/06/05/proxy-rpc-02.html">动态代理-rpc示例-02</a>
-                                </h1>
-                            </header>
-                            <date class="post-meta meta-date">
-                                2018年6月5日
-                            </date>
-                            
-                            <div class="post-meta meta-category">
-                                |
-                                
-                                    <a href="https://duansheli.github.io/categories/Java%E6%B7%B1%E5%85%A5">Java深入</a>
-                                
-                            </div>
-                            
-                            <div class="post-content">
-                                上个版本的代码看着比较生肉，与平时开发时的写法差别较大。 接下来这版，加入了动态代理后
-动态代理-guava版 import com.google.common.reflect.Reflection; class DemoGuava { interface MyMath1 { public Integer sum(Integer a, Integer b); } static class MyMathImpl implements MyMath1 { @Override public Integer sum(Integer a, Integer b) { return a + b; } } public static void main(String[] args) { MyMath1 tg = new MyMathImpl(); // 创建对象代理 MyMath1 math = (MyMath1) Reflection.……
-                                <p class="readmore"><a href="https://duansheli.github.io/2018/06/05/proxy-rpc-02.html">阅读全文</a></p>
-                            </div>
-                        </article>
-                    
-                        <article class="post">
-                            <header>
-                                <h1 class="post-title">
-                                    <a href="https://duansheli.github.io/2018/06/02/proxy-start.html">动态代理</a>
-                                </h1>
-                            </header>
-                            <date class="post-meta meta-date">
-                                2018年6月2日
-                            </date>
-                            
-                            <div class="post-meta meta-category">
-                                |
-                                
-                                    <a href="https://duansheli.github.io/categories/Java%E6%B7%B1%E5%85%A5">Java深入</a>
-                                
-                            </div>
-                            
-                            <div class="post-content">
-                                目标 通过代码示例了解动态代理语法
-示例代码 import java.lang.reflect.InvocationHandler; import java.lang.reflect.Method; import java.lang.reflect.Proxy; public class Demo { interface MyMath1 { public Integer sum(Integer a, Integer b); } static class MyMathImpl implements MyMath1 { @Override public Integer sum(Integer a, Integer b) { return a + b; } } public static void main(String[] args) { MyMath1 tg = new MyMathImpl(); // 创建对象代理 MyMath1 math = (MyMath1) Proxy.……
-                                <p class="readmore"><a href="https://duansheli.github.io/2018/06/02/proxy-start.html">阅读全文</a></p>
-                            </div>
-                        </article>
-                    
-                        <article class="post">
-                            <header>
-                                <h1 class="post-title">
-                                    <a href="https://duansheli.github.io/2018/04/02/reflect-start.html">反射使用</a>
-                                </h1>
-                            </header>
-                            <date class="post-meta meta-date">
-                                2018年4月2日
-                            </date>
-                            
-                            <div class="post-meta meta-category">
-                                |
-                                
-                                    <a href="https://duansheli.github.io/categories/Java%E6%B7%B1%E5%85%A5">Java深入</a>
-                                
-                            </div>
-                            
-                            <div class="post-content">
-                                反射介绍 可以不直接new 对象，或调用方法。 用另一种创建某个对象（字符串的方式），或调用某个对象的方法（字符串的方式）。 反射这种间接调用效率肯定是不如直接调用的。
-程序不知道具体要创建接口的哪个实现类， 在启动时，通过读取配置文件才知道要创建那个实现类。
-先学习语法，然后可以通过结合动态代理加深理解。
-反射的场景 一般的开发很少直接用到，不过在各类框架中基本离不开。
-另外如果要自研框架，或者对框架定制功能，通常也会用到。
- spring以xml配置去注册bean 动态代理以及其衍生的各类服务  远程调用 日志，监控 缓存 权限 spring-事务注解  使用注解的实现的各种功能 软件破解。。。等等  语法示例 普通的bean package com.……
-                                <p class="readmore"><a href="https://duansheli.github.io/2018/04/02/reflect-start.html">阅读全文</a></p>
-                            </div>
-                        </article>
-                    
-
-                    
-
-
-
-
-
-                </div>
-            </div>
-
-            <div id="secondary">
-    <section class="widget">
-        <form id="search" action="//www.google.com/search" method="get" accept-charset="utf-8" target="_blank" _lpchecked="1">
-      
-      <input type="text" name="q" maxlength="20" placeholder="Search">
-      <input type="hidden" name="sitesearch" value="https://duansheli.github.io">
-      <button type="submit" class="submit icon-search"></button>
-</form>
-    </section>
-    
-    <section class="widget">
-        <h3 class="widget-title">最近文章</h3>
-<ul class="widget-list">
-    
-    <li>
-        <a href="https://duansheli.github.io/2019/12/20/akka-demo-concurrent.html" title="akka-并发任务">akka-并发任务</a>
-    </li>
-    
-    <li>
-        <a href="https://duansheli.github.io/2019/12/15/HOCON-java.html" title="HOCON配置文件读取">HOCON配置文件读取</a>
-    </li>
-    
-    <li>
-        <a href="https://duansheli.github.io/2019/11/16/jmh-dynamic-run.html" title="JMH-测试动态执行代码效率">JMH-测试动态执行代码效率</a>
-    </li>
-    
-    <li>
-        <a href="https://duansheli.github.io/2019/11/12/doh.html" title="群晖两步验证的关闭">群晖两步验证的关闭</a>
-    </li>
-    
-    <li>
-        <a href="https://duansheli.github.io/2019/11/10/benchmark-java-jmh.html" title="基准测试工具JMH-示例">基准测试工具JMH-示例</a>
-    </li>
-    
-    <li>
-        <a href="https://duansheli.github.io/2019/10/28/update-rule-by-scanner.html" title="使用drools的规则管理平台-02">使用drools的规则管理平台-02</a>
-    </li>
-    
-    <li>
-        <a href="https://duansheli.github.io/2019/10/27/update-rule-by-scanner.html" title="使用drools的规则管理平台-01">使用drools的规则管理平台-01</a>
-    </li>
-    
-    <li>
-        <a href="https://duansheli.github.io/2019/10/26/update-rule-by-scanner.html" title="自定义动态更新drools规则">自定义动态更新drools规则</a>
-    </li>
-    
-    <li>
-        <a href="https://duansheli.github.io/2019/10/13/download-m3u8-video-02.html" title="下载m3u8-aes128加密视频-02">下载m3u8-aes128加密视频-02</a>
-    </li>
-    
-    <li>
-        <a href="https://duansheli.github.io/2019/10/13/download-m3u8-video-01.html" title="下载m3u8-aes128加密视频-01">下载m3u8-aes128加密视频-01</a>
-    </li>
-    
-</ul>
-    </section>
-
-    
-
-    <section class="widget">
-        <h3 class="widget-title">分类</h3>
-<ul class="widget-list">
-    
-    <li>
-        <a href="https://duansheli.github.io/categories/JHM/">JHM(1)</a>
-    </li>
-    
-    <li>
-        <a href="https://duansheli.github.io/categories/JMH/">JMH(1)</a>
-    </li>
-    
-    <li>
-        <a href="https://duansheli.github.io/categories/Java%E6%B7%B1%E5%85%A5/">Java深入(8)</a>
-    </li>
-    
-    <li>
-        <a href="https://duansheli.github.io/categories/k8s%E9%9B%86%E7%BE%A4/">k8s集群(5)</a>
-    </li>
-    
-    <li>
-        <a href="https://duansheli.github.io/categories/scala%E5%B9%B6%E5%8F%91%E7%BC%96%E7%A8%8B/">scala并发编程(8)</a>
-    </li>
-    
-</ul>
-    </section>
-
-    <section class="widget">
-        <h3 class="widget-title">标签</h3>
-<div class="tagcloud">
-    
-    <a href="https://duansheli.github.io/tags/JHM/">JHM</a>
-    
-    <a href="https://duansheli.github.io/tags/JMH/">JMH</a>
-    
-    <a href="https://duansheli.github.io/tags/Java/">Java</a>
-    
-    <a href="https://duansheli.github.io/tags/classloader/">classloader</a>
-    
-    <a href="https://duansheli.github.io/tags/docker/">docker</a>
-    
-    <a href="https://duansheli.github.io/tags/drone/">drone</a>
-    
-    <a href="https://duansheli.github.io/tags/drools/">drools</a>
-    
-    <a href="https://duansheli.github.io/tags/dubbo/">dubbo</a>
-    
-    <a href="https://duansheli.github.io/tags/elasticsearch/">elasticsearch</a>
-    
-    <a href="https://duansheli.github.io/tags/ffmpeg/">ffmpeg</a>
-    
-    <a href="https://duansheli.github.io/tags/gc/">gc</a>
-    
-    <a href="https://duansheli.github.io/tags/git/">git</a>
-    
-    <a href="https://duansheli.github.io/tags/gradle/">gradle</a>
-    
-    <a href="https://duansheli.github.io/tags/hashids/">hashids</a>
-    
-    <a href="https://duansheli.github.io/tags/id/">id</a>
-    
-    <a href="https://duansheli.github.io/tags/java/">java</a>
-    
-    <a href="https://duansheli.github.io/tags/jdk/">jdk</a>
-    
-    <a href="https://duansheli.github.io/tags/jvm/">jvm</a>
-    
-    <a href="https://duansheli.github.io/tags/k8s/">k8s</a>
-    
-    <a href="https://duansheli.github.io/tags/kotlin/">kotlin</a>
-    
-    <a href="https://duansheli.github.io/tags/life/">life</a>
-    
-    <a href="https://duansheli.github.io/tags/linux/">linux</a>
-    
-    <a href="https://duansheli.github.io/tags/mysql/">mysql</a>
-    
-    <a href="https://duansheli.github.io/tags/proxy/">proxy</a>
-    
-    <a href="https://duansheli.github.io/tags/redis/">redis</a>
-    
-    <a href="https://duansheli.github.io/tags/rocketmq/">rocketmq</a>
-    
-    <a href="https://duansheli.github.io/tags/route/">route</a>
-    
-    <a href="https://duansheli.github.io/tags/scala/">scala</a>
-    
-    <a href="https://duansheli.github.io/tags/session/">session</a>
-    
-    <a href="https://duansheli.github.io/tags/shell/">shell</a>
-    
-    <a href="https://duansheli.github.io/tags/spring-boot/">spring-boot</a>
-    
-    <a href="https://duansheli.github.io/tags/spring-security/">spring-security</a>
-    
-    <a href="https://duansheli.github.io/tags/springboot/">springboot</a>
-    
-    <a href="https://duansheli.github.io/tags/zipkin/">zipkin</a>
-    
-    <a href="https://duansheli.github.io/tags/%E5%88%86%E5%B8%83%E5%BC%8F%E4%BA%8B%E5%8A%A1/">分布式事务</a>
-    
-    <a href="https://duansheli.github.io/tags/%E6%8C%81%E7%BB%AD%E9%9B%86%E6%88%90/">持续集成</a>
-    
-    <a href="https://duansheli.github.io/tags/%E7%99%BB%E5%BD%95/">登录</a>
-    
-</div>
-    </section>
-
-    
-
-    <section class="widget">
-        <h3 class="widget-title">其它</h3>
-        <ul class="widget-list">
-            <li><a href="https://duansheli.github.io/index.xml">文章 RSS</a></li>
-        </ul>
-    </section>
-</div>
+<nav class="pagination">
+  
+  
+</nav>
         </div>
-    </div>
-</div>
-<footer id="footer">
-    <div class="container">
-        &copy; 2019 <a href="https://duansheli.github.io">断舍离的博客 By 断舍离</a>.
-        Powered by <a rel="nofollow noreferer noopener" href="https://gohugo.io" target="_blank">Hugo</a>.
-        <a href="https://www.flysnow.org/" target="_blank">Theme</a> based on <a href="https://github.com/rujews/maupassant-hugo" target="_blank">maupassant</a>.
         
+
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="social-links">
+      <a href="https://github.com/duansheli/" class="iconfont icon-github" title="github"></a>
+  <a href="/www.awslop.com/index.xml" type="application/rss+xml" class="iconfont icon-rss" title="rss"></a>
+</div>
+
+<div class="copyright">
+  <span class="power-by">
+    由 <a class="hexo-link" href="https://gohugo.io">Hugo</a> 强力驱动
+  </span>
+  <span class="division">|</span>
+  <span class="theme-info">
+    主题 - 
+    <a class="theme-link" href="https://github.com/olOwOlo/hugo-theme-even">Even</a>
+  </span>
+
+  
+
+  <span class="copyright-year">
+    &copy; 
+    2017 - 
+    2019
+    <span class="heart">
+      <i class="iconfont icon-heart"></i>
+    </span>
+    <span class="author">duansheli</span>
+  </span>
+</div>
+    </footer>
+
+    <div class="back-to-top" id="back-to-top">
+      <i class="iconfont icon-up"></i>
     </div>
-</footer>
+  </div>
+  
+  <script src="https://cdn.jsdelivr.net/npm/jquery@3.2.1/dist/jquery.min.js" integrity="sha256-hwg4gsxgFZhOsEEamdOYGBf13FyQuiTwlAQgxVSNgt4=" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/slideout@1.0.1/dist/slideout.min.js" integrity="sha256-t+zJ/g8/KXIJMjSVQdnibt4dlaDxc9zXr/9oNPeWqdg=" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3.1.20/dist/jquery.fancybox.min.js" integrity="sha256-XVLffZaxoWfGUEbdzuLi7pwaUJv1cecsQJQqGLe7axY=" crossorigin="anonymous"></script>
+<script type="text/javascript" src="/www.awslop.com/dist/even.26188efa.min.js"></script>
 
-
-
-<a id="rocket" href="#top"></a>
-<script type="text/javascript" src="/js/totop.js?v=0.0.0" async=""></script>
 
 <script type="application/javascript">
 var doNotTrack = false;
 if (!doNotTrack) {
 	window.ga=window.ga||function(){(ga.q=ga.q||[]).push(arguments)};ga.l=+new Date;
 	ga('create', 'GTM-NPJC8J2', 'auto');
-	
+	ga('set', 'anonymizeIp', true);
 	ga('send', 'pageview');
 }
 </script>

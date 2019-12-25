@@ -2,50 +2,42 @@
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
     <title>drools on 断舍离的博客</title>
-    <link>https://duansheli.github.io/tags/drools/</link>
+    <link>/www.awslop.com/tags/drools/</link>
     <description>Recent content in drools on 断舍离的博客</description>
     <generator>Hugo -- gohugo.io</generator>
-    <language>zh-CN</language>
+    <language>zh-cn</language>
     <lastBuildDate>Mon, 28 Oct 2019 17:28:13 +0800</lastBuildDate>
     
-	<atom:link href="https://duansheli.github.io/tags/drools/index.xml" rel="self" type="application/rss+xml" />
+	<atom:link href="/www.awslop.com/tags/drools/index.xml" rel="self" type="application/rss+xml" />
     
     
     <item>
       <title>使用drools的规则管理平台-02</title>
-      <link>https://duansheli.github.io/2019/10/28/update-rule-by-scanner.html</link>
+      <link>/www.awslop.com/2019/10/28/update-rule-by-scanner.html</link>
       <pubDate>Mon, 28 Oct 2019 17:28:13 +0800</pubDate>
       
-      <guid>https://duansheli.github.io/2019/10/28/update-rule-by-scanner.html</guid>
+      <guid>/www.awslop.com/2019/10/28/update-rule-by-scanner.html</guid>
       <description>&lt;p&gt;上一节演示了 workbench 的搭建，规则编写、规则测试、规则部署
 还通过http使用了部署在kie-server中的规则&lt;/p&gt;
-
 &lt;p&gt;下面演示使用java客户端，调用部署在kie-server中的规则。&lt;/p&gt;</description>
     </item>
     
     <item>
       <title>使用drools的规则管理平台-01</title>
-      <link>https://duansheli.github.io/2019/10/27/update-rule-by-scanner.html</link>
+      <link>/www.awslop.com/2019/10/27/update-rule-by-scanner.html</link>
       <pubDate>Sun, 27 Oct 2019 17:28:13 +0800</pubDate>
       
-      <guid>https://duansheli.github.io/2019/10/27/update-rule-by-scanner.html</guid>
-      <description>简述 drools的BRMS(业务规则管理系统)
-起先叫 guvnor 然后叫 drools-workbench
-从7.18版本开始叫 Business Central Workbench
-Business-Central Workbench == Drools Workbench + jBPM Workbench
-drools-workbench 用来管理规则</description>
+      <guid>/www.awslop.com/2019/10/27/update-rule-by-scanner.html</guid>
+      <description>简述 drools的BRMS(业务规则管理系统) 起先叫 guvnor 然后叫 drools-workbench 从7.18版本开始叫 Business Central Workbench Business-Central Workbench == Drools Workbench + jBPM Workbench drools-workbench 用来管理规则 kie-server 则是运行规则的容器服</description>
     </item>
     
     <item>
       <title>自定义动态更新drools规则</title>
-      <link>https://duansheli.github.io/2019/10/26/update-rule-by-scanner.html</link>
+      <link>/www.awslop.com/2019/10/26/update-rule-by-scanner.html</link>
       <pubDate>Sat, 26 Oct 2019 17:28:13 +0800</pubDate>
       
-      <guid>https://duansheli.github.io/2019/10/26/update-rule-by-scanner.html</guid>
-      <description>简述 scanner有两个实现 KieRepositoryScannerImpl KieFileSystemScannerImpl 二者区别为 一个是从文件夹检查更新， 一个是从maven仓库检查更新
-下面以 KieFileSystemScannerImpl 为例进行演示从文件夹获取更新 然后分析过程 最后自定义一个 KieScanner
-准备kjar工程 其实就是个maven项目 存放着规则文件
-&amp;lt;?xml version=&amp;quot;1.0&amp;quot; encoding=&amp;quot;UTF-8&amp;quot;?&amp;gt; &amp;lt;project xmlns=&amp;quot;http://maven.</description>
+      <guid>/www.awslop.com/2019/10/26/update-rule-by-scanner.html</guid>
+      <description>简述 scanner有两个实现 KieRepositoryScannerImpl KieFileSystemScannerImpl 二者区别为 一个是从文件夹检查更新， 一个是从maven仓库检查更新 下面以 KieFileSystemScannerImpl 为例进行演示从文件夹获取更新 然后分析</description>
     </item>
     
   </channel>

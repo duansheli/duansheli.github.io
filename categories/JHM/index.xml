@@ -2,30 +2,22 @@
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
     <title>JHM on 断舍离的博客</title>
-    <link>https://duansheli.github.io/categories/JHM/</link>
+    <link>/www.awslop.com/categories/jhm/</link>
     <description>Recent content in JHM on 断舍离的博客</description>
     <generator>Hugo -- gohugo.io</generator>
-    <language>zh-CN</language>
+    <language>zh-cn</language>
     <lastBuildDate>Sun, 10 Nov 2019 17:28:13 +0800</lastBuildDate>
     
-	<atom:link href="https://duansheli.github.io/categories/JHM/index.xml" rel="self" type="application/rss+xml" />
+	<atom:link href="/www.awslop.com/categories/jhm/index.xml" rel="self" type="application/rss+xml" />
     
     
     <item>
       <title>基准测试工具JMH-示例</title>
-      <link>https://duansheli.github.io/2019/11/10/benchmark-java-jmh.html</link>
+      <link>/www.awslop.com/2019/11/10/benchmark-java-jmh.html</link>
       <pubDate>Sun, 10 Nov 2019 17:28:13 +0800</pubDate>
       
-      <guid>https://duansheli.github.io/2019/11/10/benchmark-java-jmh.html</guid>
-      <description>基准测试工具JHM junit用来测方法对不对 ab用来压测http服务
-jhm是用测java方法性能的， 比如每秒能运行多少次，每次执行的耗时
-jhm是写jdk的那些人整的
-所以还是很可靠的
-参考 官方介绍
-https://openjdk.java.net/projects/code-tools/jmh/
-官方示例代码&amp;ndash; 点击左侧zip打包下载
-https://hg.openjdk.java.net/code-tools/jmh/file/tip/jmh-samples/src/main/java/org/openjdk/jmh/samples/
-工程创建 mvn archetype:generate \ -DinteractiveMode=false \ -DarchetypeGroupId=org.</description>
+      <guid>/www.awslop.com/2019/11/10/benchmark-java-jmh.html</guid>
+      <description>基准测试工具JHM junit用来测方法对不对 ab用来压测http服务 jhm是用测java方法性能的， 比如每秒能运行多少次，每次执行的耗时 jh</description>
     </item>
     
   </channel>

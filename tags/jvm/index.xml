@@ -2,23 +2,22 @@
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
     <title>jvm on 断舍离的博客</title>
-    <link>https://duansheli.github.io/tags/jvm/</link>
+    <link>/www.awslop.com/tags/jvm/</link>
     <description>Recent content in jvm on 断舍离的博客</description>
     <generator>Hugo -- gohugo.io</generator>
-    <language>zh-CN</language>
+    <language>zh-cn</language>
     <lastBuildDate>Mon, 10 Jun 2019 17:28:13 +0800</lastBuildDate>
     
-	<atom:link href="https://duansheli.github.io/tags/jvm/index.xml" rel="self" type="application/rss+xml" />
+	<atom:link href="/www.awslop.com/tags/jvm/index.xml" rel="self" type="application/rss+xml" />
     
     
     <item>
       <title>使用jstack分析线程-示例</title>
-      <link>https://duansheli.github.io/2019/02/10/jstack-demo.html</link>
+      <link>/www.awslop.com/2019/02/10/jstack-demo.html</link>
       <pubDate>Mon, 10 Jun 2019 17:28:13 +0800</pubDate>
       
-      <guid>https://duansheli.github.io/2019/02/10/jstack-demo.html</guid>
-      <description>1. 使用jstack分析线程-示例 通过两个demo来学习如何使用jstack
-1.1. 死锁 1.1.1. 死锁示例代码 import java.util.concurrent.TimeUnit; import java.util.concurrent.locks.LockSupport; import java.util.concurrent.locks.ReentrantLock; class DeadLockDemo { public static void main(String[] args) throws Exception { dead1(); dead2(); System.</description>
+      <guid>/www.awslop.com/2019/02/10/jstack-demo.html</guid>
+      <description>1. 使用jstack分析线程-示例 通过两个demo来学习如何使用jstack 1.1. 死锁 1.1.1. 死锁示例代码 1 2 3 4 5 6 7 8 9 10 11 12 13 14 15 16 17 18 19 20 21 22 23</description>
     </item>
     
   </channel>

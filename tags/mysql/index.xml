@@ -2,22 +2,22 @@
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
     <title>mysql on 断舍离的博客</title>
-    <link>https://duansheli.github.io/tags/mysql/</link>
+    <link>/www.awslop.com/tags/mysql/</link>
     <description>Recent content in mysql on 断舍离的博客</description>
     <generator>Hugo -- gohugo.io</generator>
-    <language>zh-CN</language>
+    <language>zh-cn</language>
     <lastBuildDate>Fri, 02 Aug 2019 17:28:13 +0800</lastBuildDate>
     
-	<atom:link href="https://duansheli.github.io/tags/mysql/index.xml" rel="self" type="application/rss+xml" />
+	<atom:link href="/www.awslop.com/tags/mysql/index.xml" rel="self" type="application/rss+xml" />
     
     
     <item>
       <title>mysql物理备份与还原示例</title>
-      <link>https://duansheli.github.io/2019/08/02/k8s-cluster-setup-02.html</link>
+      <link>/www.awslop.com/2019/08/02/k8s-cluster-setup-02.html</link>
       <pubDate>Fri, 02 Aug 2019 17:28:13 +0800</pubDate>
       
-      <guid>https://duansheli.github.io/2019/08/02/k8s-cluster-setup-02.html</guid>
-      <description>主要流程 1. 先建库建表 插入测试数据 2. 以物理方式备份数据 --数据备份完毕 3. 创建新的mysql-server 然后建库建表 移除表空间 4.停止mysql服务 将备份的数据还原 重新载入表空间 --数据还原完毕 ubuntu 中通过docker 运行mysql  测试过程 数据准备 两个sql脚本 一个是建表 一个是测试数据</description>
+      <guid>/www.awslop.com/2019/08/02/k8s-cluster-setup-02.html</guid>
+      <description>主要流程 1. 先建库建表 插入测试数据 2. 以物理方式备份数据 --数据备份完毕 3. 创建新的mysql-server 然后建库建表 移除表空间 4.停止mysq</description>
     </item>
     
   </channel>

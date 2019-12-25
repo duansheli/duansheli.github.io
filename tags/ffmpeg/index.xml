@@ -2,25 +2,22 @@
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
     <title>ffmpeg on 断舍离的博客</title>
-    <link>https://duansheli.github.io/tags/ffmpeg/</link>
+    <link>/www.awslop.com/tags/ffmpeg/</link>
     <description>Recent content in ffmpeg on 断舍离的博客</description>
     <generator>Hugo -- gohugo.io</generator>
-    <language>zh-CN</language>
+    <language>zh-cn</language>
     <lastBuildDate>Sat, 12 Oct 2019 17:28:13 +0800</lastBuildDate>
     
-	<atom:link href="https://duansheli.github.io/tags/ffmpeg/index.xml" rel="self" type="application/rss+xml" />
+	<atom:link href="/www.awslop.com/tags/ffmpeg/index.xml" rel="self" type="application/rss+xml" />
     
     
     <item>
       <title>下载m3u8-aes128加密视频-01</title>
-      <link>https://duansheli.github.io/2019/10/13/download-m3u8-video-01.html</link>
+      <link>/www.awslop.com/2019/10/13/download-m3u8-video-01.html</link>
       <pubDate>Sat, 12 Oct 2019 17:28:13 +0800</pubDate>
       
-      <guid>https://duansheli.github.io/2019/10/13/download-m3u8-video-01.html</guid>
-      <description>操作演示 如果是没加密的 一条命令就够了 ffmpeg -i http://aa.bb.com/play.m3u8 file.mp4 但被包含的资源一般m3u8的访问需要权限
-同时m3u8中的ts也通过aes128加密 密码则也被包含起来
-手动下载方式 video_m3u8_url=http://aa.bb.com/xx/001/play.m3u8  获取key 如果被加密了则 在 play.m3u8 中前几行可看到
-#EXT-X-KEY:METHOD=AES-128,URI=&amp;quot;https://aa.bb.com/yy/001/key&amp;quot;,IV=0x5901307461D2D72A5EA7F1B2269C33DC  可得 ts_iv=5901307461D2D72A5EA7F1B2269C33DC &amp;amp;&amp;amp; ts_key_url=https://aa.</description>
+      <guid>/www.awslop.com/2019/10/13/download-m3u8-video-01.html</guid>
+      <description>操作演示 如果是没加密的 一条命令就够了 ffmpeg -i http://aa.bb.com/play.m3u8 file.mp4 但被包含的资源一般m3u8的访问需要权限 同时m3u8中的ts也通过aes128加密 密码则也被包含</description>
     </item>
     
   </channel>

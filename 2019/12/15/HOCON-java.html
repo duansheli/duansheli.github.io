@@ -1,240 +1,203 @@
-<!doctype html>
-<html lang="zh-CN">
+<!DOCTYPE html>
+<html lang="zh-cn">
 <head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+  <title>HOCON配置文件读取 - 断舍离的博客</title>
+  <meta name="renderer" content="webkit" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
 
-    <meta charset="utf-8">
-    <meta name="generator" content="Hugo 0.59.0" />
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
 
-    <title>HOCON配置文件读取 | 断舍离的博客</title>
-    <meta property="og:title" content="HOCON配置文件读取 - 断舍离的博客">
-    <meta property="og:type" content="article">
-        
-    <meta property="article:published_time" content="2019-12-15T17:28:13&#43;08:00">
-        
-        
-    <meta property="article:modified_time" content="2019-12-15T17:28:13&#43;08:00">
-        
-    <meta name="Keywords" content="java,scala,spark,kubernetes">
-    <meta name="description" content="HOCON配置文件读取">
-        
-    <meta name="author" content="断舍离">
-    <meta property="og:url" content="https://duansheli.github.io/2019/12/15/HOCON-java.html">
-    <link rel="shortcut icon" href="/favicon.ico" type="image/x-icon">
-
-    <link rel="stylesheet" href="/css/normalize.css">
-    
-        <link rel="stylesheet" href="/css/prism.css">
-    
-    <link rel="stylesheet" href="/css/style.css">
-    <script type="text/javascript" src="//cdnjs.cloudflare.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
-
-    
+<meta name="theme-color" content="#f8f5ec" />
+<meta name="msapplication-navbutton-color" content="#f8f5ec">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="#f8f5ec">
 
 
-    
-    
+<meta name="author" content="duansheli" /><meta name="description" content="简述 HOCON（Human-Optimized Config Object Notation）是一个易于使用的配置文件格式，具有面向对象风格。 akka的配置文件就是用" /><meta name="keywords" content="scala, java, even" />
+
+
+
+
+
+
+<meta name="generator" content="Hugo 0.62.0 with theme even" />
+
+
+<link rel="canonical" href="/www.awslop.com/2019/12/15/hocon-java.html" />
+<link rel="apple-touch-icon" sizes="180x180" href="/www.awslop.com/apple-touch-icon.png">
+<link rel="icon" type="image/png" sizes="32x32" href="/www.awslop.com/favicon-32x32.png">
+<link rel="icon" type="image/png" sizes="16x16" href="/www.awslop.com/favicon-16x16.png">
+<link rel="manifest" href="/www.awslop.com/manifest.json">
+<link rel="mask-icon" href="/www.awslop.com/safari-pinned-tab.svg" color="#5bbad5">
+
+
+<link href="/www.awslop.com/dist/even.c2a46f00.min.css" rel="stylesheet">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3.1.20/dist/jquery.fancybox.min.css" integrity="sha256-7TyXnr2YU040zfSP+rEcz29ggW4j56/ujTPwjMzyqFY=" crossorigin="anonymous">
+
+
+<meta property="og:title" content="HOCON配置文件读取" />
+<meta property="og:description" content="简述 HOCON（Human-Optimized Config Object Notation）是一个易于使用的配置文件格式，具有面向对象风格。 akka的配置文件就是用" />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="/www.awslop.com/2019/12/15/hocon-java.html" />
+<meta property="article:published_time" content="2019-12-15T17:28:13+08:00" />
+<meta property="article:modified_time" content="2019-12-15T17:28:13+08:00" />
+<meta itemprop="name" content="HOCON配置文件读取">
+<meta itemprop="description" content="简述 HOCON（Human-Optimized Config Object Notation）是一个易于使用的配置文件格式，具有面向对象风格。 akka的配置文件就是用">
+<meta itemprop="datePublished" content="2019-12-15T17:28:13&#43;08:00" />
+<meta itemprop="dateModified" content="2019-12-15T17:28:13&#43;08:00" />
+<meta itemprop="wordCount" content="1052">
+
+
+
+<meta itemprop="keywords" content="java," /><meta name="twitter:card" content="summary"/>
+<meta name="twitter:title" content="HOCON配置文件读取"/>
+<meta name="twitter:description" content="简述 HOCON（Human-Optimized Config Object Notation）是一个易于使用的配置文件格式，具有面向对象风格。 akka的配置文件就是用"/>
+
+<!--[if lte IE 9]>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/classlist/1.1.20170427/classList.min.js"></script>
+<![endif]-->
+
+<!--[if lt IE 9]>
+  <script src="https://cdn.jsdelivr.net/npm/html5shiv@3.7.3/dist/html5shiv.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/respond.js@1.4.2/dest/respond.min.js"></script>
+<![endif]-->
+
 </head>
-
 <body>
-<header id="header" class="clearfix">
-    <div class="container">
-        <div class="col-group">
-            <div class="site-name ">
-                
-                    <a id="logo" href="https://duansheli.github.io">
-                        断舍离的博客
-                    </a>
-                
-                <p class="description">java, scala, spark, kubernetes</p>
-            </div>
-            <div>
-                <nav id="nav-menu" class="clearfix">
-                    <a class="" href="https://duansheli.github.io">首页</a>
-                    
-                    <a  href="https://duansheli.github.io/archives/" title="归档">归档</a>
-                    
-                </nav>
-            </div>
-        </div>
-    </div>
-</header>
-
-
-<div id="body">
-        
-        <div id="virtual_toc_list" style="display: none">
-            <nav id="TableOfContents">
-<ul>
-<li><a href="#简述">简述</a></li>
-<li><a href="#解析库">解析库</a></li>
-<li><a href="#使用演示">使用演示</a>
-<ul>
-<li><a href="#akka使用的配置">akka使用的配置</a></li>
-<li><a href="#待解析配置文件">待解析配置文件</a></li>
-<li><a href="#代码解析">代码解析</a>
-<ul>
-<li><a href="#对于3种配置文件格式的支持">对于3种配置文件格式的支持</a></li>
-<li><a href="#配置信息的读取">配置信息的读取</a></li>
-<li><a href="#默认加载位置可覆盖">默认加载位置可覆盖</a></li>
-<li><a href="#还可从其他方式加载配置">还可从其他方式加载配置</a></li>
-<li><a href="#配置的合并-提取">配置的合并、提取</a></li>
-</ul></li>
-<li><a href="#more">more</a></li>
-</ul></li>
-</ul>
+  <div id="mobile-navbar" class="mobile-navbar">
+  <div class="mobile-header-logo">
+    <a href="/www.awslop.com/" class="logo">Even</a>
+  </div>
+  <div class="mobile-navbar-icon">
+    <span></span>
+    <span></span>
+    <span></span>
+  </div>
+</div>
+<nav id="mobile-menu" class="mobile-menu slideout-menu">
+  <ul class="mobile-menu-list">
+    <a href="/www.awslop.com/">
+        <li class="mobile-menu-item">主页</li>
+      </a><a href="/www.awslop.com/post/">
+        <li class="mobile-menu-item">归档</li>
+      </a><a href="/www.awslop.com/tags/">
+        <li class="mobile-menu-item">标签</li>
+      </a><a href="/www.awslop.com/categories/">
+        <li class="mobile-menu-item">Categories</li>
+      </a>
+  </ul>
 </nav>
-        </div>
-        <div id="float_toc_div" style="margin: 10px;border: 1px solid gray;z-index:99999;display: none;">
-            <header style="background-color: #f3f3f3;color: black;border-bottom: 1px solid gray;padding: 10px 10px 10px 10px;">
-                <strong id="toc_btn_open" style="color: black;font-size: large;">目录</strong>
-                <strong id="toc_btn_close" style="color: black;font-size: large;float: right">╳</strong>
-            </header>
-            <div id="toc_list" style="background-color: #f3f3f3;color: black;padding: 10px;">
+  <div class="container" id="mobile-panel">
+    <header id="header" class="header">
+        <div class="logo-wrapper">
+  <a href="/www.awslop.com/" class="logo">Even</a>
+</div>
+
+<nav class="site-navbar">
+  <ul id="menu" class="menu">
+    <li class="menu-item">
+        <a class="menu-item-link" href="/www.awslop.com/">主页</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/www.awslop.com/post/">归档</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/www.awslop.com/tags/">标签</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/www.awslop.com/categories/">Categories</a>
+      </li>
+  </ul>
+</nav>
+    </header>
+
+    <main id="main" class="main">
+      <div class="content-wrapper">
+        <div id="content" class="content">
+          <article class="post">
+    
+    <header class="post-header">
+      <h1 class="post-title">HOCON配置文件读取</h1>
+
+      <div class="post-meta">
+        <span class="post-time"> 2019-12-15 </span>
         
-            </div>
-        </div>
-        <style type="text/css">
-            #float_toc_div {
-                position: fixed;
-                display: none;
-                 
-                height: auto;
-                font-size: 13px;
-            }
+          <span class="more-meta"> 约 1052 字 </span>
+          <span class="more-meta"> 预计阅读 3 分钟 </span>
         
-            #toc_list a:hover,
-            #toc_list a:active {
-                color: #ba3925;
-            }
-        </style>
-        <script>
-            window.onload = function () {
-                let tocNavElem = document.getElementById("TableOfContents");
-                let floatTocDivElem = document.getElementById("float_toc_div");
-                let tocListElem = floatTocDivElem.getElementsByTagName('div')[0];
-                let colGroupElem = document.getElementById("body").getElementsByClassName("col-group")[0]
-                let floatTocWidth = (document.body.clientWidth - colGroupElem.offsetWidth) / 2 - 16;
-                var useFloatToc = false;
+      </div>
+    </header>
 
-                if (floatTocWidth >= 100) {
-                    useFloatToc = true;
-                    document.getElementById("toc_list").appendChild(tocNavElem);
-                    floatTocDivElem.style.display = 'block';
-                    floatTocDivElem.style.width = floatTocWidth + 'px';
-                    top();
-                    floatTocDivElem.style.left = '0px';
-
-                    function top() {
-                        if (document.getElementsByClassName('container')[0].offsetWidth <= 720) {
-                            floatTocDivElem.style.top = '0px';
-                        } else {
-                            floatTocDivElem.style.top = window.innerHeight / 9 + 'px';
-                        }
-                    }
-
-                    function ishide() {
-                        if (document.getElementsByClassName('container')[0].offsetWidth <= 720) {
-                            floatTocDivElem.style.top = '0px';
-                        } else {
-                            floatTocDivElem.style.display = 'block';
-                        }
-                    }
-
-                    window.onscroll = function () {
-                        ishide();
-                        if ((document.documentElement.scrollTop != 0) && (floatTocDivElem.style.display == 'block')) {
-                            top();
-                        }
-                    };
-
-                    window.onresize = function () {
-                        ishide();
-                    }
-
-                    document.getElementById("toc_btn_open").addEventListener('click', function () {
-                        switch (tocListElem.style.display) {
-                            case "none":
-                                document.getElementById("toc_btn_close").style.display = "";
-                                tocListElem.style.display = "";
-                                floatTocDivElem.getElementsByTagName("header")[0].style.borderBottom = "1px solid gray";
-                                break;
-                            default:
-                                break;
-                        }
-                    }, false);
-
-                    document.getElementById("toc_btn_close").addEventListener('click', function () {
-                        switch (tocListElem.style.display) {
-                            case "":
-                                document.getElementById("toc_btn_close").style.display = "none";
-                                tocListElem.style.display = "none";
-                                floatTocDivElem.getElementsByTagName("header")[0].style.borderBottom = "";
-                                break;
-                            default:
-                                break;
-                        }
-                    }, false);
-                } else {
-                    let fixedTocElem = document.getElementsByClassName("toc-article")[0];
-                    fixedTocElem.appendChild(tocNavElem);
-                    fixedTocElem.parentElement.style.display = "";
-                }
-                document.getElementById("virtual_toc_list").remove();
-            };   
-        </script>
-        
-    <div class="container">
-        <div class="col-group">
-
-            <div class="col-8" id="main">
-                <div class="res-cons">
-                    <article class="post">
-                        <header>
-                            <h1 class="post-title">HOCON配置文件读取</h1>
-                        </header>
-                        <date class="post-meta meta-date">
-                            2019年12月15日
-                        </date>
-                        
-                        
-                        
-                        <div class="clear" style="display: none">
-                            <div class="toc-article">
-                                <div class="toc-title">文章目录</div>
-                            </div>
-                        </div>
-                        
-                        <div class="post-content">
-                            
-
-<h1 id="简述">简述</h1>
-
+    <div class="post-toc" id="post-toc">
+  <h2 class="post-toc-title">文章目录</h2>
+  <div class="post-toc-content always-active">
+    <nav id="TableOfContents">
+  <ul>
+    <li><a href="#akka">akka使用的配置</a></li>
+    <li><a href="#heading-3">待解析配置文件</a></li>
+    <li><a href="#heading-4">代码解析</a>
+      <ul>
+        <li><a href="#3">对于3种配置文件格式的支持</a></li>
+        <li><a href="#heading-5">配置信息的读取</a></li>
+        <li><a href="#heading-6">默认加载位置可覆盖</a></li>
+        <li><a href="#heading-7">还可从其他方式加载配置</a></li>
+        <li><a href="#heading-8">配置的合并、提取</a></li>
+      </ul>
+    </li>
+    <li><a href="#more">more</a></li>
+  </ul>
+</nav>
+  </div>
+</div>
+    <div class="post-content">
+      <h1 id="heading">简述</h1>
 <p>HOCON（Human-Optimized Config Object Notation）是一个易于使用的配置文件格式，具有面向对象风格。</p>
-
 <p>akka的配置文件就是用的conf格式</p>
-
 <p>该篇演示使用方式</p>
-
-<h1 id="解析库">解析库</h1>
-
-<pre><code class="language-xml">&lt;dependency&gt;
-    &lt;groupId&gt;com.typesafe&lt;/groupId&gt;
-    &lt;artifactId&gt;config&lt;/artifactId&gt;
-    &lt;version&gt;1.4.0&lt;/version&gt;
-&lt;/dependency&gt;
-</code></pre>
-
-<h1 id="使用演示">使用演示</h1>
-
+<h1 id="heading-1">解析库</h1>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span><span class="lnt">5
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-xml" data-lang="xml"><span class="nt">&lt;dependency</span><span class="nt">&gt;</span>
+    <span class="nt">&lt;groupId</span><span class="nt">&gt;</span>com.typesafe<span class="nt">&lt;/groupId&gt;</span>
+    <span class="nt">&lt;artifactId</span><span class="nt">&gt;</span>config<span class="nt">&lt;/artifactId&gt;</span>
+    <span class="nt">&lt;version</span><span class="nt">&gt;</span>1.4.0<span class="nt">&lt;/version&gt;</span>
+<span class="nt">&lt;/dependency&gt;</span>
+</code></pre></td></tr></table>
+</div>
+</div><h1 id="heading-2">使用演示</h1>
 <p>样例</p>
-
-<pre><code>akka {
-  loggers = [&quot;akka.event.slf4j.Slf4jLogger&quot;]
-  loglevel = &quot;DEBUG&quot;
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span><span class="lnt">14
+</span><span class="lnt">15
+</span><span class="lnt">16
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-fallback" data-lang="fallback">akka {
+  loggers = [&#34;akka.event.slf4j.Slf4jLogger&#34;]
+  loglevel = &#34;DEBUG&#34;
   actor {
-    provider = &quot;cluster&quot;
+    provider = &#34;cluster&#34;
     default-dispatcher {
       throughput = 10
     }
@@ -246,42 +209,83 @@
     }
   }
 }
-</code></pre>
-
-<h2 id="akka使用的配置">akka使用的配置</h2>
-
+</code></pre></td></tr></table>
+</div>
+</div><h2 id="akka">akka使用的配置</h2>
 <p>ConfigFactory 支持解析 conf、json、properties格式的配置文件</p>
-
-<pre><code class="language-scala">  def case01 {
-    val sysName = &quot;dizangwang&quot;
-    // 默认加载application.*
-    // resources目录下放 application.conf、 application.json、 application.properties 任意一个都行
-    val config: Config = ConfigFactory.load()
-    // 二者效果相同
-    val system01: ActorSystem = ActorSystem.create(sysName)
-    val system02: ActorSystem = ActorSystem.create(sysName, config)
-    val system03: ActorSystem = ActorSystem.create(sysName, ConfigFactory.load(&quot;application.conf&quot;))
-  }
-</code></pre>
-
-<h2 id="待解析配置文件">待解析配置文件</h2>
-
-<pre><code class="language-bash">resources
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-scala" data-lang="scala">  <span class="k">def</span> <span class="n">case01</span> <span class="o">{</span>
+    <span class="k">val</span> <span class="n">sysName</span> <span class="k">=</span> <span class="s">&#34;dizangwang&#34;</span>
+    <span class="c1">// 默认加载application.*
+</span><span class="c1"></span>    <span class="c1">// resources目录下放 application.conf、 application.json、 application.properties 任意一个都行
+</span><span class="c1"></span>    <span class="k">val</span> <span class="n">config</span><span class="k">:</span> <span class="kt">Config</span> <span class="o">=</span> <span class="nc">ConfigFactory</span><span class="o">.</span><span class="n">load</span><span class="o">(</span><span class="o">)</span>
+    <span class="c1">// 二者效果相同
+</span><span class="c1"></span>    <span class="k">val</span> <span class="n">system01</span><span class="k">:</span> <span class="kt">ActorSystem</span> <span class="o">=</span> <span class="nc">ActorSystem</span><span class="o">.</span><span class="n">create</span><span class="o">(</span><span class="n">sysName</span><span class="o">)</span>
+    <span class="k">val</span> <span class="n">system02</span><span class="k">:</span> <span class="kt">ActorSystem</span> <span class="o">=</span> <span class="nc">ActorSystem</span><span class="o">.</span><span class="n">create</span><span class="o">(</span><span class="n">sysName</span><span class="o">,</span> <span class="n">config</span><span class="o">)</span>
+    <span class="k">val</span> <span class="n">system03</span><span class="k">:</span> <span class="kt">ActorSystem</span> <span class="o">=</span> <span class="nc">ActorSystem</span><span class="o">.</span><span class="n">create</span><span class="o">(</span><span class="n">sysName</span><span class="o">,</span> <span class="nc">ConfigFactory</span><span class="o">.</span><span class="n">load</span><span class="o">(</span><span class="s">&#34;application.conf&#34;</span><span class="o">)</span><span class="o">)</span>
+  <span class="o">}</span>
+</code></pre></td></tr></table>
+</div>
+</div><h2 id="heading-3">待解析配置文件</h2>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span><span class="lnt">5
+</span><span class="lnt">6
+</span><span class="lnt">7
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-bash" data-lang="bash">resources
 ├── application.conf
 └── usecfg
     ├── app-01.conf
     ├── app-02.conf
     ├── app-03.json
     └── app-04.properties
-</code></pre>
-
-<p>app-01.conf</p>
-
-<pre><code>akka {
-  loggers = [&quot;akka.event.slf4j.Slf4jLogger&quot;]
-  loglevel = &quot;DEBUG&quot;
+</code></pre></td></tr></table>
+</div>
+</div><p>app-01.conf</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span><span class="lnt">14
+</span><span class="lnt">15
+</span><span class="lnt">16
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-fallback" data-lang="fallback">akka {
+  loggers = [&#34;akka.event.slf4j.Slf4jLogger&#34;]
+  loglevel = &#34;DEBUG&#34;
   actor {
-    provider = &quot;cluster&quot;
+    provider = &#34;cluster&#34;
     default-dispatcher {
       throughput = 10
     }
@@ -293,414 +297,378 @@
     }
   }
 }
-</code></pre>
-
-<p>app-02.conf</p>
-
-<pre><code>app1{
+</code></pre></td></tr></table>
+</div>
+</div><p>app-02.conf</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span><span class="lnt">5
+</span><span class="lnt">6
+</span><span class="lnt">7
+</span><span class="lnt">8
+</span><span class="lnt">9
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-fallback" data-lang="fallback">app1{
   akka {
-    loglevel = &quot;DEBUG&quot;
+    loglevel = &#34;DEBUG&#34;
   }
 }
 
 app2.akka {
-  loglevel = &quot;DEBUG&quot;
+  loglevel = &#34;DEBUG&#34;
 }
-</code></pre>
-
-<p>app-03.conf</p>
-
-<pre><code>{
-  &quot;akka&quot;: {&quot;loglevel&quot; : &quot;DEBUG&quot;}
+</code></pre></td></tr></table>
+</div>
+</div><p>app-03.conf</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-fallback" data-lang="fallback">{
+  &#34;akka&#34;: {&#34;loglevel&#34; : &#34;DEBUG&#34;}
 }
-</code></pre>
-
-<p>app-04.properties</p>
-
-<pre><code>app1.akka.loglevel=DEBUG
+</code></pre></td></tr></table>
+</div>
+</div><p>app-04.properties</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-fallback" data-lang="fallback">app1.akka.loglevel=DEBUG
 app2.akka.loglevel=DEBUG
-</code></pre>
-
-<h2 id="代码解析">代码解析</h2>
-
-<h3 id="对于3种配置文件格式的支持">对于3种配置文件格式的支持</h3>
-
-<pre><code class="language-scala">val cfg01: Config = ConfigFactory.load(&quot;usecfg/app-01.conf&quot;)
-val cfg02: Config = ConfigFactory.load(&quot;usecfg/app-02.conf&quot;)
-val cfg03: Config = ConfigFactory.load(&quot;usecfg/app-03.json&quot;)
-val cfg04: Config = ConfigFactory.load(&quot;usecfg/app-04.properties&quot;)
-</code></pre>
-
-<h3 id="配置信息的读取">配置信息的读取</h3>
-
-<pre><code class="language-scala">def case02() { // 效果相同
-  assert(&quot;DEBUG&quot; equals cfg01.getString(&quot;akka.loglevel&quot;))
-  assert(&quot;DEBUG&quot; equals cfg02.getString(&quot;app1.akka.loglevel&quot;))
-  assert(&quot;DEBUG&quot; equals cfg02.getString(&quot;app2.akka.loglevel&quot;))
-  assert(&quot;DEBUG&quot; equals cfg03.getString(&quot;akka.loglevel&quot;))
-  assert(&quot;DEBUG&quot; equals cfg04.getString(&quot;app1.akka.loglevel&quot;))
-  assert(&quot;DEBUG&quot; equals cfg04.getString(&quot;app2.akka.loglevel&quot;))
-}
-</code></pre>
-
-<h3 id="默认加载位置可覆盖">默认加载位置可覆盖</h3>
-
-<pre><code class="language-scala">def case03() { // 效果相同
-  println(&quot;通过启动参数覆盖默认加载位置&quot;)
-  // ConfigFactory.load() 默认是找classpath*:application.conf 文件
-  // jvm启动时的附加参数可以调整默认位置 -Dconfig.resource=xx, -Dconfig.file=xx, -Dconfig.url=xx
-  System.setProperty(&quot;config.resource&quot;, &quot;usecfg/app-03.json&quot;)
-  val cfg0003: Config = ConfigFactory.load()
-  assert(&quot;DEBUG&quot; equals cfg0003.getString(&quot;akka.loglevel&quot;))
-}
-</code></pre>
-
-<h3 id="还可从其他方式加载配置">还可从其他方式加载配置</h3>
-
+</code></pre></td></tr></table>
+</div>
+</div><h2 id="heading-4">代码解析</h2>
+<h3 id="3">对于3种配置文件格式的支持</h3>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-scala" data-lang="scala"><span class="k">val</span> <span class="n">cfg01</span><span class="k">:</span> <span class="kt">Config</span> <span class="o">=</span> <span class="nc">ConfigFactory</span><span class="o">.</span><span class="n">load</span><span class="o">(</span><span class="s">&#34;usecfg/app-01.conf&#34;</span><span class="o">)</span>
+<span class="k">val</span> <span class="n">cfg02</span><span class="k">:</span> <span class="kt">Config</span> <span class="o">=</span> <span class="nc">ConfigFactory</span><span class="o">.</span><span class="n">load</span><span class="o">(</span><span class="s">&#34;usecfg/app-02.conf&#34;</span><span class="o">)</span>
+<span class="k">val</span> <span class="n">cfg03</span><span class="k">:</span> <span class="kt">Config</span> <span class="o">=</span> <span class="nc">ConfigFactory</span><span class="o">.</span><span class="n">load</span><span class="o">(</span><span class="s">&#34;usecfg/app-03.json&#34;</span><span class="o">)</span>
+<span class="k">val</span> <span class="n">cfg04</span><span class="k">:</span> <span class="kt">Config</span> <span class="o">=</span> <span class="nc">ConfigFactory</span><span class="o">.</span><span class="n">load</span><span class="o">(</span><span class="s">&#34;usecfg/app-04.properties&#34;</span><span class="o">)</span>
+</code></pre></td></tr></table>
+</div>
+</div><h3 id="heading-5">配置信息的读取</h3>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span><span class="lnt">5
+</span><span class="lnt">6
+</span><span class="lnt">7
+</span><span class="lnt">8
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-scala" data-lang="scala"><span class="k">def</span> <span class="n">case02</span><span class="o">(</span><span class="o">)</span> <span class="o">{</span> <span class="c1">// 效果相同
+</span><span class="c1"></span>  <span class="n">assert</span><span class="o">(</span><span class="s">&#34;DEBUG&#34;</span> <span class="n">equals</span> <span class="n">cfg01</span><span class="o">.</span><span class="n">getString</span><span class="o">(</span><span class="s">&#34;akka.loglevel&#34;</span><span class="o">)</span><span class="o">)</span>
+  <span class="n">assert</span><span class="o">(</span><span class="s">&#34;DEBUG&#34;</span> <span class="n">equals</span> <span class="n">cfg02</span><span class="o">.</span><span class="n">getString</span><span class="o">(</span><span class="s">&#34;app1.akka.loglevel&#34;</span><span class="o">)</span><span class="o">)</span>
+  <span class="n">assert</span><span class="o">(</span><span class="s">&#34;DEBUG&#34;</span> <span class="n">equals</span> <span class="n">cfg02</span><span class="o">.</span><span class="n">getString</span><span class="o">(</span><span class="s">&#34;app2.akka.loglevel&#34;</span><span class="o">)</span><span class="o">)</span>
+  <span class="n">assert</span><span class="o">(</span><span class="s">&#34;DEBUG&#34;</span> <span class="n">equals</span> <span class="n">cfg03</span><span class="o">.</span><span class="n">getString</span><span class="o">(</span><span class="s">&#34;akka.loglevel&#34;</span><span class="o">)</span><span class="o">)</span>
+  <span class="n">assert</span><span class="o">(</span><span class="s">&#34;DEBUG&#34;</span> <span class="n">equals</span> <span class="n">cfg04</span><span class="o">.</span><span class="n">getString</span><span class="o">(</span><span class="s">&#34;app1.akka.loglevel&#34;</span><span class="o">)</span><span class="o">)</span>
+  <span class="n">assert</span><span class="o">(</span><span class="s">&#34;DEBUG&#34;</span> <span class="n">equals</span> <span class="n">cfg04</span><span class="o">.</span><span class="n">getString</span><span class="o">(</span><span class="s">&#34;app2.akka.loglevel&#34;</span><span class="o">)</span><span class="o">)</span>
+<span class="o">}</span>
+</code></pre></td></tr></table>
+</div>
+</div><h3 id="heading-6">默认加载位置可覆盖</h3>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span><span class="lnt">5
+</span><span class="lnt">6
+</span><span class="lnt">7
+</span><span class="lnt">8
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-scala" data-lang="scala"><span class="k">def</span> <span class="n">case03</span><span class="o">(</span><span class="o">)</span> <span class="o">{</span> <span class="c1">// 效果相同
+</span><span class="c1"></span>  <span class="n">println</span><span class="o">(</span><span class="s">&#34;通过启动参数覆盖默认加载位置&#34;</span><span class="o">)</span>
+  <span class="c1">// ConfigFactory.load() 默认是找classpath*:application.conf 文件
+</span><span class="c1"></span>  <span class="c1">// jvm启动时的附加参数可以调整默认位置 -Dconfig.resource=xx, -Dconfig.file=xx, -Dconfig.url=xx
+</span><span class="c1"></span>  <span class="nc">System</span><span class="o">.</span><span class="n">setProperty</span><span class="o">(</span><span class="s">&#34;config.resource&#34;</span><span class="o">,</span> <span class="s">&#34;usecfg/app-03.json&#34;</span><span class="o">)</span>
+  <span class="k">val</span> <span class="n">cfg0003</span><span class="k">:</span> <span class="kt">Config</span> <span class="o">=</span> <span class="nc">ConfigFactory</span><span class="o">.</span><span class="n">load</span><span class="o">(</span><span class="o">)</span>
+  <span class="n">assert</span><span class="o">(</span><span class="s">&#34;DEBUG&#34;</span> <span class="n">equals</span> <span class="n">cfg0003</span><span class="o">.</span><span class="n">getString</span><span class="o">(</span><span class="s">&#34;akka.loglevel&#34;</span><span class="o">)</span><span class="o">)</span>
+<span class="o">}</span>
+</code></pre></td></tr></table>
+</div>
+</div><h3 id="heading-7">还可从其他方式加载配置</h3>
 <p>从字符串解析、 从文件加载、 从url加载</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span><span class="lnt">14
+</span><span class="lnt">15
+</span><span class="lnt">16
+</span><span class="lnt">17
+</span><span class="lnt">18
+</span><span class="lnt">19
+</span><span class="lnt">20
+</span><span class="lnt">21
+</span><span class="lnt">22
+</span><span class="lnt">23
+</span><span class="lnt">24
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-scala" data-lang="scala">  <span class="k">var</span> <span class="n">config</span><span class="k">:</span> <span class="kt">Config</span> <span class="o">=</span> <span class="kc">null</span><span class="o">;</span>
+  <span class="k">val</span> <span class="n">cs01</span> <span class="k">=</span>
+    <span class="s">&#34;&#34;&#34;
+</span><span class="s">      |app1{
+</span><span class="s">      |  akka {
+</span><span class="s">      |    loglevel = &#34;DEBUG&#34;
+</span><span class="s">      |  }
+</span><span class="s">      |}
+</span><span class="s">      |&#34;&#34;&#34;</span><span class="o">.</span><span class="n">stripMargin</span>
+  <span class="k">val</span> <span class="n">cs02</span> <span class="k">=</span>
+    <span class="s">&#34;&#34;&#34;
+</span><span class="s">      |{
+</span><span class="s">      |  &#34;akka&#34;: {&#34;loglevel&#34; : &#34;DEBUG&#34;}
+</span><span class="s">      |}
+</span><span class="s">      |
+</span><span class="s">      |&#34;&#34;&#34;</span><span class="o">.</span><span class="n">stripMargin</span>
 
-<pre><code class="language-scala">  var config: Config = null;
-  val cs01 =
-    &quot;&quot;&quot;
-      |app1{
-      |  akka {
-      |    loglevel = &quot;DEBUG&quot;
-      |  }
-      |}
-      |&quot;&quot;&quot;.stripMargin
-  val cs02 =
-    &quot;&quot;&quot;
-      |{
-      |  &quot;akka&quot;: {&quot;loglevel&quot; : &quot;DEBUG&quot;}
-      |}
-      |
-      |&quot;&quot;&quot;.stripMargin
+  <span class="n">println</span><span class="o">(</span><span class="s">&#34;解析字符串的方式装载配置 -- 可从多种来源加载[ .parseString .parseFile .parseURL ...more ]&#34;</span><span class="o">)</span>
+  <span class="k">val</span> <span class="n">cfg01</span><span class="k">:</span> <span class="kt">Config</span> <span class="o">=</span> <span class="nc">ConfigFactory</span><span class="o">.</span><span class="n">parseString</span><span class="o">(</span><span class="n">cs01</span><span class="o">)</span>
+  <span class="k">val</span> <span class="n">cfg02</span><span class="k">:</span> <span class="kt">Config</span> <span class="o">=</span> <span class="nc">ConfigFactory</span><span class="o">.</span><span class="n">parseString</span><span class="o">(</span><span class="n">cs02</span><span class="o">)</span>
 
-  println(&quot;解析字符串的方式装载配置 -- 可从多种来源加载[ .parseString .parseFile .parseURL ...more ]&quot;)
-  val cfg01: Config = ConfigFactory.parseString(cs01)
-  val cfg02: Config = ConfigFactory.parseString(cs02)
+  <span class="n">println</span><span class="o">(</span><span class="n">cfg02</span><span class="o">.</span><span class="n">getString</span><span class="o">(</span><span class="s">&#34;akka.loglevel&#34;</span><span class="o">)</span><span class="o">)</span>
+  <span class="n">assert</span><span class="o">(</span><span class="n">cfg01</span><span class="o">.</span><span class="n">getString</span><span class="o">(</span><span class="s">&#34;app1.akka.loglevel&#34;</span><span class="o">)</span><span class="o">.</span><span class="n">equals</span><span class="o">(</span><span class="n">cfg02</span><span class="o">.</span><span class="n">getString</span><span class="o">(</span><span class="s">&#34;akka.loglevel&#34;</span><span class="o">)</span><span class="o">)</span><span class="o">)</span>
 
-  println(cfg02.getString(&quot;akka.loglevel&quot;))
-  assert(cfg01.getString(&quot;app1.akka.loglevel&quot;).equals(cfg02.getString(&quot;akka.loglevel&quot;)))
-
-</code></pre>
-
-<h3 id="配置的合并-提取">配置的合并、提取</h3>
-
-<pre><code class="language-scala">val cs03 =
-  &quot;&quot;&quot;
-    |db.a1.name=tom
-    |db.a2.name=peter
-    |log.zz=apple
-    |&quot;&quot;&quot;.stripMargin
-val cfg03: Config = ConfigFactory.parseString(cs03)
-// 值保留该路径的配置, 还剩一条记录
-val xx: Config = cfg03.withOnlyPath(&quot;db.a2&quot;)
-assert(xx.root().size() == 1)
-
-// 只剔除该路径的配置, 还剩两条记录
-val yy: Config = cfg03.withoutPath(&quot;db.a2&quot;)
-assert(yy.root().size() == 2)
-
-// 提取路径下的 config
-config = cfg01.getConfig(&quot;app1&quot;)
-assert(config.getString(&quot;akka.loglevel&quot;).equals(&quot;DEBUG&quot;))
-</code></pre>
-
-<p>合并config</p>
-
-<pre><code class="language-scala">val cs04 =
-  &quot;&quot;&quot;
-    |aa=11
-    |bb=22
-    |&quot;&quot;&quot;.stripMargin
-val cs05 =
-  &quot;&quot;&quot;
-    |bb=2222
-    |cc=33
-    |&quot;&quot;&quot;.stripMargin
-val cfg04: Config = ConfigFactory.parseString(cs04)
-val cfg05: Config = ConfigFactory.parseString(cs05)
-// 二者合并， 有冲突则使用cfg08的值
-config = cfg04.withFallback(cfg05)
-assert(config.getString(&quot;bb&quot;).equals(&quot;22&quot;))
-assert(config.getString(&quot;cc&quot;).equals(&quot;33&quot;))
-println(&quot;done --&quot;)
-</code></pre>
-
-<h2 id="more">more</h2>
-
-<pre><code class="language-scala">ConfigFactory.defaultOverrides() // 仅加载了系统属性
-ConfigFactory.defaultReference() // 所有路径下 reference.conf 的合并结果
-ConfigFactory.defaultApplication() //  == defaultReference() + defaultOverrides()
-ConfigFactory.load() // == defaultApplication() + resolve
-ConfigFactory.systemEnvironment()
-ConfigFactory.systemProperties() // 返回的是单例对象， 在清除缓存后，再调用可刷新
-ConfigFactory.invalidateCaches() // 清除缓存， 加载的系统属性、环境变量都被缓存过
-</code></pre>
-
-                        </div>
-
-                        
-
-
-                        
-
-<div class="post-archive">
-    <h2>See Also</h2>
-    <ul class="listing">
-        
-        <li><a href="/2019/05/17/thinking-autoboxing-implicit.html">自动装箱拆箱在scala中的表现</a></li>
-        
-        <li><a href="/2019/11/16/jmh-dynamic-run.html">JMH-测试动态执行代码效率</a></li>
-        
-        <li><a href="/2019/11/12/doh.html">群晖两步验证的关闭</a></li>
-        
-        <li><a href="/2019/11/10/benchmark-java-jmh.html">基准测试工具JMH-示例</a></li>
-        
-        <li><a href="/2019/10/28/update-rule-by-scanner.html">使用drools的规则管理平台-02</a></li>
-        
-    </ul>
+</code></pre></td></tr></table>
 </div>
+</div><h3 id="heading-8">配置的合并、提取</h3>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span><span class="lnt">14
+</span><span class="lnt">15
+</span><span class="lnt">16
+</span><span class="lnt">17
+</span><span class="lnt">18
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-scala" data-lang="scala"><span class="k">val</span> <span class="n">cs03</span> <span class="k">=</span>
+  <span class="s">&#34;&#34;&#34;
+</span><span class="s">    |db.a1.name=tom
+</span><span class="s">    |db.a2.name=peter
+</span><span class="s">    |log.zz=apple
+</span><span class="s">    |&#34;&#34;&#34;</span><span class="o">.</span><span class="n">stripMargin</span>
+<span class="k">val</span> <span class="n">cfg03</span><span class="k">:</span> <span class="kt">Config</span> <span class="o">=</span> <span class="nc">ConfigFactory</span><span class="o">.</span><span class="n">parseString</span><span class="o">(</span><span class="n">cs03</span><span class="o">)</span>
+<span class="c1">// 值保留该路径的配置, 还剩一条记录
+</span><span class="c1"></span><span class="k">val</span> <span class="n">xx</span><span class="k">:</span> <span class="kt">Config</span> <span class="o">=</span> <span class="n">cfg03</span><span class="o">.</span><span class="n">withOnlyPath</span><span class="o">(</span><span class="s">&#34;db.a2&#34;</span><span class="o">)</span>
+<span class="n">assert</span><span class="o">(</span><span class="n">xx</span><span class="o">.</span><span class="n">root</span><span class="o">(</span><span class="o">)</span><span class="o">.</span><span class="n">size</span><span class="o">(</span><span class="o">)</span> <span class="o">==</span> <span class="mi">1</span><span class="o">)</span>
 
+<span class="c1">// 只剔除该路径的配置, 还剩两条记录
+</span><span class="c1"></span><span class="k">val</span> <span class="n">yy</span><span class="k">:</span> <span class="kt">Config</span> <span class="o">=</span> <span class="n">cfg03</span><span class="o">.</span><span class="n">withoutPath</span><span class="o">(</span><span class="s">&#34;db.a2&#34;</span><span class="o">)</span>
+<span class="n">assert</span><span class="o">(</span><span class="n">yy</span><span class="o">.</span><span class="n">root</span><span class="o">(</span><span class="o">)</span><span class="o">.</span><span class="n">size</span><span class="o">(</span><span class="o">)</span> <span class="o">==</span> <span class="mi">2</span><span class="o">)</span>
 
-                        <div class="post-meta meta-tags">
-                            
-                            <ul class="clearfix">
-                                
-                                <li><a href="https://duansheli.github.io/tags/java">java</a></li>
-                                
-                            </ul>
-                            
-                        </div>
-                    </article>
-                    
-    
-
-    
-    
-                </div>
-            </div>
-            <div id="secondary">
-    <section class="widget">
-        <form id="search" action="//www.google.com/search" method="get" accept-charset="utf-8" target="_blank" _lpchecked="1">
-      
-      <input type="text" name="q" maxlength="20" placeholder="Search">
-      <input type="hidden" name="sitesearch" value="https://duansheli.github.io">
-      <button type="submit" class="submit icon-search"></button>
-</form>
-    </section>
-    
-    <section class="widget">
-        <h3 class="widget-title">最近文章</h3>
-<ul class="widget-list">
-    
-    <li>
-        <a href="https://duansheli.github.io/2019/12/20/akka-demo-concurrent.html" title="akka-并发任务">akka-并发任务</a>
-    </li>
-    
-    <li>
-        <a href="https://duansheli.github.io/2019/12/15/HOCON-java.html" title="HOCON配置文件读取">HOCON配置文件读取</a>
-    </li>
-    
-    <li>
-        <a href="https://duansheli.github.io/2019/11/16/jmh-dynamic-run.html" title="JMH-测试动态执行代码效率">JMH-测试动态执行代码效率</a>
-    </li>
-    
-    <li>
-        <a href="https://duansheli.github.io/2019/11/12/doh.html" title="群晖两步验证的关闭">群晖两步验证的关闭</a>
-    </li>
-    
-    <li>
-        <a href="https://duansheli.github.io/2019/11/10/benchmark-java-jmh.html" title="基准测试工具JMH-示例">基准测试工具JMH-示例</a>
-    </li>
-    
-    <li>
-        <a href="https://duansheli.github.io/2019/10/28/update-rule-by-scanner.html" title="使用drools的规则管理平台-02">使用drools的规则管理平台-02</a>
-    </li>
-    
-    <li>
-        <a href="https://duansheli.github.io/2019/10/27/update-rule-by-scanner.html" title="使用drools的规则管理平台-01">使用drools的规则管理平台-01</a>
-    </li>
-    
-    <li>
-        <a href="https://duansheli.github.io/2019/10/26/update-rule-by-scanner.html" title="自定义动态更新drools规则">自定义动态更新drools规则</a>
-    </li>
-    
-    <li>
-        <a href="https://duansheli.github.io/2019/10/13/download-m3u8-video-02.html" title="下载m3u8-aes128加密视频-02">下载m3u8-aes128加密视频-02</a>
-    </li>
-    
-    <li>
-        <a href="https://duansheli.github.io/2019/10/13/download-m3u8-video-01.html" title="下载m3u8-aes128加密视频-01">下载m3u8-aes128加密视频-01</a>
-    </li>
-    
-</ul>
-    </section>
-
-    
-
-    <section class="widget">
-        <h3 class="widget-title">分类</h3>
-<ul class="widget-list">
-    
-    <li>
-        <a href="https://duansheli.github.io/categories/JHM/">JHM(1)</a>
-    </li>
-    
-    <li>
-        <a href="https://duansheli.github.io/categories/JMH/">JMH(1)</a>
-    </li>
-    
-    <li>
-        <a href="https://duansheli.github.io/categories/Java%E6%B7%B1%E5%85%A5/">Java深入(8)</a>
-    </li>
-    
-    <li>
-        <a href="https://duansheli.github.io/categories/k8s%E9%9B%86%E7%BE%A4/">k8s集群(5)</a>
-    </li>
-    
-    <li>
-        <a href="https://duansheli.github.io/categories/scala%E5%B9%B6%E5%8F%91%E7%BC%96%E7%A8%8B/">scala并发编程(8)</a>
-    </li>
-    
-</ul>
-    </section>
-
-    <section class="widget">
-        <h3 class="widget-title">标签</h3>
-<div class="tagcloud">
-    
-    <a href="https://duansheli.github.io/tags/JHM/">JHM</a>
-    
-    <a href="https://duansheli.github.io/tags/JMH/">JMH</a>
-    
-    <a href="https://duansheli.github.io/tags/Java/">Java</a>
-    
-    <a href="https://duansheli.github.io/tags/classloader/">classloader</a>
-    
-    <a href="https://duansheli.github.io/tags/docker/">docker</a>
-    
-    <a href="https://duansheli.github.io/tags/drone/">drone</a>
-    
-    <a href="https://duansheli.github.io/tags/drools/">drools</a>
-    
-    <a href="https://duansheli.github.io/tags/dubbo/">dubbo</a>
-    
-    <a href="https://duansheli.github.io/tags/elasticsearch/">elasticsearch</a>
-    
-    <a href="https://duansheli.github.io/tags/ffmpeg/">ffmpeg</a>
-    
-    <a href="https://duansheli.github.io/tags/gc/">gc</a>
-    
-    <a href="https://duansheli.github.io/tags/git/">git</a>
-    
-    <a href="https://duansheli.github.io/tags/gradle/">gradle</a>
-    
-    <a href="https://duansheli.github.io/tags/hashids/">hashids</a>
-    
-    <a href="https://duansheli.github.io/tags/id/">id</a>
-    
-    <a href="https://duansheli.github.io/tags/java/">java</a>
-    
-    <a href="https://duansheli.github.io/tags/jdk/">jdk</a>
-    
-    <a href="https://duansheli.github.io/tags/jvm/">jvm</a>
-    
-    <a href="https://duansheli.github.io/tags/k8s/">k8s</a>
-    
-    <a href="https://duansheli.github.io/tags/kotlin/">kotlin</a>
-    
-    <a href="https://duansheli.github.io/tags/life/">life</a>
-    
-    <a href="https://duansheli.github.io/tags/linux/">linux</a>
-    
-    <a href="https://duansheli.github.io/tags/mysql/">mysql</a>
-    
-    <a href="https://duansheli.github.io/tags/proxy/">proxy</a>
-    
-    <a href="https://duansheli.github.io/tags/redis/">redis</a>
-    
-    <a href="https://duansheli.github.io/tags/rocketmq/">rocketmq</a>
-    
-    <a href="https://duansheli.github.io/tags/route/">route</a>
-    
-    <a href="https://duansheli.github.io/tags/scala/">scala</a>
-    
-    <a href="https://duansheli.github.io/tags/session/">session</a>
-    
-    <a href="https://duansheli.github.io/tags/shell/">shell</a>
-    
-    <a href="https://duansheli.github.io/tags/spring-boot/">spring-boot</a>
-    
-    <a href="https://duansheli.github.io/tags/spring-security/">spring-security</a>
-    
-    <a href="https://duansheli.github.io/tags/springboot/">springboot</a>
-    
-    <a href="https://duansheli.github.io/tags/zipkin/">zipkin</a>
-    
-    <a href="https://duansheli.github.io/tags/%E5%88%86%E5%B8%83%E5%BC%8F%E4%BA%8B%E5%8A%A1/">分布式事务</a>
-    
-    <a href="https://duansheli.github.io/tags/%E6%8C%81%E7%BB%AD%E9%9B%86%E6%88%90/">持续集成</a>
-    
-    <a href="https://duansheli.github.io/tags/%E7%99%BB%E5%BD%95/">登录</a>
-    
+<span class="c1">// 提取路径下的 config
+</span><span class="c1"></span><span class="n">config</span> <span class="k">=</span> <span class="n">cfg01</span><span class="o">.</span><span class="n">getConfig</span><span class="o">(</span><span class="s">&#34;app1&#34;</span><span class="o">)</span>
+<span class="n">assert</span><span class="o">(</span><span class="n">config</span><span class="o">.</span><span class="n">getString</span><span class="o">(</span><span class="s">&#34;akka.loglevel&#34;</span><span class="o">)</span><span class="o">.</span><span class="n">equals</span><span class="o">(</span><span class="s">&#34;DEBUG&#34;</span><span class="o">)</span><span class="o">)</span>
+</code></pre></td></tr></table>
 </div>
-    </section>
-
-    
-
-    <section class="widget">
-        <h3 class="widget-title">其它</h3>
-        <ul class="widget-list">
-            <li><a href="https://duansheli.github.io/index.xml">文章 RSS</a></li>
-        </ul>
-    </section>
+</div><p>合并config</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span><span class="lnt">14
+</span><span class="lnt">15
+</span><span class="lnt">16
+</span><span class="lnt">17
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-scala" data-lang="scala"><span class="k">val</span> <span class="n">cs04</span> <span class="k">=</span>
+  <span class="s">&#34;&#34;&#34;
+</span><span class="s">    |aa=11
+</span><span class="s">    |bb=22
+</span><span class="s">    |&#34;&#34;&#34;</span><span class="o">.</span><span class="n">stripMargin</span>
+<span class="k">val</span> <span class="n">cs05</span> <span class="k">=</span>
+  <span class="s">&#34;&#34;&#34;
+</span><span class="s">    |bb=2222
+</span><span class="s">    |cc=33
+</span><span class="s">    |&#34;&#34;&#34;</span><span class="o">.</span><span class="n">stripMargin</span>
+<span class="k">val</span> <span class="n">cfg04</span><span class="k">:</span> <span class="kt">Config</span> <span class="o">=</span> <span class="nc">ConfigFactory</span><span class="o">.</span><span class="n">parseString</span><span class="o">(</span><span class="n">cs04</span><span class="o">)</span>
+<span class="k">val</span> <span class="n">cfg05</span><span class="k">:</span> <span class="kt">Config</span> <span class="o">=</span> <span class="nc">ConfigFactory</span><span class="o">.</span><span class="n">parseString</span><span class="o">(</span><span class="n">cs05</span><span class="o">)</span>
+<span class="c1">// 二者合并， 有冲突则使用cfg08的值
+</span><span class="c1"></span><span class="n">config</span> <span class="k">=</span> <span class="n">cfg04</span><span class="o">.</span><span class="n">withFallback</span><span class="o">(</span><span class="n">cfg05</span><span class="o">)</span>
+<span class="n">assert</span><span class="o">(</span><span class="n">config</span><span class="o">.</span><span class="n">getString</span><span class="o">(</span><span class="s">&#34;bb&#34;</span><span class="o">)</span><span class="o">.</span><span class="n">equals</span><span class="o">(</span><span class="s">&#34;22&#34;</span><span class="o">)</span><span class="o">)</span>
+<span class="n">assert</span><span class="o">(</span><span class="n">config</span><span class="o">.</span><span class="n">getString</span><span class="o">(</span><span class="s">&#34;cc&#34;</span><span class="o">)</span><span class="o">.</span><span class="n">equals</span><span class="o">(</span><span class="s">&#34;33&#34;</span><span class="o">)</span><span class="o">)</span>
+<span class="n">println</span><span class="o">(</span><span class="s">&#34;done --&#34;</span><span class="o">)</span>
+</code></pre></td></tr></table>
 </div>
+</div><h2 id="more">more</h2>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span><span class="lnt">5
+</span><span class="lnt">6
+</span><span class="lnt">7
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-scala" data-lang="scala"><span class="nc">ConfigFactory</span><span class="o">.</span><span class="n">defaultOverrides</span><span class="o">(</span><span class="o">)</span> <span class="c1">// 仅加载了系统属性
+</span><span class="c1"></span><span class="nc">ConfigFactory</span><span class="o">.</span><span class="n">defaultReference</span><span class="o">(</span><span class="o">)</span> <span class="c1">// 所有路径下 reference.conf 的合并结果
+</span><span class="c1"></span><span class="nc">ConfigFactory</span><span class="o">.</span><span class="n">defaultApplication</span><span class="o">(</span><span class="o">)</span> <span class="c1">//  == defaultReference() + defaultOverrides()
+</span><span class="c1"></span><span class="nc">ConfigFactory</span><span class="o">.</span><span class="n">load</span><span class="o">(</span><span class="o">)</span> <span class="c1">// == defaultApplication() + resolve
+</span><span class="c1"></span><span class="nc">ConfigFactory</span><span class="o">.</span><span class="n">systemEnvironment</span><span class="o">(</span><span class="o">)</span>
+<span class="nc">ConfigFactory</span><span class="o">.</span><span class="n">systemProperties</span><span class="o">(</span><span class="o">)</span> <span class="c1">// 返回的是单例对象， 在清除缓存后，再调用可刷新
+</span><span class="c1"></span><span class="nc">ConfigFactory</span><span class="o">.</span><span class="n">invalidateCaches</span><span class="o">(</span><span class="o">)</span> <span class="c1">// 清除缓存， 加载的系统属性、环境变量都被缓存过
+</span></code></pre></td></tr></table>
+</div>
+</div>
+    </div>
+
+    <div class="post-copyright">
+  <p class="copyright-item">
+    <span class="item-title">文章作者</span>
+    <span class="item-content">duansheli</span>
+  </p>
+  <p class="copyright-item">
+    <span class="item-title">上次更新</span>
+    <span class="item-content">
+        2019-12-15
+        
+    </span>
+  </p>
+  
+  
+</div>
+<footer class="post-footer">
+      <div class="post-tags">
+          <a href="/www.awslop.com/tags/java/">java</a>
+          </div>
+      <nav class="post-nav">
+        <a class="prev" href="/www.awslop.com/2019/12/20/akka-demo-concurrent.html">
+            <i class="iconfont icon-left"></i>
+            <span class="prev-text nav-default">akka-并发任务</span>
+            <span class="prev-text nav-mobile">上一篇</span>
+          </a>
+        <a class="next" href="/www.awslop.com/2019/11/16/jmh-dynamic-run.html">
+            <span class="next-text nav-default">JMH-测试动态执行代码效率</span>
+            <span class="next-text nav-mobile">下一篇</span>
+            <i class="iconfont icon-right"></i>
+          </a>
+      </nav>
+    </footer>
+  </article>
         </div>
-    </div>
+        
+
+  
+
+  
+
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="social-links">
+      <a href="https://github.com/duansheli/" class="iconfont icon-github" title="github"></a>
+  <a href="/www.awslop.com/index.xml" type="application/rss+xml" class="iconfont icon-rss" title="rss"></a>
 </div>
-<footer id="footer">
-    <div class="container">
-        &copy; 2019 <a href="https://duansheli.github.io">断舍离的博客 By 断舍离</a>.
-        Powered by <a rel="nofollow noreferer noopener" href="https://gohugo.io" target="_blank">Hugo</a>.
-        <a href="https://www.flysnow.org/" target="_blank">Theme</a> based on <a href="https://github.com/rujews/maupassant-hugo" target="_blank">maupassant</a>.
-        
+
+<div class="copyright">
+  <span class="power-by">
+    由 <a class="hexo-link" href="https://gohugo.io">Hugo</a> 强力驱动
+  </span>
+  <span class="division">|</span>
+  <span class="theme-info">
+    主题 - 
+    <a class="theme-link" href="https://github.com/olOwOlo/hugo-theme-even">Even</a>
+  </span>
+
+  
+
+  <span class="copyright-year">
+    &copy; 
+    2017 - 
+    2019
+    <span class="heart">
+      <i class="iconfont icon-heart"></i>
+    </span>
+    <span class="author">duansheli</span>
+  </span>
+</div>
+    </footer>
+
+    <div class="back-to-top" id="back-to-top">
+      <i class="iconfont icon-up"></i>
     </div>
-</footer>
+  </div>
+  
+  <script src="https://cdn.jsdelivr.net/npm/jquery@3.2.1/dist/jquery.min.js" integrity="sha256-hwg4gsxgFZhOsEEamdOYGBf13FyQuiTwlAQgxVSNgt4=" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/slideout@1.0.1/dist/slideout.min.js" integrity="sha256-t+zJ/g8/KXIJMjSVQdnibt4dlaDxc9zXr/9oNPeWqdg=" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3.1.20/dist/jquery.fancybox.min.js" integrity="sha256-XVLffZaxoWfGUEbdzuLi7pwaUJv1cecsQJQqGLe7axY=" crossorigin="anonymous"></script>
+<script type="text/javascript" src="/www.awslop.com/dist/even.26188efa.min.js"></script>
 
-
-    
-    <script type="text/javascript">
-        
-        (function () {
-            $("pre code").parent().addClass("line-numbers")
-        }());
-
-        window.MathJax = {
-            tex2jax: {
-                inlineMath: [['$', '$']],
-                processEscapes: true
-                }
-            };
-    </script>
-    <script type="text/javascript" src="/js/prism.js" async="true"></script>
-    <script src='https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/MathJax.js?config=TeX-MML-AM_CHTML' async></script>
-
-
-<a id="rocket" href="#top"></a>
-<script type="text/javascript" src="/js/totop.js?v=0.0.0" async=""></script>
 
 <script type="application/javascript">
 var doNotTrack = false;
 if (!doNotTrack) {
 	window.ga=window.ga||function(){(ga.q=ga.q||[]).push(arguments)};ga.l=+new Date;
 	ga('create', 'GTM-NPJC8J2', 'auto');
-	
+	ga('set', 'anonymizeIp', true);
 	ga('send', 'pageview');
 }
 </script>
 <script async src='https://www.google-analytics.com/analytics.js'></script>
+
 
 
 

@@ -1,240 +1,215 @@
-<!doctype html>
-<html lang="zh-CN">
+<!DOCTYPE html>
+<html lang="zh-cn">
 <head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+  <title>linux内存文件系统使用 - 断舍离的博客</title>
+  <meta name="renderer" content="webkit" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
 
-    <meta charset="utf-8">
-    <meta name="generator" content="Hugo 0.59.0" />
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
 
-    <title>linux内存文件系统使用 | 断舍离的博客</title>
-    <meta property="og:title" content="linux内存文件系统使用 - 断舍离的博客">
-    <meta property="og:type" content="article">
-        
-    <meta property="article:published_time" content="2019-03-17T17:28:13&#43;08:00">
-        
-        
-    <meta property="article:modified_time" content="2019-03-17T17:28:13&#43;08:00">
-        
-    <meta name="Keywords" content="java,scala,spark,kubernetes">
-    <meta name="description" content="linux内存文件系统使用">
-        
-    <meta name="author" content="断舍离">
-    <meta property="og:url" content="https://duansheli.github.io/2019/03/17/linux-ram-filesystem.html">
-    <link rel="shortcut icon" href="/favicon.ico" type="image/x-icon">
-
-    <link rel="stylesheet" href="/css/normalize.css">
-    
-        <link rel="stylesheet" href="/css/prism.css">
-    
-    <link rel="stylesheet" href="/css/style.css">
-    <script type="text/javascript" src="//cdnjs.cloudflare.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
-
-    
+<meta name="theme-color" content="#f8f5ec" />
+<meta name="msapplication-navbutton-color" content="#f8f5ec">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="#f8f5ec">
 
 
-    
-    
+<meta name="author" content="duansheli" /><meta name="description" content="使用内存文件系统 就是图它特别快 操作演示 3种创建内存文件系统的方式 tmpfs 使用操作比较友好 ramfs 比较快，但危险 格式化内存 步骤稍微繁琐 创建几个文件夹用来演" /><meta name="keywords" content="scala, java, even" />
+
+
+
+
+
+
+<meta name="generator" content="Hugo 0.62.0 with theme even" />
+
+
+<link rel="canonical" href="/www.awslop.com/2019/03/17/linux-ram-filesystem.html" />
+<link rel="apple-touch-icon" sizes="180x180" href="/www.awslop.com/apple-touch-icon.png">
+<link rel="icon" type="image/png" sizes="32x32" href="/www.awslop.com/favicon-32x32.png">
+<link rel="icon" type="image/png" sizes="16x16" href="/www.awslop.com/favicon-16x16.png">
+<link rel="manifest" href="/www.awslop.com/manifest.json">
+<link rel="mask-icon" href="/www.awslop.com/safari-pinned-tab.svg" color="#5bbad5">
+
+
+<link href="/www.awslop.com/dist/even.c2a46f00.min.css" rel="stylesheet">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3.1.20/dist/jquery.fancybox.min.css" integrity="sha256-7TyXnr2YU040zfSP+rEcz29ggW4j56/ujTPwjMzyqFY=" crossorigin="anonymous">
+
+
+<meta property="og:title" content="linux内存文件系统使用" />
+<meta property="og:description" content="使用内存文件系统 就是图它特别快 操作演示 3种创建内存文件系统的方式 tmpfs 使用操作比较友好 ramfs 比较快，但危险 格式化内存 步骤稍微繁琐 创建几个文件夹用来演" />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="/www.awslop.com/2019/03/17/linux-ram-filesystem.html" />
+<meta property="article:published_time" content="2019-03-17T17:28:13+08:00" />
+<meta property="article:modified_time" content="2019-03-17T17:28:13+08:00" />
+<meta itemprop="name" content="linux内存文件系统使用">
+<meta itemprop="description" content="使用内存文件系统 就是图它特别快 操作演示 3种创建内存文件系统的方式 tmpfs 使用操作比较友好 ramfs 比较快，但危险 格式化内存 步骤稍微繁琐 创建几个文件夹用来演">
+<meta itemprop="datePublished" content="2019-03-17T17:28:13&#43;08:00" />
+<meta itemprop="dateModified" content="2019-03-17T17:28:13&#43;08:00" />
+<meta itemprop="wordCount" content="977">
+
+
+
+<meta itemprop="keywords" content="linux," /><meta name="twitter:card" content="summary"/>
+<meta name="twitter:title" content="linux内存文件系统使用"/>
+<meta name="twitter:description" content="使用内存文件系统 就是图它特别快 操作演示 3种创建内存文件系统的方式 tmpfs 使用操作比较友好 ramfs 比较快，但危险 格式化内存 步骤稍微繁琐 创建几个文件夹用来演"/>
+
+<!--[if lte IE 9]>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/classlist/1.1.20170427/classList.min.js"></script>
+<![endif]-->
+
+<!--[if lt IE 9]>
+  <script src="https://cdn.jsdelivr.net/npm/html5shiv@3.7.3/dist/html5shiv.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/respond.js@1.4.2/dest/respond.min.js"></script>
+<![endif]-->
+
 </head>
-
 <body>
-<header id="header" class="clearfix">
-    <div class="container">
-        <div class="col-group">
-            <div class="site-name ">
-                
-                    <a id="logo" href="https://duansheli.github.io">
-                        断舍离的博客
-                    </a>
-                
-                <p class="description">java, scala, spark, kubernetes</p>
-            </div>
-            <div>
-                <nav id="nav-menu" class="clearfix">
-                    <a class="" href="https://duansheli.github.io">首页</a>
-                    
-                    <a  href="https://duansheli.github.io/archives/" title="归档">归档</a>
-                    
-                </nav>
-            </div>
-        </div>
-    </div>
-</header>
-
-
-<div id="body">
-        
-        <div id="virtual_toc_list" style="display: none">
-            <nav id="TableOfContents">
-<ul>
-<li><a href="#操作演示">操作演示</a></li>
-<li><a href="#方案1-格式化内存">方案1-格式化内存</a>
-<ul>
-<li><a href="#测试写入">测试写入</a></li>
-<li><a href="#整理后脚本">整理后脚本</a></li>
-</ul></li>
-<li><a href="#方案2-ramfs">方案2-ramfs</a>
-<ul>
-<li><a href="#测试写入-1">测试写入</a></li>
-<li><a href="#整理后脚本-1">整理后脚本</a></li>
-</ul></li>
-<li><a href="#方案3-tmpfs">方案3-tmpfs</a>
-<ul>
-<li><a href="#测试">测试</a></li>
-<li><a href="#整理后脚本-2">整理后脚本</a></li>
-</ul></li>
-</ul>
+  <div id="mobile-navbar" class="mobile-navbar">
+  <div class="mobile-header-logo">
+    <a href="/www.awslop.com/" class="logo">Even</a>
+  </div>
+  <div class="mobile-navbar-icon">
+    <span></span>
+    <span></span>
+    <span></span>
+  </div>
+</div>
+<nav id="mobile-menu" class="mobile-menu slideout-menu">
+  <ul class="mobile-menu-list">
+    <a href="/www.awslop.com/">
+        <li class="mobile-menu-item">主页</li>
+      </a><a href="/www.awslop.com/post/">
+        <li class="mobile-menu-item">归档</li>
+      </a><a href="/www.awslop.com/tags/">
+        <li class="mobile-menu-item">标签</li>
+      </a><a href="/www.awslop.com/categories/">
+        <li class="mobile-menu-item">Categories</li>
+      </a>
+  </ul>
 </nav>
-        </div>
-        <div id="float_toc_div" style="margin: 10px;border: 1px solid gray;z-index:99999;display: none;">
-            <header style="background-color: #f3f3f3;color: black;border-bottom: 1px solid gray;padding: 10px 10px 10px 10px;">
-                <strong id="toc_btn_open" style="color: black;font-size: large;">目录</strong>
-                <strong id="toc_btn_close" style="color: black;font-size: large;float: right">╳</strong>
-            </header>
-            <div id="toc_list" style="background-color: #f3f3f3;color: black;padding: 10px;">
+  <div class="container" id="mobile-panel">
+    <header id="header" class="header">
+        <div class="logo-wrapper">
+  <a href="/www.awslop.com/" class="logo">Even</a>
+</div>
+
+<nav class="site-navbar">
+  <ul id="menu" class="menu">
+    <li class="menu-item">
+        <a class="menu-item-link" href="/www.awslop.com/">主页</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/www.awslop.com/post/">归档</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/www.awslop.com/tags/">标签</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/www.awslop.com/categories/">Categories</a>
+      </li>
+  </ul>
+</nav>
+    </header>
+
+    <main id="main" class="main">
+      <div class="content-wrapper">
+        <div id="content" class="content">
+          <article class="post">
+    
+    <header class="post-header">
+      <h1 class="post-title">linux内存文件系统使用</h1>
+
+      <div class="post-meta">
+        <span class="post-time"> 2019-03-17 </span>
         
-            </div>
-        </div>
-        <style type="text/css">
-            #float_toc_div {
-                position: fixed;
-                display: none;
-                 
-                height: auto;
-                font-size: 13px;
-            }
+          <span class="more-meta"> 约 977 字 </span>
+          <span class="more-meta"> 预计阅读 2 分钟 </span>
         
-            #toc_list a:hover,
-            #toc_list a:active {
-                color: #ba3925;
-            }
-        </style>
-        <script>
-            window.onload = function () {
-                let tocNavElem = document.getElementById("TableOfContents");
-                let floatTocDivElem = document.getElementById("float_toc_div");
-                let tocListElem = floatTocDivElem.getElementsByTagName('div')[0];
-                let colGroupElem = document.getElementById("body").getElementsByClassName("col-group")[0]
-                let floatTocWidth = (document.body.clientWidth - colGroupElem.offsetWidth) / 2 - 16;
-                var useFloatToc = false;
+      </div>
+    </header>
 
-                if (floatTocWidth >= 100) {
-                    useFloatToc = true;
-                    document.getElementById("toc_list").appendChild(tocNavElem);
-                    floatTocDivElem.style.display = 'block';
-                    floatTocDivElem.style.width = floatTocWidth + 'px';
-                    top();
-                    floatTocDivElem.style.left = '0px';
+    <div class="post-toc" id="post-toc">
+  <h2 class="post-toc-title">文章目录</h2>
+  <div class="post-toc-content always-active">
+    <nav id="TableOfContents">
+  <ul>
+    <li><a href="#heading-1">测试写入</a></li>
+    <li><a href="#heading-2">整理后脚本</a></li>
+  </ul>
 
-                    function top() {
-                        if (document.getElementsByClassName('container')[0].offsetWidth <= 720) {
-                            floatTocDivElem.style.top = '0px';
-                        } else {
-                            floatTocDivElem.style.top = window.innerHeight / 9 + 'px';
-                        }
-                    }
+  <ul>
+    <li><a href="#heading-3">测试写入</a></li>
+    <li><a href="#heading-4">整理后脚本</a></li>
+  </ul>
 
-                    function ishide() {
-                        if (document.getElementsByClassName('container')[0].offsetWidth <= 720) {
-                            floatTocDivElem.style.top = '0px';
-                        } else {
-                            floatTocDivElem.style.display = 'block';
-                        }
-                    }
-
-                    window.onscroll = function () {
-                        ishide();
-                        if ((document.documentElement.scrollTop != 0) && (floatTocDivElem.style.display == 'block')) {
-                            top();
-                        }
-                    };
-
-                    window.onresize = function () {
-                        ishide();
-                    }
-
-                    document.getElementById("toc_btn_open").addEventListener('click', function () {
-                        switch (tocListElem.style.display) {
-                            case "none":
-                                document.getElementById("toc_btn_close").style.display = "";
-                                tocListElem.style.display = "";
-                                floatTocDivElem.getElementsByTagName("header")[0].style.borderBottom = "1px solid gray";
-                                break;
-                            default:
-                                break;
-                        }
-                    }, false);
-
-                    document.getElementById("toc_btn_close").addEventListener('click', function () {
-                        switch (tocListElem.style.display) {
-                            case "":
-                                document.getElementById("toc_btn_close").style.display = "none";
-                                tocListElem.style.display = "none";
-                                floatTocDivElem.getElementsByTagName("header")[0].style.borderBottom = "";
-                                break;
-                            default:
-                                break;
-                        }
-                    }, false);
-                } else {
-                    let fixedTocElem = document.getElementsByClassName("toc-article")[0];
-                    fixedTocElem.appendChild(tocNavElem);
-                    fixedTocElem.parentElement.style.display = "";
-                }
-                document.getElementById("virtual_toc_list").remove();
-            };   
-        </script>
-        
-    <div class="container">
-        <div class="col-group">
-
-            <div class="col-8" id="main">
-                <div class="res-cons">
-                    <article class="post">
-                        <header>
-                            <h1 class="post-title">linux内存文件系统使用</h1>
-                        </header>
-                        <date class="post-meta meta-date">
-                            2019年3月17日
-                        </date>
-                        
-                        
-                        
-                        <div class="clear" style="display: none">
-                            <div class="toc-article">
-                                <div class="toc-title">文章目录</div>
-                            </div>
-                        </div>
-                        
-                        <div class="post-content">
-                            
-
-<p>使用内存文件系统 就是图它特别快</p>
-
-<h1 id="操作演示">操作演示</h1>
-
-<p>3种创建内存文件系统的方式
-tmpfs 使用操作比较友好
-ramfs 比较快，但危险
+  <ul>
+    <li><a href="#heading-5">测试</a></li>
+    <li><a href="#heading-6">整理后脚本</a></li>
+  </ul>
+</nav>
+  </div>
+</div>
+    <div class="post-content">
+      <p>使用内存文件系统 就是图它特别快</p>
+<h1 id="heading">操作演示</h1>
+<p>3种创建内存文件系统的方式 
+tmpfs 使用操作比较友好 
+ramfs 比较快，但危险 
 格式化内存 步骤稍微繁琐</p>
-
 <p>创建几个文件夹用来演示挂载</p>
-
-<pre><code class="language-bash">mkdir /mnt/m01 /mnt/m02 /mnt/m03 
-</code></pre>
-
-<h1 id="方案1-格式化内存">方案1-格式化内存</h1>
-
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-bash" data-lang="bash">mkdir /mnt/m01 /mnt/m02 /mnt/m03 
+</code></pre></td></tr></table>
+</div>
+</div><h1 id="1-">方案1-格式化内存</h1>
 <p>linux系统 目前有16个ram块</p>
-
-<pre><code>root@sharezx:/mnt# ls /dev/ram*
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-fallback" data-lang="fallback">root@sharezx:/mnt# ls /dev/ram*
 /dev/ram0  /dev/ram10  /dev/ram12  /dev/ram14  /dev/ram2  /dev/ram4  /dev/ram6  /dev/ram8
 /dev/ram1  /dev/ram11  /dev/ram13  /dev/ram15  /dev/ram3  /dev/ram5  /dev/ram7  /dev/ram9
-</code></pre>
-
-<p>使用一个当临时下载目录</p>
-
-<pre><code>root@sharezx:/mnt# mke2fs /dev/ram0
+</code></pre></td></tr></table>
+</div>
+</div><p>使用一个当临时下载目录</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span><span class="lnt">14
+</span><span class="lnt">15
+</span><span class="lnt">16
+</span><span class="lnt">17
+</span><span class="lnt">18
+</span><span class="lnt">19
+</span><span class="lnt">20
+</span><span class="lnt">21
+</span><span class="lnt">22
+</span><span class="lnt">23
+</span><span class="lnt">24
+</span><span class="lnt">25
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-fallback" data-lang="fallback">root@sharezx:/mnt# mke2fs /dev/ram0
 mke2fs 1.42.6 (21-Sep-2012)
 Filesystem label=1.42.6-24922
 OS type: Linux
@@ -259,13 +234,30 @@ root@sharezx:/mnt# mount /dev/ram0 /mnt/m01/
 root@sharezx:/mnt# df -h /dev/ram0
 Filesystem      Size  Used Avail Use% Mounted on
 /dev/ram0       630M  476K  598M   1% /mnt/my500mfs
-</code></pre>
-
-<p>此处的一个ram可以空间为600M</p>
-
-<h2 id="测试写入">测试写入</h2>
-
-<pre><code>root@sharezx:/mnt/m01# dd if=/dev/zero of=bf01 bs=4M count=100
+</code></pre></td></tr></table>
+</div>
+</div><p>此处的一个ram可以空间为600M</p>
+<h2 id="heading-1">测试写入</h2>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span><span class="lnt">14
+</span><span class="lnt">15
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-fallback" data-lang="fallback">root@sharezx:/mnt/m01# dd if=/dev/zero of=bf01 bs=4M count=100
 100+0 records in
 100+0 records out
 419430400 bytes (419 MB) copied, 0.611773 s, 686 MB/s
@@ -280,13 +272,24 @@ drwxr-xr-x 2 root root 4.0K Nov 29 23:12 .
 drwxr-xr-x 6 root root 4.0K Nov 29 23:05 ..
 -rw-r--r-- 1 root root 400M Nov 29 23:12 bf01
 -rw-r--r-- 1 root root 229M Nov 29 23:12 bf02
-</code></pre>
-
-<p>写入的两个文件共629M</p>
-
-<h2 id="整理后脚本">整理后脚本</h2>
-
-<pre><code>ls /dev/ram*
+</code></pre></td></tr></table>
+</div>
+</div><p>写入的两个文件共629M</p>
+<h2 id="heading-2">整理后脚本</h2>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span><span class="lnt">5
+</span><span class="lnt">6
+</span><span class="lnt">7
+</span><span class="lnt">8
+</span><span class="lnt">9
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-fallback" data-lang="fallback">ls /dev/ram*
 mke2fs /dev/ram0
 df -h /dev/ram0
 mount /dev/ram0 /mnt/m01/
@@ -295,15 +298,31 @@ dd if=/dev/zero of=bf01 bs=4M count=100
 dd if=/dev/zero of=bf02 bs=4M count=100
 
 umount /mnt/m01/
-</code></pre>
-
-<h1 id="方案2-ramfs">方案2-ramfs</h1>
-
+</code></pre></td></tr></table>
+</div>
+</div><h1 id="2-ramfs">方案2-ramfs</h1>
 <p>ramfs 不会占用虚拟内存 完全使用物理内存 但无法限制最大使用空间 容易出事故</p>
-
-<h2 id="测试写入-1">测试写入</h2>
-
-<pre><code>root@sharezx:/mnt# mount -t ramfs ramfs /mnt/m02
+<h2 id="heading-3">测试写入</h2>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span><span class="lnt">14
+</span><span class="lnt">15
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-fallback" data-lang="fallback">root@sharezx:/mnt# mount -t ramfs ramfs /mnt/m02
 root@sharezx:/mnt# dd if=/dev/zero of=/mnt/m02/bf01 bs=4M count=100
 100+0 records in
 100+0 records out
@@ -318,330 +337,203 @@ drwxr-xr-x 2 root root    0 Nov 29 23:18 .
 drwxr-xr-x 7 root root 4.0K Nov 29 23:17 ..
 -rw-r--r-- 1 root root 400M Nov 29 23:17 bf01
 -rw-r--r-- 1 root root 400M Nov 29 23:18 bf02
-</code></pre>
-
-<p>写入速度显示为1.2G每秒 两个文件共800M<br />
-由于没法限制大小，使用不当则内存会耗尽<br />
+</code></pre></td></tr></table>
+</div>
+</div><p>写入速度显示为1.2G每秒 两个文件共800M<br>
+由于没法限制大小，使用不当则内存会耗尽<br>
 因此存在导致系统挂断的风险</p>
-
-<h2 id="整理后脚本-1">整理后脚本</h2>
-
+<h2 id="heading-4">整理后脚本</h2>
 <p>限制大小的参数加了也不会有效果</p>
-
-<pre><code>mount -t ramfs ramfs /mnt/m02
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span><span class="lnt">5
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-fallback" data-lang="fallback">mount -t ramfs ramfs /mnt/m02
 dd if=/dev/zero of=/mnt/m02/bf01 bs=4M count=100
 dd if=/dev/zero of=/mnt/m02/bf02 bs=4M count=100
 ll -h /mnt/m02
 umount /mnt/m02
-</code></pre>
-
-<h1 id="方案3-tmpfs">方案3-tmpfs</h1>
-
-<p>tmpfs 可以限制大小 使用的内存是物理内存+虚拟内存 具体使用由系统调度<br />
+</code></pre></td></tr></table>
+</div>
+</div><h1 id="3-tmpfs">方案3-tmpfs</h1>
+<p>tmpfs 可以限制大小 使用的内存是物理内存+虚拟内存 具体使用由系统调度<br>
 刚创建的时候不会耗内存，随着写入文件  会增大占用的内存</p>
-
-<h2 id="测试">测试</h2>
-
-<p>向内存文件系统中写入1g文件, 写入速度为900M每秒<br />
+<h2 id="heading-5">测试</h2>
+<p>向内存文件系统中写入1g文件, 写入速度为900M每秒<br>
 超过 1200M的限制就停了</p>
-
-<pre><code class="language-bash">root@sharezx:/mnt# mount -t tmpfs -o size=1200M tmpfs /mnt/m03 
-root@sharezx:/mnt# cd m03/
-root@sharezx:/mnt/m03# dd if=/dev/zero of=bf01 bs=4M count=256
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-bash" data-lang="bash">root@sharezx:/mnt# mount -t tmpfs -o <span class="nv">size</span><span class="o">=</span>1200M tmpfs /mnt/m03 
+root@sharezx:/mnt# <span class="nb">cd</span> m03/
+root@sharezx:/mnt/m03# dd <span class="k">if</span><span class="o">=</span>/dev/zero <span class="nv">of</span><span class="o">=</span>bf01 <span class="nv">bs</span><span class="o">=</span>4M <span class="nv">count</span><span class="o">=</span>256
 256+0 records in
 256+0 records out
-1073741824 bytes (1.1 GB) copied, 1.43094 s, 750 MB/s
-root@sharezx:/mnt/m03# dd if=/dev/zero of=bf02 bs=4M count=256
+<span class="m">1073741824</span> bytes <span class="o">(</span>1.1 GB<span class="o">)</span> copied, 1.43094 s, <span class="m">750</span> MB/s
+root@sharezx:/mnt/m03# dd <span class="k">if</span><span class="o">=</span>/dev/zero <span class="nv">of</span><span class="o">=</span>bf02 <span class="nv">bs</span><span class="o">=</span>4M <span class="nv">count</span><span class="o">=</span>256
 dd: error writing ‘bf02’: No space left on device
 45+0 records in
 44+0 records out
-184549376 bytes (185 MB) copied, 0.183267 s, 1.0 GB/s
-root@sharezx:/mnt/m03# cd ..
+<span class="m">184549376</span> bytes <span class="o">(</span><span class="m">185</span> MB<span class="o">)</span> copied, 0.183267 s, 1.0 GB/s
+root@sharezx:/mnt/m03# <span class="nb">cd</span> ..
 root@sharezx:/mnt# umount m03
-</code></pre>
-
-<p>向机械硬盘中写入1g文件, 写入速度为140M每秒</p>
-
-<pre><code class="language-bash">root@sharezx:/mnt# dd if=/dev/zero of=/volume1/video/bf001 bs=4M count=256
+</code></pre></td></tr></table>
+</div>
+</div><p>向机械硬盘中写入1g文件, 写入速度为140M每秒</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span><span class="lnt">5
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-bash" data-lang="bash">root@sharezx:/mnt# dd <span class="k">if</span><span class="o">=</span>/dev/zero <span class="nv">of</span><span class="o">=</span>/volume1/video/bf001 <span class="nv">bs</span><span class="o">=</span>4M <span class="nv">count</span><span class="o">=</span>256
 256+0 records in
 256+0 records out
-1073741824 bytes (1.1 GB) copied, 7.61542 s, 141 MB/s
+<span class="m">1073741824</span> bytes <span class="o">(</span>1.1 GB<span class="o">)</span> copied, 7.61542 s, <span class="m">141</span> MB/s
 root@sharezx:/mnt# rm /volume1/video/bf001
-</code></pre>
-
-<h2 id="整理后脚本-2">整理后脚本</h2>
-
-<pre><code>mount -t tmpfs -o size=1200M tmpfs /mnt/m03 
+</code></pre></td></tr></table>
+</div>
+</div><h2 id="heading-6">整理后脚本</h2>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span><span class="lnt">5
+</span><span class="lnt">6
+</span><span class="lnt">7
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-fallback" data-lang="fallback">mount -t tmpfs -o size=1200M tmpfs /mnt/m03 
 dd if=/dev/zero of=bf01 bs=4M count=256
 dd if=/dev/zero of=bf02 bs=4M count=256
 umount m03
 
 dd if=/dev/zero of=/volume1/video/bf001 bs=4M count=256
 rm /volume1/video/bf001
-</code></pre>
-
-                        </div>
-
-                        
-
-
-                        
-
-<div class="post-archive">
-    <h2>See Also</h2>
-    <ul class="listing">
-        
-        <li><a href="/2019/03/16/redis-lua-buy.html">redis-lua-秒杀</a></li>
-        
-        <li><a href="/2019/03/02/spring-session-in-action.html">spring-session实现分布式会话</a></li>
-        
-        <li><a href="/2019/08/22/cloudflare-ddns.html">cloudflare设置ddns</a></li>
-        
-        <li><a href="/2019/02/16/rocketmq-transaction.html">通过rocketmq实现分布式事务</a></li>
-        
-        <li><a href="/2019/02/03/drone-ci-github-pages.html">drone持续集成-发布github pages</a></li>
-        
-    </ul>
+</code></pre></td></tr></table>
 </div>
-
-
-                        <div class="post-meta meta-tags">
-                            
-                            <ul class="clearfix">
-                                
-                                <li><a href="https://duansheli.github.io/tags/linux">linux</a></li>
-                                
-                            </ul>
-                            
-                        </div>
-                    </article>
-                    
-    
-
-    
-    
-                </div>
-            </div>
-            <div id="secondary">
-    <section class="widget">
-        <form id="search" action="//www.google.com/search" method="get" accept-charset="utf-8" target="_blank" _lpchecked="1">
-      
-      <input type="text" name="q" maxlength="20" placeholder="Search">
-      <input type="hidden" name="sitesearch" value="https://duansheli.github.io">
-      <button type="submit" class="submit icon-search"></button>
-</form>
-    </section>
-    
-    <section class="widget">
-        <h3 class="widget-title">最近文章</h3>
-<ul class="widget-list">
-    
-    <li>
-        <a href="https://duansheli.github.io/2019/12/20/akka-demo-concurrent.html" title="akka-并发任务">akka-并发任务</a>
-    </li>
-    
-    <li>
-        <a href="https://duansheli.github.io/2019/12/15/HOCON-java.html" title="HOCON配置文件读取">HOCON配置文件读取</a>
-    </li>
-    
-    <li>
-        <a href="https://duansheli.github.io/2019/11/16/jmh-dynamic-run.html" title="JMH-测试动态执行代码效率">JMH-测试动态执行代码效率</a>
-    </li>
-    
-    <li>
-        <a href="https://duansheli.github.io/2019/11/12/doh.html" title="群晖两步验证的关闭">群晖两步验证的关闭</a>
-    </li>
-    
-    <li>
-        <a href="https://duansheli.github.io/2019/11/10/benchmark-java-jmh.html" title="基准测试工具JMH-示例">基准测试工具JMH-示例</a>
-    </li>
-    
-    <li>
-        <a href="https://duansheli.github.io/2019/10/28/update-rule-by-scanner.html" title="使用drools的规则管理平台-02">使用drools的规则管理平台-02</a>
-    </li>
-    
-    <li>
-        <a href="https://duansheli.github.io/2019/10/27/update-rule-by-scanner.html" title="使用drools的规则管理平台-01">使用drools的规则管理平台-01</a>
-    </li>
-    
-    <li>
-        <a href="https://duansheli.github.io/2019/10/26/update-rule-by-scanner.html" title="自定义动态更新drools规则">自定义动态更新drools规则</a>
-    </li>
-    
-    <li>
-        <a href="https://duansheli.github.io/2019/10/13/download-m3u8-video-02.html" title="下载m3u8-aes128加密视频-02">下载m3u8-aes128加密视频-02</a>
-    </li>
-    
-    <li>
-        <a href="https://duansheli.github.io/2019/10/13/download-m3u8-video-01.html" title="下载m3u8-aes128加密视频-01">下载m3u8-aes128加密视频-01</a>
-    </li>
-    
-</ul>
-    </section>
-
-    
-
-    <section class="widget">
-        <h3 class="widget-title">分类</h3>
-<ul class="widget-list">
-    
-    <li>
-        <a href="https://duansheli.github.io/categories/JHM/">JHM(1)</a>
-    </li>
-    
-    <li>
-        <a href="https://duansheli.github.io/categories/JMH/">JMH(1)</a>
-    </li>
-    
-    <li>
-        <a href="https://duansheli.github.io/categories/Java%E6%B7%B1%E5%85%A5/">Java深入(8)</a>
-    </li>
-    
-    <li>
-        <a href="https://duansheli.github.io/categories/k8s%E9%9B%86%E7%BE%A4/">k8s集群(5)</a>
-    </li>
-    
-    <li>
-        <a href="https://duansheli.github.io/categories/scala%E5%B9%B6%E5%8F%91%E7%BC%96%E7%A8%8B/">scala并发编程(8)</a>
-    </li>
-    
-</ul>
-    </section>
-
-    <section class="widget">
-        <h3 class="widget-title">标签</h3>
-<div class="tagcloud">
-    
-    <a href="https://duansheli.github.io/tags/JHM/">JHM</a>
-    
-    <a href="https://duansheli.github.io/tags/JMH/">JMH</a>
-    
-    <a href="https://duansheli.github.io/tags/Java/">Java</a>
-    
-    <a href="https://duansheli.github.io/tags/classloader/">classloader</a>
-    
-    <a href="https://duansheli.github.io/tags/docker/">docker</a>
-    
-    <a href="https://duansheli.github.io/tags/drone/">drone</a>
-    
-    <a href="https://duansheli.github.io/tags/drools/">drools</a>
-    
-    <a href="https://duansheli.github.io/tags/dubbo/">dubbo</a>
-    
-    <a href="https://duansheli.github.io/tags/elasticsearch/">elasticsearch</a>
-    
-    <a href="https://duansheli.github.io/tags/ffmpeg/">ffmpeg</a>
-    
-    <a href="https://duansheli.github.io/tags/gc/">gc</a>
-    
-    <a href="https://duansheli.github.io/tags/git/">git</a>
-    
-    <a href="https://duansheli.github.io/tags/gradle/">gradle</a>
-    
-    <a href="https://duansheli.github.io/tags/hashids/">hashids</a>
-    
-    <a href="https://duansheli.github.io/tags/id/">id</a>
-    
-    <a href="https://duansheli.github.io/tags/java/">java</a>
-    
-    <a href="https://duansheli.github.io/tags/jdk/">jdk</a>
-    
-    <a href="https://duansheli.github.io/tags/jvm/">jvm</a>
-    
-    <a href="https://duansheli.github.io/tags/k8s/">k8s</a>
-    
-    <a href="https://duansheli.github.io/tags/kotlin/">kotlin</a>
-    
-    <a href="https://duansheli.github.io/tags/life/">life</a>
-    
-    <a href="https://duansheli.github.io/tags/linux/">linux</a>
-    
-    <a href="https://duansheli.github.io/tags/mysql/">mysql</a>
-    
-    <a href="https://duansheli.github.io/tags/proxy/">proxy</a>
-    
-    <a href="https://duansheli.github.io/tags/redis/">redis</a>
-    
-    <a href="https://duansheli.github.io/tags/rocketmq/">rocketmq</a>
-    
-    <a href="https://duansheli.github.io/tags/route/">route</a>
-    
-    <a href="https://duansheli.github.io/tags/scala/">scala</a>
-    
-    <a href="https://duansheli.github.io/tags/session/">session</a>
-    
-    <a href="https://duansheli.github.io/tags/shell/">shell</a>
-    
-    <a href="https://duansheli.github.io/tags/spring-boot/">spring-boot</a>
-    
-    <a href="https://duansheli.github.io/tags/spring-security/">spring-security</a>
-    
-    <a href="https://duansheli.github.io/tags/springboot/">springboot</a>
-    
-    <a href="https://duansheli.github.io/tags/zipkin/">zipkin</a>
-    
-    <a href="https://duansheli.github.io/tags/%E5%88%86%E5%B8%83%E5%BC%8F%E4%BA%8B%E5%8A%A1/">分布式事务</a>
-    
-    <a href="https://duansheli.github.io/tags/%E6%8C%81%E7%BB%AD%E9%9B%86%E6%88%90/">持续集成</a>
-    
-    <a href="https://duansheli.github.io/tags/%E7%99%BB%E5%BD%95/">登录</a>
-    
 </div>
-    </section>
+    </div>
 
-    
-
-    <section class="widget">
-        <h3 class="widget-title">其它</h3>
-        <ul class="widget-list">
-            <li><a href="https://duansheli.github.io/index.xml">文章 RSS</a></li>
-        </ul>
-    </section>
+    <div class="post-copyright">
+  <p class="copyright-item">
+    <span class="item-title">文章作者</span>
+    <span class="item-content">duansheli</span>
+  </p>
+  <p class="copyright-item">
+    <span class="item-title">上次更新</span>
+    <span class="item-content">
+        2019-03-17
+        
+    </span>
+  </p>
+  
+  
 </div>
+<footer class="post-footer">
+      <div class="post-tags">
+          <a href="/www.awslop.com/tags/linux/">linux</a>
+          </div>
+      <nav class="post-nav">
+        <a class="prev" href="/www.awslop.com/2019/03/28/download-redisdesktopmanager.html">
+            <i class="iconfont icon-left"></i>
+            <span class="prev-text nav-default">dev-redis客户端-RedisDesktopManager</span>
+            <span class="prev-text nav-mobile">上一篇</span>
+          </a>
+        <a class="next" href="/www.awslop.com/2019/03/16/redis-lua-buy.html">
+            <span class="next-text nav-default">redis-lua-秒杀</span>
+            <span class="next-text nav-mobile">下一篇</span>
+            <i class="iconfont icon-right"></i>
+          </a>
+      </nav>
+    </footer>
+  </article>
         </div>
-    </div>
+        
+
+  
+
+  
+
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="social-links">
+      <a href="https://github.com/duansheli/" class="iconfont icon-github" title="github"></a>
+  <a href="/www.awslop.com/index.xml" type="application/rss+xml" class="iconfont icon-rss" title="rss"></a>
 </div>
-<footer id="footer">
-    <div class="container">
-        &copy; 2019 <a href="https://duansheli.github.io">断舍离的博客 By 断舍离</a>.
-        Powered by <a rel="nofollow noreferer noopener" href="https://gohugo.io" target="_blank">Hugo</a>.
-        <a href="https://www.flysnow.org/" target="_blank">Theme</a> based on <a href="https://github.com/rujews/maupassant-hugo" target="_blank">maupassant</a>.
-        
+
+<div class="copyright">
+  <span class="power-by">
+    由 <a class="hexo-link" href="https://gohugo.io">Hugo</a> 强力驱动
+  </span>
+  <span class="division">|</span>
+  <span class="theme-info">
+    主题 - 
+    <a class="theme-link" href="https://github.com/olOwOlo/hugo-theme-even">Even</a>
+  </span>
+
+  
+
+  <span class="copyright-year">
+    &copy; 
+    2017 - 
+    2019
+    <span class="heart">
+      <i class="iconfont icon-heart"></i>
+    </span>
+    <span class="author">duansheli</span>
+  </span>
+</div>
+    </footer>
+
+    <div class="back-to-top" id="back-to-top">
+      <i class="iconfont icon-up"></i>
     </div>
-</footer>
+  </div>
+  
+  <script src="https://cdn.jsdelivr.net/npm/jquery@3.2.1/dist/jquery.min.js" integrity="sha256-hwg4gsxgFZhOsEEamdOYGBf13FyQuiTwlAQgxVSNgt4=" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/slideout@1.0.1/dist/slideout.min.js" integrity="sha256-t+zJ/g8/KXIJMjSVQdnibt4dlaDxc9zXr/9oNPeWqdg=" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3.1.20/dist/jquery.fancybox.min.js" integrity="sha256-XVLffZaxoWfGUEbdzuLi7pwaUJv1cecsQJQqGLe7axY=" crossorigin="anonymous"></script>
+<script type="text/javascript" src="/www.awslop.com/dist/even.26188efa.min.js"></script>
 
-
-    
-    <script type="text/javascript">
-        
-        (function () {
-            $("pre code").parent().addClass("line-numbers")
-        }());
-
-        window.MathJax = {
-            tex2jax: {
-                inlineMath: [['$', '$']],
-                processEscapes: true
-                }
-            };
-    </script>
-    <script type="text/javascript" src="/js/prism.js" async="true"></script>
-    <script src='https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/MathJax.js?config=TeX-MML-AM_CHTML' async></script>
-
-
-<a id="rocket" href="#top"></a>
-<script type="text/javascript" src="/js/totop.js?v=0.0.0" async=""></script>
 
 <script type="application/javascript">
 var doNotTrack = false;
 if (!doNotTrack) {
 	window.ga=window.ga||function(){(ga.q=ga.q||[]).push(arguments)};ga.l=+new Date;
 	ga('create', 'GTM-NPJC8J2', 'auto');
-	
+	ga('set', 'anonymizeIp', true);
 	ga('send', 'pageview');
 }
 </script>
 <script async src='https://www.google-analytics.com/analytics.js'></script>
+
 
 
 

@@ -2,53 +2,49 @@
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
     <title>route on 断舍离的博客</title>
-    <link>https://duansheli.github.io/tags/route/</link>
+    <link>/www.awslop.com/tags/route/</link>
     <description>Recent content in route on 断舍离的博客</description>
     <generator>Hugo -- gohugo.io</generator>
-    <language>zh-CN</language>
+    <language>zh-cn</language>
     <lastBuildDate>Tue, 12 Nov 2019 13:13:13 +0800</lastBuildDate>
     
-	<atom:link href="https://duansheli.github.io/tags/route/index.xml" rel="self" type="application/rss+xml" />
+	<atom:link href="/www.awslop.com/tags/route/index.xml" rel="self" type="application/rss+xml" />
     
     
     <item>
       <title>群晖两步验证的关闭</title>
-      <link>https://duansheli.github.io/2019/11/12/doh.html</link>
+      <link>/www.awslop.com/2019/11/12/doh.html</link>
       <pubDate>Tue, 12 Nov 2019 13:13:13 +0800</pubDate>
       
-      <guid>https://duansheli.github.io/2019/11/12/doh.html</guid>
-      <description>家里的网络用的是软路由拨号的，软路由装在群晖的虚拟机里 突然断网了 于是登上软路由看看是咋了， 发现访问不了 估计死机了，那就重启下虚拟机好了，访问群晖时发现二次验证的软件不在身边 找软件找半天，突然想起来重启群晖主机，虚拟机一样重启
-群晖主机的关闭  可以在web管理界面关机，但目前无法登录 可以直接按住开机键等一会就关机了 虽然web界面无法访问，但ssh可以连上 shutdown命令关机  web界面的登录 虽然重启主机解决了网络问题 但登录问题咋整 网上搜了下
-官方的解决方案是 用回形针轻按住 RESET 按钮约 4 秒 , 然后重新配置账户 https://www.</description>
+      <guid>/www.awslop.com/2019/11/12/doh.html</guid>
+      <description>家里的网络用的是软路由拨号的，软路由装在群晖的虚拟机里 突然断网了 于是登上软路由看看是咋了， 发现访问不了 估计死机了，那就重启下虚拟机好了，访问</description>
     </item>
     
     <item>
       <title>浏览器启用dns-over-https(DoH)</title>
-      <link>https://duansheli.github.io/2019/09/12/doh.html</link>
+      <link>/www.awslop.com/2019/09/12/doh.html</link>
       <pubDate>Thu, 12 Sep 2019 13:13:13 +0800</pubDate>
       
-      <guid>https://duansheli.github.io/2019/09/12/doh.html</guid>
-      <description>firefox chrome://flags Secure DNS lookups. 启用该选项 重启浏览器  chrome chrome://flags Secure DNS lookups. 启用该选项 重启浏览器  修改chrome快捷方式的参数 增加以下参数 --enable-features=&amp;quot;dns-over-https&amp;lt;DoHTrial&amp;quot; --force-fieldtrials=&amp;quot;DoHTrial/Group1&amp;quot; --force-fieldtrial-params=&amp;quot;DoHTrial.</description>
+      <guid>/www.awslop.com/2019/09/12/doh.html</guid>
+      <description>firefox 1 2 3 4 chrome://flags Secure DNS lookups. 启用该选项 重启浏览器 chrome 1 2 3 4 chrome://flags Secure DNS lookups. 启用该选项 重启浏览器 1 2 3 4 5 6 7 8 9 修改chrome快捷方式的参数 增加以下参数 --enable-features=&amp;#34;dns-over-https&amp;lt;DoHTrial&amp;#34; --force-fieldtrials=&amp;#34;DoHTrial/Group1&amp;#34;</description>
     </item>
     
     <item>
       <title>cloudflare设置ddns</title>
-      <link>https://duansheli.github.io/2019/08/22/cloudflare-ddns.html</link>
+      <link>/www.awslop.com/2019/08/22/cloudflare-ddns.html</link>
       <pubDate>Fri, 22 Feb 2019 13:13:13 +0800</pubDate>
       
-      <guid>https://duansheli.github.io/2019/08/22/cloudflare-ddns.html</guid>
-      <description>主要流程 最终目的是 让 movie.aaabbb.com 能解析成家中的公网ip
-最终的api为
-curl -X PUT &amp;quot;https://api.cloudflare.com/client/v4/zones/$tzone_id/dns_records/$trecord_id&amp;quot; \ -H &amp;quot;X-Auth-Email: $auth_email&amp;quot; \ -H &amp;quot;X-Auth-Key: $auth_key&amp;quot; \ -H &amp;quot;Content-Type: application/json&amp;quot; \ --data &#39;{&amp;quot;type&amp;quot;:&amp;quot;A&amp;quot;,&amp;quot;name&amp;quot;:&amp;quot;file.</description>
+      <guid>/www.awslop.com/2019/08/22/cloudflare-ddns.html</guid>
+      <description>主要流程 最终目的是 让 movie.aaabbb.com 能解析成家中的公网ip 最终的api为 1 2 3 4 5 curl -X PUT &amp;#34;https://api.cloudflare.com/client/v4/zones/$tzone_id/dns_records/$trecord_id&amp;#34; \ -H &amp;#34;X-Auth-Email: $auth_email&amp;#34; \ -H &amp;#34;X-Auth-Key: $auth_key&amp;#34; \ -H &amp;#34;Content-Type: application/json&amp;#34; \ --data &amp;#39;{&amp;#34;type&amp;#34;:&amp;#34;A&amp;#34;,&amp;#34;name&amp;#34;:&amp;#34;file.awslop.com&amp;#34;,&amp;#34;content&amp;#34;:&amp;#34;$tip&amp;#34;,&amp;#34;ttl&amp;#34;:{},&amp;#34;proxied&amp;#34;:false}&amp;#39; ; 以上命令中需要的参数有 tzone</description>
     </item>
     
     <item>
       <title>ipv4下的回环地址在ipv6下的表示</title>
-      <link>https://duansheli.github.io/2018/10/16/ipv6-ip.html</link>
+      <link>/www.awslop.com/2018/10/16/ipv6-ip.html</link>
       <pubDate>Tue, 16 Oct 2018 13:13:13 +0800</pubDate>
       
-      <guid>https://duansheli.github.io/2018/10/16/ipv6-ip.html</guid>
-      <description> 回环地址 ipv4 127.0.0.1 ipv6 0:0:0:0:0:0:0:1 ipv6下简写 ::1  所有地址 ipv4 0.0.0.0 ipv6 0:0:0:0:0:0:0:0 ipv6下简写 ::  </description>
+      <guid>/www.awslop.com/2018/10/16/ipv6-ip.html</guid>
+      <description>回环地址 1 2 3 ipv4 127.0.0.1 ipv6 0:0:0:0:0:0:0:1 ipv6下简写 ::1 所有地址 1 2 3 ipv4 0.0.0.0 ipv6 0:0:0:0:0:0:0:0 ipv6下简写 ::</description>
     </item>
     
   </channel>

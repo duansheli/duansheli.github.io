@@ -1,645 +1,513 @@
-<!doctype html>
-<html lang="zh-CN">
+<!DOCTYPE html>
+<html lang="zh-cn">
 <head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+  <title>使用drools的规则管理平台-02 - 断舍离的博客</title>
+  <meta name="renderer" content="webkit" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
 
-    <meta charset="utf-8">
-    <meta name="generator" content="Hugo 0.59.0" />
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
 
-    <title>使用drools的规则管理平台-02 | 断舍离的博客</title>
-    <meta property="og:title" content="使用drools的规则管理平台-02 - 断舍离的博客">
-    <meta property="og:type" content="article">
-        
-    <meta property="article:published_time" content="2019-10-28T17:28:13&#43;08:00">
-        
-        
-    <meta property="article:modified_time" content="2019-10-28T17:28:13&#43;08:00">
-        
-    <meta name="Keywords" content="java,scala,spark,kubernetes">
-    <meta name="description" content="使用drools的规则管理平台-02">
-        
-    <meta name="author" content="断舍离">
-    <meta property="og:url" content="https://duansheli.github.io/2019/10/28/update-rule-by-scanner.html">
-    <link rel="shortcut icon" href="/favicon.ico" type="image/x-icon">
-
-    <link rel="stylesheet" href="/css/normalize.css">
-    
-        <link rel="stylesheet" href="/css/prism.css">
-    
-    <link rel="stylesheet" href="/css/style.css">
-    <script type="text/javascript" src="//cdnjs.cloudflare.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
-
-    
+<meta name="theme-color" content="#f8f5ec" />
+<meta name="msapplication-navbutton-color" content="#f8f5ec">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="#f8f5ec">
 
 
-    
-    
+<meta name="author" content="duansheli" /><meta name="description" content="上一节演示了 workbench 的搭建，规则编写、规则测试、规则部署 还通过http使用了部署在kie-server中的规则
+下面演示使用java客户端，调用部署在kie-server中的规则。
+" /><meta name="keywords" content="scala, java, even" />
+
+
+
+
+
+
+<meta name="generator" content="Hugo 0.62.0 with theme even" />
+
+
+<link rel="canonical" href="/www.awslop.com/2019/10/28/update-rule-by-scanner.html" />
+<link rel="apple-touch-icon" sizes="180x180" href="/www.awslop.com/apple-touch-icon.png">
+<link rel="icon" type="image/png" sizes="32x32" href="/www.awslop.com/favicon-32x32.png">
+<link rel="icon" type="image/png" sizes="16x16" href="/www.awslop.com/favicon-16x16.png">
+<link rel="manifest" href="/www.awslop.com/manifest.json">
+<link rel="mask-icon" href="/www.awslop.com/safari-pinned-tab.svg" color="#5bbad5">
+
+
+<link href="/www.awslop.com/dist/even.c2a46f00.min.css" rel="stylesheet">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3.1.20/dist/jquery.fancybox.min.css" integrity="sha256-7TyXnr2YU040zfSP+rEcz29ggW4j56/ujTPwjMzyqFY=" crossorigin="anonymous">
+
+
+<meta property="og:title" content="使用drools的规则管理平台-02" />
+<meta property="og:description" content="上一节演示了 workbench 的搭建，规则编写、规则测试、规则部署
+还通过http使用了部署在kie-server中的规则
+下面演示使用java客户端，调用部署在kie-server中的规则。" />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="/www.awslop.com/2019/10/28/update-rule-by-scanner.html" />
+<meta property="article:published_time" content="2019-10-28T17:28:13+08:00" />
+<meta property="article:modified_time" content="2019-10-28T17:28:13+08:00" />
+<meta itemprop="name" content="使用drools的规则管理平台-02">
+<meta itemprop="description" content="上一节演示了 workbench 的搭建，规则编写、规则测试、规则部署
+还通过http使用了部署在kie-server中的规则
+下面演示使用java客户端，调用部署在kie-server中的规则。">
+<meta itemprop="datePublished" content="2019-10-28T17:28:13&#43;08:00" />
+<meta itemprop="dateModified" content="2019-10-28T17:28:13&#43;08:00" />
+<meta itemprop="wordCount" content="1291">
+
+
+
+<meta itemprop="keywords" content="drools," /><meta name="twitter:card" content="summary"/>
+<meta name="twitter:title" content="使用drools的规则管理平台-02"/>
+<meta name="twitter:description" content="上一节演示了 workbench 的搭建，规则编写、规则测试、规则部署
+还通过http使用了部署在kie-server中的规则
+下面演示使用java客户端，调用部署在kie-server中的规则。"/>
+
+<!--[if lte IE 9]>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/classlist/1.1.20170427/classList.min.js"></script>
+<![endif]-->
+
+<!--[if lt IE 9]>
+  <script src="https://cdn.jsdelivr.net/npm/html5shiv@3.7.3/dist/html5shiv.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/respond.js@1.4.2/dest/respond.min.js"></script>
+<![endif]-->
+
 </head>
-
 <body>
-<header id="header" class="clearfix">
-    <div class="container">
-        <div class="col-group">
-            <div class="site-name ">
-                
-                    <a id="logo" href="https://duansheli.github.io">
-                        断舍离的博客
-                    </a>
-                
-                <p class="description">java, scala, spark, kubernetes</p>
-            </div>
-            <div>
-                <nav id="nav-menu" class="clearfix">
-                    <a class="" href="https://duansheli.github.io">首页</a>
-                    
-                    <a  href="https://duansheli.github.io/archives/" title="归档">归档</a>
-                    
-                </nav>
-            </div>
-        </div>
-    </div>
-</header>
-
-
-<div id="body">
-        
-        <div id="virtual_toc_list" style="display: none">
-            <nav id="TableOfContents">
-<ul>
-<li><a href="#远程调用kie-server">远程调用kie-server</a>
-<ul>
-<li><a href="#fact对象">fact对象</a></li>
-<li><a href="#发起调用">发起调用</a></li>
-</ul></li>
-<li><a href="#maven仓库的配置">maven仓库的配置</a>
-<ul>
-<li><a href="#方案1">方案1</a></li>
-<li><a href="#方案2">方案2</a>
-<ul>
-<li><a href="#todo">todo</a></li>
-</ul></li>
-<li><a href="#kie-server的maven配置">kie-server的maven配置</a></li>
-<li><a href="#结论">结论</a></li>
-</ul></li>
-</ul>
+  <div id="mobile-navbar" class="mobile-navbar">
+  <div class="mobile-header-logo">
+    <a href="/www.awslop.com/" class="logo">Even</a>
+  </div>
+  <div class="mobile-navbar-icon">
+    <span></span>
+    <span></span>
+    <span></span>
+  </div>
+</div>
+<nav id="mobile-menu" class="mobile-menu slideout-menu">
+  <ul class="mobile-menu-list">
+    <a href="/www.awslop.com/">
+        <li class="mobile-menu-item">主页</li>
+      </a><a href="/www.awslop.com/post/">
+        <li class="mobile-menu-item">归档</li>
+      </a><a href="/www.awslop.com/tags/">
+        <li class="mobile-menu-item">标签</li>
+      </a><a href="/www.awslop.com/categories/">
+        <li class="mobile-menu-item">Categories</li>
+      </a>
+  </ul>
 </nav>
-        </div>
-        <div id="float_toc_div" style="margin: 10px;border: 1px solid gray;z-index:99999;display: none;">
-            <header style="background-color: #f3f3f3;color: black;border-bottom: 1px solid gray;padding: 10px 10px 10px 10px;">
-                <strong id="toc_btn_open" style="color: black;font-size: large;">目录</strong>
-                <strong id="toc_btn_close" style="color: black;font-size: large;float: right">╳</strong>
-            </header>
-            <div id="toc_list" style="background-color: #f3f3f3;color: black;padding: 10px;">
+  <div class="container" id="mobile-panel">
+    <header id="header" class="header">
+        <div class="logo-wrapper">
+  <a href="/www.awslop.com/" class="logo">Even</a>
+</div>
+
+<nav class="site-navbar">
+  <ul id="menu" class="menu">
+    <li class="menu-item">
+        <a class="menu-item-link" href="/www.awslop.com/">主页</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/www.awslop.com/post/">归档</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/www.awslop.com/tags/">标签</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/www.awslop.com/categories/">Categories</a>
+      </li>
+  </ul>
+</nav>
+    </header>
+
+    <main id="main" class="main">
+      <div class="content-wrapper">
+        <div id="content" class="content">
+          <article class="post">
+    
+    <header class="post-header">
+      <h1 class="post-title">使用drools的规则管理平台-02</h1>
+
+      <div class="post-meta">
+        <span class="post-time"> 2019-10-28 </span>
         
-            </div>
-        </div>
-        <style type="text/css">
-            #float_toc_div {
-                position: fixed;
-                display: none;
-                 
-                height: auto;
-                font-size: 13px;
-            }
+          <span class="more-meta"> 约 1291 字 </span>
+          <span class="more-meta"> 预计阅读 3 分钟 </span>
         
-            #toc_list a:hover,
-            #toc_list a:active {
-                color: #ba3925;
-            }
-        </style>
-        <script>
-            window.onload = function () {
-                let tocNavElem = document.getElementById("TableOfContents");
-                let floatTocDivElem = document.getElementById("float_toc_div");
-                let tocListElem = floatTocDivElem.getElementsByTagName('div')[0];
-                let colGroupElem = document.getElementById("body").getElementsByClassName("col-group")[0]
-                let floatTocWidth = (document.body.clientWidth - colGroupElem.offsetWidth) / 2 - 16;
-                var useFloatToc = false;
+      </div>
+    </header>
 
-                if (floatTocWidth >= 100) {
-                    useFloatToc = true;
-                    document.getElementById("toc_list").appendChild(tocNavElem);
-                    floatTocDivElem.style.display = 'block';
-                    floatTocDivElem.style.width = floatTocWidth + 'px';
-                    top();
-                    floatTocDivElem.style.left = '0px';
+    <div class="post-toc" id="post-toc">
+  <h2 class="post-toc-title">文章目录</h2>
+  <div class="post-toc-content always-active">
+    <nav id="TableOfContents">
+  <ul>
+    <li><a href="#fact">fact对象</a></li>
+    <li><a href="#heading">发起调用</a></li>
+  </ul>
 
-                    function top() {
-                        if (document.getElementsByClassName('container')[0].offsetWidth <= 720) {
-                            floatTocDivElem.style.top = '0px';
-                        } else {
-                            floatTocDivElem.style.top = window.innerHeight / 9 + 'px';
-                        }
-                    }
-
-                    function ishide() {
-                        if (document.getElementsByClassName('container')[0].offsetWidth <= 720) {
-                            floatTocDivElem.style.top = '0px';
-                        } else {
-                            floatTocDivElem.style.display = 'block';
-                        }
-                    }
-
-                    window.onscroll = function () {
-                        ishide();
-                        if ((document.documentElement.scrollTop != 0) && (floatTocDivElem.style.display == 'block')) {
-                            top();
-                        }
-                    };
-
-                    window.onresize = function () {
-                        ishide();
-                    }
-
-                    document.getElementById("toc_btn_open").addEventListener('click', function () {
-                        switch (tocListElem.style.display) {
-                            case "none":
-                                document.getElementById("toc_btn_close").style.display = "";
-                                tocListElem.style.display = "";
-                                floatTocDivElem.getElementsByTagName("header")[0].style.borderBottom = "1px solid gray";
-                                break;
-                            default:
-                                break;
-                        }
-                    }, false);
-
-                    document.getElementById("toc_btn_close").addEventListener('click', function () {
-                        switch (tocListElem.style.display) {
-                            case "":
-                                document.getElementById("toc_btn_close").style.display = "none";
-                                tocListElem.style.display = "none";
-                                floatTocDivElem.getElementsByTagName("header")[0].style.borderBottom = "";
-                                break;
-                            default:
-                                break;
-                        }
-                    }, false);
-                } else {
-                    let fixedTocElem = document.getElementsByClassName("toc-article")[0];
-                    fixedTocElem.appendChild(tocNavElem);
-                    fixedTocElem.parentElement.style.display = "";
-                }
-                document.getElementById("virtual_toc_list").remove();
-            };   
-        </script>
-        
-    <div class="container">
-        <div class="col-group">
-
-            <div class="col-8" id="main">
-                <div class="res-cons">
-                    <article class="post">
-                        <header>
-                            <h1 class="post-title">使用drools的规则管理平台-02</h1>
-                        </header>
-                        <date class="post-meta meta-date">
-                            2019年10月28日
-                        </date>
-                        
-                        
-                        
-                        <div class="clear" style="display: none">
-                            <div class="toc-article">
-                                <div class="toc-title">文章目录</div>
-                            </div>
-                        </div>
-                        
-                        <div class="post-content">
-                            <p>上一节演示了 workbench 的搭建，规则编写、规则测试、规则部署
+  <ul>
+    <li><a href="#1">方案1</a></li>
+    <li><a href="#2">方案2</a>
+      <ul>
+        <li><a href="#todo">todo</a></li>
+      </ul>
+    </li>
+    <li><a href="#kie-servermaven">kie-server的maven配置</a></li>
+    <li><a href="#heading-1">结论</a></li>
+  </ul>
+</nav>
+  </div>
+</div>
+    <div class="post-content">
+      <p>上一节演示了 workbench 的搭建，规则编写、规则测试、规则部署
 还通过http使用了部署在kie-server中的规则</p>
-
 <p>下面演示使用java客户端，调用部署在kie-server中的规则。</p>
-
-<h1 id="远程调用kie-server">远程调用kie-server</h1>
-
-<h2 id="fact对象">fact对象</h2>
-
-<p>只用到一个Person类，就不配置maven的方式引入fact jar了<br />
+<h1 id="kie-server">远程调用kie-server</h1>
+<h2 id="fact">fact对象</h2>
+<p>只用到一个Person类，就不配置maven的方式引入fact jar了<br>
 直接拷贝到本地项目使用</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span><span class="lnt">14
+</span><span class="lnt">15
+</span><span class="lnt">16
+</span><span class="lnt">17
+</span><span class="lnt">18
+</span><span class="lnt">19
+</span><span class="lnt">20
+</span><span class="lnt">21
+</span><span class="lnt">22
+</span><span class="lnt">23
+</span><span class="lnt">24
+</span><span class="lnt">25
+</span><span class="lnt">26
+</span><span class="lnt">27
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-java" data-lang="java"><span class="kn">package</span> <span class="nn">com.myspace.demo01</span><span class="o">;</span>
 
-<pre><code class="language-java">package com.myspace.demo01;
+<span class="cm">/**
+</span><span class="cm"> * This class was automatically generated by the data modeler tool.
+</span><span class="cm"> */</span>
 
-/**
- * This class was automatically generated by the data modeler tool.
- */
+<span class="kd">public</span> <span class="kd">class</span> <span class="nc">Person</span> <span class="kd">implements</span> <span class="n">java</span><span class="o">.</span><span class="na">io</span><span class="o">.</span><span class="na">Serializable</span> <span class="o">{</span>
 
-public class Person implements java.io.Serializable {
+    <span class="kd">static</span> <span class="kd">final</span> <span class="kt">long</span> <span class="n">serialVersionUID</span> <span class="o">=</span> <span class="n">1L</span><span class="o">;</span>
 
-    static final long serialVersionUID = 1L;
+    <span class="kd">private</span> <span class="n">java</span><span class="o">.</span><span class="na">lang</span><span class="o">.</span><span class="na">Integer</span> <span class="n">age</span><span class="o">;</span>
 
-    private java.lang.Integer age;
+    <span class="kd">public</span> <span class="nf">Person</span><span class="o">(</span><span class="o">)</span> <span class="o">{</span>
+    <span class="o">}</span>
 
-    public Person() {
-    }
+    <span class="kd">public</span> <span class="n">java</span><span class="o">.</span><span class="na">lang</span><span class="o">.</span><span class="na">Integer</span> <span class="nf">getAge</span><span class="o">(</span><span class="o">)</span> <span class="o">{</span>
+        <span class="k">return</span> <span class="k">this</span><span class="o">.</span><span class="na">age</span><span class="o">;</span>
+    <span class="o">}</span>
 
-    public java.lang.Integer getAge() {
-        return this.age;
-    }
+    <span class="kd">public</span> <span class="kt">void</span> <span class="nf">setAge</span><span class="o">(</span><span class="n">java</span><span class="o">.</span><span class="na">lang</span><span class="o">.</span><span class="na">Integer</span> <span class="n">age</span><span class="o">)</span> <span class="o">{</span>
+        <span class="k">this</span><span class="o">.</span><span class="na">age</span> <span class="o">=</span> <span class="n">age</span><span class="o">;</span>
+    <span class="o">}</span>
 
-    public void setAge(java.lang.Integer age) {
-        this.age = age;
-    }
+    <span class="kd">public</span> <span class="nf">Person</span><span class="o">(</span><span class="n">java</span><span class="o">.</span><span class="na">lang</span><span class="o">.</span><span class="na">Integer</span> <span class="n">age</span><span class="o">)</span> <span class="o">{</span>
+        <span class="k">this</span><span class="o">.</span><span class="na">age</span> <span class="o">=</span> <span class="n">age</span><span class="o">;</span>
+    <span class="o">}</span>
+<span class="o">}</span>
+</code></pre></td></tr></table>
+</div>
+</div><h2 id="heading">发起调用</h2>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span><span class="lnt">14
+</span><span class="lnt">15
+</span><span class="lnt">16
+</span><span class="lnt">17
+</span><span class="lnt">18
+</span><span class="lnt">19
+</span><span class="lnt">20
+</span><span class="lnt">21
+</span><span class="lnt">22
+</span><span class="lnt">23
+</span><span class="lnt">24
+</span><span class="lnt">25
+</span><span class="lnt">26
+</span><span class="lnt">27
+</span><span class="lnt">28
+</span><span class="lnt">29
+</span><span class="lnt">30
+</span><span class="lnt">31
+</span><span class="lnt">32
+</span><span class="lnt">33
+</span><span class="lnt">34
+</span><span class="lnt">35
+</span><span class="lnt">36
+</span><span class="lnt">37
+</span><span class="lnt">38
+</span><span class="lnt">39
+</span><span class="lnt">40
+</span><span class="lnt">41
+</span><span class="lnt">42
+</span><span class="lnt">43
+</span><span class="lnt">44
+</span><span class="lnt">45
+</span><span class="lnt">46
+</span><span class="lnt">47
+</span><span class="lnt">48
+</span><span class="lnt">49
+</span><span class="lnt">50
+</span><span class="lnt">51
+</span><span class="lnt">52
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-java" data-lang="java">
+<span class="kn">import</span> <span class="nn">com.alibaba.fastjson.JSONObject</span><span class="o">;</span>
+<span class="kn">import</span> <span class="nn">com.myspace.demo01.Person</span><span class="o">;</span>
+<span class="kn">import</span> <span class="nn">org.kie.api.KieServices</span><span class="o">;</span>
+<span class="kn">import</span> <span class="nn">org.kie.api.command.Command</span><span class="o">;</span>
+<span class="kn">import</span> <span class="nn">org.kie.api.command.KieCommands</span><span class="o">;</span>
+<span class="kn">import</span> <span class="nn">org.kie.api.runtime.ExecutionResults</span><span class="o">;</span>
+<span class="kn">import</span> <span class="nn">org.kie.server.api.marshalling.MarshallingFormat</span><span class="o">;</span>
+<span class="kn">import</span> <span class="nn">org.kie.server.api.model.KieServiceResponse</span><span class="o">;</span>
+<span class="kn">import</span> <span class="nn">org.kie.server.api.model.ServiceResponse</span><span class="o">;</span>
+<span class="kn">import</span> <span class="nn">org.kie.server.client.KieServicesConfiguration</span><span class="o">;</span>
+<span class="kn">import</span> <span class="nn">org.kie.server.client.KieServicesFactory</span><span class="o">;</span>
+<span class="kn">import</span> <span class="nn">org.kie.server.client.RuleServicesClient</span><span class="o">;</span>
 
-    public Person(java.lang.Integer age) {
-        this.age = age;
-    }
-}
-</code></pre>
+<span class="kn">import</span> <span class="nn">java.util.List</span><span class="o">;</span>
 
-<h2 id="发起调用">发起调用</h2>
+<span class="kd">public</span> <span class="kd">class</span> <span class="nc">KieServerDemo</span> <span class="o">{</span>
+    <span class="kd">static</span> <span class="n">RuleServicesClient</span> <span class="n">ruleServicesClient</span><span class="o">;</span>
+    <span class="kd">static</span> <span class="n">KieCommands</span> <span class="n">commandsFactory</span><span class="o">;</span>
 
-<pre><code class="language-java">
-import com.alibaba.fastjson.JSONObject;
-import com.myspace.demo01.Person;
-import org.kie.api.KieServices;
-import org.kie.api.command.Command;
-import org.kie.api.command.KieCommands;
-import org.kie.api.runtime.ExecutionResults;
-import org.kie.server.api.marshalling.MarshallingFormat;
-import org.kie.server.api.model.KieServiceResponse;
-import org.kie.server.api.model.ServiceResponse;
-import org.kie.server.client.KieServicesConfiguration;
-import org.kie.server.client.KieServicesFactory;
-import org.kie.server.client.RuleServicesClient;
+    <span class="kd">static</span> <span class="o">{</span>
+        <span class="n">KieServices</span> <span class="n">ks</span> <span class="o">=</span> <span class="n">KieServices</span><span class="o">.</span><span class="na">Factory</span><span class="o">.</span><span class="na">get</span><span class="o">(</span><span class="o">)</span><span class="o">;</span>
+        <span class="n">commandsFactory</span> <span class="o">=</span> <span class="n">ks</span><span class="o">.</span><span class="na">getCommands</span><span class="o">(</span><span class="o">)</span><span class="o">;</span>
 
-import java.util.List;
+        <span class="n">var</span> <span class="n">serverUrl</span> <span class="o">=</span> <span class="s">&#34;http://192.168.88.3:8180/kie-server/services/rest/server&#34;</span><span class="o">;</span>
+        <span class="n">KieServicesConfiguration</span> <span class="n">kieServicesConfiguration</span> <span class="o">=</span> <span class="n">KieServicesFactory</span>
+                <span class="o">.</span><span class="na">newRestConfiguration</span><span class="o">(</span><span class="n">serverUrl</span><span class="o">,</span> <span class="s">&#34;admin&#34;</span><span class="o">,</span> <span class="s">&#34;admin&#34;</span><span class="o">,</span> <span class="n">10000L</span><span class="o">)</span><span class="o">;</span>
+        <span class="n">kieServicesConfiguration</span><span class="o">.</span><span class="na">setMarshallingFormat</span><span class="o">(</span><span class="n">MarshallingFormat</span><span class="o">.</span><span class="na">JSON</span><span class="o">)</span><span class="o">;</span>
+        <span class="n">ruleServicesClient</span> <span class="o">=</span> <span class="n">KieServicesFactory</span><span class="o">.</span><span class="na">newKieServicesClient</span><span class="o">(</span><span class="n">kieServicesConfiguration</span><span class="o">)</span>
+                <span class="o">.</span><span class="na">getServicesClient</span><span class="o">(</span><span class="n">RuleServicesClient</span><span class="o">.</span><span class="na">class</span><span class="o">)</span><span class="o">;</span>
+    <span class="o">}</span>
 
-public class KieServerDemo {
-    static RuleServicesClient ruleServicesClient;
-    static KieCommands commandsFactory;
+    <span class="kd">public</span> <span class="kd">static</span> <span class="kt">void</span> <span class="nf">main</span><span class="o">(</span><span class="n">String</span><span class="o">[</span><span class="o">]</span> <span class="n">args</span><span class="o">)</span> <span class="o">{</span>
+        <span class="n">var</span> <span class="n">kie_container_id</span> <span class="o">=</span> <span class="s">&#34;demo01&#34;</span><span class="o">;</span>
+        <span class="n">var</span> <span class="n">p</span> <span class="o">=</span> <span class="k">new</span> <span class="n">Person</span><span class="o">(</span><span class="o">)</span><span class="o">;</span>
+        <span class="n">var</span> <span class="n">oid</span> <span class="o">=</span> <span class="s">&#34;p&#34;</span><span class="o">;</span>
+        <span class="n">var</span> <span class="n">commands</span> <span class="o">=</span> <span class="n">List</span><span class="o">.</span><span class="na">of</span><span class="o">(</span><span class="n">commandsFactory</span><span class="o">.</span><span class="na">newInsert</span><span class="o">(</span><span class="n">p</span><span class="o">,</span> <span class="n">oid</span><span class="o">)</span><span class="o">,</span> <span class="n">commandsFactory</span><span class="o">.</span><span class="na">newFireAllRules</span><span class="o">(</span><span class="o">)</span><span class="o">,</span> <span class="n">commandsFactory</span><span class="o">.</span><span class="na">newDispose</span><span class="o">(</span><span class="o">)</span><span class="o">)</span><span class="o">;</span>
 
-    static {
-        KieServices ks = KieServices.Factory.get();
-        commandsFactory = ks.getCommands();
+        <span class="n">Command</span> <span class="n">batchExecutionCommand</span> <span class="o">=</span> <span class="n">commandsFactory</span><span class="o">.</span><span class="na">newBatchExecution</span><span class="o">(</span><span class="n">commands</span><span class="o">)</span><span class="o">;</span>
+        <span class="n">ServiceResponse</span><span class="o">&lt;</span><span class="n">ExecutionResults</span><span class="o">&gt;</span> <span class="n">executeResponse</span> <span class="o">=</span> <span class="n">ruleServicesClient</span><span class="o">.</span><span class="na">executeCommandsWithResults</span><span class="o">(</span><span class="n">kie_container_id</span><span class="o">,</span>
+                <span class="n">batchExecutionCommand</span><span class="o">)</span><span class="o">;</span>
 
-        var serverUrl = &quot;http://192.168.88.3:8180/kie-server/services/rest/server&quot;;
-        KieServicesConfiguration kieServicesConfiguration = KieServicesFactory
-                .newRestConfiguration(serverUrl, &quot;admin&quot;, &quot;admin&quot;, 10000L);
-        kieServicesConfiguration.setMarshallingFormat(MarshallingFormat.JSON);
-        ruleServicesClient = KieServicesFactory.newKieServicesClient(kieServicesConfiguration)
-                .getServicesClient(RuleServicesClient.class);
-    }
+        <span class="k">if</span> <span class="o">(</span><span class="n">executeResponse</span><span class="o">.</span><span class="na">getType</span><span class="o">(</span><span class="o">)</span> <span class="o">=</span><span class="o">=</span> <span class="n">KieServiceResponse</span><span class="o">.</span><span class="na">ResponseType</span><span class="o">.</span><span class="na">SUCCESS</span><span class="o">)</span> <span class="o">{</span>
+            <span class="n">Person</span> <span class="n">result</span> <span class="o">=</span> <span class="o">(</span><span class="n">Person</span><span class="o">)</span> <span class="n">executeResponse</span><span class="o">.</span><span class="na">getResult</span><span class="o">(</span><span class="o">)</span><span class="o">.</span><span class="na">getValue</span><span class="o">(</span><span class="n">oid</span><span class="o">)</span><span class="o">;</span>
+            <span class="n">System</span><span class="o">.</span><span class="na">out</span><span class="o">.</span><span class="na">println</span><span class="o">(</span><span class="s">&#34;调用成功--&#34;</span> <span class="o">+</span> <span class="n">JSONObject</span><span class="o">.</span><span class="na">toJSONString</span><span class="o">(</span><span class="n">result</span><span class="o">)</span><span class="o">)</span><span class="o">;</span>
+        <span class="o">}</span> <span class="k">else</span> <span class="o">{</span>
+            <span class="n">System</span><span class="o">.</span><span class="na">out</span><span class="o">.</span><span class="na">println</span><span class="o">(</span><span class="s">&#34;调用失败--&#34;</span> <span class="o">+</span> <span class="n">executeResponse</span><span class="o">.</span><span class="na">getMsg</span><span class="o">(</span><span class="o">)</span><span class="o">)</span><span class="o">;</span>
+        <span class="o">}</span>
+        <span class="n">System</span><span class="o">.</span><span class="na">out</span><span class="o">.</span><span class="na">println</span><span class="o">(</span><span class="s">&#34;done--------&#34;</span><span class="o">)</span><span class="o">;</span>
+    <span class="o">}</span>
 
-    public static void main(String[] args) {
-        var kie_container_id = &quot;demo01&quot;;
-        var p = new Person();
-        var oid = &quot;p&quot;;
-        var commands = List.of(commandsFactory.newInsert(p, oid), commandsFactory.newFireAllRules(), commandsFactory.newDispose());
-
-        Command batchExecutionCommand = commandsFactory.newBatchExecution(commands);
-        ServiceResponse&lt;ExecutionResults&gt; executeResponse = ruleServicesClient.executeCommandsWithResults(kie_container_id,
-                batchExecutionCommand);
-
-        if (executeResponse.getType() == KieServiceResponse.ResponseType.SUCCESS) {
-            Person result = (Person) executeResponse.getResult().getValue(oid);
-            System.out.println(&quot;调用成功--&quot; + JSONObject.toJSONString(result));
-        } else {
-            System.out.println(&quot;调用失败--&quot; + executeResponse.getMsg());
-        }
-        System.out.println(&quot;done--------&quot;);
-    }
-
-}
-</code></pre>
-
-<h1 id="maven仓库的配置">maven仓库的配置</h1>
-
+<span class="o">}</span>
+</code></pre></td></tr></table>
+</div>
+</div><h1 id="maven">maven仓库的配置</h1>
 <p>本地在调用远程kie-server时，使用了Person类
-那项目该如何依赖该fact类呢？<br />
+那项目该如何依赖该fact类呢？<br>
 直接拷贝源码、或下载jar到本地、或以坐标方式引入远程jar等</p>
-
-<h2 id="方案1">方案1</h2>
-
-<p>fact的jar在workbench节点的maven仓库中<br />
+<h2 id="1">方案1</h2>
+<p>fact的jar在workbench节点的maven仓库中<br>
 windows本机开发，配置本机maven从workbench节点拉取jar</p>
-
 <p>需要配置两个参数 仓库地址，用户名密码</p>
-
-<pre><code class="language-xml">&lt;repository&gt;
-    &lt;id&gt;drools-m2-repo&lt;/id&gt;
-    &lt;name&gt;drools-m2-repo&lt;/name&gt;
-    &lt;url&gt;http://192.168.88.3:8080/business-central/maven2/&lt;/url&gt;
-&lt;/repository&gt;
-</code></pre>
-
-<pre><code class="language-xml">&lt;server&gt;
-  &lt;id&gt;drools-m2-repo&lt;/id&gt;
-  &lt;username&gt;admin&lt;/username&gt;
-  &lt;password&gt;admin&lt;/password&gt;
-&lt;/server&gt;
-</code></pre>
-
-<p>应配置在项目的pom.xml中<br />
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span><span class="lnt">5
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-xml" data-lang="xml"><span class="nt">&lt;repository</span><span class="nt">&gt;</span>
+    <span class="nt">&lt;id</span><span class="nt">&gt;</span>drools-m2-repo<span class="nt">&lt;/id&gt;</span>
+    <span class="nt">&lt;name</span><span class="nt">&gt;</span>drools-m2-repo<span class="nt">&lt;/name&gt;</span>
+    <span class="nt">&lt;url</span><span class="nt">&gt;</span>http://192.168.88.3:8080/business-central/maven2/<span class="nt">&lt;/url&gt;</span>
+<span class="nt">&lt;/repository&gt;</span>
+</code></pre></td></tr></table>
+</div>
+</div><div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span><span class="lnt">5
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-xml" data-lang="xml"><span class="nt">&lt;server</span><span class="nt">&gt;</span>
+  <span class="nt">&lt;id</span><span class="nt">&gt;</span>drools-m2-repo<span class="nt">&lt;/id&gt;</span>
+  <span class="nt">&lt;username</span><span class="nt">&gt;</span>admin<span class="nt">&lt;/username&gt;</span>
+  <span class="nt">&lt;password</span><span class="nt">&gt;</span>admin<span class="nt">&lt;/password&gt;</span>
+<span class="nt">&lt;/server&gt;</span>
+</code></pre></td></tr></table>
+</div>
+</div><p>应配置在项目的pom.xml中<br>
 或配置在maven全局配置文件 settings.xml 中</p>
-
-<h2 id="方案2">方案2</h2>
-
-<p>通常每个公司都有自建的maven私服<br />
+<h2 id="2">方案2</h2>
+<p>通常每个公司都有自建的maven私服<br>
 那 fact的jar 应发布到maven私服上
-同时配置 workbench节点 使用该maven私服<br />
+同时配置 workbench节点 使用该maven私服<br>
 构建部署时，kjar会被发布到该maven私服</p>
-
-<p>查阅drools文档关于 workbench 的配置后<br />
-workbench 有两个存储位置 local M2 repository 、Guvnor M2 repository<br />
-可通过管理面板的菜单来调整位置（ 系统设置 &gt; artifact Repository ）<br />
-local M2 repository 通常存储路径是 ${user.home}/.m2/   该版本下docker容器中的位置为 <code>/opt/jboss/.m2/repository</code><br />
-Guvnor M2 repository 由workbench中内嵌的maven仓库  该版本下docker容器中的位置为 <code>/opt/jboss/wildfly/bin/repositories/kie/glob</code><br />
+<p>查阅drools文档关于 workbench 的配置后<br>
+workbench 有两个存储位置 local M2 repository 、Guvnor M2 repository<br>
+可通过管理面板的菜单来调整位置（ 系统设置 &gt; artifact Repository ）<br>
+local M2 repository 通常存储路径是 ${user.home}/.m2/   该版本下docker容器中的位置为 <code>/opt/jboss/.m2/repository</code><br>
+Guvnor M2 repository 由workbench中内嵌的maven仓库  该版本下docker容器中的位置为 <code>/opt/jboss/wildfly/bin/repositories/kie/glob</code><br>
 Guvnor M2 repository 可由系统变量 org.guvnor.m2repo.dir 进行覆盖</p>
-
-<p>分析后感觉没提供 <code>settings.xml</code> 的配置入口<br />
+<p>分析后感觉没提供 <code>settings.xml</code> 的配置入口<br>
 通常的路径 <code>${user.home}/.m2/settings.xml</code> 这个没测，有可能可行</p>
-
-<p>暴力点的手段
-由于项目本身就是maven项目，所以通过git方式把项目拉取下拉
+<p>暴力点的手段 
+由于项目本身就是maven项目，所以通过git方式把项目拉取下拉 
 直接修改pom.xml中的配置，达到deploy时推送到指定私服的目的</p>
-
 <h3 id="todo">todo</h3>
-
-<p>文档该小节 提到的属性 <code>kie.maven.settings.custom</code> 貌似是针对kjar的<br />
-推测该属性或许可与插件<code>kie-maven-plugin</code>
+<p>文档该小节 提到的属性 <code>kie.maven.settings.custom</code> 貌似是针对kjar的<br>
+推测该属性或许可与插件<code>kie-maven-plugin</code> 
 <a href="https://docs.jboss.org/drools/release/7.28.0.Final/drools-docs/html_single/index.html#_settings_xml_and_remote_repository_setup">https://docs.jboss.org/drools/release/7.28.0.Final/drools-docs/html_single/index.html#_settings_xml_and_remote_repository_setup</a></p>
-
-<h2 id="kie-server的maven配置">kie-server的maven配置</h2>
-
-<p>maven的安装目录下： $M2_HOME/conf/settings.xml<br />
-用户目录下：    ${user.home}/.m2/settings.xml<br />
+<h2 id="kie-servermaven">kie-server的maven配置</h2>
+<p>maven的安装目录下： $M2_HOME/conf/settings.xml<br>
+用户目录下：    ${user.home}/.m2/settings.xml<br>
 系统属性指定目录下：kie.maven.settings.custom=/xx/xx/settings.xml</p>
-
-<p><a href="http://localhost:8080/business-central/maven2/">http://localhost:8080/business-central/maven2/</a>
+<p>http://localhost:8080/business-central/maven2/
 -Dorg.guvnor.m2repo.dir</p>
-
-<h2 id="结论">结论</h2>
-
+<h2 id="heading-1">结论</h2>
 <p>在工作环境倾向第二种方案</p>
-
 <p>所有项目都是使用公共的共同的私服
-fact单独一个jar发布<br />
+fact单独一个jar发布<br>
 kjar以坐标方式引入fact-jar 同时也发布到私服上</p>
-
 <p>如果觉着kjar中的规则数据应保密， 也可不发布到私服上</p>
-                        </div>
+    </div>
 
-                        
-
-
-                        
-
-<div class="post-archive">
-    <h2>See Also</h2>
-    <ul class="listing">
+    <div class="post-copyright">
+  <p class="copyright-item">
+    <span class="item-title">文章作者</span>
+    <span class="item-content">duansheli</span>
+  </p>
+  <p class="copyright-item">
+    <span class="item-title">上次更新</span>
+    <span class="item-content">
+        2019-10-28
         
-        <li><a href="/2019/10/27/update-rule-by-scanner.html">使用drools的规则管理平台-01</a></li>
-        
-        <li><a href="/2019/10/26/update-rule-by-scanner.html">自定义动态更新drools规则</a></li>
-        
-        <li><a href="/2019/10/13/download-m3u8-video-02.html">下载m3u8-aes128加密视频-02</a></li>
-        
-        <li><a href="/2019/10/13/download-m3u8-video-01.html">下载m3u8-aes128加密视频-01</a></li>
-        
-        <li><a href="/2019/10/09/scala-process.html">scala调用系统命令</a></li>
-        
-    </ul>
+    </span>
+  </p>
+  
+  
 </div>
-
-
-                        <div class="post-meta meta-tags">
-                            
-                            <ul class="clearfix">
-                                
-                                <li><a href="https://duansheli.github.io/tags/drools">drools</a></li>
-                                
-                            </ul>
-                            
-                        </div>
-                    </article>
-                    
-    
-
-    
-    
-                </div>
-            </div>
-            <div id="secondary">
-    <section class="widget">
-        <form id="search" action="//www.google.com/search" method="get" accept-charset="utf-8" target="_blank" _lpchecked="1">
-      
-      <input type="text" name="q" maxlength="20" placeholder="Search">
-      <input type="hidden" name="sitesearch" value="https://duansheli.github.io">
-      <button type="submit" class="submit icon-search"></button>
-</form>
-    </section>
-    
-    <section class="widget">
-        <h3 class="widget-title">最近文章</h3>
-<ul class="widget-list">
-    
-    <li>
-        <a href="https://duansheli.github.io/2019/12/20/akka-demo-concurrent.html" title="akka-并发任务">akka-并发任务</a>
-    </li>
-    
-    <li>
-        <a href="https://duansheli.github.io/2019/12/15/HOCON-java.html" title="HOCON配置文件读取">HOCON配置文件读取</a>
-    </li>
-    
-    <li>
-        <a href="https://duansheli.github.io/2019/11/16/jmh-dynamic-run.html" title="JMH-测试动态执行代码效率">JMH-测试动态执行代码效率</a>
-    </li>
-    
-    <li>
-        <a href="https://duansheli.github.io/2019/11/12/doh.html" title="群晖两步验证的关闭">群晖两步验证的关闭</a>
-    </li>
-    
-    <li>
-        <a href="https://duansheli.github.io/2019/11/10/benchmark-java-jmh.html" title="基准测试工具JMH-示例">基准测试工具JMH-示例</a>
-    </li>
-    
-    <li>
-        <a href="https://duansheli.github.io/2019/10/28/update-rule-by-scanner.html" title="使用drools的规则管理平台-02">使用drools的规则管理平台-02</a>
-    </li>
-    
-    <li>
-        <a href="https://duansheli.github.io/2019/10/27/update-rule-by-scanner.html" title="使用drools的规则管理平台-01">使用drools的规则管理平台-01</a>
-    </li>
-    
-    <li>
-        <a href="https://duansheli.github.io/2019/10/26/update-rule-by-scanner.html" title="自定义动态更新drools规则">自定义动态更新drools规则</a>
-    </li>
-    
-    <li>
-        <a href="https://duansheli.github.io/2019/10/13/download-m3u8-video-02.html" title="下载m3u8-aes128加密视频-02">下载m3u8-aes128加密视频-02</a>
-    </li>
-    
-    <li>
-        <a href="https://duansheli.github.io/2019/10/13/download-m3u8-video-01.html" title="下载m3u8-aes128加密视频-01">下载m3u8-aes128加密视频-01</a>
-    </li>
-    
-</ul>
-    </section>
-
-    
-
-    <section class="widget">
-        <h3 class="widget-title">分类</h3>
-<ul class="widget-list">
-    
-    <li>
-        <a href="https://duansheli.github.io/categories/JHM/">JHM(1)</a>
-    </li>
-    
-    <li>
-        <a href="https://duansheli.github.io/categories/JMH/">JMH(1)</a>
-    </li>
-    
-    <li>
-        <a href="https://duansheli.github.io/categories/Java%E6%B7%B1%E5%85%A5/">Java深入(8)</a>
-    </li>
-    
-    <li>
-        <a href="https://duansheli.github.io/categories/k8s%E9%9B%86%E7%BE%A4/">k8s集群(5)</a>
-    </li>
-    
-    <li>
-        <a href="https://duansheli.github.io/categories/scala%E5%B9%B6%E5%8F%91%E7%BC%96%E7%A8%8B/">scala并发编程(8)</a>
-    </li>
-    
-</ul>
-    </section>
-
-    <section class="widget">
-        <h3 class="widget-title">标签</h3>
-<div class="tagcloud">
-    
-    <a href="https://duansheli.github.io/tags/JHM/">JHM</a>
-    
-    <a href="https://duansheli.github.io/tags/JMH/">JMH</a>
-    
-    <a href="https://duansheli.github.io/tags/Java/">Java</a>
-    
-    <a href="https://duansheli.github.io/tags/classloader/">classloader</a>
-    
-    <a href="https://duansheli.github.io/tags/docker/">docker</a>
-    
-    <a href="https://duansheli.github.io/tags/drone/">drone</a>
-    
-    <a href="https://duansheli.github.io/tags/drools/">drools</a>
-    
-    <a href="https://duansheli.github.io/tags/dubbo/">dubbo</a>
-    
-    <a href="https://duansheli.github.io/tags/elasticsearch/">elasticsearch</a>
-    
-    <a href="https://duansheli.github.io/tags/ffmpeg/">ffmpeg</a>
-    
-    <a href="https://duansheli.github.io/tags/gc/">gc</a>
-    
-    <a href="https://duansheli.github.io/tags/git/">git</a>
-    
-    <a href="https://duansheli.github.io/tags/gradle/">gradle</a>
-    
-    <a href="https://duansheli.github.io/tags/hashids/">hashids</a>
-    
-    <a href="https://duansheli.github.io/tags/id/">id</a>
-    
-    <a href="https://duansheli.github.io/tags/java/">java</a>
-    
-    <a href="https://duansheli.github.io/tags/jdk/">jdk</a>
-    
-    <a href="https://duansheli.github.io/tags/jvm/">jvm</a>
-    
-    <a href="https://duansheli.github.io/tags/k8s/">k8s</a>
-    
-    <a href="https://duansheli.github.io/tags/kotlin/">kotlin</a>
-    
-    <a href="https://duansheli.github.io/tags/life/">life</a>
-    
-    <a href="https://duansheli.github.io/tags/linux/">linux</a>
-    
-    <a href="https://duansheli.github.io/tags/mysql/">mysql</a>
-    
-    <a href="https://duansheli.github.io/tags/proxy/">proxy</a>
-    
-    <a href="https://duansheli.github.io/tags/redis/">redis</a>
-    
-    <a href="https://duansheli.github.io/tags/rocketmq/">rocketmq</a>
-    
-    <a href="https://duansheli.github.io/tags/route/">route</a>
-    
-    <a href="https://duansheli.github.io/tags/scala/">scala</a>
-    
-    <a href="https://duansheli.github.io/tags/session/">session</a>
-    
-    <a href="https://duansheli.github.io/tags/shell/">shell</a>
-    
-    <a href="https://duansheli.github.io/tags/spring-boot/">spring-boot</a>
-    
-    <a href="https://duansheli.github.io/tags/spring-security/">spring-security</a>
-    
-    <a href="https://duansheli.github.io/tags/springboot/">springboot</a>
-    
-    <a href="https://duansheli.github.io/tags/zipkin/">zipkin</a>
-    
-    <a href="https://duansheli.github.io/tags/%E5%88%86%E5%B8%83%E5%BC%8F%E4%BA%8B%E5%8A%A1/">分布式事务</a>
-    
-    <a href="https://duansheli.github.io/tags/%E6%8C%81%E7%BB%AD%E9%9B%86%E6%88%90/">持续集成</a>
-    
-    <a href="https://duansheli.github.io/tags/%E7%99%BB%E5%BD%95/">登录</a>
-    
-</div>
-    </section>
-
-    
-
-    <section class="widget">
-        <h3 class="widget-title">其它</h3>
-        <ul class="widget-list">
-            <li><a href="https://duansheli.github.io/index.xml">文章 RSS</a></li>
-        </ul>
-    </section>
-</div>
+<footer class="post-footer">
+      <div class="post-tags">
+          <a href="/www.awslop.com/tags/drools/">drools</a>
+          </div>
+      <nav class="post-nav">
+        <a class="prev" href="/www.awslop.com/2019/11/10/benchmark-java-jmh.html">
+            <i class="iconfont icon-left"></i>
+            <span class="prev-text nav-default">基准测试工具JMH-示例</span>
+            <span class="prev-text nav-mobile">上一篇</span>
+          </a>
+        <a class="next" href="/www.awslop.com/2019/10/27/update-rule-by-scanner.html">
+            <span class="next-text nav-default">使用drools的规则管理平台-01</span>
+            <span class="next-text nav-mobile">下一篇</span>
+            <i class="iconfont icon-right"></i>
+          </a>
+      </nav>
+    </footer>
+  </article>
         </div>
-    </div>
+        
+
+  
+
+  
+
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="social-links">
+      <a href="https://github.com/duansheli/" class="iconfont icon-github" title="github"></a>
+  <a href="/www.awslop.com/index.xml" type="application/rss+xml" class="iconfont icon-rss" title="rss"></a>
 </div>
-<footer id="footer">
-    <div class="container">
-        &copy; 2019 <a href="https://duansheli.github.io">断舍离的博客 By 断舍离</a>.
-        Powered by <a rel="nofollow noreferer noopener" href="https://gohugo.io" target="_blank">Hugo</a>.
-        <a href="https://www.flysnow.org/" target="_blank">Theme</a> based on <a href="https://github.com/rujews/maupassant-hugo" target="_blank">maupassant</a>.
-        
+
+<div class="copyright">
+  <span class="power-by">
+    由 <a class="hexo-link" href="https://gohugo.io">Hugo</a> 强力驱动
+  </span>
+  <span class="division">|</span>
+  <span class="theme-info">
+    主题 - 
+    <a class="theme-link" href="https://github.com/olOwOlo/hugo-theme-even">Even</a>
+  </span>
+
+  
+
+  <span class="copyright-year">
+    &copy; 
+    2017 - 
+    2019
+    <span class="heart">
+      <i class="iconfont icon-heart"></i>
+    </span>
+    <span class="author">duansheli</span>
+  </span>
+</div>
+    </footer>
+
+    <div class="back-to-top" id="back-to-top">
+      <i class="iconfont icon-up"></i>
     </div>
-</footer>
+  </div>
+  
+  <script src="https://cdn.jsdelivr.net/npm/jquery@3.2.1/dist/jquery.min.js" integrity="sha256-hwg4gsxgFZhOsEEamdOYGBf13FyQuiTwlAQgxVSNgt4=" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/slideout@1.0.1/dist/slideout.min.js" integrity="sha256-t+zJ/g8/KXIJMjSVQdnibt4dlaDxc9zXr/9oNPeWqdg=" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3.1.20/dist/jquery.fancybox.min.js" integrity="sha256-XVLffZaxoWfGUEbdzuLi7pwaUJv1cecsQJQqGLe7axY=" crossorigin="anonymous"></script>
+<script type="text/javascript" src="/www.awslop.com/dist/even.26188efa.min.js"></script>
 
-
-    
-    <script type="text/javascript">
-        
-        (function () {
-            $("pre code").parent().addClass("line-numbers")
-        }());
-
-        window.MathJax = {
-            tex2jax: {
-                inlineMath: [['$', '$']],
-                processEscapes: true
-                }
-            };
-    </script>
-    <script type="text/javascript" src="/js/prism.js" async="true"></script>
-    <script src='https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/MathJax.js?config=TeX-MML-AM_CHTML' async></script>
-
-
-<a id="rocket" href="#top"></a>
-<script type="text/javascript" src="/js/totop.js?v=0.0.0" async=""></script>
 
 <script type="application/javascript">
 var doNotTrack = false;
 if (!doNotTrack) {
 	window.ga=window.ga||function(){(ga.q=ga.q||[]).push(arguments)};ga.l=+new Date;
 	ga('create', 'GTM-NPJC8J2', 'auto');
-	
+	ga('set', 'anonymizeIp', true);
 	ga('send', 'pageview');
 }
 </script>
 <script async src='https://www.google-analytics.com/analytics.js'></script>
+
 
 
 

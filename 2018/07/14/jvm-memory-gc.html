@@ -1,226 +1,197 @@
-<!doctype html>
-<html lang="zh-CN">
+<!DOCTYPE html>
+<html lang="zh-cn">
 <head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+  <title>JVM的垃圾回收 - 断舍离的博客</title>
+  <meta name="renderer" content="webkit" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
 
-    <meta charset="utf-8">
-    <meta name="generator" content="Hugo 0.59.0" />
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
 
-    <title>JVM的垃圾回收 | 断舍离的博客</title>
-    <meta property="og:title" content="JVM的垃圾回收 - 断舍离的博客">
-    <meta property="og:type" content="article">
-        
-    <meta property="article:published_time" content="2018-07-14T15:13:13&#43;08:00">
-        
-        
-    <meta property="article:modified_time" content="2018-07-14T15:13:13&#43;08:00">
-        
-    <meta name="Keywords" content="java,scala,spark,kubernetes">
-    <meta name="description" content="JVM的垃圾回收">
-        
-    <meta name="author" content="断舍离">
-    <meta property="og:url" content="https://duansheli.github.io/2018/07/14/jvm-memory-gc.html">
-    <link rel="shortcut icon" href="/favicon.ico" type="image/x-icon">
-
-    <link rel="stylesheet" href="/css/normalize.css">
-    
-        <link rel="stylesheet" href="/css/prism.css">
-    
-    <link rel="stylesheet" href="/css/style.css">
-    <script type="text/javascript" src="//cdnjs.cloudflare.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
-
-    
+<meta name="theme-color" content="#f8f5ec" />
+<meta name="msapplication-navbutton-color" content="#f8f5ec">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="#f8f5ec">
 
 
-    
-    
+<meta name="author" content="duansheli" /><meta name="description" content="JVM内存结构 JVM是java代码的运行环境， 用来加载 .class和jar文件 , 运行代码。 内存区域 1 2 3 4 5 6 7 8 9 10 11 12 13 14 15 16 17 18 19 20 21" /><meta name="keywords" content="scala, java, even" />
+
+
+
+
+
+
+<meta name="generator" content="Hugo 0.62.0 with theme even" />
+
+
+<link rel="canonical" href="/www.awslop.com/2018/07/14/jvm-memory-gc.html" />
+<link rel="apple-touch-icon" sizes="180x180" href="/www.awslop.com/apple-touch-icon.png">
+<link rel="icon" type="image/png" sizes="32x32" href="/www.awslop.com/favicon-32x32.png">
+<link rel="icon" type="image/png" sizes="16x16" href="/www.awslop.com/favicon-16x16.png">
+<link rel="manifest" href="/www.awslop.com/manifest.json">
+<link rel="mask-icon" href="/www.awslop.com/safari-pinned-tab.svg" color="#5bbad5">
+
+
+<link href="/www.awslop.com/dist/even.c2a46f00.min.css" rel="stylesheet">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3.1.20/dist/jquery.fancybox.min.css" integrity="sha256-7TyXnr2YU040zfSP+rEcz29ggW4j56/ujTPwjMzyqFY=" crossorigin="anonymous">
+
+
+<meta property="og:title" content="JVM的垃圾回收" />
+<meta property="og:description" content="JVM内存结构 JVM是java代码的运行环境， 用来加载 .class和jar文件 , 运行代码。 内存区域 1 2 3 4 5 6 7 8 9 10 11 12 13 14 15 16 17 18 19 20 21" />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="/www.awslop.com/2018/07/14/jvm-memory-gc.html" />
+<meta property="article:published_time" content="2018-07-14T15:13:13+08:00" />
+<meta property="article:modified_time" content="2018-07-14T15:13:13+08:00" />
+<meta itemprop="name" content="JVM的垃圾回收">
+<meta itemprop="description" content="JVM内存结构 JVM是java代码的运行环境， 用来加载 .class和jar文件 , 运行代码。 内存区域 1 2 3 4 5 6 7 8 9 10 11 12 13 14 15 16 17 18 19 20 21">
+<meta itemprop="datePublished" content="2018-07-14T15:13:13&#43;08:00" />
+<meta itemprop="dateModified" content="2018-07-14T15:13:13&#43;08:00" />
+<meta itemprop="wordCount" content="2253">
+
+
+
+<meta itemprop="keywords" content="Java,gc," /><meta name="twitter:card" content="summary"/>
+<meta name="twitter:title" content="JVM的垃圾回收"/>
+<meta name="twitter:description" content="JVM内存结构 JVM是java代码的运行环境， 用来加载 .class和jar文件 , 运行代码。 内存区域 1 2 3 4 5 6 7 8 9 10 11 12 13 14 15 16 17 18 19 20 21"/>
+
+<!--[if lte IE 9]>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/classlist/1.1.20170427/classList.min.js"></script>
+<![endif]-->
+
+<!--[if lt IE 9]>
+  <script src="https://cdn.jsdelivr.net/npm/html5shiv@3.7.3/dist/html5shiv.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/respond.js@1.4.2/dest/respond.min.js"></script>
+<![endif]-->
+
 </head>
-
 <body>
-<header id="header" class="clearfix">
-    <div class="container">
-        <div class="col-group">
-            <div class="site-name ">
-                
-                    <a id="logo" href="https://duansheli.github.io">
-                        断舍离的博客
-                    </a>
-                
-                <p class="description">java, scala, spark, kubernetes</p>
-            </div>
-            <div>
-                <nav id="nav-menu" class="clearfix">
-                    <a class="" href="https://duansheli.github.io">首页</a>
-                    
-                    <a  href="https://duansheli.github.io/archives/" title="归档">归档</a>
-                    
-                </nav>
-            </div>
-        </div>
-    </div>
-</header>
-
-
-<div id="body">
-        
-        <div id="virtual_toc_list" style="display: none">
-            <nav id="TableOfContents">
-<ul>
-<li><a href="#jvm内存结构">JVM内存结构</a>
-<ul>
-<li><a href="#内存区域">内存区域</a></li>
-<li><a href="#执行引擎">执行引擎</a></li>
-<li><a href="#jdk-jre-jvm的区别">JDK, JRE, JVM的区别</a></li>
-</ul></li>
-<li><a href="#gc">gc</a>
-<ul>
-<li><a href="#回收逻辑">回收逻辑</a></li>
-<li><a href="#垃圾回收器">垃圾回收器</a>
-<ul>
-<li><a href="#参数配置">参数配置</a></li>
-</ul></li>
-</ul></li>
-</ul>
+  <div id="mobile-navbar" class="mobile-navbar">
+  <div class="mobile-header-logo">
+    <a href="/www.awslop.com/" class="logo">Even</a>
+  </div>
+  <div class="mobile-navbar-icon">
+    <span></span>
+    <span></span>
+    <span></span>
+  </div>
+</div>
+<nav id="mobile-menu" class="mobile-menu slideout-menu">
+  <ul class="mobile-menu-list">
+    <a href="/www.awslop.com/">
+        <li class="mobile-menu-item">主页</li>
+      </a><a href="/www.awslop.com/post/">
+        <li class="mobile-menu-item">归档</li>
+      </a><a href="/www.awslop.com/tags/">
+        <li class="mobile-menu-item">标签</li>
+      </a><a href="/www.awslop.com/categories/">
+        <li class="mobile-menu-item">Categories</li>
+      </a>
+  </ul>
 </nav>
-        </div>
-        <div id="float_toc_div" style="margin: 10px;border: 1px solid gray;z-index:99999;display: none;">
-            <header style="background-color: #f3f3f3;color: black;border-bottom: 1px solid gray;padding: 10px 10px 10px 10px;">
-                <strong id="toc_btn_open" style="color: black;font-size: large;">目录</strong>
-                <strong id="toc_btn_close" style="color: black;font-size: large;float: right">╳</strong>
-            </header>
-            <div id="toc_list" style="background-color: #f3f3f3;color: black;padding: 10px;">
-        
+  <div class="container" id="mobile-panel">
+    <header id="header" class="header">
+        <div class="logo-wrapper">
+  <a href="/www.awslop.com/" class="logo">Even</a>
+</div>
+
+<nav class="site-navbar">
+  <ul id="menu" class="menu">
+    <li class="menu-item">
+        <a class="menu-item-link" href="/www.awslop.com/">主页</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/www.awslop.com/post/">归档</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/www.awslop.com/tags/">标签</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/www.awslop.com/categories/">Categories</a>
+      </li>
+  </ul>
+</nav>
+    </header>
+
+    <main id="main" class="main">
+      <div class="content-wrapper">
+        <div id="content" class="content">
+          <article class="post">
+    
+    <header class="post-header">
+      <h1 class="post-title">JVM的垃圾回收</h1>
+
+      <div class="post-meta">
+        <span class="post-time"> 2018-07-14 </span>
+        <div class="post-category">
+            <a href="/www.awslop.com/categories/java%E6%B7%B1%E5%85%A5/"> Java深入 </a>
             </div>
-        </div>
-        <style type="text/css">
-            #float_toc_div {
-                position: fixed;
-                display: none;
-                 
-                height: auto;
-                font-size: 13px;
-            }
+          <span class="more-meta"> 约 2253 字 </span>
+          <span class="more-meta"> 预计阅读 5 分钟 </span>
         
-            #toc_list a:hover,
-            #toc_list a:active {
-                color: #ba3925;
-            }
-        </style>
-        <script>
-            window.onload = function () {
-                let tocNavElem = document.getElementById("TableOfContents");
-                let floatTocDivElem = document.getElementById("float_toc_div");
-                let tocListElem = floatTocDivElem.getElementsByTagName('div')[0];
-                let colGroupElem = document.getElementById("body").getElementsByClassName("col-group")[0]
-                let floatTocWidth = (document.body.clientWidth - colGroupElem.offsetWidth) / 2 - 16;
-                var useFloatToc = false;
+      </div>
+    </header>
 
-                if (floatTocWidth >= 100) {
-                    useFloatToc = true;
-                    document.getElementById("toc_list").appendChild(tocNavElem);
-                    floatTocDivElem.style.display = 'block';
-                    floatTocDivElem.style.width = floatTocWidth + 'px';
-                    top();
-                    floatTocDivElem.style.left = '0px';
+    <div class="post-toc" id="post-toc">
+  <h2 class="post-toc-title">文章目录</h2>
+  <div class="post-toc-content always-active">
+    <nav id="TableOfContents">
+  <ul>
+    <li><a href="#heading">内存区域</a></li>
+    <li><a href="#heading-1">执行引擎</a></li>
+    <li><a href="#jdk-jre-jvm">JDK, JRE, JVM的区别</a></li>
+  </ul>
 
-                    function top() {
-                        if (document.getElementsByClassName('container')[0].offsetWidth <= 720) {
-                            floatTocDivElem.style.top = '0px';
-                        } else {
-                            floatTocDivElem.style.top = window.innerHeight / 9 + 'px';
-                        }
-                    }
-
-                    function ishide() {
-                        if (document.getElementsByClassName('container')[0].offsetWidth <= 720) {
-                            floatTocDivElem.style.top = '0px';
-                        } else {
-                            floatTocDivElem.style.display = 'block';
-                        }
-                    }
-
-                    window.onscroll = function () {
-                        ishide();
-                        if ((document.documentElement.scrollTop != 0) && (floatTocDivElem.style.display == 'block')) {
-                            top();
-                        }
-                    };
-
-                    window.onresize = function () {
-                        ishide();
-                    }
-
-                    document.getElementById("toc_btn_open").addEventListener('click', function () {
-                        switch (tocListElem.style.display) {
-                            case "none":
-                                document.getElementById("toc_btn_close").style.display = "";
-                                tocListElem.style.display = "";
-                                floatTocDivElem.getElementsByTagName("header")[0].style.borderBottom = "1px solid gray";
-                                break;
-                            default:
-                                break;
-                        }
-                    }, false);
-
-                    document.getElementById("toc_btn_close").addEventListener('click', function () {
-                        switch (tocListElem.style.display) {
-                            case "":
-                                document.getElementById("toc_btn_close").style.display = "none";
-                                tocListElem.style.display = "none";
-                                floatTocDivElem.getElementsByTagName("header")[0].style.borderBottom = "";
-                                break;
-                            default:
-                                break;
-                        }
-                    }, false);
-                } else {
-                    let fixedTocElem = document.getElementsByClassName("toc-article")[0];
-                    fixedTocElem.appendChild(tocNavElem);
-                    fixedTocElem.parentElement.style.display = "";
-                }
-                document.getElementById("virtual_toc_list").remove();
-            };   
-        </script>
-        
-    <div class="container">
-        <div class="col-group">
-
-            <div class="col-8" id="main">
-                <div class="res-cons">
-                    <article class="post">
-                        <header>
-                            <h1 class="post-title">JVM的垃圾回收</h1>
-                        </header>
-                        <date class="post-meta meta-date">
-                            2018年7月14日
-                        </date>
-                        
-                        <div class="post-meta">
-                            <span>|</span>
-                            
-                                <span class="meta-category"><a href="https://duansheli.github.io/categories/Java%E6%B7%B1%E5%85%A5">Java深入</a></span>
-                            
-                        </div>
-                        
-                        
-                        
-                        <div class="clear" style="display: none">
-                            <div class="toc-article">
-                                <div class="toc-title">文章目录</div>
-                            </div>
-                        </div>
-                        
-                        <div class="post-content">
-                            
-
-<h1 id="jvm内存结构">JVM内存结构</h1>
-
+  <ul>
+    <li><a href="#heading-2">回收逻辑</a></li>
+    <li><a href="#heading-3">垃圾回收器</a>
+      <ul>
+        <li><a href="#heading-4">参数配置</a></li>
+      </ul>
+    </li>
+  </ul>
+</nav>
+  </div>
+</div>
+    <div class="post-content">
+      <h1 id="jvm">JVM内存结构</h1>
 <p>JVM是java代码的运行环境， 用来加载 <code>.class</code>和jar文件 , 运行代码。</p>
-
-<h2 id="内存区域">内存区域</h2>
-
-<pre><code>+------------------------------------------------------+
+<h2 id="heading">内存区域</h2>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span><span class="lnt">14
+</span><span class="lnt">15
+</span><span class="lnt">16
+</span><span class="lnt">17
+</span><span class="lnt">18
+</span><span class="lnt">19
+</span><span class="lnt">20
+</span><span class="lnt">21
+</span><span class="lnt">22
+</span><span class="lnt">23
+</span><span class="lnt">24
+</span><span class="lnt">25
+</span><span class="lnt">26
+</span><span class="lnt">27
+</span><span class="lnt">28
+</span><span class="lnt">29
+</span><span class="lnt">30
+</span><span class="lnt">31
+</span><span class="lnt">32
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-fallback" data-lang="fallback">+------------------------------------------------------+
 |                                                      |
 |   +-------------+        +---------------+           |
 |   | xxxA.class  |        |               |           |
@@ -252,34 +223,79 @@
 |  +------------------+  +--------------------------+  |
 |                                                      |
 +------------------------------------------------------+
-</code></pre>
-
-<p>内存区域与运行关系</p>
-
+</code></pre></td></tr></table>
+</div>
+</div><p>内存区域与运行关系</p>
 <ul>
-<li>堆 Heap<br />
+<li>堆 Heap<br>
 圾回收的主要区域，又划分为新生代和老年代。</li>
-<li>方法区 Method Area<br />
-存放常量池、静态变量、类信息、JIT编译后的代码等数据。<br />
+<li>方法区 Method Area<br>
+存放常量池、静态变量、类信息、JIT编译后的代码等数据。<br>
 方法区是虚拟机规范中的概念，而永久代(PermGen)是HotSpot版的方法区。
 HotSpot虚拟机从1.8开始取消了永久代，改为元空间(Metaspace)。</li>
-<li>本地方法栈 Native Method Stacks<br />
+<li>本地方法栈 Native Method Stacks<br>
 类似于虚拟机栈</li>
-<li>虚拟机栈 Java Virtual Machine Stacks<br />
+<li>虚拟机栈 Java Virtual Machine Stacks<br>
 每个线程都有，存放着局部变量表，返回值，栈帧等 。局部变量表: 基本数据类型与对象引用
 栈帧:方法之间的调用顺序以栈的方式保存。</li>
-<li>程序计数器 pc Register<br />
+<li>程序计数器 pc Register<br>
 pc (program counter)
 每个线程都有，记录着线程当前运行到哪行代码</li>
-<li>运行时常量池 Run-Time Constant Pool<br />
+<li>运行时常量池 Run-Time Constant Pool<br>
 属于方法区的一部分。</li>
 </ul>
-
 <p>参考 <a href="https://docs.oracle.com/javase/specs/jvms/se8/html/jvms-2.html#jvms-2.5">Java运行时数据区</a></p>
-
-<hr />
-
-<pre><code>+------------------------------------------------+ +------------------------------------------------+
+<hr>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span><span class="lnt">14
+</span><span class="lnt">15
+</span><span class="lnt">16
+</span><span class="lnt">17
+</span><span class="lnt">18
+</span><span class="lnt">19
+</span><span class="lnt">20
+</span><span class="lnt">21
+</span><span class="lnt">22
+</span><span class="lnt">23
+</span><span class="lnt">24
+</span><span class="lnt">25
+</span><span class="lnt">26
+</span><span class="lnt">27
+</span><span class="lnt">28
+</span><span class="lnt">29
+</span><span class="lnt">30
+</span><span class="lnt">31
+</span><span class="lnt">32
+</span><span class="lnt">33
+</span><span class="lnt">34
+</span><span class="lnt">35
+</span><span class="lnt">36
+</span><span class="lnt">37
+</span><span class="lnt">38
+</span><span class="lnt">39
+</span><span class="lnt">40
+</span><span class="lnt">41
+</span><span class="lnt">42
+</span><span class="lnt">43
+</span><span class="lnt">44
+</span><span class="lnt">45
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-fallback" data-lang="fallback">+------------------------------------------------+ +------------------------------------------------+
 |                                                | |                                                |
 |                thread.1                        | |                thread.N                        |
 |                                                | |                                                |
@@ -318,25 +334,40 @@ pc (program counter)
 |  +---method-area--------------+     +---heap--------------+  |   |                                |
 |  |                            |     |                     |  |   |      direct memory             |
 |  |  class(field, method, ...) |     |                     |  |   |                                |
-|  |                            |     |   obj's             |  |   |                                |
+|  |                            |     |   obj&#39;s             |  |   |                                |
 |  +----------------------------+     |                     |  |   |                                |
 |  |  Run Time Constant Pool    |     |                     |  |   |                                |
 |  +----------------------------+     +---------------------+  |   |                                |
 |                                                              |   |                                |
 +--------------------------------------------------------------+   +--------------------------------+
-</code></pre>
-
-<p>内存区域与线程关系</p>
-
+</code></pre></td></tr></table>
+</div>
+</div><p>内存区域与线程关系</p>
 <ul>
-<li>如何查看常量池，如何查看运行时常量池<br />
-javap可查看一个类的常量池。<br />
+<li>如何查看常量池，如何查看运行时常量池<br>
+javap可查看一个类的常量池。<br>
 运行时常量池可通过对内存dump，使用分析工具进行查看对比。</li>
 </ul>
-
-<h2 id="执行引擎">执行引擎</h2>
-
-<pre><code>+----------Execution Engine----------+
+<h2 id="heading-1">执行引擎</h2>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span><span class="lnt">14
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-fallback" data-lang="fallback">+----------Execution Engine----------+
 |                                    |
 | +-------------+  |---------------+ |
 | |             |  |               | |
@@ -350,22 +381,41 @@ javap可查看一个类的常量池。<br />
 |     +------------------------+     |
 |                                    |
 +------------------------------------+
-</code></pre>
-
-<ul>
-<li>解释器 Interpreter<br />
-将<code>.class</code>代码按顺序解释执行。<br />
+</code></pre></td></tr></table>
+</div>
+</div><ul>
+<li>解释器 Interpreter<br>
+将<code>.class</code>代码按顺序解释执行。<br>
 相同Java代码在不同平台下编译后的<code>.class</code>文件相同。
 但在运行<code>.class</code>代码时，还是要针对平台解释成不同的机器码的。</li>
-<li>JIT (Just In Time) Compiler<br />
+<li>JIT (Just In Time) Compiler<br>
 将部分热点代码直接编译成机器码，避免了反复通过Interpreter解释执行。</li>
-<li>垃圾回收 Garbage Collection<br />
+<li>垃圾回收 Garbage Collection<br>
 收集移除无用的对象，释放内存。</li>
 </ul>
-
-<h2 id="jdk-jre-jvm的区别">JDK, JRE, JVM的区别</h2>
-
-<pre><code>+-------------------------------------------------------------------------+
+<h2 id="jdk-jre-jvm">JDK, JRE, JVM的区别</h2>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span><span class="lnt">14
+</span><span class="lnt">15
+</span><span class="lnt">16
+</span><span class="lnt">17
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-fallback" data-lang="fallback">+-------------------------------------------------------------------------+
 |                                                              JDK        |
 |                                                                         |
 | +---------------------------------------------------+   +-------------+ |
@@ -382,14 +432,30 @@ javap可查看一个类的常量池。<br />
 |                                                                         |
 |                                                                         |
 +-------------------------------------------------------------------------+
-</code></pre>
-
-<h1 id="gc">gc</h1>
-
-<p>gc(Garbage Collector) 垃圾回收器, 对内存中过期对象进行清理，为后续创建对象提供空间。<br />
+</code></pre></td></tr></table>
+</div>
+</div><h1 id="gc">gc</h1>
+<p>gc(Garbage Collector) 垃圾回收器, 对内存中过期对象进行清理，为后续创建对象提供空间。<br>
 stw (stop the world) 指所有线程停止工作，垃圾回收器独掌大权，进行垃圾回收。</p>
-
-<pre><code>+-----heap------------------------------------------+
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span><span class="lnt">14
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-fallback" data-lang="fallback">+-----heap------------------------------------------+
 |                                                   |
 | +-------------+----+----+-----------------------+ |
 | |             |    |    |                       | |
@@ -403,48 +469,42 @@ stw (stop the world) 指所有线程停止工作，垃圾回收器独掌大权�
 | | &lt;--------------   full  gc   ---------------&gt; | |
 |                                                   |
 +---------------------------------------------------+
-</code></pre>
-
-<pre><code>垃圾回收主要是对位于堆中的对象进行回收，堆分成两部分：年轻代和老年代。
+</code></pre></td></tr></table>
+</div>
+</div><pre><code>垃圾回收主要是对位于堆中的对象进行回收，堆分成两部分：年轻代和老年代。
 minor GC是对年轻代gc，major GC是对老年代gc。full GC == minor GC + major GC。
 
 起初的垃圾回收，有年轻代和老年代的概念, 对年轻代gc频率高，对老年代gc频率低。 
 后来G1将新生代和老年代分成若干个region ，
 而ZGC则没有新生代和老年代的概念。
 </code></pre>
-
-<h2 id="回收逻辑">回收逻辑</h2>
-
+<h2 id="heading-2">回收逻辑</h2>
 <pre><code>大部分对象刚创建的时候，JVM会放在Eden区域。
 当Eden区域中的对象达到一定的数目的时候，就会进行Minor GC。
 在完成垃圾回收后,存活的对象都会被送到某个Suvivor中，两个Suvivor区域总会有一个是空的（s0和s1交替）。
 年轻代中经历过了多次垃圾回收，还活着的对象就会转移到年老代中。
 当内存不足时，就会镜像full gc, 对整个堆进行垃圾回收。 
 </code></pre>
-
-<h2 id="垃圾回收器">垃圾回收器</h2>
-
+<h2 id="heading-3">垃圾回收器</h2>
 <ul>
 <li>ZGC</li>
 <li>G1(Garbage-First) 并发</li>
 <li>新生代 young generation
-
 <ul>
 <li>Serial 串行</li>
 <li>ParNew 并行</li>
 <li>Parallel Scavenge 并行</li>
-</ul></li>
+</ul>
+</li>
 <li>老年代 old generation
-
 <ul>
 <li>Serial Old 串行</li>
 <li>Parallel Old</li>
 <li>CMS 并发</li>
-</ul></li>
 </ul>
-
+</li>
+</ul>
 <p>Concurrent Mark Sweep (CMS) Collector</p>
-
 <pre><code>不同的垃圾回收器会有不同的参数类型配置
 在ZGC以前的gc调优有两个方向： 吞吐量优先，响应时间优先。面临着鱼和熊掌不可兼得的困扰。
 而ZGC是几乎无停顿的， 同时吞吐量也很高（比g1差点）。
@@ -454,9 +514,7 @@ https://crowhawk.github.io/2017/08/15/jvm_3/
 https://crowhawk.github.io/tags/#JVM
 http://huzb.me/2019/02/21/CMS-G1%E5%92%8CZGC/
 </code></pre>
-
-<h3 id="参数配置">参数配置</h3>
-
+<h3 id="heading-4">参数配置</h3>
 <pre><code>在启动JVM虚拟机时，可以通过一些参数设置选用哪个垃圾回收器，
 以及对该垃圾回收器，进行具体的配置。
 
@@ -468,270 +526,104 @@ https://docs.oracle.com/en/java/javase/11/gctuning/
 https://docs.oracle.com/javase/8/docs/technotes/guides/vm/gctuning/
 </code></pre>
 
-                        </div>
+    </div>
 
-                        
-
-
-                        
-
-<div class="post-archive">
-    <h2>See Also</h2>
-    <ul class="listing">
+    <div class="post-copyright">
+  <p class="copyright-item">
+    <span class="item-title">文章作者</span>
+    <span class="item-content">duansheli</span>
+  </p>
+  <p class="copyright-item">
+    <span class="item-title">上次更新</span>
+    <span class="item-content">
+        2018-07-14
         
-        <li><a href="/2018/07/08/classloader-modifiers-exception.html">类加载器加载的类不能创建对象</a></li>
-        
-        <li><a href="/2018/06/27/classloader-spi.html">SPI与contextclassloader</a></li>
-        
-        <li><a href="/2018/06/21/classloader-start.html">类加载器使用</a></li>
-        
-        <li><a href="/2018/06/05/proxy-rpc-02.html">动态代理-rpc示例-02</a></li>
-        
-        <li><a href="/2018/06/05/proxy-rpc-01.html">动态代理-rpc示例-01</a></li>
-        
-    </ul>
+    </span>
+  </p>
+  
+  
 </div>
-
-
-                        <div class="post-meta meta-tags">
-                            
-                            <ul class="clearfix">
-                                
-                                <li><a href="https://duansheli.github.io/tags/Java">Java</a></li>
-                                
-                                <li><a href="https://duansheli.github.io/tags/gc">gc</a></li>
-                                
-                            </ul>
-                            
-                        </div>
-                    </article>
-                    
-    
-
-    
-    
-                </div>
-            </div>
-            <div id="secondary">
-    <section class="widget">
-        <form id="search" action="//www.google.com/search" method="get" accept-charset="utf-8" target="_blank" _lpchecked="1">
-      
-      <input type="text" name="q" maxlength="20" placeholder="Search">
-      <input type="hidden" name="sitesearch" value="https://duansheli.github.io">
-      <button type="submit" class="submit icon-search"></button>
-</form>
-    </section>
-    
-    <section class="widget">
-        <h3 class="widget-title">最近文章</h3>
-<ul class="widget-list">
-    
-    <li>
-        <a href="https://duansheli.github.io/2019/12/20/akka-demo-concurrent.html" title="akka-并发任务">akka-并发任务</a>
-    </li>
-    
-    <li>
-        <a href="https://duansheli.github.io/2019/12/15/HOCON-java.html" title="HOCON配置文件读取">HOCON配置文件读取</a>
-    </li>
-    
-    <li>
-        <a href="https://duansheli.github.io/2019/11/16/jmh-dynamic-run.html" title="JMH-测试动态执行代码效率">JMH-测试动态执行代码效率</a>
-    </li>
-    
-    <li>
-        <a href="https://duansheli.github.io/2019/11/12/doh.html" title="群晖两步验证的关闭">群晖两步验证的关闭</a>
-    </li>
-    
-    <li>
-        <a href="https://duansheli.github.io/2019/11/10/benchmark-java-jmh.html" title="基准测试工具JMH-示例">基准测试工具JMH-示例</a>
-    </li>
-    
-    <li>
-        <a href="https://duansheli.github.io/2019/10/28/update-rule-by-scanner.html" title="使用drools的规则管理平台-02">使用drools的规则管理平台-02</a>
-    </li>
-    
-    <li>
-        <a href="https://duansheli.github.io/2019/10/27/update-rule-by-scanner.html" title="使用drools的规则管理平台-01">使用drools的规则管理平台-01</a>
-    </li>
-    
-    <li>
-        <a href="https://duansheli.github.io/2019/10/26/update-rule-by-scanner.html" title="自定义动态更新drools规则">自定义动态更新drools规则</a>
-    </li>
-    
-    <li>
-        <a href="https://duansheli.github.io/2019/10/13/download-m3u8-video-02.html" title="下载m3u8-aes128加密视频-02">下载m3u8-aes128加密视频-02</a>
-    </li>
-    
-    <li>
-        <a href="https://duansheli.github.io/2019/10/13/download-m3u8-video-01.html" title="下载m3u8-aes128加密视频-01">下载m3u8-aes128加密视频-01</a>
-    </li>
-    
-</ul>
-    </section>
-
-    
-
-    <section class="widget">
-        <h3 class="widget-title">分类</h3>
-<ul class="widget-list">
-    
-    <li>
-        <a href="https://duansheli.github.io/categories/JHM/">JHM(1)</a>
-    </li>
-    
-    <li>
-        <a href="https://duansheli.github.io/categories/JMH/">JMH(1)</a>
-    </li>
-    
-    <li>
-        <a href="https://duansheli.github.io/categories/Java%E6%B7%B1%E5%85%A5/">Java深入(8)</a>
-    </li>
-    
-    <li>
-        <a href="https://duansheli.github.io/categories/k8s%E9%9B%86%E7%BE%A4/">k8s集群(5)</a>
-    </li>
-    
-    <li>
-        <a href="https://duansheli.github.io/categories/scala%E5%B9%B6%E5%8F%91%E7%BC%96%E7%A8%8B/">scala并发编程(8)</a>
-    </li>
-    
-</ul>
-    </section>
-
-    <section class="widget">
-        <h3 class="widget-title">标签</h3>
-<div class="tagcloud">
-    
-    <a href="https://duansheli.github.io/tags/JHM/">JHM</a>
-    
-    <a href="https://duansheli.github.io/tags/JMH/">JMH</a>
-    
-    <a href="https://duansheli.github.io/tags/Java/">Java</a>
-    
-    <a href="https://duansheli.github.io/tags/classloader/">classloader</a>
-    
-    <a href="https://duansheli.github.io/tags/docker/">docker</a>
-    
-    <a href="https://duansheli.github.io/tags/drone/">drone</a>
-    
-    <a href="https://duansheli.github.io/tags/drools/">drools</a>
-    
-    <a href="https://duansheli.github.io/tags/dubbo/">dubbo</a>
-    
-    <a href="https://duansheli.github.io/tags/elasticsearch/">elasticsearch</a>
-    
-    <a href="https://duansheli.github.io/tags/ffmpeg/">ffmpeg</a>
-    
-    <a href="https://duansheli.github.io/tags/gc/">gc</a>
-    
-    <a href="https://duansheli.github.io/tags/git/">git</a>
-    
-    <a href="https://duansheli.github.io/tags/gradle/">gradle</a>
-    
-    <a href="https://duansheli.github.io/tags/hashids/">hashids</a>
-    
-    <a href="https://duansheli.github.io/tags/id/">id</a>
-    
-    <a href="https://duansheli.github.io/tags/java/">java</a>
-    
-    <a href="https://duansheli.github.io/tags/jdk/">jdk</a>
-    
-    <a href="https://duansheli.github.io/tags/jvm/">jvm</a>
-    
-    <a href="https://duansheli.github.io/tags/k8s/">k8s</a>
-    
-    <a href="https://duansheli.github.io/tags/kotlin/">kotlin</a>
-    
-    <a href="https://duansheli.github.io/tags/life/">life</a>
-    
-    <a href="https://duansheli.github.io/tags/linux/">linux</a>
-    
-    <a href="https://duansheli.github.io/tags/mysql/">mysql</a>
-    
-    <a href="https://duansheli.github.io/tags/proxy/">proxy</a>
-    
-    <a href="https://duansheli.github.io/tags/redis/">redis</a>
-    
-    <a href="https://duansheli.github.io/tags/rocketmq/">rocketmq</a>
-    
-    <a href="https://duansheli.github.io/tags/route/">route</a>
-    
-    <a href="https://duansheli.github.io/tags/scala/">scala</a>
-    
-    <a href="https://duansheli.github.io/tags/session/">session</a>
-    
-    <a href="https://duansheli.github.io/tags/shell/">shell</a>
-    
-    <a href="https://duansheli.github.io/tags/spring-boot/">spring-boot</a>
-    
-    <a href="https://duansheli.github.io/tags/spring-security/">spring-security</a>
-    
-    <a href="https://duansheli.github.io/tags/springboot/">springboot</a>
-    
-    <a href="https://duansheli.github.io/tags/zipkin/">zipkin</a>
-    
-    <a href="https://duansheli.github.io/tags/%E5%88%86%E5%B8%83%E5%BC%8F%E4%BA%8B%E5%8A%A1/">分布式事务</a>
-    
-    <a href="https://duansheli.github.io/tags/%E6%8C%81%E7%BB%AD%E9%9B%86%E6%88%90/">持续集成</a>
-    
-    <a href="https://duansheli.github.io/tags/%E7%99%BB%E5%BD%95/">登录</a>
-    
-</div>
-    </section>
-
-    
-
-    <section class="widget">
-        <h3 class="widget-title">其它</h3>
-        <ul class="widget-list">
-            <li><a href="https://duansheli.github.io/index.xml">文章 RSS</a></li>
-        </ul>
-    </section>
-</div>
+<footer class="post-footer">
+      <div class="post-tags">
+          <a href="/www.awslop.com/tags/java/">Java</a>
+          <a href="/www.awslop.com/tags/gc/">gc</a>
+          </div>
+      <nav class="post-nav">
+        <a class="prev" href="/www.awslop.com/2018/08/11/redis-lua.html">
+            <i class="iconfont icon-left"></i>
+            <span class="prev-text nav-default">redis使用lua脚本</span>
+            <span class="prev-text nav-mobile">上一篇</span>
+          </a>
+        <a class="next" href="/www.awslop.com/2018/07/08/classloader-modifiers-exception.html">
+            <span class="next-text nav-default">类加载器加载的类不能创建对象</span>
+            <span class="next-text nav-mobile">下一篇</span>
+            <i class="iconfont icon-right"></i>
+          </a>
+      </nav>
+    </footer>
+  </article>
         </div>
-    </div>
+        
+
+  
+
+  
+
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="social-links">
+      <a href="https://github.com/duansheli/" class="iconfont icon-github" title="github"></a>
+  <a href="/www.awslop.com/index.xml" type="application/rss+xml" class="iconfont icon-rss" title="rss"></a>
 </div>
-<footer id="footer">
-    <div class="container">
-        &copy; 2019 <a href="https://duansheli.github.io">断舍离的博客 By 断舍离</a>.
-        Powered by <a rel="nofollow noreferer noopener" href="https://gohugo.io" target="_blank">Hugo</a>.
-        <a href="https://www.flysnow.org/" target="_blank">Theme</a> based on <a href="https://github.com/rujews/maupassant-hugo" target="_blank">maupassant</a>.
-        
+
+<div class="copyright">
+  <span class="power-by">
+    由 <a class="hexo-link" href="https://gohugo.io">Hugo</a> 强力驱动
+  </span>
+  <span class="division">|</span>
+  <span class="theme-info">
+    主题 - 
+    <a class="theme-link" href="https://github.com/olOwOlo/hugo-theme-even">Even</a>
+  </span>
+
+  
+
+  <span class="copyright-year">
+    &copy; 
+    2017 - 
+    2019
+    <span class="heart">
+      <i class="iconfont icon-heart"></i>
+    </span>
+    <span class="author">duansheli</span>
+  </span>
+</div>
+    </footer>
+
+    <div class="back-to-top" id="back-to-top">
+      <i class="iconfont icon-up"></i>
     </div>
-</footer>
+  </div>
+  
+  <script src="https://cdn.jsdelivr.net/npm/jquery@3.2.1/dist/jquery.min.js" integrity="sha256-hwg4gsxgFZhOsEEamdOYGBf13FyQuiTwlAQgxVSNgt4=" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/slideout@1.0.1/dist/slideout.min.js" integrity="sha256-t+zJ/g8/KXIJMjSVQdnibt4dlaDxc9zXr/9oNPeWqdg=" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3.1.20/dist/jquery.fancybox.min.js" integrity="sha256-XVLffZaxoWfGUEbdzuLi7pwaUJv1cecsQJQqGLe7axY=" crossorigin="anonymous"></script>
+<script type="text/javascript" src="/www.awslop.com/dist/even.26188efa.min.js"></script>
 
-
-    
-    <script type="text/javascript">
-        
-        (function () {
-            $("pre code").parent().addClass("line-numbers")
-        }());
-
-        window.MathJax = {
-            tex2jax: {
-                inlineMath: [['$', '$']],
-                processEscapes: true
-                }
-            };
-    </script>
-    <script type="text/javascript" src="/js/prism.js" async="true"></script>
-    <script src='https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/MathJax.js?config=TeX-MML-AM_CHTML' async></script>
-
-
-<a id="rocket" href="#top"></a>
-<script type="text/javascript" src="/js/totop.js?v=0.0.0" async=""></script>
 
 <script type="application/javascript">
 var doNotTrack = false;
 if (!doNotTrack) {
 	window.ga=window.ga||function(){(ga.q=ga.q||[]).push(arguments)};ga.l=+new Date;
 	ga('create', 'GTM-NPJC8J2', 'auto');
-	
+	ga('set', 'anonymizeIp', true);
 	ga('send', 'pageview');
 }
 </script>
 <script async src='https://www.google-analytics.com/analytics.js'></script>
+
 
 
 

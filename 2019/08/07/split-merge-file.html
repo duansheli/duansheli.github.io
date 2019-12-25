@@ -1,606 +1,472 @@
-<!doctype html>
-<html lang="zh-CN">
+<!DOCTYPE html>
+<html lang="zh-cn">
 <head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+  <title>文件分割与合并 - 断舍离的博客</title>
+  <meta name="renderer" content="webkit" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
 
-    <meta charset="utf-8">
-    <meta name="generator" content="Hugo 0.59.0" />
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
 
-    <title>文件分割与合并 | 断舍离的博客</title>
-    <meta property="og:title" content="文件分割与合并 - 断舍离的博客">
-    <meta property="og:type" content="article">
-        
-    <meta property="article:published_time" content="2019-08-07T17:28:13&#43;08:00">
-        
-        
-    <meta property="article:modified_time" content="2019-08-07T17:28:13&#43;08:00">
-        
-    <meta name="Keywords" content="java,scala,spark,kubernetes">
-    <meta name="description" content="文件分割与合并">
-        
-    <meta name="author" content="断舍离">
-    <meta property="og:url" content="https://duansheli.github.io/2019/08/07/split-merge-file.html">
-    <link rel="shortcut icon" href="/favicon.ico" type="image/x-icon">
-
-    <link rel="stylesheet" href="/css/normalize.css">
-    
-        <link rel="stylesheet" href="/css/prism.css">
-    
-    <link rel="stylesheet" href="/css/style.css">
-    <script type="text/javascript" src="//cdnjs.cloudflare.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
-
-    
+<meta name="theme-color" content="#f8f5ec" />
+<meta name="msapplication-navbutton-color" content="#f8f5ec">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="#f8f5ec">
 
 
-    
-    
+<meta name="author" content="duansheli" /><meta name="description" content="简介 linux下的命令 dd、split 用于分割文件 cat命令用于合并文件 windows下使用 copy合并文件 linux下dd、split演示" /><meta name="keywords" content="scala, java, even" />
+
+
+
+
+
+
+<meta name="generator" content="Hugo 0.62.0 with theme even" />
+
+
+<link rel="canonical" href="/www.awslop.com/2019/08/07/split-merge-file.html" />
+<link rel="apple-touch-icon" sizes="180x180" href="/www.awslop.com/apple-touch-icon.png">
+<link rel="icon" type="image/png" sizes="32x32" href="/www.awslop.com/favicon-32x32.png">
+<link rel="icon" type="image/png" sizes="16x16" href="/www.awslop.com/favicon-16x16.png">
+<link rel="manifest" href="/www.awslop.com/manifest.json">
+<link rel="mask-icon" href="/www.awslop.com/safari-pinned-tab.svg" color="#5bbad5">
+
+
+<link href="/www.awslop.com/dist/even.c2a46f00.min.css" rel="stylesheet">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3.1.20/dist/jquery.fancybox.min.css" integrity="sha256-7TyXnr2YU040zfSP+rEcz29ggW4j56/ujTPwjMzyqFY=" crossorigin="anonymous">
+
+
+<meta property="og:title" content="文件分割与合并" />
+<meta property="og:description" content="简介 linux下的命令 dd、split 用于分割文件 cat命令用于合并文件 windows下使用 copy合并文件 linux下dd、split演示" />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="/www.awslop.com/2019/08/07/split-merge-file.html" />
+<meta property="article:published_time" content="2019-08-07T17:28:13+08:00" />
+<meta property="article:modified_time" content="2019-08-07T17:28:13+08:00" />
+<meta itemprop="name" content="文件分割与合并">
+<meta itemprop="description" content="简介 linux下的命令 dd、split 用于分割文件 cat命令用于合并文件 windows下使用 copy合并文件 linux下dd、split演示">
+<meta itemprop="datePublished" content="2019-08-07T17:28:13&#43;08:00" />
+<meta itemprop="dateModified" content="2019-08-07T17:28:13&#43;08:00" />
+<meta itemprop="wordCount" content="762">
+
+
+
+<meta itemprop="keywords" content="shell," /><meta name="twitter:card" content="summary"/>
+<meta name="twitter:title" content="文件分割与合并"/>
+<meta name="twitter:description" content="简介 linux下的命令 dd、split 用于分割文件 cat命令用于合并文件 windows下使用 copy合并文件 linux下dd、split演示"/>
+
+<!--[if lte IE 9]>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/classlist/1.1.20170427/classList.min.js"></script>
+<![endif]-->
+
+<!--[if lt IE 9]>
+  <script src="https://cdn.jsdelivr.net/npm/html5shiv@3.7.3/dist/html5shiv.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/respond.js@1.4.2/dest/respond.min.js"></script>
+<![endif]-->
+
 </head>
-
 <body>
-<header id="header" class="clearfix">
-    <div class="container">
-        <div class="col-group">
-            <div class="site-name ">
-                
-                    <a id="logo" href="https://duansheli.github.io">
-                        断舍离的博客
-                    </a>
-                
-                <p class="description">java, scala, spark, kubernetes</p>
-            </div>
-            <div>
-                <nav id="nav-menu" class="clearfix">
-                    <a class="" href="https://duansheli.github.io">首页</a>
-                    
-                    <a  href="https://duansheli.github.io/archives/" title="归档">归档</a>
-                    
-                </nav>
-            </div>
-        </div>
-    </div>
-</header>
-
-
-<div id="body">
-        
-        <div id="virtual_toc_list" style="display: none">
-            <nav id="TableOfContents">
-<ul>
-<li><a href="#简介">简介</a></li>
-<li><a href="#linux下dd-split演示">linux下dd、split演示</a>
-<ul>
-<li><a href="#命令整理">命令整理</a></li>
-<li><a href="#命令说明">命令说明</a></li>
-</ul></li>
-<li><a href="#windows下合并文件">windows下合并文件</a>
-<ul>
-<li><a href="#命令整理-1">命令整理</a></li>
-</ul></li>
-</ul>
+  <div id="mobile-navbar" class="mobile-navbar">
+  <div class="mobile-header-logo">
+    <a href="/www.awslop.com/" class="logo">Even</a>
+  </div>
+  <div class="mobile-navbar-icon">
+    <span></span>
+    <span></span>
+    <span></span>
+  </div>
+</div>
+<nav id="mobile-menu" class="mobile-menu slideout-menu">
+  <ul class="mobile-menu-list">
+    <a href="/www.awslop.com/">
+        <li class="mobile-menu-item">主页</li>
+      </a><a href="/www.awslop.com/post/">
+        <li class="mobile-menu-item">归档</li>
+      </a><a href="/www.awslop.com/tags/">
+        <li class="mobile-menu-item">标签</li>
+      </a><a href="/www.awslop.com/categories/">
+        <li class="mobile-menu-item">Categories</li>
+      </a>
+  </ul>
 </nav>
-        </div>
-        <div id="float_toc_div" style="margin: 10px;border: 1px solid gray;z-index:99999;display: none;">
-            <header style="background-color: #f3f3f3;color: black;border-bottom: 1px solid gray;padding: 10px 10px 10px 10px;">
-                <strong id="toc_btn_open" style="color: black;font-size: large;">目录</strong>
-                <strong id="toc_btn_close" style="color: black;font-size: large;float: right">╳</strong>
-            </header>
-            <div id="toc_list" style="background-color: #f3f3f3;color: black;padding: 10px;">
+  <div class="container" id="mobile-panel">
+    <header id="header" class="header">
+        <div class="logo-wrapper">
+  <a href="/www.awslop.com/" class="logo">Even</a>
+</div>
+
+<nav class="site-navbar">
+  <ul id="menu" class="menu">
+    <li class="menu-item">
+        <a class="menu-item-link" href="/www.awslop.com/">主页</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/www.awslop.com/post/">归档</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/www.awslop.com/tags/">标签</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/www.awslop.com/categories/">Categories</a>
+      </li>
+  </ul>
+</nav>
+    </header>
+
+    <main id="main" class="main">
+      <div class="content-wrapper">
+        <div id="content" class="content">
+          <article class="post">
+    
+    <header class="post-header">
+      <h1 class="post-title">文件分割与合并</h1>
+
+      <div class="post-meta">
+        <span class="post-time"> 2019-08-07 </span>
         
-            </div>
-        </div>
-        <style type="text/css">
-            #float_toc_div {
-                position: fixed;
-                display: none;
-                 
-                height: auto;
-                font-size: 13px;
-            }
+          <span class="more-meta"> 约 762 字 </span>
+          <span class="more-meta"> 预计阅读 2 分钟 </span>
         
-            #toc_list a:hover,
-            #toc_list a:active {
-                color: #ba3925;
-            }
-        </style>
-        <script>
-            window.onload = function () {
-                let tocNavElem = document.getElementById("TableOfContents");
-                let floatTocDivElem = document.getElementById("float_toc_div");
-                let tocListElem = floatTocDivElem.getElementsByTagName('div')[0];
-                let colGroupElem = document.getElementById("body").getElementsByClassName("col-group")[0]
-                let floatTocWidth = (document.body.clientWidth - colGroupElem.offsetWidth) / 2 - 16;
-                var useFloatToc = false;
+      </div>
+    </header>
 
-                if (floatTocWidth >= 100) {
-                    useFloatToc = true;
-                    document.getElementById("toc_list").appendChild(tocNavElem);
-                    floatTocDivElem.style.display = 'block';
-                    floatTocDivElem.style.width = floatTocWidth + 'px';
-                    top();
-                    floatTocDivElem.style.left = '0px';
+    <div class="post-toc" id="post-toc">
+  <h2 class="post-toc-title">文章目录</h2>
+  <div class="post-toc-content always-active">
+    <nav id="TableOfContents">
+  <ul>
+    <li><a href="#heading-1">命令整理</a></li>
+    <li><a href="#heading-2">命令说明</a></li>
+  </ul>
 
-                    function top() {
-                        if (document.getElementsByClassName('container')[0].offsetWidth <= 720) {
-                            floatTocDivElem.style.top = '0px';
-                        } else {
-                            floatTocDivElem.style.top = window.innerHeight / 9 + 'px';
-                        }
-                    }
-
-                    function ishide() {
-                        if (document.getElementsByClassName('container')[0].offsetWidth <= 720) {
-                            floatTocDivElem.style.top = '0px';
-                        } else {
-                            floatTocDivElem.style.display = 'block';
-                        }
-                    }
-
-                    window.onscroll = function () {
-                        ishide();
-                        if ((document.documentElement.scrollTop != 0) && (floatTocDivElem.style.display == 'block')) {
-                            top();
-                        }
-                    };
-
-                    window.onresize = function () {
-                        ishide();
-                    }
-
-                    document.getElementById("toc_btn_open").addEventListener('click', function () {
-                        switch (tocListElem.style.display) {
-                            case "none":
-                                document.getElementById("toc_btn_close").style.display = "";
-                                tocListElem.style.display = "";
-                                floatTocDivElem.getElementsByTagName("header")[0].style.borderBottom = "1px solid gray";
-                                break;
-                            default:
-                                break;
-                        }
-                    }, false);
-
-                    document.getElementById("toc_btn_close").addEventListener('click', function () {
-                        switch (tocListElem.style.display) {
-                            case "":
-                                document.getElementById("toc_btn_close").style.display = "none";
-                                tocListElem.style.display = "none";
-                                floatTocDivElem.getElementsByTagName("header")[0].style.borderBottom = "";
-                                break;
-                            default:
-                                break;
-                        }
-                    }, false);
-                } else {
-                    let fixedTocElem = document.getElementsByClassName("toc-article")[0];
-                    fixedTocElem.appendChild(tocNavElem);
-                    fixedTocElem.parentElement.style.display = "";
-                }
-                document.getElementById("virtual_toc_list").remove();
-            };   
-        </script>
-        
-    <div class="container">
-        <div class="col-group">
-
-            <div class="col-8" id="main">
-                <div class="res-cons">
-                    <article class="post">
-                        <header>
-                            <h1 class="post-title">文件分割与合并</h1>
-                        </header>
-                        <date class="post-meta meta-date">
-                            2019年8月7日
-                        </date>
-                        
-                        
-                        
-                        <div class="clear" style="display: none">
-                            <div class="toc-article">
-                                <div class="toc-title">文章目录</div>
-                            </div>
-                        </div>
-                        
-                        <div class="post-content">
-                            
-
-<h1 id="简介">简介</h1>
-
-<p>linux下的命令 dd、split 用于分割文件<br />
+  <ul>
+    <li><a href="#heading-3">命令整理</a></li>
+  </ul>
+</nav>
+  </div>
+</div>
+    <div class="post-content">
+      <h1 id="heading">简介</h1>
+<p>linux下的命令 dd、split 用于分割文件<br>
 cat命令用于合并文件</p>
-
 <p>windows下使用 copy合并文件</p>
-
-<h1 id="linux下dd-split演示">linux下dd、split演示</h1>
-
+<h1 id="linuxddsplit">linux下dd、split演示</h1>
 <p>测试文件 testfile 大小为 1004k
-使用 split 命令将其 每600k切为一个文件<br />
+使用 split 命令将其 每600k切为一个文件<br>
 然后使用cat命令合并</p>
-
-<p>使用 dd 命令将其 前700k复制为一个文件<br />
-剩余部分为一个复制为一个文件<br />
+<p>使用 dd 命令将其 前700k复制为一个文件<br>
+剩余部分为一个复制为一个文件<br>
 然后使用cat命令合并</p>
-
 <p>最后使用 sha1sum 验证文件是否相同</p>
-
-<pre><code class="language-bash">root@sharezx:/mnt# cp /bin/bash testfile
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span><span class="lnt">14
+</span><span class="lnt">15
+</span><span class="lnt">16
+</span><span class="lnt">17
+</span><span class="lnt">18
+</span><span class="lnt">19
+</span><span class="lnt">20
+</span><span class="lnt">21
+</span><span class="lnt">22
+</span><span class="lnt">23
+</span><span class="lnt">24
+</span><span class="lnt">25
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-bash" data-lang="bash">root@sharezx:/mnt# cp /bin/bash testfile
 root@sharezx:/mnt# du -k testfile
-1004    testfile
+<span class="m">1004</span>    testfile
 root@sharezx:/mnt# split -b 600k testfile sp_
 root@sharezx:/mnt# du -k sp_*
-600     sp_aa
-404     sp_ab
+<span class="m">600</span>     sp_aa
+<span class="m">404</span>     sp_ab
 root@sharezx:/mnt# cat sp_aa sp_ab &gt; new-tf-sp
 root@sharezx:/mnt#
-root@sharezx:/mnt# dd if=testfile of=dd-sp-01 bs=350k count=2
+root@sharezx:/mnt# dd <span class="k">if</span><span class="o">=</span>testfile <span class="nv">of</span><span class="o">=</span>dd-sp-01 <span class="nv">bs</span><span class="o">=</span>350k <span class="nv">count</span><span class="o">=</span>2
 2+0 records in
 2+0 records out
-716800 bytes (717 kB) copied, 0.00124676 s, 575 MB/s
-root@sharezx:/mnt# dd if=testfile of=dd-sp-02 bs=350k skip=2
+<span class="m">716800</span> bytes <span class="o">(</span><span class="m">717</span> kB<span class="o">)</span> copied, 0.00124676 s, <span class="m">575</span> MB/s
+root@sharezx:/mnt# dd <span class="k">if</span><span class="o">=</span>testfile <span class="nv">of</span><span class="o">=</span>dd-sp-02 <span class="nv">bs</span><span class="o">=</span>350k <span class="nv">skip</span><span class="o">=</span>2
 0+1 records in
 0+1 records out
-308056 bytes (308 kB) copied, 0.00061842 s, 498 MB/s
+<span class="m">308056</span> bytes <span class="o">(</span><span class="m">308</span> kB<span class="o">)</span> copied, 0.00061842 s, <span class="m">498</span> MB/s
 root@sharezx:/mnt# du -k dd-sp-*
-700     dd-sp-01
-304     dd-sp-02
+<span class="m">700</span>     dd-sp-01
+<span class="m">304</span>     dd-sp-02
 root@sharezx:/mnt# cat dd-sp-* &gt; new-tf-dd
 root@sharezx:/mnt# sha1sum testfile new-tf-*
 f841a2d1f609137788094b7c9f1441a30acb06f6  testfile
 f841a2d1f609137788094b7c9f1441a30acb06f6  new-tf-dd
 f841a2d1f609137788094b7c9f1441a30acb06f6  new-tf-sp
-</code></pre>
-
-<h2 id="命令整理">命令整理</h2>
-
+</code></pre></td></tr></table>
+</div>
+</div><h2 id="heading-1">命令整理</h2>
 <p>文件大小的单位
-K,M,G,T(以1024换算)<br />
+K,M,G,T(以1024换算)<br>
 或KB,MB,GB(以1000换算)等</p>
-
 <p>命令中都是用k为计数单位 注意不要加上b</p>
-
-<pre><code class="language-bash">cp /bin/bash testfile
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-bash" data-lang="bash">cp /bin/bash testfile
 du -k testfile
 
 split -b 600k testfile sp_
 du -k sp_*
 cat sp_aa sp_ab &gt; new-tf-sp
 
-dd if=testfile of=dd-sp-01 bs=350k count=2
-dd if=testfile of=dd-sp-02 bs=350k skip=2
+dd <span class="k">if</span><span class="o">=</span>testfile <span class="nv">of</span><span class="o">=</span>dd-sp-01 <span class="nv">bs</span><span class="o">=</span>350k <span class="nv">count</span><span class="o">=</span>2
+dd <span class="k">if</span><span class="o">=</span>testfile <span class="nv">of</span><span class="o">=</span>dd-sp-02 <span class="nv">bs</span><span class="o">=</span>350k <span class="nv">skip</span><span class="o">=</span>2
 du -k dd-sp-*
 cat dd-sp-* &gt; new-tf-dd
 
 sha1sum testfile new-tf-*
-</code></pre>
-
-<h2 id="命令说明">命令说明</h2>
-
+</code></pre></td></tr></table>
+</div>
+</div><h2 id="heading-2">命令说明</h2>
 <ul>
-<li><p>split
-命令分割文件后后缀默认为 aa、ab、ac<br />
-使用 -d 参数可调整为 00、01、02 数字格式</p></li>
-
-<li><p>dd
-该命令可以生成文件、分割文件、合并文件<br />
-第1个文件   bs=350k 即每次读取 count=2 执行次数为2次， 共复制700k数据<br />
-第2个文件   bs=350k skip=2 即跳过前700k数据，由于不知道后续文件大小，所以不指定count，即不限制次数</p></li>
+<li>
+<p>split 
+命令分割文件后后缀默认为 aa、ab、ac<br>
+使用 -d 参数可调整为 00、01、02 数字格式</p>
+</li>
+<li>
+<p>dd 
+该命令可以生成文件、分割文件、合并文件<br>
+第1个文件   bs=350k 即每次读取 count=2 执行次数为2次， 共复制700k数据<br>
+第2个文件   bs=350k skip=2 即跳过前700k数据，由于不知道后续文件大小，所以不指定count，即不限制次数</p>
+</li>
 </ul>
-
-<h1 id="windows下合并文件">windows下合并文件</h1>
-
-<pre><code class="language-bash">mnd@DESKTOP-1AC542D MINGW32 /e/myprogram/my_workspace/code_rep12/gos (master)
+<h1 id="windows">windows下合并文件</h1>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span><span class="lnt">14
+</span><span class="lnt">15
+</span><span class="lnt">16
+</span><span class="lnt">17
+</span><span class="lnt">18
+</span><span class="lnt">19
+</span><span class="lnt">20
+</span><span class="lnt">21
+</span><span class="lnt">22
+</span><span class="lnt">23
+</span><span class="lnt">24
+</span><span class="lnt">25
+</span><span class="lnt">26
+</span><span class="lnt">27
+</span><span class="lnt">28
+</span><span class="lnt">29
+</span><span class="lnt">30
+</span><span class="lnt">31
+</span><span class="lnt">32
+</span><span class="lnt">33
+</span><span class="lnt">34
+</span><span class="lnt">35
+</span><span class="lnt">36
+</span><span class="lnt">37
+</span><span class="lnt">38
+</span><span class="lnt">39
+</span><span class="lnt">40
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-bash" data-lang="bash">mnd@DESKTOP-1AC542D MINGW32 /e/myprogram/my_workspace/code_rep12/gos <span class="o">(</span>master<span class="o">)</span>
 $ du -k wtestfile
-1028    wtestfile
+<span class="m">1028</span>    wtestfile
 
-mnd@DESKTOP-1AC542D MINGW32 /e/myprogram/my_workspace/code_rep12/gos (master)
+mnd@DESKTOP-1AC542D MINGW32 /e/myprogram/my_workspace/code_rep12/gos <span class="o">(</span>master<span class="o">)</span>
 $ split.exe -d -b 400k wtestfile wsp_
 
-mnd@DESKTOP-1AC542D MINGW32 /e/myprogram/my_workspace/code_rep12/gos (master)
+mnd@DESKTOP-1AC542D MINGW32 /e/myprogram/my_workspace/code_rep12/gos <span class="o">(</span>master<span class="o">)</span>
 $ du -k wsp_*
-400     wsp_00
-400     wsp_01
-228     wsp_02
+<span class="m">400</span>     wsp_00
+<span class="m">400</span>     wsp_01
+<span class="m">228</span>     wsp_02
 
-mnd@DESKTOP-1AC542D MINGW32 /e/myprogram/my_workspace/code_rep12/gos (master)
+mnd@DESKTOP-1AC542D MINGW32 /e/myprogram/my_workspace/code_rep12/gos <span class="o">(</span>master<span class="o">)</span>
 $ cmd
-Microsoft Windows [版本 10.0.18362.267]
-(c) 2019 Microsoft Corporation。保留所有权利。
+Microsoft Windows <span class="o">[</span>版本 10.0.18362.267<span class="o">]</span>
+<span class="o">(</span>c<span class="o">)</span> <span class="m">2019</span> Microsoft Corporation。保留所有权利。
 
-E:\myprogram\my_workspace\code_rep12\gos&gt;copy /b wsp_00 + wsp_01 + wsp_02 new-a
+E:<span class="se">\m</span>yprogram<span class="se">\m</span>y_workspace<span class="se">\c</span>ode_rep12<span class="se">\g</span>os&gt;copy /b wsp_00 + wsp_01 + wsp_02 new-a
 copy /b wsp_00 + wsp_01 + wsp_02 new-a
 wsp_00
 wsp_01
 wsp_02
-已复制         1 个文件。
+已复制         <span class="m">1</span> 个文件。
 
-E:\myprogram\my_workspace\code_rep12\gos&gt;copy /b wsp_* new-b
+E:<span class="se">\m</span>yprogram<span class="se">\m</span>y_workspace<span class="se">\c</span>ode_rep12<span class="se">\g</span>os&gt;copy /b wsp_* new-b
 copy /b wsp_* new-b
 wsp_00
 wsp_01
 wsp_02
-已复制         1 个文件。
+已复制         <span class="m">1</span> 个文件。
 
-E:\myprogram\my_workspace\code_rep12\gos&gt;exit
-exit
+E:<span class="se">\m</span>yprogram<span class="se">\m</span>y_workspace<span class="se">\c</span>ode_rep12<span class="se">\g</span>os&gt;exit
+<span class="nb">exit</span>
 
-mnd@DESKTOP-1AC542D MINGW32 /e/myprogram/my_workspace/code_rep12/gos (master)
+mnd@DESKTOP-1AC542D MINGW32 /e/myprogram/my_workspace/code_rep12/gos <span class="o">(</span>master<span class="o">)</span>
 $ sha1sum.exe wtestfile new-*
 fa0536e5b72c534ce6989070782fa9052cf4232b *wtestfile
 fa0536e5b72c534ce6989070782fa9052cf4232b *new-a
 fa0536e5b72c534ce6989070782fa9052cf4232b *new-b
-</code></pre>
-
-<h2 id="命令整理-1">命令整理</h2>
-
-<pre><code class="language-bash">du -k wtestfile
+</code></pre></td></tr></table>
+</div>
+</div><h2 id="heading-3">命令整理</h2>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span><span class="lnt">5
+</span><span class="lnt">6
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-bash" data-lang="bash">du -k wtestfile
 split.exe -d -b 400k wtestfile wsp_
 du -k wsp_*
 
 copy /b wsp_00 + wsp_01 + wsp_02 new-a
 copy /b wsp_* new-b
-</code></pre>
-
-                        </div>
-
-                        
-
-
-                        
-
-<div class="post-archive">
-    <h2>See Also</h2>
-    <ul class="listing">
-        
-        <li><a href="/2019/08/02/k8s-cluster-setup-02.html">mysql物理备份与还原示例</a></li>
-        
-        <li><a href="/2019/07/06/check-credit.html">github搜开源项目技巧</a></li>
-        
-        <li><a href="/2019/07/06/check-credit.html">Github 最简单的认证方式 - Access Token[转]</a></li>
-        
-        <li><a href="/2019/06/27/k8s-ingress-controller.html">k8s-外部访问ingress</a></li>
-        
-        <li><a href="/2019/06/21/gradle-task-learn.html">gradle-task使用</a></li>
-        
-    </ul>
+</code></pre></td></tr></table>
 </div>
-
-
-                        <div class="post-meta meta-tags">
-                            
-                            <ul class="clearfix">
-                                
-                                <li><a href="https://duansheli.github.io/tags/shell">shell</a></li>
-                                
-                            </ul>
-                            
-                        </div>
-                    </article>
-                    
-    
-
-    
-    
-                </div>
-            </div>
-            <div id="secondary">
-    <section class="widget">
-        <form id="search" action="//www.google.com/search" method="get" accept-charset="utf-8" target="_blank" _lpchecked="1">
-      
-      <input type="text" name="q" maxlength="20" placeholder="Search">
-      <input type="hidden" name="sitesearch" value="https://duansheli.github.io">
-      <button type="submit" class="submit icon-search"></button>
-</form>
-    </section>
-    
-    <section class="widget">
-        <h3 class="widget-title">最近文章</h3>
-<ul class="widget-list">
-    
-    <li>
-        <a href="https://duansheli.github.io/2019/12/20/akka-demo-concurrent.html" title="akka-并发任务">akka-并发任务</a>
-    </li>
-    
-    <li>
-        <a href="https://duansheli.github.io/2019/12/15/HOCON-java.html" title="HOCON配置文件读取">HOCON配置文件读取</a>
-    </li>
-    
-    <li>
-        <a href="https://duansheli.github.io/2019/11/16/jmh-dynamic-run.html" title="JMH-测试动态执行代码效率">JMH-测试动态执行代码效率</a>
-    </li>
-    
-    <li>
-        <a href="https://duansheli.github.io/2019/11/12/doh.html" title="群晖两步验证的关闭">群晖两步验证的关闭</a>
-    </li>
-    
-    <li>
-        <a href="https://duansheli.github.io/2019/11/10/benchmark-java-jmh.html" title="基准测试工具JMH-示例">基准测试工具JMH-示例</a>
-    </li>
-    
-    <li>
-        <a href="https://duansheli.github.io/2019/10/28/update-rule-by-scanner.html" title="使用drools的规则管理平台-02">使用drools的规则管理平台-02</a>
-    </li>
-    
-    <li>
-        <a href="https://duansheli.github.io/2019/10/27/update-rule-by-scanner.html" title="使用drools的规则管理平台-01">使用drools的规则管理平台-01</a>
-    </li>
-    
-    <li>
-        <a href="https://duansheli.github.io/2019/10/26/update-rule-by-scanner.html" title="自定义动态更新drools规则">自定义动态更新drools规则</a>
-    </li>
-    
-    <li>
-        <a href="https://duansheli.github.io/2019/10/13/download-m3u8-video-02.html" title="下载m3u8-aes128加密视频-02">下载m3u8-aes128加密视频-02</a>
-    </li>
-    
-    <li>
-        <a href="https://duansheli.github.io/2019/10/13/download-m3u8-video-01.html" title="下载m3u8-aes128加密视频-01">下载m3u8-aes128加密视频-01</a>
-    </li>
-    
-</ul>
-    </section>
-
-    
-
-    <section class="widget">
-        <h3 class="widget-title">分类</h3>
-<ul class="widget-list">
-    
-    <li>
-        <a href="https://duansheli.github.io/categories/JHM/">JHM(1)</a>
-    </li>
-    
-    <li>
-        <a href="https://duansheli.github.io/categories/JMH/">JMH(1)</a>
-    </li>
-    
-    <li>
-        <a href="https://duansheli.github.io/categories/Java%E6%B7%B1%E5%85%A5/">Java深入(8)</a>
-    </li>
-    
-    <li>
-        <a href="https://duansheli.github.io/categories/k8s%E9%9B%86%E7%BE%A4/">k8s集群(5)</a>
-    </li>
-    
-    <li>
-        <a href="https://duansheli.github.io/categories/scala%E5%B9%B6%E5%8F%91%E7%BC%96%E7%A8%8B/">scala并发编程(8)</a>
-    </li>
-    
-</ul>
-    </section>
-
-    <section class="widget">
-        <h3 class="widget-title">标签</h3>
-<div class="tagcloud">
-    
-    <a href="https://duansheli.github.io/tags/JHM/">JHM</a>
-    
-    <a href="https://duansheli.github.io/tags/JMH/">JMH</a>
-    
-    <a href="https://duansheli.github.io/tags/Java/">Java</a>
-    
-    <a href="https://duansheli.github.io/tags/classloader/">classloader</a>
-    
-    <a href="https://duansheli.github.io/tags/docker/">docker</a>
-    
-    <a href="https://duansheli.github.io/tags/drone/">drone</a>
-    
-    <a href="https://duansheli.github.io/tags/drools/">drools</a>
-    
-    <a href="https://duansheli.github.io/tags/dubbo/">dubbo</a>
-    
-    <a href="https://duansheli.github.io/tags/elasticsearch/">elasticsearch</a>
-    
-    <a href="https://duansheli.github.io/tags/ffmpeg/">ffmpeg</a>
-    
-    <a href="https://duansheli.github.io/tags/gc/">gc</a>
-    
-    <a href="https://duansheli.github.io/tags/git/">git</a>
-    
-    <a href="https://duansheli.github.io/tags/gradle/">gradle</a>
-    
-    <a href="https://duansheli.github.io/tags/hashids/">hashids</a>
-    
-    <a href="https://duansheli.github.io/tags/id/">id</a>
-    
-    <a href="https://duansheli.github.io/tags/java/">java</a>
-    
-    <a href="https://duansheli.github.io/tags/jdk/">jdk</a>
-    
-    <a href="https://duansheli.github.io/tags/jvm/">jvm</a>
-    
-    <a href="https://duansheli.github.io/tags/k8s/">k8s</a>
-    
-    <a href="https://duansheli.github.io/tags/kotlin/">kotlin</a>
-    
-    <a href="https://duansheli.github.io/tags/life/">life</a>
-    
-    <a href="https://duansheli.github.io/tags/linux/">linux</a>
-    
-    <a href="https://duansheli.github.io/tags/mysql/">mysql</a>
-    
-    <a href="https://duansheli.github.io/tags/proxy/">proxy</a>
-    
-    <a href="https://duansheli.github.io/tags/redis/">redis</a>
-    
-    <a href="https://duansheli.github.io/tags/rocketmq/">rocketmq</a>
-    
-    <a href="https://duansheli.github.io/tags/route/">route</a>
-    
-    <a href="https://duansheli.github.io/tags/scala/">scala</a>
-    
-    <a href="https://duansheli.github.io/tags/session/">session</a>
-    
-    <a href="https://duansheli.github.io/tags/shell/">shell</a>
-    
-    <a href="https://duansheli.github.io/tags/spring-boot/">spring-boot</a>
-    
-    <a href="https://duansheli.github.io/tags/spring-security/">spring-security</a>
-    
-    <a href="https://duansheli.github.io/tags/springboot/">springboot</a>
-    
-    <a href="https://duansheli.github.io/tags/zipkin/">zipkin</a>
-    
-    <a href="https://duansheli.github.io/tags/%E5%88%86%E5%B8%83%E5%BC%8F%E4%BA%8B%E5%8A%A1/">分布式事务</a>
-    
-    <a href="https://duansheli.github.io/tags/%E6%8C%81%E7%BB%AD%E9%9B%86%E6%88%90/">持续集成</a>
-    
-    <a href="https://duansheli.github.io/tags/%E7%99%BB%E5%BD%95/">登录</a>
-    
 </div>
-    </section>
+    </div>
 
-    
-
-    <section class="widget">
-        <h3 class="widget-title">其它</h3>
-        <ul class="widget-list">
-            <li><a href="https://duansheli.github.io/index.xml">文章 RSS</a></li>
-        </ul>
-    </section>
+    <div class="post-copyright">
+  <p class="copyright-item">
+    <span class="item-title">文章作者</span>
+    <span class="item-content">duansheli</span>
+  </p>
+  <p class="copyright-item">
+    <span class="item-title">上次更新</span>
+    <span class="item-content">
+        2019-08-07
+        
+    </span>
+  </p>
+  
+  
 </div>
+<footer class="post-footer">
+      <div class="post-tags">
+          <a href="/www.awslop.com/tags/shell/">shell</a>
+          </div>
+      <nav class="post-nav">
+        <a class="prev" href="/www.awslop.com/2019/08/16/hashids-usage.html">
+            <i class="iconfont icon-left"></i>
+            <span class="prev-text nav-default">激活码的生成</span>
+            <span class="prev-text nav-mobile">上一篇</span>
+          </a>
+        <a class="next" href="/www.awslop.com/2019/08/02/k8s-cluster-setup-02.html">
+            <span class="next-text nav-default">mysql物理备份与还原示例</span>
+            <span class="next-text nav-mobile">下一篇</span>
+            <i class="iconfont icon-right"></i>
+          </a>
+      </nav>
+    </footer>
+  </article>
         </div>
-    </div>
+        
+
+  
+
+  
+
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="social-links">
+      <a href="https://github.com/duansheli/" class="iconfont icon-github" title="github"></a>
+  <a href="/www.awslop.com/index.xml" type="application/rss+xml" class="iconfont icon-rss" title="rss"></a>
 </div>
-<footer id="footer">
-    <div class="container">
-        &copy; 2019 <a href="https://duansheli.github.io">断舍离的博客 By 断舍离</a>.
-        Powered by <a rel="nofollow noreferer noopener" href="https://gohugo.io" target="_blank">Hugo</a>.
-        <a href="https://www.flysnow.org/" target="_blank">Theme</a> based on <a href="https://github.com/rujews/maupassant-hugo" target="_blank">maupassant</a>.
-        
+
+<div class="copyright">
+  <span class="power-by">
+    由 <a class="hexo-link" href="https://gohugo.io">Hugo</a> 强力驱动
+  </span>
+  <span class="division">|</span>
+  <span class="theme-info">
+    主题 - 
+    <a class="theme-link" href="https://github.com/olOwOlo/hugo-theme-even">Even</a>
+  </span>
+
+  
+
+  <span class="copyright-year">
+    &copy; 
+    2017 - 
+    2019
+    <span class="heart">
+      <i class="iconfont icon-heart"></i>
+    </span>
+    <span class="author">duansheli</span>
+  </span>
+</div>
+    </footer>
+
+    <div class="back-to-top" id="back-to-top">
+      <i class="iconfont icon-up"></i>
     </div>
-</footer>
+  </div>
+  
+  <script src="https://cdn.jsdelivr.net/npm/jquery@3.2.1/dist/jquery.min.js" integrity="sha256-hwg4gsxgFZhOsEEamdOYGBf13FyQuiTwlAQgxVSNgt4=" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/slideout@1.0.1/dist/slideout.min.js" integrity="sha256-t+zJ/g8/KXIJMjSVQdnibt4dlaDxc9zXr/9oNPeWqdg=" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3.1.20/dist/jquery.fancybox.min.js" integrity="sha256-XVLffZaxoWfGUEbdzuLi7pwaUJv1cecsQJQqGLe7axY=" crossorigin="anonymous"></script>
+<script type="text/javascript" src="/www.awslop.com/dist/even.26188efa.min.js"></script>
 
-
-    
-    <script type="text/javascript">
-        
-        (function () {
-            $("pre code").parent().addClass("line-numbers")
-        }());
-
-        window.MathJax = {
-            tex2jax: {
-                inlineMath: [['$', '$']],
-                processEscapes: true
-                }
-            };
-    </script>
-    <script type="text/javascript" src="/js/prism.js" async="true"></script>
-    <script src='https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/MathJax.js?config=TeX-MML-AM_CHTML' async></script>
-
-
-<a id="rocket" href="#top"></a>
-<script type="text/javascript" src="/js/totop.js?v=0.0.0" async=""></script>
 
 <script type="application/javascript">
 var doNotTrack = false;
 if (!doNotTrack) {
 	window.ga=window.ga||function(){(ga.q=ga.q||[]).push(arguments)};ga.l=+new Date;
 	ga('create', 'GTM-NPJC8J2', 'auto');
-	
+	ga('set', 'anonymizeIp', true);
 	ga('send', 'pageview');
 }
 </script>
 <script async src='https://www.google-analytics.com/analytics.js'></script>
+
 
 
 

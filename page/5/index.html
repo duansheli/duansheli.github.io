@@ -1,557 +1,286 @@
-<!doctype html>
-<html lang="zh-CN">
+<!DOCTYPE html>
+<html lang="zh-cn">
 <head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+  <title>断舍离的博客</title>
+  <meta name="renderer" content="webkit" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
 
-    <meta charset="utf-8">
-    <meta name="generator" content="Hugo 0.59.0" />
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
 
-    <title>断舍离的博客 | java, scala, spark, kubernetes</title>
-    <meta property="og:title" content="断舍离的博客 | java, scala, spark, kubernetes">
-    <meta property="og:type" content="website">
-    <meta name="Keywords" content="java,scala,spark,kubernetes">
-    <meta name="description" content="专注于IT互联网，包括但不限于Go语言(golang)、Java、Android、Python、项目管理、抖音分析、软件架构等">
-    <meta property="og:url" content="https://duansheli.github.io/">
-    <link rel="shortcut icon" href="/favicon.ico" type="image/x-icon">
-
-    <link rel="stylesheet" href="/css/normalize.css">
-    
-    <link rel="stylesheet" href="/css/style.css">
-    <link rel="alternate" type="application/rss+xml+xml" href="https://duansheli.github.io/index.xml" title="断舍离的博客" />
-    <script type="text/javascript" src="//cdnjs.cloudflare.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
-
-    
+<meta name="theme-color" content="#f8f5ec" />
+<meta name="msapplication-navbutton-color" content="#f8f5ec">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="#f8f5ec">
 
 
-    
-    
+<meta name="author" content="duansheli" /><meta name="description" content="Hugo theme even example site." /><meta name="keywords" content="scala, java, even" />
+
+
+
+
+
+
+<meta name="generator" content="Hugo 0.62.0 with theme even" />
+
+
+<link rel="canonical" href="/www.awslop.com/" />
+  <link href="/www.awslop.com/index.xml" rel="alternate" type="application/rss+xml" title="断舍离的博客" />
+  <link href="/www.awslop.com/index.xml" rel="feed" type="application/rss+xml" title="断舍离的博客" />
+<link rel="apple-touch-icon" sizes="180x180" href="/www.awslop.com/apple-touch-icon.png">
+<link rel="icon" type="image/png" sizes="32x32" href="/www.awslop.com/favicon-32x32.png">
+<link rel="icon" type="image/png" sizes="16x16" href="/www.awslop.com/favicon-16x16.png">
+<link rel="manifest" href="/www.awslop.com/manifest.json">
+<link rel="mask-icon" href="/www.awslop.com/safari-pinned-tab.svg" color="#5bbad5">
+
+
+<link href="/www.awslop.com/dist/even.c2a46f00.min.css" rel="stylesheet">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3.1.20/dist/jquery.fancybox.min.css" integrity="sha256-7TyXnr2YU040zfSP+rEcz29ggW4j56/ujTPwjMzyqFY=" crossorigin="anonymous">
+
+
+<meta property="og:title" content="断舍离的博客" />
+<meta property="og:description" content="Hugo theme even example site." />
+<meta property="og:type" content="website" />
+<meta property="og:url" content="/www.awslop.com/" />
+<meta property="og:updated_time" content="2019-12-20T17:28:13+08:00" />
+<meta itemprop="name" content="断舍离的博客">
+<meta itemprop="description" content="Hugo theme even example site."><meta name="twitter:card" content="summary"/>
+<meta name="twitter:title" content="断舍离的博客"/>
+<meta name="twitter:description" content="Hugo theme even example site."/>
+
+<!--[if lte IE 9]>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/classlist/1.1.20170427/classList.min.js"></script>
+<![endif]-->
+
+<!--[if lt IE 9]>
+  <script src="https://cdn.jsdelivr.net/npm/html5shiv@3.7.3/dist/html5shiv.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/respond.js@1.4.2/dest/respond.min.js"></script>
+<![endif]-->
+
 </head>
-
-
 <body>
-<header id="header" class="clearfix">
-    <div class="container">
-        <div class="col-group">
-            <div class="site-name ">
-                
-                    <h1>
-                        <a id="logo" href="https://duansheli.github.io">
-                            断舍离的博客
-                        </a>
-                    </h1>
-                
-                <p class="description">java, scala, spark, kubernetes</p>
-            </div>
-            <div>
-                <nav id="nav-menu" class="clearfix">
-                    <a class="current" href="https://duansheli.github.io">首页</a>
-                    
-                    <a  href="https://duansheli.github.io/archives/" title="归档">归档</a>
-                    
-                </nav>
-            </div>
-        </div>
-    </div>
-</header>
+  <div id="mobile-navbar" class="mobile-navbar">
+  <div class="mobile-header-logo">
+    <a href="/www.awslop.com/" class="logo">Even</a>
+  </div>
+  <div class="mobile-navbar-icon">
+    <span></span>
+    <span></span>
+    <span></span>
+  </div>
+</div>
+<nav id="mobile-menu" class="mobile-menu slideout-menu">
+  <ul class="mobile-menu-list">
+    <a href="/www.awslop.com/">
+        <li class="mobile-menu-item">主页</li>
+      </a><a href="/www.awslop.com/post/">
+        <li class="mobile-menu-item">归档</li>
+      </a><a href="/www.awslop.com/tags/">
+        <li class="mobile-menu-item">标签</li>
+      </a><a href="/www.awslop.com/categories/">
+        <li class="mobile-menu-item">Categories</li>
+      </a>
+  </ul>
+</nav>
+  <div class="container" id="mobile-panel">
+    <header id="header" class="header">
+        <div class="logo-wrapper">
+  <a href="/www.awslop.com/" class="logo">Even</a>
+</div>
 
+<nav class="site-navbar">
+  <ul id="menu" class="menu">
+    <li class="menu-item">
+        <a class="menu-item-link" href="/www.awslop.com/">主页</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/www.awslop.com/post/">归档</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/www.awslop.com/tags/">标签</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/www.awslop.com/categories/">Categories</a>
+      </li>
+  </ul>
+</nav>
+    </header>
 
-<div id="body">
-    <div class="container">
-        <div class="col-group">
-
-            <div class="col-8" id="main">
-                <div class="res-cons">
-                    
-		    
-                        <article class="post">
-                            <header>
-                                <h1 class="post-title">
-                                    <a href="https://duansheli.github.io/2019/02/03/drone-ci-github-pages.html" title="drone持续集成-发布github pages" >drone持续集成-发布github pages</a>
-                                </h1>
-                            </header>
-                            <date class="post-meta meta-date">
-                                2019年2月3日
-                            </date>
-                            
-                            <div class="post-content">
-                                <p>docker持续集成-drone发布静态博客<br />
-将hugo产生的静态页面推送到github<br />
-并通知到钉钉群</p>……
-                            </div>
-                            <p class="readmore"><a href="https://duansheli.github.io/2019/02/03/drone-ci-github-pages.html">阅读全文</a></p>
-                        </article>
-                    
-                    
-		    
-                        <article class="post">
-                            <header>
-                                <h1 class="post-title">
-                                    <a href="https://duansheli.github.io/2019/01/01/connect-container-ip.html" title="跨宿主机与docker容器通信" >跨宿主机与docker容器通信</a>
-                                </h1>
-                            </header>
-                            <date class="post-meta meta-date">
-                                2019年2月1日
-                            </date>
-                            
-                            <div class="post-content">
-                                <p>有一些应用只需要1个端口就能访问<br />
-比如 nginx</p>
-
-<p>而有一些应用的搭建都是由多个节点搭建的<br />
-比如hadoop 当访问hdfs的时候 访问的不仅仅用port还会用ip<br />
-这时后端口映射就不那么好使了</p>……
-                            </div>
-                            <p class="readmore"><a href="https://duansheli.github.io/2019/01/01/connect-container-ip.html">阅读全文</a></p>
-                        </article>
-                    
-                    
-		    
-                        <article class="post">
-                            <header>
-                                <h1 class="post-title">
-                                    <a href="https://duansheli.github.io/2019/01/16/gradle-init-learn.html" title="gradle-全局init" >gradle-全局init</a>
-                                </h1>
-                            </header>
-                            <date class="post-meta meta-date">
-                                2019年1月16日
-                            </date>
-                            
-                            <div class="post-content">
-                                官方文档 https://docs.gradle.org/5.1.1/userguide/init_scripts.html
-全局脚本位置 通过参数指定脚本 &ndash;init-script 或 -I （大写的i） 如 gradle -I init.gradle package
-存放在 USER_HOME/.gradle/ 目录下
-文件名为 init.gradle 或者 init.……
-                            </div>
-                            <p class="readmore"><a href="https://duansheli.github.io/2019/01/16/gradle-init-learn.html">阅读全文</a></p>
-                        </article>
-                    
-                    
-		    
-                        <article class="post">
-                            <header>
-                                <h1 class="post-title">
-                                    <a href="https://duansheli.github.io/2019/01/15/docker-useful-cmd.html" title="docker常用操作" >docker常用操作</a>
-                                </h1>
-                            </header>
-                            <date class="post-meta meta-date">
-                                2019年1月15日
-                            </date>
-                            
-                            <div class="post-content">
-                                docker常用操作 Dockerfile编写 编写一般不会一次就完成，常常会出错
-Sending build context to Docker daemon 5.902MB Step 1/10 : FROM docker:git as builder ---&gt; 9be5c3cd302c Step 2/10 : RUN git clone https://github.……
-                            </div>
-                            <p class="readmore"><a href="https://duansheli.github.io/2019/01/15/docker-useful-cmd.html">阅读全文</a></p>
-                        </article>
-                    
-                    
-		    
-                        <article class="post">
-                            <header>
-                                <h1 class="post-title">
-                                    <a href="https://duansheli.github.io/2018/01/06/unzip-no-copy.html" title="压缩包解压时不使用临时目录" >压缩包解压时不使用临时目录</a>
-                                </h1>
-                            </header>
-                            <date class="post-meta meta-date">
-                                2019年1月6日
-                            </date>
-                            
-                            <div class="post-content">
-                                平时主要用 firefox 和 chrome
-举例描述 比如下载了一个压缩包 apache-tomcat-7.0.96-windows-x86.zip
-文件放在C盘的download文件夹下
-通常的操作是 双击打开压缩包 文件浏览器打开希望解压的位置 比如 d://myprogram 此时再从压缩包中拖动要解压的文件到 d://myprogram 文件夹中
-在解压的过程中 d://myprogram 中不会有文件夹 apache-tomcat-7.……
-                            </div>
-                            <p class="readmore"><a href="https://duansheli.github.io/2018/01/06/unzip-no-copy.html">阅读全文</a></p>
-                        </article>
-                    
-                    
-		    
-                        <article class="post">
-                            <header>
-                                <h1 class="post-title">
-                                    <a href="https://duansheli.github.io/2019/01/03/k8s-cluster-setup-03.html" title="k8s搭建集群3-异常解决" >k8s搭建集群3-异常解决</a>
-                                </h1>
-                            </header>
-                            <date class="post-meta meta-date">
-                                2019年1月3日
-                            </date>
-                            
-                            <div class="post-meta">
-                                <span>|</span>
-                                
-                                <span class="meta-category"><a href="https://duansheli.github.io/categories/k8s%E9%9B%86%E7%BE%A4">k8s集群</a></span>
-                                
-                            </div>
-                            
-                            <div class="post-content">
-                                出错恢复 没遇到报错可以跳过
-安装过程中可能有一些异常
-查看所有的pod分布情况 kubectl get pods -n kube-system -o wide -l k8s-app=kubernetes-dashboard  查看失败的镜像
-imageName=`kubectl describe -n kube-system pod -l k8s-app=kubernetes-dashboard | grep Image: | awk '{print $2 }' ` kubectl describe -n kube-system pod -l k8s-app=kubernetes-dashboard  某个pod的详情 kubectl describe pod -l k8s-app=kubernetes-dashboard -n kube-system  出错日志 kubectl logs `kubectl get pods -n kube-system -l k8s-app=kubernetes-dashboard -o name` -n kube-system  报错描述提到 addr cni0 failed to set bridge addr: &ldquo;cni0&rdquo; already has an IP address different from 10.……
-                            </div>
-                            <p class="readmore"><a href="https://duansheli.github.io/2019/01/03/k8s-cluster-setup-03.html">阅读全文</a></p>
-                        </article>
-                    
-                    
-		    
-                        <article class="post">
-                            <header>
-                                <h1 class="post-title">
-                                    <a href="https://duansheli.github.io/2019/01/02/k8s-cluster-setup-02.html" title="k8s集群搭建-02" >k8s集群搭建-02</a>
-                                </h1>
-                            </header>
-                            <date class="post-meta meta-date">
-                                2019年1月2日
-                            </date>
-                            
-                            <div class="post-meta">
-                                <span>|</span>
-                                
-                                <span class="meta-category"><a href="https://duansheli.github.io/categories/k8s%E9%9B%86%E7%BE%A4">k8s集群</a></span>
-                                
-                            </div>
-                            
-                            <div class="post-content">
-                                <p>k8s集群好了 再添加一些相关的组件<br />
-dashboard helm helm的webui</p>……
-                            </div>
-                            <p class="readmore"><a href="https://duansheli.github.io/2019/01/02/k8s-cluster-setup-02.html">阅读全文</a></p>
-                        </article>
-                    
-                    
-		    
-                        <article class="post">
-                            <header>
-                                <h1 class="post-title">
-                                    <a href="https://duansheli.github.io/2019/01/01/k8s-cluster-setup-01.html" title="k8s集群搭建-01" >k8s集群搭建-01</a>
-                                </h1>
-                            </header>
-                            <date class="post-meta meta-date">
-                                2019年1月1日
-                            </date>
-                            
-                            <div class="post-meta">
-                                <span>|</span>
-                                
-                                <span class="meta-category"><a href="https://duansheli.github.io/categories/k8s%E9%9B%86%E7%BE%A4">k8s集群</a></span>
-                                
-                            </div>
-                            
-                            <div class="post-content">
-                                1. 目标 通过虚拟机搭建一个kubernetes集群
-共3个节点基于ubuntu
-2. 组件安装规划  宿主机: win10 vmware-v15
-ubuntu=v16.04.1
-docker=v18.06
-k8s=v1.12.6
-3个虚拟机节点=master,node1,node2
-系统镜像下载
- 3. 安装系统环境  因为每个节点都需要安装docker kubeadm&hellip;等软件 以及各种配置……
-                            </div>
-                            <p class="readmore"><a href="https://duansheli.github.io/2019/01/01/k8s-cluster-setup-01.html">阅读全文</a></p>
-                        </article>
-                    
-                    
-		    
-                        <article class="post">
-                            <header>
-                                <h1 class="post-title">
-                                    <a href="https://duansheli.github.io/2018/10/16/ipv6-ip.html" title="ipv4下的回环地址在ipv6下的表示" >ipv4下的回环地址在ipv6下的表示</a>
-                                </h1>
-                            </header>
-                            <date class="post-meta meta-date">
-                                2018年10月16日
-                            </date>
-                            
-                            <div class="post-content">
-                                 回环地址 ipv4 127.0.0.1 ipv6 0:0:0:0:0:0:0:1 ipv6下简写 ::1  所有地址 ipv4 0.0.0.0 ipv6 0:0:0:0:0:0:0:0 ipv6下简写 ::  ……
-                            </div>
-                            <p class="readmore"><a href="https://duansheli.github.io/2018/10/16/ipv6-ip.html">阅读全文</a></p>
-                        </article>
-                    
-                    
-		    
-                        <article class="post">
-                            <header>
-                                <h1 class="post-title">
-                                    <a href="https://duansheli.github.io/2018/10/15/future-convert-to-scala.html" title="scala并发编程-scala的future与java的互相转换" >scala并发编程-scala的future与java的互相转换</a>
-                                </h1>
-                            </header>
-                            <date class="post-meta meta-date">
-                                2018年10月15日
-                            </date>
-                            
-                            <div class="post-meta">
-                                <span>|</span>
-                                
-                                <span class="meta-category"><a href="https://duansheli.github.io/categories/scala%E5%B9%B6%E5%8F%91%E7%BC%96%E7%A8%8B">scala并发编程</a></span>
-                                
-                            </div>
-                            
-                            <div class="post-content">
-                                操作演示 简单上手 转换需要额外的包
-&lt;dependency&gt; &lt;groupId&gt;org.scala-lang.modules&lt;/groupId&gt; &lt;artifactId&gt;scala-java8-compat_2.12&lt;/artifactId&gt; &lt;version&gt;0.8.0&lt;/version&gt; &lt;/dependency&gt;  主要是 FutureConverters 的 .toScala() .toJava() 两个方法
-import java.time.{Duration =&gt; jduration} val request = HttpRequest.……
-                            </div>
-                            <p class="readmore"><a href="https://duansheli.github.io/2018/10/15/future-convert-to-scala.html">阅读全文</a></p>
-                        </article>
-                    
-                    
-                    
-
-
-
-<ol class="page-navigator">
-    
-    <li class="prev">
-        <a href="https://duansheli.github.io/page/4/">上一页</a>
-    </li>
-    
-
-    
-    <li >
-        <a href="https://duansheli.github.io/">1</a>
-    </li>
-    
-    <li >
-        <a href="https://duansheli.github.io/page/2/">2</a>
-    </li>
-    
-    <li >
-        <a href="https://duansheli.github.io/page/3/">3</a>
-    </li>
-    
-    <li >
-        <a href="https://duansheli.github.io/page/4/">4</a>
-    </li>
-    
-    <li  class="current">
-        <a href="https://duansheli.github.io/page/5/">5</a>
-    </li>
-    
-    <li >
-        <a href="https://duansheli.github.io/page/6/">6</a>
-    </li>
-    
-    <li >
-        <a href="https://duansheli.github.io/page/7/">7</a>
-    </li>
-    
-
-    
-    <li class="next">
-        <a href="https://duansheli.github.io/page/6/">下一页</a>
-    </li>
-    
-</ol>
-
-
-
-                </div>
-            </div>
-
-            <div id="secondary">
-    <section class="widget">
-        <form id="search" action="//www.google.com/search" method="get" accept-charset="utf-8" target="_blank" _lpchecked="1">
+    <main id="main" class="main">
+      <div class="content-wrapper">
+        <div id="content" class="content">
+          <section id="posts" class="posts">
+    <article class="post">
+  <header class="post-header">
+    <h1 class="post-title"><a class="post-link" href="/www.awslop.com/2019/07/06/check-credit.html">github搜开源项目技巧</a></h1>
+    <div class="post-meta">
+      <span class="post-time"> 2019-07-06 </span>
       
-      <input type="text" name="q" maxlength="20" placeholder="Search">
-      <input type="hidden" name="sitesearch" value="https://duansheli.github.io">
-      <button type="submit" class="submit icon-search"></button>
-</form>
-    </section>
-    
-    <section class="widget">
-        <h3 class="widget-title">最近文章</h3>
-<ul class="widget-list">
-    
-    <li>
-        <a href="https://duansheli.github.io/2019/12/20/akka-demo-concurrent.html" title="akka-并发任务">akka-并发任务</a>
-    </li>
-    
-    <li>
-        <a href="https://duansheli.github.io/2019/12/15/HOCON-java.html" title="HOCON配置文件读取">HOCON配置文件读取</a>
-    </li>
-    
-    <li>
-        <a href="https://duansheli.github.io/2019/11/16/jmh-dynamic-run.html" title="JMH-测试动态执行代码效率">JMH-测试动态执行代码效率</a>
-    </li>
-    
-    <li>
-        <a href="https://duansheli.github.io/2019/11/12/doh.html" title="群晖两步验证的关闭">群晖两步验证的关闭</a>
-    </li>
-    
-    <li>
-        <a href="https://duansheli.github.io/2019/11/10/benchmark-java-jmh.html" title="基准测试工具JMH-示例">基准测试工具JMH-示例</a>
-    </li>
-    
-    <li>
-        <a href="https://duansheli.github.io/2019/10/28/update-rule-by-scanner.html" title="使用drools的规则管理平台-02">使用drools的规则管理平台-02</a>
-    </li>
-    
-    <li>
-        <a href="https://duansheli.github.io/2019/10/27/update-rule-by-scanner.html" title="使用drools的规则管理平台-01">使用drools的规则管理平台-01</a>
-    </li>
-    
-    <li>
-        <a href="https://duansheli.github.io/2019/10/26/update-rule-by-scanner.html" title="自定义动态更新drools规则">自定义动态更新drools规则</a>
-    </li>
-    
-    <li>
-        <a href="https://duansheli.github.io/2019/10/13/download-m3u8-video-02.html" title="下载m3u8-aes128加密视频-02">下载m3u8-aes128加密视频-02</a>
-    </li>
-    
-    <li>
-        <a href="https://duansheli.github.io/2019/10/13/download-m3u8-video-01.html" title="下载m3u8-aes128加密视频-01">下载m3u8-aes128加密视频-01</a>
-    </li>
-    
-</ul>
-    </section>
+        <span class="more-meta"> 约 282 字 </span>
+        <span class="more-meta"> 预计阅读 1 分钟 </span>
+    </div>
+  </header>
+  
+  <div class="post-content">
+    <div class="post-summary">
+      主要使用高级搜索来实现精准搜索开源项目 一个仓库主要以下几部分 项目名称，项目描述 项目主要是什么语言的 根目录下的README.md 描述一些详情 常
+    </div>
+    <div class="read-more">
+      <a href="/www.awslop.com/2019/07/06/check-credit.html" class="read-more-link">阅读更多</a>
+    </div>
+  </div>
+</article>
 
-    
+    <article class="post">
+  <header class="post-header">
+    <h1 class="post-title"><a class="post-link" href="/www.awslop.com/2019/06/27/k8s-ingress-controller.html">k8s-外部访问ingress</a></h1>
+    <div class="post-meta">
+      <span class="post-time"> 2019-06-27 </span>
+      <div class="post-category">
+          <a href="/www.awslop.com/categories/k8s%E9%9B%86%E7%BE%A4/"> k8s集群 </a>
+          </div>
+        <span class="more-meta"> 约 484 字 </span>
+        <span class="more-meta"> 预计阅读 1 分钟 </span>
+    </div>
+  </header>
+  
+  <div class="post-content">
+    <div class="post-summary">
+      对外暴露服务 通常使用ingress作为前置入口 那如何配置 ingress-controller 与外界通信？ LoadBalancer 如果有云厂商的LoadBalancer， 那自然方便 各云厂商的实现可能
+    </div>
+    <div class="read-more">
+      <a href="/www.awslop.com/2019/06/27/k8s-ingress-controller.html" class="read-more-link">阅读更多</a>
+    </div>
+  </div>
+</article>
 
-    <section class="widget">
-        <h3 class="widget-title">分类</h3>
-<ul class="widget-list">
-    
-    <li>
-        <a href="https://duansheli.github.io/categories/JHM/">JHM(1)</a>
-    </li>
-    
-    <li>
-        <a href="https://duansheli.github.io/categories/JMH/">JMH(1)</a>
-    </li>
-    
-    <li>
-        <a href="https://duansheli.github.io/categories/Java%E6%B7%B1%E5%85%A5/">Java深入(8)</a>
-    </li>
-    
-    <li>
-        <a href="https://duansheli.github.io/categories/k8s%E9%9B%86%E7%BE%A4/">k8s集群(5)</a>
-    </li>
-    
-    <li>
-        <a href="https://duansheli.github.io/categories/scala%E5%B9%B6%E5%8F%91%E7%BC%96%E7%A8%8B/">scala并发编程(8)</a>
-    </li>
-    
-</ul>
+    <article class="post">
+  <header class="post-header">
+    <h1 class="post-title"><a class="post-link" href="/www.awslop.com/2019/06/21/gradle-task-learn.html">gradle-task使用</a></h1>
+    <div class="post-meta">
+      <span class="post-time"> 2019-06-21 </span>
+      
+        <span class="more-meta"> 约 1136 字 </span>
+        <span class="more-meta"> 预计阅读 3 分钟 </span>
+    </div>
+  </header>
+  
+  <div class="post-content">
+    <div class="post-summary">
+      gradle-task的使用 新建一个gradle-Java项目 工程创建 默认的 build.gradle 文件 1 2 3 4 5 6 7 8 9 10 11 12 13 14 15 16 plugins { id &#39;java&#39; } group &#39;fluffy.mo&#39; version &#39;1.0-SNAPSHOT&#39; sourceCompatibility = 1.8 repositories
+    </div>
+    <div class="read-more">
+      <a href="/www.awslop.com/2019/06/21/gradle-task-learn.html" class="read-more-link">阅读更多</a>
+    </div>
+  </div>
+</article>
+
+    <article class="post">
+  <header class="post-header">
+    <h1 class="post-title"><a class="post-link" href="/www.awslop.com/2019/02/10/jstack-demo.html">使用jstack分析线程-示例</a></h1>
+    <div class="post-meta">
+      <span class="post-time"> 2019-06-10 </span>
+      
+        <span class="more-meta"> 约 2251 字 </span>
+        <span class="more-meta"> 预计阅读 5 分钟 </span>
+    </div>
+  </header>
+  
+  <div class="post-content">
+    <div class="post-summary">
+      1. 使用jstack分析线程-示例 通过两个demo来学习如何使用jstack 1.1. 死锁 1.1.1. 死锁示例代码 1 2 3 4 5 6 7 8 9 10 11 12 13 14 15 16 17 18 19 20 21 22 23
+    </div>
+    <div class="read-more">
+      <a href="/www.awslop.com/2019/02/10/jstack-demo.html" class="read-more-link">阅读更多</a>
+    </div>
+  </div>
+</article>
+
+    <article class="post">
+  <header class="post-header">
+    <h1 class="post-title"><a class="post-link" href="/www.awslop.com/2019/06/05/check-credit.html">查查查-各类信用查询</a></h1>
+    <div class="post-meta">
+      <span class="post-time"> 2019-06-05 </span>
+      
+        <span class="more-meta"> 约 347 字 </span>
+        <span class="more-meta"> 预计阅读 1 分钟 </span>
+    </div>
+  </header>
+  
+  <div class="post-content">
+    <div class="post-summary">
+      中国执行信息公开网 可以查到一个人的失信记录 http://zxgk.court.gov.cn 全国标准信息公共服务平台 每个行业接触到的各种标准，包括行业标准、团体标准、国外标准，已废止的、现
+    </div>
+    <div class="read-more">
+      <a href="/www.awslop.com/2019/06/05/check-credit.html" class="read-more-link">阅读更多</a>
+    </div>
+  </div>
+</article>
+
     </section>
-
-    <section class="widget">
-        <h3 class="widget-title">标签</h3>
-<div class="tagcloud">
-    
-    <a href="https://duansheli.github.io/tags/JHM/">JHM</a>
-    
-    <a href="https://duansheli.github.io/tags/JMH/">JMH</a>
-    
-    <a href="https://duansheli.github.io/tags/Java/">Java</a>
-    
-    <a href="https://duansheli.github.io/tags/classloader/">classloader</a>
-    
-    <a href="https://duansheli.github.io/tags/docker/">docker</a>
-    
-    <a href="https://duansheli.github.io/tags/drone/">drone</a>
-    
-    <a href="https://duansheli.github.io/tags/drools/">drools</a>
-    
-    <a href="https://duansheli.github.io/tags/dubbo/">dubbo</a>
-    
-    <a href="https://duansheli.github.io/tags/elasticsearch/">elasticsearch</a>
-    
-    <a href="https://duansheli.github.io/tags/ffmpeg/">ffmpeg</a>
-    
-    <a href="https://duansheli.github.io/tags/gc/">gc</a>
-    
-    <a href="https://duansheli.github.io/tags/git/">git</a>
-    
-    <a href="https://duansheli.github.io/tags/gradle/">gradle</a>
-    
-    <a href="https://duansheli.github.io/tags/hashids/">hashids</a>
-    
-    <a href="https://duansheli.github.io/tags/id/">id</a>
-    
-    <a href="https://duansheli.github.io/tags/java/">java</a>
-    
-    <a href="https://duansheli.github.io/tags/jdk/">jdk</a>
-    
-    <a href="https://duansheli.github.io/tags/jvm/">jvm</a>
-    
-    <a href="https://duansheli.github.io/tags/k8s/">k8s</a>
-    
-    <a href="https://duansheli.github.io/tags/kotlin/">kotlin</a>
-    
-    <a href="https://duansheli.github.io/tags/life/">life</a>
-    
-    <a href="https://duansheli.github.io/tags/linux/">linux</a>
-    
-    <a href="https://duansheli.github.io/tags/mysql/">mysql</a>
-    
-    <a href="https://duansheli.github.io/tags/proxy/">proxy</a>
-    
-    <a href="https://duansheli.github.io/tags/redis/">redis</a>
-    
-    <a href="https://duansheli.github.io/tags/rocketmq/">rocketmq</a>
-    
-    <a href="https://duansheli.github.io/tags/route/">route</a>
-    
-    <a href="https://duansheli.github.io/tags/scala/">scala</a>
-    
-    <a href="https://duansheli.github.io/tags/session/">session</a>
-    
-    <a href="https://duansheli.github.io/tags/shell/">shell</a>
-    
-    <a href="https://duansheli.github.io/tags/spring-boot/">spring-boot</a>
-    
-    <a href="https://duansheli.github.io/tags/spring-security/">spring-security</a>
-    
-    <a href="https://duansheli.github.io/tags/springboot/">springboot</a>
-    
-    <a href="https://duansheli.github.io/tags/zipkin/">zipkin</a>
-    
-    <a href="https://duansheli.github.io/tags/%E5%88%86%E5%B8%83%E5%BC%8F%E4%BA%8B%E5%8A%A1/">分布式事务</a>
-    
-    <a href="https://duansheli.github.io/tags/%E6%8C%81%E7%BB%AD%E9%9B%86%E6%88%90/">持续集成</a>
-    
-    <a href="https://duansheli.github.io/tags/%E7%99%BB%E5%BD%95/">登录</a>
-    
-</div>
-    </section>
-
-    
-
-    <section class="widget">
-        <h3 class="widget-title">其它</h3>
-        <ul class="widget-list">
-            <li><a href="https://duansheli.github.io/index.xml">文章 RSS</a></li>
-        </ul>
-    </section>
-</div>
+  
+  <nav class="pagination">
+    <a class="prev" href="/www.awslop.com/page/4/">
+        <i class="iconfont icon-left"></i>
+        <span class="prev-text">上一页</span>
+      </a>
+    <a class="next" href="/www.awslop.com/page/6/">
+        <span class="next-text">下一页</span>
+        <i class="iconfont icon-right"></i>
+      </a>
+  </nav>
         </div>
-    </div>
-</div>
-<footer id="footer">
-    <div class="container">
-        &copy; 2019 <a href="https://duansheli.github.io">断舍离的博客 By 断舍离</a>.
-        Powered by <a rel="nofollow noreferer noopener" href="https://gohugo.io" target="_blank">Hugo</a>.
-        <a href="https://www.flysnow.org/" target="_blank">Theme</a> based on <a href="https://github.com/rujews/maupassant-hugo" target="_blank">maupassant</a>.
         
+
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="social-links">
+      <a href="https://github.com/duansheli/" class="iconfont icon-github" title="github"></a>
+  <a href="/www.awslop.com/index.xml" type="application/rss+xml" class="iconfont icon-rss" title="rss"></a>
+</div>
+
+<div class="copyright">
+  <span class="power-by">
+    由 <a class="hexo-link" href="https://gohugo.io">Hugo</a> 强力驱动
+  </span>
+  <span class="division">|</span>
+  <span class="theme-info">
+    主题 - 
+    <a class="theme-link" href="https://github.com/olOwOlo/hugo-theme-even">Even</a>
+  </span>
+
+  
+
+  <span class="copyright-year">
+    &copy; 
+    2017 - 
+    2019
+    <span class="heart">
+      <i class="iconfont icon-heart"></i>
+    </span>
+    <span class="author">duansheli</span>
+  </span>
+</div>
+    </footer>
+
+    <div class="back-to-top" id="back-to-top">
+      <i class="iconfont icon-up"></i>
     </div>
-</footer>
+  </div>
+  
+  <script src="https://cdn.jsdelivr.net/npm/jquery@3.2.1/dist/jquery.min.js" integrity="sha256-hwg4gsxgFZhOsEEamdOYGBf13FyQuiTwlAQgxVSNgt4=" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/slideout@1.0.1/dist/slideout.min.js" integrity="sha256-t+zJ/g8/KXIJMjSVQdnibt4dlaDxc9zXr/9oNPeWqdg=" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3.1.20/dist/jquery.fancybox.min.js" integrity="sha256-XVLffZaxoWfGUEbdzuLi7pwaUJv1cecsQJQqGLe7axY=" crossorigin="anonymous"></script>
+<script type="text/javascript" src="/www.awslop.com/dist/even.26188efa.min.js"></script>
 
-
-
-<a id="rocket" href="#top"></a>
-<script type="text/javascript" src="/js/totop.js?v=0.0.0" async=""></script>
 
 <script type="application/javascript">
 var doNotTrack = false;
 if (!doNotTrack) {
 	window.ga=window.ga||function(){(ga.q=ga.q||[]).push(arguments)};ga.l=+new Date;
 	ga('create', 'GTM-NPJC8J2', 'auto');
-	
+	ga('set', 'anonymizeIp', true);
 	ga('send', 'pageview');
 }
 </script>

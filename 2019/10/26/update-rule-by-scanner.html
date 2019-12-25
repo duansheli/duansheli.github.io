@@ -1,361 +1,411 @@
-<!doctype html>
-<html lang="zh-CN">
+<!DOCTYPE html>
+<html lang="zh-cn">
 <head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+  <title>自定义动态更新drools规则 - 断舍离的博客</title>
+  <meta name="renderer" content="webkit" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
 
-    <meta charset="utf-8">
-    <meta name="generator" content="Hugo 0.59.0" />
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
 
-    <title>自定义动态更新drools规则 | 断舍离的博客</title>
-    <meta property="og:title" content="自定义动态更新drools规则 - 断舍离的博客">
-    <meta property="og:type" content="article">
-        
-    <meta property="article:published_time" content="2019-10-26T17:28:13&#43;08:00">
-        
-        
-    <meta property="article:modified_time" content="2019-10-26T17:28:13&#43;08:00">
-        
-    <meta name="Keywords" content="java,scala,spark,kubernetes">
-    <meta name="description" content="自定义动态更新drools规则">
-        
-    <meta name="author" content="断舍离">
-    <meta property="og:url" content="https://duansheli.github.io/2019/10/26/update-rule-by-scanner.html">
-    <link rel="shortcut icon" href="/favicon.ico" type="image/x-icon">
-
-    <link rel="stylesheet" href="/css/normalize.css">
-    
-        <link rel="stylesheet" href="/css/prism.css">
-    
-    <link rel="stylesheet" href="/css/style.css">
-    <script type="text/javascript" src="//cdnjs.cloudflare.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
-
-    
+<meta name="theme-color" content="#f8f5ec" />
+<meta name="msapplication-navbutton-color" content="#f8f5ec">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="#f8f5ec">
 
 
-    
-    
+<meta name="author" content="duansheli" /><meta name="description" content="简述 scanner有两个实现 KieRepositoryScannerImpl KieFileSystemScannerImpl 二者区别为 一个是从文件夹检查更新， 一个是从maven仓库检查更新 下面以 KieFileSystemScannerImpl 为例进行演示从文件夹获取更新 然后分析" /><meta name="keywords" content="scala, java, even" />
+
+
+
+
+
+
+<meta name="generator" content="Hugo 0.62.0 with theme even" />
+
+
+<link rel="canonical" href="/www.awslop.com/2019/10/26/update-rule-by-scanner.html" />
+<link rel="apple-touch-icon" sizes="180x180" href="/www.awslop.com/apple-touch-icon.png">
+<link rel="icon" type="image/png" sizes="32x32" href="/www.awslop.com/favicon-32x32.png">
+<link rel="icon" type="image/png" sizes="16x16" href="/www.awslop.com/favicon-16x16.png">
+<link rel="manifest" href="/www.awslop.com/manifest.json">
+<link rel="mask-icon" href="/www.awslop.com/safari-pinned-tab.svg" color="#5bbad5">
+
+
+<link href="/www.awslop.com/dist/even.c2a46f00.min.css" rel="stylesheet">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3.1.20/dist/jquery.fancybox.min.css" integrity="sha256-7TyXnr2YU040zfSP+rEcz29ggW4j56/ujTPwjMzyqFY=" crossorigin="anonymous">
+
+
+<meta property="og:title" content="自定义动态更新drools规则" />
+<meta property="og:description" content="简述 scanner有两个实现 KieRepositoryScannerImpl KieFileSystemScannerImpl 二者区别为 一个是从文件夹检查更新， 一个是从maven仓库检查更新 下面以 KieFileSystemScannerImpl 为例进行演示从文件夹获取更新 然后分析" />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="/www.awslop.com/2019/10/26/update-rule-by-scanner.html" />
+<meta property="article:published_time" content="2019-10-26T17:28:13+08:00" />
+<meta property="article:modified_time" content="2019-10-26T17:28:13+08:00" />
+<meta itemprop="name" content="自定义动态更新drools规则">
+<meta itemprop="description" content="简述 scanner有两个实现 KieRepositoryScannerImpl KieFileSystemScannerImpl 二者区别为 一个是从文件夹检查更新， 一个是从maven仓库检查更新 下面以 KieFileSystemScannerImpl 为例进行演示从文件夹获取更新 然后分析">
+<meta itemprop="datePublished" content="2019-10-26T17:28:13&#43;08:00" />
+<meta itemprop="dateModified" content="2019-10-26T17:28:13&#43;08:00" />
+<meta itemprop="wordCount" content="2099">
+
+
+
+<meta itemprop="keywords" content="drools," /><meta name="twitter:card" content="summary"/>
+<meta name="twitter:title" content="自定义动态更新drools规则"/>
+<meta name="twitter:description" content="简述 scanner有两个实现 KieRepositoryScannerImpl KieFileSystemScannerImpl 二者区别为 一个是从文件夹检查更新， 一个是从maven仓库检查更新 下面以 KieFileSystemScannerImpl 为例进行演示从文件夹获取更新 然后分析"/>
+
+<!--[if lte IE 9]>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/classlist/1.1.20170427/classList.min.js"></script>
+<![endif]-->
+
+<!--[if lt IE 9]>
+  <script src="https://cdn.jsdelivr.net/npm/html5shiv@3.7.3/dist/html5shiv.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/respond.js@1.4.2/dest/respond.min.js"></script>
+<![endif]-->
+
 </head>
-
 <body>
-<header id="header" class="clearfix">
-    <div class="container">
-        <div class="col-group">
-            <div class="site-name ">
-                
-                    <a id="logo" href="https://duansheli.github.io">
-                        断舍离的博客
-                    </a>
-                
-                <p class="description">java, scala, spark, kubernetes</p>
-            </div>
-            <div>
-                <nav id="nav-menu" class="clearfix">
-                    <a class="" href="https://duansheli.github.io">首页</a>
-                    
-                    <a  href="https://duansheli.github.io/archives/" title="归档">归档</a>
-                    
-                </nav>
-            </div>
-        </div>
-    </div>
-</header>
-
-
-<div id="body">
-        
-        <div id="virtual_toc_list" style="display: none">
-            <nav id="TableOfContents">
-<ul>
-<li><a href="#简述">简述</a></li>
-<li><a href="#准备kjar工程">准备kjar工程</a>
-<ul>
-<li><a href="#打包成kjar">打包成kjar</a></li>
-<li><a href="#测试流程">测试流程</a></li>
-</ul></li>
-<li><a href="#调用待测规则">调用待测规则</a></li>
-<li><a href="#分析-kiefilesystemscannerimpl">分析 KieFileSystemScannerImpl</a></li>
-<li><a href="#自定义kiescanner">自定义KieScanner</a>
-<ul>
-<li><a href="#运行自定义检测类的逻辑">运行自定义检测类的逻辑</a></li>
-</ul></li>
-</ul>
+  <div id="mobile-navbar" class="mobile-navbar">
+  <div class="mobile-header-logo">
+    <a href="/www.awslop.com/" class="logo">Even</a>
+  </div>
+  <div class="mobile-navbar-icon">
+    <span></span>
+    <span></span>
+    <span></span>
+  </div>
+</div>
+<nav id="mobile-menu" class="mobile-menu slideout-menu">
+  <ul class="mobile-menu-list">
+    <a href="/www.awslop.com/">
+        <li class="mobile-menu-item">主页</li>
+      </a><a href="/www.awslop.com/post/">
+        <li class="mobile-menu-item">归档</li>
+      </a><a href="/www.awslop.com/tags/">
+        <li class="mobile-menu-item">标签</li>
+      </a><a href="/www.awslop.com/categories/">
+        <li class="mobile-menu-item">Categories</li>
+      </a>
+  </ul>
 </nav>
-        </div>
-        <div id="float_toc_div" style="margin: 10px;border: 1px solid gray;z-index:99999;display: none;">
-            <header style="background-color: #f3f3f3;color: black;border-bottom: 1px solid gray;padding: 10px 10px 10px 10px;">
-                <strong id="toc_btn_open" style="color: black;font-size: large;">目录</strong>
-                <strong id="toc_btn_close" style="color: black;font-size: large;float: right">╳</strong>
-            </header>
-            <div id="toc_list" style="background-color: #f3f3f3;color: black;padding: 10px;">
+  <div class="container" id="mobile-panel">
+    <header id="header" class="header">
+        <div class="logo-wrapper">
+  <a href="/www.awslop.com/" class="logo">Even</a>
+</div>
+
+<nav class="site-navbar">
+  <ul id="menu" class="menu">
+    <li class="menu-item">
+        <a class="menu-item-link" href="/www.awslop.com/">主页</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/www.awslop.com/post/">归档</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/www.awslop.com/tags/">标签</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/www.awslop.com/categories/">Categories</a>
+      </li>
+  </ul>
+</nav>
+    </header>
+
+    <main id="main" class="main">
+      <div class="content-wrapper">
+        <div id="content" class="content">
+          <article class="post">
+    
+    <header class="post-header">
+      <h1 class="post-title">自定义动态更新drools规则</h1>
+
+      <div class="post-meta">
+        <span class="post-time"> 2019-10-26 </span>
         
-            </div>
-        </div>
-        <style type="text/css">
-            #float_toc_div {
-                position: fixed;
-                display: none;
-                 
-                height: auto;
-                font-size: 13px;
-            }
+          <span class="more-meta"> 约 2099 字 </span>
+          <span class="more-meta"> 预计阅读 5 分钟 </span>
         
-            #toc_list a:hover,
-            #toc_list a:active {
-                color: #ba3925;
-            }
-        </style>
-        <script>
-            window.onload = function () {
-                let tocNavElem = document.getElementById("TableOfContents");
-                let floatTocDivElem = document.getElementById("float_toc_div");
-                let tocListElem = floatTocDivElem.getElementsByTagName('div')[0];
-                let colGroupElem = document.getElementById("body").getElementsByClassName("col-group")[0]
-                let floatTocWidth = (document.body.clientWidth - colGroupElem.offsetWidth) / 2 - 16;
-                var useFloatToc = false;
+      </div>
+    </header>
 
-                if (floatTocWidth >= 100) {
-                    useFloatToc = true;
-                    document.getElementById("toc_list").appendChild(tocNavElem);
-                    floatTocDivElem.style.display = 'block';
-                    floatTocDivElem.style.width = floatTocWidth + 'px';
-                    top();
-                    floatTocDivElem.style.left = '0px';
+    <div class="post-toc" id="post-toc">
+  <h2 class="post-toc-title">文章目录</h2>
+  <div class="post-toc-content always-active">
+    <nav id="TableOfContents">
+  <ul>
+    <li><a href="#kjar-1">打包成kjar</a></li>
+    <li><a href="#heading-1">测试流程</a></li>
+  </ul>
 
-                    function top() {
-                        if (document.getElementsByClassName('container')[0].offsetWidth <= 720) {
-                            floatTocDivElem.style.top = '0px';
-                        } else {
-                            floatTocDivElem.style.top = window.innerHeight / 9 + 'px';
-                        }
-                    }
-
-                    function ishide() {
-                        if (document.getElementsByClassName('container')[0].offsetWidth <= 720) {
-                            floatTocDivElem.style.top = '0px';
-                        } else {
-                            floatTocDivElem.style.display = 'block';
-                        }
-                    }
-
-                    window.onscroll = function () {
-                        ishide();
-                        if ((document.documentElement.scrollTop != 0) && (floatTocDivElem.style.display == 'block')) {
-                            top();
-                        }
-                    };
-
-                    window.onresize = function () {
-                        ishide();
-                    }
-
-                    document.getElementById("toc_btn_open").addEventListener('click', function () {
-                        switch (tocListElem.style.display) {
-                            case "none":
-                                document.getElementById("toc_btn_close").style.display = "";
-                                tocListElem.style.display = "";
-                                floatTocDivElem.getElementsByTagName("header")[0].style.borderBottom = "1px solid gray";
-                                break;
-                            default:
-                                break;
-                        }
-                    }, false);
-
-                    document.getElementById("toc_btn_close").addEventListener('click', function () {
-                        switch (tocListElem.style.display) {
-                            case "":
-                                document.getElementById("toc_btn_close").style.display = "none";
-                                tocListElem.style.display = "none";
-                                floatTocDivElem.getElementsByTagName("header")[0].style.borderBottom = "";
-                                break;
-                            default:
-                                break;
-                        }
-                    }, false);
-                } else {
-                    let fixedTocElem = document.getElementsByClassName("toc-article")[0];
-                    fixedTocElem.appendChild(tocNavElem);
-                    fixedTocElem.parentElement.style.display = "";
-                }
-                document.getElementById("virtual_toc_list").remove();
-            };   
-        </script>
-        
-    <div class="container">
-        <div class="col-group">
-
-            <div class="col-8" id="main">
-                <div class="res-cons">
-                    <article class="post">
-                        <header>
-                            <h1 class="post-title">自定义动态更新drools规则</h1>
-                        </header>
-                        <date class="post-meta meta-date">
-                            2019年10月26日
-                        </date>
-                        
-                        
-                        
-                        <div class="clear" style="display: none">
-                            <div class="toc-article">
-                                <div class="toc-title">文章目录</div>
-                            </div>
-                        </div>
-                        
-                        <div class="post-content">
-                            
-
-<h1 id="简述">简述</h1>
-
+  <ul>
+    <li><a href="#heading-3">运行自定义检测类的逻辑</a></li>
+  </ul>
+</nav>
+  </div>
+</div>
+    <div class="post-content">
+      <h1 id="heading">简述</h1>
 <p>scanner有两个实现 KieRepositoryScannerImpl KieFileSystemScannerImpl
 二者区别为 一个是从文件夹检查更新， 一个是从maven仓库检查更新</p>
-
 <p>下面以 KieFileSystemScannerImpl 为例进行演示从文件夹获取更新
 然后分析过程 最后自定义一个 KieScanner</p>
-
-<h1 id="准备kjar工程">准备kjar工程</h1>
-
+<h1 id="kjar">准备kjar工程</h1>
 <p>其实就是个maven项目 存放着规则文件</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span><span class="lnt">14
+</span><span class="lnt">15
+</span><span class="lnt">16
+</span><span class="lnt">17
+</span><span class="lnt">18
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-xml" data-lang="xml"><span class="cp">&lt;?xml version=&#34;1.0&#34; encoding=&#34;UTF-8&#34;?&gt;</span>
+<span class="nt">&lt;project</span> <span class="na">xmlns=</span><span class="s">&#34;http://maven.apache.org/POM/4.0.0&#34;</span> <span class="na">xmlns:xsi=</span><span class="s">&#34;http://www.w3.org/2001/XMLSchema-instance&#34;</span>
+         <span class="na">xsi:schemaLocation=</span><span class="s">&#34;http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd&#34;</span><span class="nt">&gt;</span>
+    <span class="nt">&lt;modelVersion</span><span class="nt">&gt;</span>4.0.0<span class="nt">&lt;/modelVersion&gt;</span>
 
-<pre><code class="language-xml">&lt;?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot;?&gt;
-&lt;project xmlns=&quot;http://maven.apache.org/POM/4.0.0&quot; xmlns:xsi=&quot;http://www.w3.org/2001/XMLSchema-instance&quot;
-         xsi:schemaLocation=&quot;http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd&quot;&gt;
-    &lt;modelVersion&gt;4.0.0&lt;/modelVersion&gt;
+    <span class="nt">&lt;groupId</span><span class="nt">&gt;</span>fluffy.mo<span class="nt">&lt;/groupId&gt;</span>
+    <span class="nt">&lt;artifactId</span><span class="nt">&gt;</span>kjarUpdate<span class="nt">&lt;/artifactId&gt;</span>
+    <span class="nt">&lt;version</span><span class="nt">&gt;</span>0.0.1-SNAPSHOT<span class="nt">&lt;/version&gt;</span>
+    <span class="nt">&lt;packaging</span><span class="nt">&gt;</span>jar<span class="nt">&lt;/packaging&gt;</span>
 
-    &lt;groupId&gt;fluffy.mo&lt;/groupId&gt;
-    &lt;artifactId&gt;kjarUpdate&lt;/artifactId&gt;
-    &lt;version&gt;0.0.1-SNAPSHOT&lt;/version&gt;
-    &lt;packaging&gt;jar&lt;/packaging&gt;
+    <span class="nt">&lt;properties</span><span class="nt">&gt;</span>
+        <span class="nt">&lt;project.build.sourceEncoding</span><span class="nt">&gt;</span>UTF-8<span class="nt">&lt;/project.build.sourceEncoding&gt;</span>
+        <span class="nt">&lt;project.reporting.outputEncoding</span><span class="nt">&gt;</span>UTF-8<span class="nt">&lt;/project.reporting.outputEncoding&gt;</span>
+        <span class="nt">&lt;java.version</span><span class="nt">&gt;</span>11<span class="nt">&lt;/java.version&gt;</span>
+        <span class="nt">&lt;maven.compiler.source</span><span class="nt">&gt;</span>11<span class="nt">&lt;/maven.compiler.source&gt;</span>
+        <span class="nt">&lt;maven.compiler.target</span><span class="nt">&gt;</span>11<span class="nt">&lt;/maven.compiler.target&gt;</span>
+    <span class="nt">&lt;/properties&gt;</span>
+<span class="nt">&lt;/project&gt;</span>
+</code></pre></td></tr></table>
+</div>
+</div><p>src\main\resources\META-INF\kmodule.xml</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span><span class="lnt">5
+</span><span class="lnt">6
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-xml" data-lang="xml"><span class="cp">&lt;?xml version=&#34;1.0&#34; encoding=&#34;UTF-8&#34;?&gt;</span>
+<span class="nt">&lt;kmodule</span> <span class="na">xmlns=</span><span class="s">&#34;http://www.drools.org/xsd/kmodule&#34;</span><span class="nt">&gt;</span>
+    <span class="nt">&lt;kbase</span> <span class="na">name=</span><span class="s">&#34;kb1&#34;</span> <span class="na">packages=</span><span class="s">&#34;vdrl&#34;</span> <span class="na">default=</span><span class="s">&#34;true&#34;</span><span class="nt">&gt;</span>
+        <span class="nt">&lt;ksession</span> <span class="na">name=</span><span class="s">&#34;ks-testUpdate&#34;</span> <span class="na">type=</span><span class="s">&#34;stateful&#34;</span> <span class="na">default=</span><span class="s">&#34;true&#34;</span><span class="nt">/&gt;</span>
+    <span class="nt">&lt;/kbase&gt;</span>
+<span class="nt">&lt;/kmodule&gt;</span>
+</code></pre></td></tr></table>
+</div>
+</div><p>src\main\resources\vdrl\testUpdate.drl</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-go" data-lang="go"><span class="kn">package</span> <span class="nx">vdrl</span><span class="p">;</span>
 
-    &lt;properties&gt;
-        &lt;project.build.sourceEncoding&gt;UTF-8&lt;/project.build.sourceEncoding&gt;
-        &lt;project.reporting.outputEncoding&gt;UTF-8&lt;/project.reporting.outputEncoding&gt;
-        &lt;java.version&gt;11&lt;/java.version&gt;
-        &lt;maven.compiler.source&gt;11&lt;/maven.compiler.source&gt;
-        &lt;maven.compiler.target&gt;11&lt;/maven.compiler.target&gt;
-    &lt;/properties&gt;
-&lt;/project&gt;
-</code></pre>
-
-<p>src\main\resources\META-INF\kmodule.xml</p>
-
-<pre><code class="language-xml">&lt;?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot;?&gt;
-&lt;kmodule xmlns=&quot;http://www.drools.org/xsd/kmodule&quot;&gt;
-    &lt;kbase name=&quot;kb1&quot; packages=&quot;vdrl&quot; default=&quot;true&quot;&gt;
-        &lt;ksession name=&quot;ks-testUpdate&quot; type=&quot;stateful&quot; default=&quot;true&quot;/&gt;
-    &lt;/kbase&gt;
-&lt;/kmodule&gt;
-</code></pre>
-
-<p>src\main\resources\vdrl\testUpdate.drl</p>
-
-<pre><code>package vdrl;
-
-global String tag
-rule &quot;aa1&quot;
-when
-  total : Number()
-      from accumulate( d: Double(), sum( d ) )
-then
-  System.out.println(&quot;v1--&quot;+ tag + &quot;--&quot; + total );
-end
-</code></pre>
-
-<h2 id="打包成kjar">打包成kjar</h2>
-
+<span class="nx">global</span> <span class="nx">String</span> <span class="nx">tag</span>
+<span class="nx">rule</span> <span class="s">&#34;aa1&#34;</span>
+<span class="nx">when</span>
+  <span class="nx">total</span> <span class="p">:</span> <span class="nf">Number</span><span class="p">(</span><span class="p">)</span>
+      <span class="nx">from</span> <span class="nf">accumulate</span><span class="p">(</span> <span class="nx">d</span><span class="p">:</span> <span class="nf">Double</span><span class="p">(</span><span class="p">)</span><span class="p">,</span> <span class="nf">sum</span><span class="p">(</span> <span class="nx">d</span> <span class="p">)</span> <span class="p">)</span>
+<span class="nx">then</span>
+  <span class="nx">System</span><span class="p">.</span><span class="nx">out</span><span class="p">.</span><span class="nb">println</span><span class="p">(</span><span class="s">&#34;v1--&#34;</span><span class="o">+</span> <span class="nx">tag</span> <span class="o">+</span> <span class="s">&#34;--&#34;</span> <span class="o">+</span> <span class="nx">total</span> <span class="p">)</span><span class="p">;</span>
+<span class="nx">end</span>
+</code></pre></td></tr></table>
+</div>
+</div><h2 id="kjar-1">打包成kjar</h2>
 <p>先打包一次 得到文件 kjarUpdate-0.0.1-SNAPSHOT.jar</p>
-
-<pre><code>mvn clean package
-</code></pre>
-
-<p>修改 pom.xml中的版本号为 0.0.2-SNAPSHOT
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-fallback" data-lang="fallback">mvn clean package
+</code></pre></td></tr></table>
+</div>
+</div><p>修改 pom.xml中的版本号为 0.0.2-SNAPSHOT
 修改 testUpdate.drl 中 【v1】为【v2】
 再打包 得到文件 kjarUpdate-0.0.2-SNAPSHOT.jar</p>
-
-<pre><code>mvn clean package
-</code></pre>
-
-<p>同上 得到 kjarUpdate-0.0.3-SNAPSHOT.jar</p>
-
-<pre><code>mvn clean package
-</code></pre>
-
-<p>kjar 全部放在 drools-demo-update 文件夹中</p>
-
-<pre><code>kjarUpdate-0.0.1-SNAPSHOT.jar
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-fallback" data-lang="fallback">mvn clean package
+</code></pre></td></tr></table>
+</div>
+</div><p>同上 得到 kjarUpdate-0.0.3-SNAPSHOT.jar</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-fallback" data-lang="fallback">mvn clean package
+</code></pre></td></tr></table>
+</div>
+</div><p>kjar 全部放在 drools-demo-update 文件夹中</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span><span class="lnt">5
+</span><span class="lnt">6
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-fallback" data-lang="fallback">kjarUpdate-0.0.1-SNAPSHOT.jar
 kjarUpdate-0.0.2-SNAPSHOT.jar
 kjarUpdate-0.0.3-SNAPSHOT.jar
 pom.xml
 scanFoler/
 src/
-</code></pre>
-
-<h2 id="测试流程">测试流程</h2>
-
+</code></pre></td></tr></table>
+</div>
+</div><h2 id="heading-1">测试流程</h2>
 <p>先加载 0.0.1 版本的jar 执行规则，
 然后升级到  0.0.2 版本的jar 执行规则，看是否升级成功</p>
-
-<h1 id="调用待测规则">调用待测规则</h1>
-
+<h1 id="heading-2">调用待测规则</h1>
 <p>jdk 11
 kotlin 1.3.50
 drools  7.18.0.Final</p>
-
 <p>DroolsRunMyScanner.kt</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span><span class="lnt">14
+</span><span class="lnt">15
+</span><span class="lnt">16
+</span><span class="lnt">17
+</span><span class="lnt">18
+</span><span class="lnt">19
+</span><span class="lnt">20
+</span><span class="lnt">21
+</span><span class="lnt">22
+</span><span class="lnt">23
+</span><span class="lnt">24
+</span><span class="lnt">25
+</span><span class="lnt">26
+</span><span class="lnt">27
+</span><span class="lnt">28
+</span><span class="lnt">29
+</span><span class="lnt">30
+</span><span class="lnt">31
+</span><span class="lnt">32
+</span><span class="lnt">33
+</span><span class="lnt">34
+</span><span class="lnt">35
+</span><span class="lnt">36
+</span><span class="lnt">37
+</span><span class="lnt">38
+</span><span class="lnt">39
+</span><span class="lnt">40
+</span><span class="lnt">41
+</span><span class="lnt">42
+</span><span class="lnt">43
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-kotlin" data-lang="kotlin"><span class="k">package</span> <span class="nn">fluffy.test_update_rule</span>
 
-<pre><code class="language-kotlin">package fluffy.test_update_rule
+<span class="k">import</span> <span class="nn">org.kie.api.KieServices</span>
+<span class="k">import</span> <span class="nn">org.kie.api.builder.ReleaseIdComparator.ComparableVersion</span>
+<span class="k">import</span> <span class="nn">org.kie.api.runtime.KieSession</span>
+<span class="k">import</span> <span class="nn">java.util.concurrent.TimeUnit</span>
 
-import org.kie.api.KieServices
-import org.kie.api.builder.ReleaseIdComparator.ComparableVersion
-import org.kie.api.runtime.KieSession
-import java.util.concurrent.TimeUnit
+<span class="k">val</span> <span class="py">pjRoot</span> <span class="p">=</span> <span class="s">&#34;E:\\myprogram\\my_workspace\\code_rep12\\some-task\\drools-demo-update&#34;</span><span class="p">;</span>
+<span class="c1">// 初版规则 kjar
+</span><span class="c1"></span><span class="k">val</span> <span class="py">kjar</span> <span class="p">=</span> <span class="s">&#34;$pjRoot/kjarUpdate-0.0.1-SNAPSHOT.jar&#34;</span>
+<span class="c1">// 检查更新的文件夹
+</span><span class="c1"></span><span class="k">val</span> <span class="py">updateFolder</span> <span class="p">=</span> <span class="s">&#34;$pjRoot/scanFoler&#34;</span><span class="p">;</span>
+<span class="k">fun</span> <span class="nf">main</span><span class="p">(</span><span class="p">)</span> <span class="p">{</span>
+  <span class="n">mainV1</span><span class="p">(</span><span class="p">)</span><span class="p">;</span>
+<span class="p">}</span>
 
-val pjRoot = &quot;E:\\myprogram\\my_workspace\\code_rep12\\some-task\\drools-demo-update&quot;;
-// 初版规则 kjar
-val kjar = &quot;$pjRoot/kjarUpdate-0.0.1-SNAPSHOT.jar&quot;
-// 检查更新的文件夹
-val updateFolder = &quot;$pjRoot/scanFoler&quot;;
-fun main() {
-  mainV1();
-}
+<span class="k">fun</span> <span class="nf">mainV1</span><span class="p">(</span><span class="p">)</span> <span class="p">{</span>
+    <span class="k">val</span> <span class="py">ks</span> <span class="p">=</span> <span class="n">KieServices</span><span class="p">.</span><span class="n">Factory</span><span class="p">.</span><span class="k">get</span><span class="p">(</span><span class="p">)</span>
+    <span class="k">val</span> <span class="py">kModule</span> <span class="p">=</span> <span class="n">ks</span><span class="p">.</span><span class="n">repository</span><span class="p">.</span><span class="n">addKieModule</span><span class="p">(</span><span class="n">ks</span><span class="p">.</span><span class="n">resources</span><span class="p">.</span><span class="n">newFileSystemResource</span><span class="p">(</span><span class="n">kjar</span><span class="p">)</span><span class="p">)</span>
+    <span class="c1">// 创建container
+</span><span class="c1"></span>    <span class="k">val</span> <span class="py">kContainer</span> <span class="p">=</span> <span class="n">ks</span><span class="p">.</span><span class="n">newKieContainer</span><span class="p">(</span><span class="n">kModule</span><span class="p">.</span><span class="n">getReleaseId</span><span class="p">(</span><span class="p">)</span><span class="p">)</span>
+    <span class="c1">// 指定文件夹，每两秒检查一次更新
+</span><span class="c1"></span>    <span class="k">val</span> <span class="py">scanner</span> <span class="p">=</span> <span class="n">ks</span><span class="p">.</span><span class="n">newKieScanner</span><span class="p">(</span><span class="n">kContainer</span><span class="p">,</span> <span class="n">updateFolder</span><span class="p">)</span>
+    <span class="n">scanner</span><span class="p">.</span><span class="n">start</span><span class="p">(</span><span class="n">TimeUnit</span><span class="p">.</span><span class="n">SECONDS</span><span class="p">.</span><span class="n">toMillis</span><span class="p">(</span><span class="m">2</span><span class="p">)</span><span class="p">)</span>
 
-fun mainV1() {
-    val ks = KieServices.Factory.get()
-    val kModule = ks.repository.addKieModule(ks.resources.newFileSystemResource(kjar))
-    // 创建container
-    val kContainer = ks.newKieContainer(kModule.getReleaseId())
-    // 指定文件夹，每两秒检查一次更新
-    val scanner = ks.newKieScanner(kContainer, updateFolder)
-    scanner.start(TimeUnit.SECONDS.toMillis(2))
+    <span class="k">val</span> <span class="py">kss</span> <span class="p">=</span> <span class="n">kContainer</span><span class="p">.</span><span class="n">newKieSession</span><span class="p">(</span><span class="s">&#34;ks-testUpdate&#34;</span><span class="p">)</span>
+    <span class="n">kss</span><span class="p">.</span><span class="n">setGlobal</span><span class="p">(</span><span class="s">&#34;tag&#34;</span><span class="p">,</span> <span class="s">&#34;A&#34;</span><span class="p">)</span><span class="p">;</span>
+    <span class="n">runRule</span><span class="p">(</span><span class="n">kss</span><span class="p">)</span>
+    <span class="n">println</span><span class="p">(</span><span class="s">&#34;此处打打断点--在文件夹【scanFoler】放入新的kjar--kjarUpdate-0.0.2-SNAPSHOT.jar-然后继续执行&#34;</span><span class="p">)</span>
+    <span class="n">TimeUnit</span><span class="p">.</span><span class="n">SECONDS</span><span class="p">.</span><span class="n">sleep</span><span class="p">(</span><span class="m">2</span><span class="p">)</span>
 
-    val kss = kContainer.newKieSession(&quot;ks-testUpdate&quot;)
-    kss.setGlobal(&quot;tag&quot;, &quot;A&quot;);
-    runRule(kss)
-    println(&quot;此处打打断点--在文件夹【scanFoler】放入新的kjar--kjarUpdate-0.0.2-SNAPSHOT.jar-然后继续执行&quot;)
-    TimeUnit.SECONDS.sleep(2)
+    <span class="n">runRule</span><span class="p">(</span><span class="n">kss</span><span class="p">)</span>
+    <span class="n">println</span><span class="p">(</span><span class="s">&#34;完成--可看到之后调用的规则-更新为v2了-对之前创建的session也有效&#34;</span><span class="p">)</span>
+<span class="p">}</span>
 
-    runRule(kss)
-    println(&quot;完成--可看到之后调用的规则-更新为v2了-对之前创建的session也有效&quot;)
-}
-
-fun runRule(kss: KieSession) {
-    kss.insert(1.01)
-    kss.fireAllRules()
-    kss.insert(1.02)
-    kss.fireAllRules()
-    kss.insert(1.03)
-    kss.fireAllRules()
-}
-</code></pre>
-
-<p>方法 <code>mainV1()</code>的逻辑为 根据v1版本的jar创建一个容器
-新建一个session 运行到断点处，
+<span class="k">fun</span> <span class="nf">runRule</span><span class="p">(</span><span class="n">kss</span><span class="p">:</span> <span class="n">KieSession</span><span class="p">)</span> <span class="p">{</span>
+    <span class="n">kss</span><span class="p">.</span><span class="n">insert</span><span class="p">(</span><span class="m">1.01</span><span class="p">)</span>
+    <span class="n">kss</span><span class="p">.</span><span class="n">fireAllRules</span><span class="p">(</span><span class="p">)</span>
+    <span class="n">kss</span><span class="p">.</span><span class="n">insert</span><span class="p">(</span><span class="m">1.02</span><span class="p">)</span>
+    <span class="n">kss</span><span class="p">.</span><span class="n">fireAllRules</span><span class="p">(</span><span class="p">)</span>
+    <span class="n">kss</span><span class="p">.</span><span class="n">insert</span><span class="p">(</span><span class="m">1.03</span><span class="p">)</span>
+    <span class="n">kss</span><span class="p">.</span><span class="n">fireAllRules</span><span class="p">(</span><span class="p">)</span>
+<span class="p">}</span>
+</code></pre></td></tr></table>
+</div>
+</div><p>方法 <code>mainV1()</code>的逻辑为 根据v1版本的jar创建一个容器
+新建一个session 运行到断点处， 
 手动将 kjar&ndash;kjarUpdate-0.0.2-SNAPSHOT.jar 放入 scanFoler 文件夹
 然后再次触发规则 即可看到 规则已经更新</p>
-
 <p>运行结果</p>
-
-<pre><code>v1--A--1.01
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span><span class="lnt">5
+</span><span class="lnt">6
+</span><span class="lnt">7
+</span><span class="lnt">8
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-fallback" data-lang="fallback">v1--A--1.01
 v1--A--2.0300000000000002
 v1--A--3.0600000000000005
 此处打打断点--在文件夹【scanFoler】放入新的kjar--kjarUpdate-0.0.2-SNAPSHOT.jar-然后继续执行
@@ -363,207 +413,400 @@ v2--A--4.07
 v2--A--5.09
 v2--A--6.12
 完成--可看到之后调用的规则-更新为v2了-对之前创建的session也有效
-</code></pre>
+</code></pre></td></tr></table>
+</div>
+</div><h1 id="-kiefilesystemscannerimpl">分析 KieFileSystemScannerImpl</h1>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span><span class="lnt">14
+</span><span class="lnt">15
+</span><span class="lnt">16
+</span><span class="lnt">17
+</span><span class="lnt">18
+</span><span class="lnt">19
+</span><span class="lnt">20
+</span><span class="lnt">21
+</span><span class="lnt">22
+</span><span class="lnt">23
+</span><span class="lnt">24
+</span><span class="lnt">25
+</span><span class="lnt">26
+</span><span class="lnt">27
+</span><span class="lnt">28
+</span><span class="lnt">29
+</span><span class="lnt">30
+</span><span class="lnt">31
+</span><span class="lnt">32
+</span><span class="lnt">33
+</span><span class="lnt">34
+</span><span class="lnt">35
+</span><span class="lnt">36
+</span><span class="lnt">37
+</span><span class="lnt">38
+</span><span class="lnt">39
+</span><span class="lnt">40
+</span><span class="lnt">41
+</span><span class="lnt">42
+</span><span class="lnt">43
+</span><span class="lnt">44
+</span><span class="lnt">45
+</span><span class="lnt">46
+</span><span class="lnt">47
+</span><span class="lnt">48
+</span><span class="lnt">49
+</span><span class="lnt">50
+</span><span class="lnt">51
+</span><span class="lnt">52
+</span><span class="lnt">53
+</span><span class="lnt">54
+</span><span class="lnt">55
+</span><span class="lnt">56
+</span><span class="lnt">57
+</span><span class="lnt">58
+</span><span class="lnt">59
+</span><span class="lnt">60
+</span><span class="lnt">61
+</span><span class="lnt">62
+</span><span class="lnt">63
+</span><span class="lnt">64
+</span><span class="lnt">65
+</span><span class="lnt">66
+</span><span class="lnt">67
+</span><span class="lnt">68
+</span><span class="lnt">69
+</span><span class="lnt">70
+</span><span class="lnt">71
+</span><span class="lnt">72
+</span><span class="lnt">73
+</span><span class="lnt">74
+</span><span class="lnt">75
+</span><span class="lnt">76
+</span><span class="lnt">77
+</span><span class="lnt">78
+</span><span class="lnt">79
+</span><span class="lnt">80
+</span><span class="lnt">81
+</span><span class="lnt">82
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-java" data-lang="java"><span class="kn">import</span> <span class="nn">java.io.File</span><span class="o">;</span>
+<span class="kn">import</span> <span class="nn">java.util.Arrays</span><span class="o">;</span>
+<span class="kn">import</span> <span class="nn">java.util.Comparator</span><span class="o">;</span>
+<span class="kn">import</span> <span class="nn">java.util.List</span><span class="o">;</span>
 
-<h1 id="分析-kiefilesystemscannerimpl">分析 KieFileSystemScannerImpl</h1>
+<span class="kn">import</span> <span class="nn">org.drools.compiler.kie.builder.impl.AbstractKieScanner</span><span class="o">;</span>
+<span class="kn">import</span> <span class="nn">org.drools.compiler.kie.builder.impl.InternalKieModule</span><span class="o">;</span>
+<span class="kn">import</span> <span class="nn">org.drools.compiler.kie.builder.impl.KieContainerImpl</span><span class="o">;</span>
+<span class="kn">import</span> <span class="nn">org.drools.core.impl.InternalKieContainer</span><span class="o">;</span>
+<span class="kn">import</span> <span class="nn">org.kie.api.builder.KieScanner</span><span class="o">;</span>
+<span class="kn">import</span> <span class="nn">org.kie.api.builder.ReleaseIdComparator.ComparableVersion</span><span class="o">;</span>
+<span class="kn">import</span> <span class="nn">org.kie.api.runtime.KieContainer</span><span class="o">;</span>
 
-<pre><code class="language-java">import java.io.File;
-import java.util.Arrays;
-import java.util.Comparator;
-import java.util.List;
+<span class="kd">public</span> <span class="kd">class</span> <span class="nc">KieFileSystemScannerImpl</span> <span class="kd">extends</span> <span class="n">AbstractKieScanner</span><span class="o">&lt;</span><span class="n">InternalKieModule</span><span class="o">&gt;</span> <span class="kd">implements</span> <span class="n">KieScanner</span> <span class="o">{</span>
 
-import org.drools.compiler.kie.builder.impl.AbstractKieScanner;
-import org.drools.compiler.kie.builder.impl.InternalKieModule;
-import org.drools.compiler.kie.builder.impl.KieContainerImpl;
-import org.drools.core.impl.InternalKieContainer;
-import org.kie.api.builder.KieScanner;
-import org.kie.api.builder.ReleaseIdComparator.ComparableVersion;
-import org.kie.api.runtime.KieContainer;
+    <span class="kd">private</span> <span class="kd">final</span> <span class="n">File</span> <span class="n">repositoryFolder</span><span class="o">;</span>
+    <span class="kd">private</span> <span class="kd">final</span> <span class="n">String</span> <span class="n">kjarFileHead</span><span class="o">;</span>
+    <span class="kd">private</span> <span class="kd">final</span> <span class="n">VersionComparator</span> <span class="n">versionComparator</span><span class="o">;</span>
 
-public class KieFileSystemScannerImpl extends AbstractKieScanner&lt;InternalKieModule&gt; implements KieScanner {
+    <span class="kd">public</span> <span class="nf">KieFileSystemScannerImpl</span><span class="o">(</span><span class="kd">final</span> <span class="n">KieContainer</span> <span class="n">kieContainer</span><span class="o">,</span> <span class="kd">final</span> <span class="n">String</span> <span class="n">repositoryFolder</span><span class="o">)</span> <span class="o">{</span>
+        <span class="k">this</span><span class="o">.</span><span class="na">kieContainer</span> <span class="o">=</span> <span class="o">(</span> <span class="n">InternalKieContainer</span> <span class="o">)</span> <span class="n">kieContainer</span><span class="o">;</span>
+        <span class="c1">// 查询当前的ArtifactId， 以确定文件夹下的新kjar以什么文件名开头
+</span><span class="c1"></span>        <span class="k">this</span><span class="o">.</span><span class="na">kjarFileHead</span> <span class="o">=</span> <span class="n">kieContainer</span><span class="o">.</span><span class="na">getReleaseId</span><span class="o">(</span><span class="o">)</span><span class="o">.</span><span class="na">getArtifactId</span><span class="o">(</span><span class="o">)</span> <span class="o">+</span> <span class="s">&#34;-&#34;</span><span class="o">;</span>
+        <span class="c1">// 用来从文件夹下找到最新的kjar
+</span><span class="c1"></span>        <span class="k">this</span><span class="o">.</span><span class="na">versionComparator</span> <span class="o">=</span> <span class="k">new</span> <span class="n">VersionComparator</span><span class="o">(</span> <span class="n">kjarFileHead</span><span class="o">.</span><span class="na">length</span><span class="o">(</span><span class="o">)</span> <span class="o">)</span><span class="o">;</span>
+        <span class="k">this</span><span class="o">.</span><span class="na">repositoryFolder</span> <span class="o">=</span> <span class="k">new</span> <span class="n">File</span><span class="o">(</span> <span class="n">repositoryFolder</span> <span class="o">)</span><span class="o">;</span>
+    <span class="o">}</span>
 
-    private final File repositoryFolder;
-    private final String kjarFileHead;
-    private final VersionComparator versionComparator;
+    <span class="nd">@Override</span>
+    <span class="kd">protected</span> <span class="n">InternalKieModule</span> <span class="nf">internalScan</span><span class="o">(</span><span class="o">)</span> <span class="o">{</span>
+        <span class="kd">final</span> <span class="n">File</span> <span class="n">newKJar</span> <span class="o">=</span> <span class="n">findNewFile</span><span class="o">(</span><span class="o">)</span><span class="o">;</span>
+        <span class="k">return</span> <span class="n">newKJar</span> <span class="o">=</span><span class="o">=</span> <span class="kc">null</span> <span class="o">?</span> <span class="kc">null</span> <span class="o">:</span> <span class="n">InternalKieModule</span><span class="o">.</span><span class="na">createKieModule</span><span class="o">(</span><span class="n">kieContainer</span><span class="o">.</span><span class="na">getReleaseId</span><span class="o">(</span><span class="o">)</span><span class="o">,</span> <span class="n">newKJar</span><span class="o">)</span><span class="o">;</span>
+    <span class="o">}</span>
 
-    public KieFileSystemScannerImpl(final KieContainer kieContainer, final String repositoryFolder) {
-        this.kieContainer = ( InternalKieContainer ) kieContainer;
-        // 查询当前的ArtifactId， 以确定文件夹下的新kjar以什么文件名开头
-        this.kjarFileHead = kieContainer.getReleaseId().getArtifactId() + &quot;-&quot;;
-        // 用来从文件夹下找到最新的kjar
-        this.versionComparator = new VersionComparator( kjarFileHead.length() );
-        this.repositoryFolder = new File( repositoryFolder );
-    }
+    <span class="nd">@Override</span>
+    <span class="kd">protected</span> <span class="kt">void</span> <span class="nf">internalUpdate</span><span class="o">(</span><span class="kd">final</span> <span class="n">InternalKieModule</span> <span class="n">kmodule</span> <span class="o">)</span> <span class="o">{</span>
+        <span class="o">(</span><span class="o">(</span><span class="n">KieContainerImpl</span><span class="o">)</span> <span class="n">kieContainer</span><span class="o">)</span><span class="o">.</span><span class="na">updateToKieModule</span><span class="o">(</span> <span class="n">kmodule</span> <span class="o">)</span><span class="o">;</span>
+    <span class="o">}</span>
 
-    @Override
-    protected InternalKieModule internalScan() {
-        final File newKJar = findNewFile();
-        return newKJar == null ? null : InternalKieModule.createKieModule(kieContainer.getReleaseId(), newKJar);
-    }
+    <span class="kd">private</span> <span class="n">File</span> <span class="nf">findNewFile</span><span class="o">(</span><span class="o">)</span> <span class="o">{</span> <span class="c1">// 如果有新的规则kjar，则返回新kjar
+</span><span class="c1"></span>        <span class="n">File</span><span class="o">[</span><span class="o">]</span> <span class="n">files</span> <span class="o">=</span> <span class="n">repositoryFolder</span><span class="o">.</span><span class="na">listFiles</span><span class="o">(</span><span class="o">(</span><span class="n">dir</span><span class="o">,</span> <span class="n">name</span><span class="o">)</span> <span class="o">-</span><span class="o">&gt;</span> <span class="n">name</span><span class="o">.</span><span class="na">startsWith</span><span class="o">(</span><span class="n">kjarFileHead</span><span class="o">)</span> <span class="o">&amp;</span><span class="o">&amp;</span> <span class="n">name</span><span class="o">.</span><span class="na">endsWith</span><span class="o">(</span><span class="s">&#34;.jar&#34;</span> <span class="o">)</span><span class="o">)</span><span class="o">;</span>
+        <span class="k">if</span> <span class="o">(</span><span class="n">files</span> <span class="o">=</span><span class="o">=</span> <span class="kc">null</span> <span class="o">|</span><span class="o">|</span> <span class="n">files</span><span class="o">.</span><span class="na">length</span> <span class="o">=</span><span class="o">=</span> <span class="n">0</span><span class="o">)</span> <span class="o">{</span>
+            <span class="k">return</span> <span class="kc">null</span><span class="o">;</span>
+        <span class="o">}</span>
 
-    @Override
-    protected void internalUpdate(final InternalKieModule kmodule ) {
-        ((KieContainerImpl) kieContainer).updateToKieModule( kmodule );
-    }
+        <span class="n">File</span> <span class="n">candidateNew</span> <span class="o">=</span> <span class="n">getCandidateNew</span><span class="o">(</span> <span class="n">files</span> <span class="o">)</span><span class="o">;</span> <span class="c1">// 可能有多个 排序后取最新的
+</span><span class="c1"></span>        <span class="c1">// 比较 文件夹中的kjar版本 和 当前容器中使用的版本 , 返回新版本 或空
+</span><span class="c1"></span>        <span class="kt">int</span> <span class="n">versionComparison</span> <span class="o">=</span> <span class="n">compareVersion</span><span class="o">(</span><span class="n">getVersionFromFile</span><span class="o">(</span><span class="n">candidateNew</span><span class="o">,</span> <span class="n">kjarFileHead</span><span class="o">.</span><span class="na">length</span><span class="o">(</span><span class="o">)</span><span class="o">)</span><span class="o">,</span> <span class="n">kieContainer</span><span class="o">.</span><span class="na">getReleaseId</span><span class="o">(</span><span class="o">)</span><span class="o">.</span><span class="na">getVersion</span><span class="o">(</span><span class="o">)</span><span class="o">)</span><span class="o">;</span>
+        <span class="k">return</span> <span class="n">versionComparison</span> <span class="o">&gt;</span> <span class="n">0</span> <span class="o">|</span><span class="o">|</span> <span class="o">(</span> <span class="n">versionComparison</span> <span class="o">=</span><span class="o">=</span> <span class="n">0</span> <span class="o">&amp;</span><span class="o">&amp;</span> <span class="n">kieContainer</span><span class="o">.</span><span class="na">getReleaseId</span><span class="o">(</span><span class="o">)</span><span class="o">.</span><span class="na">isSnapshot</span><span class="o">(</span><span class="o">)</span> <span class="o">)</span> <span class="o">?</span> <span class="n">candidateNew</span> <span class="o">:</span> <span class="kc">null</span><span class="o">;</span>
+    <span class="o">}</span>
 
-    private File findNewFile() { // 如果有新的规则kjar，则返回新kjar
-        File[] files = repositoryFolder.listFiles((dir, name) -&gt; name.startsWith(kjarFileHead) &amp;&amp; name.endsWith(&quot;.jar&quot; ));
-        if (files == null || files.length == 0) {
-            return null;
-        }
+    <span class="kd">private</span> <span class="n">File</span> <span class="nf">getCandidateNew</span><span class="o">(</span> <span class="n">File</span><span class="o">[</span><span class="o">]</span> <span class="n">files</span> <span class="o">)</span> <span class="o">{</span>
+        <span class="k">if</span> <span class="o">(</span><span class="n">files</span><span class="o">.</span><span class="na">length</span> <span class="o">=</span><span class="o">=</span> <span class="n">1</span><span class="o">)</span> <span class="o">{</span>
+            <span class="k">return</span> <span class="n">files</span><span class="o">[</span><span class="n">0</span><span class="o">]</span><span class="o">;</span>
+        <span class="o">}</span>
+        <span class="kd">final</span> <span class="n">List</span><span class="o">&lt;</span><span class="n">File</span><span class="o">&gt;</span> <span class="n">jarFiles</span> <span class="o">=</span> <span class="n">Arrays</span><span class="o">.</span><span class="na">asList</span><span class="o">(</span><span class="n">files</span><span class="o">)</span><span class="o">;</span>
+        <span class="n">jarFiles</span><span class="o">.</span><span class="na">sort</span><span class="o">(</span><span class="n">versionComparator</span><span class="o">.</span><span class="na">reversed</span><span class="o">(</span><span class="o">)</span><span class="o">)</span><span class="o">;</span>
+        <span class="k">return</span> <span class="n">jarFiles</span><span class="o">.</span><span class="na">get</span><span class="o">(</span><span class="n">0</span><span class="o">)</span><span class="o">;</span>
+    <span class="o">}</span>
 
-        File candidateNew = getCandidateNew( files ); // 可能有多个 排序后取最新的
-        // 比较 文件夹中的kjar版本 和 当前容器中使用的版本 , 返回新版本 或空
-        int versionComparison = compareVersion(getVersionFromFile(candidateNew, kjarFileHead.length()), kieContainer.getReleaseId().getVersion());
-        return versionComparison &gt; 0 || ( versionComparison == 0 &amp;&amp; kieContainer.getReleaseId().isSnapshot() ) ? candidateNew : null;
-    }
+    <span class="kd">private</span> <span class="kd">static</span> <span class="kd">class</span> <span class="nc">VersionComparator</span> <span class="kd">implements</span> <span class="n">Comparator</span><span class="o">&lt;</span><span class="n">File</span><span class="o">&gt;</span> <span class="o">{</span>
+        <span class="kd">private</span> <span class="kd">final</span> <span class="kt">int</span> <span class="n">headLength</span><span class="o">;</span>
 
-    private File getCandidateNew( File[] files ) {
-        if (files.length == 1) {
-            return files[0];
-        }
-        final List&lt;File&gt; jarFiles = Arrays.asList(files);
-        jarFiles.sort(versionComparator.reversed());
-        return jarFiles.get(0);
-    }
+        <span class="kd">private</span> <span class="nf">VersionComparator</span><span class="o">(</span><span class="kd">final</span> <span class="kt">int</span> <span class="n">headLength</span><span class="o">)</span> <span class="o">{</span>
+            <span class="k">this</span><span class="o">.</span><span class="na">headLength</span> <span class="o">=</span> <span class="n">headLength</span><span class="o">;</span>
+        <span class="o">}</span>
 
-    private static class VersionComparator implements Comparator&lt;File&gt; {
-        private final int headLength;
+        <span class="nd">@Override</span>
+        <span class="kd">public</span> <span class="kt">int</span> <span class="nf">compare</span><span class="o">(</span><span class="kd">final</span> <span class="n">File</span> <span class="n">f1</span><span class="o">,</span> <span class="kd">final</span> <span class="n">File</span> <span class="n">f2</span> <span class="o">)</span> <span class="o">{</span>
+            <span class="k">return</span> <span class="n">compareVersion</span><span class="o">(</span> <span class="n">getVersionFromFile</span><span class="o">(</span><span class="n">f1</span><span class="o">,</span> <span class="n">headLength</span><span class="o">)</span><span class="o">,</span> <span class="n">getVersionFromFile</span><span class="o">(</span><span class="n">f2</span><span class="o">,</span> <span class="n">headLength</span><span class="o">)</span> <span class="o">)</span><span class="o">;</span>
+        <span class="o">}</span>
+    <span class="o">}</span>
 
-        private VersionComparator(final int headLength) {
-            this.headLength = headLength;
-        }
+    <span class="kd">private</span> <span class="kd">static</span> <span class="kt">int</span> <span class="nf">compareVersion</span><span class="o">(</span><span class="n">String</span> <span class="n">v1</span><span class="o">,</span> <span class="n">String</span> <span class="n">v2</span><span class="o">)</span> <span class="o">{</span>
+        <span class="k">return</span> <span class="k">new</span> <span class="n">ComparableVersion</span><span class="o">(</span> <span class="n">v1</span> <span class="o">)</span><span class="o">.</span><span class="na">compareTo</span><span class="o">(</span> <span class="k">new</span> <span class="n">ComparableVersion</span><span class="o">(</span> <span class="n">v2</span> <span class="o">)</span> <span class="o">)</span><span class="o">;</span>
+    <span class="o">}</span>
 
-        @Override
-        public int compare(final File f1, final File f2 ) {
-            return compareVersion( getVersionFromFile(f1, headLength), getVersionFromFile(f2, headLength) );
-        }
-    }
-
-    private static int compareVersion(String v1, String v2) {
-        return new ComparableVersion( v1 ).compareTo( new ComparableVersion( v2 ) );
-    }
-
-    private static String getVersionFromFile(File f, int headLength) {
-        String name = f.getName();
-        return name.substring( headLength, name.length()-4 );
-    }
-}
-</code></pre>
-
-<p>测试 drools中比较版本的工具
+    <span class="kd">private</span> <span class="kd">static</span> <span class="n">String</span> <span class="nf">getVersionFromFile</span><span class="o">(</span><span class="n">File</span> <span class="n">f</span><span class="o">,</span> <span class="kt">int</span> <span class="n">headLength</span><span class="o">)</span> <span class="o">{</span>
+        <span class="n">String</span> <span class="n">name</span> <span class="o">=</span> <span class="n">f</span><span class="o">.</span><span class="na">getName</span><span class="o">(</span><span class="o">)</span><span class="o">;</span>
+        <span class="k">return</span> <span class="n">name</span><span class="o">.</span><span class="na">substring</span><span class="o">(</span> <span class="n">headLength</span><span class="o">,</span> <span class="n">name</span><span class="o">.</span><span class="na">length</span><span class="o">(</span><span class="o">)</span><span class="o">-</span><span class="n">4</span> <span class="o">)</span><span class="o">;</span>
+    <span class="o">}</span>
+<span class="o">}</span>
+</code></pre></td></tr></table>
+</div>
+</div><p>测试 drools中比较版本的工具 
 org.kie.api.builder.ReleaseIdComparator.ComparableVersion</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span><span class="lnt">14
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-kotlin" data-lang="kotlin"><span class="k">fun</span> <span class="nf">testCompareVersion</span><span class="p">(</span><span class="p">)</span> <span class="p">{</span>
+    <span class="k">val</span> <span class="py">v1</span> <span class="p">=</span> <span class="n">ComparableVersion</span><span class="p">(</span><span class="s">&#34;myshop-1.0.0-20191101.165906-1.jar&#34;</span><span class="p">)</span>
+    <span class="k">val</span> <span class="py">v2</span> <span class="p">=</span> <span class="n">ComparableVersion</span><span class="p">(</span><span class="s">&#34;myshop-1.0.0-20191104.065907-3.jar&#34;</span><span class="p">)</span>
+    <span class="k">val</span> <span class="py">v3</span> <span class="p">=</span> <span class="n">ComparableVersion</span><span class="p">(</span><span class="s">&#34;myshop-1.2.0-SNAPSHOT.jar&#34;</span><span class="p">)</span>
+    <span class="k">val</span> <span class="py">v4</span> <span class="p">=</span> <span class="n">ComparableVersion</span><span class="p">(</span><span class="s">&#34;myshop-1.10.0-SNAPSHOT.jar&#34;</span><span class="p">)</span>
+    <span class="k">val</span> <span class="py">v5</span> <span class="p">=</span> <span class="n">ComparableVersion</span><span class="p">(</span><span class="s">&#34;myshop-1.10.0.Final.jar&#34;</span><span class="p">)</span>
 
-<pre><code class="language-kotlin">fun testCompareVersion() {
-    val v1 = ComparableVersion(&quot;myshop-1.0.0-20191101.165906-1.jar&quot;)
-    val v2 = ComparableVersion(&quot;myshop-1.0.0-20191104.065907-3.jar&quot;)
-    val v3 = ComparableVersion(&quot;myshop-1.2.0-SNAPSHOT.jar&quot;)
-    val v4 = ComparableVersion(&quot;myshop-1.10.0-SNAPSHOT.jar&quot;)
-    val v5 = ComparableVersion(&quot;myshop-1.10.0.Final.jar&quot;)
-
-    println(v1.compareTo(v2))
-    println(v2.compareTo(v3))
-    println(v3.compareTo(v4))
-    println(v4.compareTo(v5))
-    // 结果显示: v5的版本号最大, 没毛病
-    println(v5.compareTo(v1))
-}
-</code></pre>
-
-<p>KieFileSystemScannerImpl 继承了 AbstractKieScanner
-调度的逻辑在抽象类中
+    <span class="n">println</span><span class="p">(</span><span class="n">v1</span><span class="p">.</span><span class="n">compareTo</span><span class="p">(</span><span class="n">v2</span><span class="p">)</span><span class="p">)</span>
+    <span class="n">println</span><span class="p">(</span><span class="n">v2</span><span class="p">.</span><span class="n">compareTo</span><span class="p">(</span><span class="n">v3</span><span class="p">)</span><span class="p">)</span>
+    <span class="n">println</span><span class="p">(</span><span class="n">v3</span><span class="p">.</span><span class="n">compareTo</span><span class="p">(</span><span class="n">v4</span><span class="p">)</span><span class="p">)</span>
+    <span class="n">println</span><span class="p">(</span><span class="n">v4</span><span class="p">.</span><span class="n">compareTo</span><span class="p">(</span><span class="n">v5</span><span class="p">)</span><span class="p">)</span>
+    <span class="c1">// 结果显示: v5的版本号最大, 没毛病
+</span><span class="c1"></span>    <span class="n">println</span><span class="p">(</span><span class="n">v5</span><span class="p">.</span><span class="n">compareTo</span><span class="p">(</span><span class="n">v1</span><span class="p">)</span><span class="p">)</span>
+<span class="p">}</span>
+</code></pre></td></tr></table>
+</div>
+</div><p>KieFileSystemScannerImpl 继承了 AbstractKieScanner
+调度的逻辑在抽象类中 
 检查更新的逻辑 在 internalScan 方法中实现
 然后 internalUpdate 中将新规则更新到容器中</p>
-
-<h1 id="自定义kiescanner">自定义KieScanner</h1>
-
+<h1 id="kiescanner">自定义KieScanner</h1>
 <p>自定义后 可以从指定检查更新的来源
 比如 从数据库查 从某个url去查询</p>
-
 <p>自定义的scanner中 internalScan、 internalUpdate都是复制的 KieFileSystemScannerImpl 的逻辑
 通过在 findNewFile 方法中编写自己的检查更新逻辑</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span><span class="lnt">14
+</span><span class="lnt">15
+</span><span class="lnt">16
+</span><span class="lnt">17
+</span><span class="lnt">18
+</span><span class="lnt">19
+</span><span class="lnt">20
+</span><span class="lnt">21
+</span><span class="lnt">22
+</span><span class="lnt">23
+</span><span class="lnt">24
+</span><span class="lnt">25
+</span><span class="lnt">26
+</span><span class="lnt">27
+</span><span class="lnt">28
+</span><span class="lnt">29
+</span><span class="lnt">30
+</span><span class="lnt">31
+</span><span class="lnt">32
+</span><span class="lnt">33
+</span><span class="lnt">34
+</span><span class="lnt">35
+</span><span class="lnt">36
+</span><span class="lnt">37
+</span><span class="lnt">38
+</span><span class="lnt">39
+</span><span class="lnt">40
+</span><span class="lnt">41
+</span><span class="lnt">42
+</span><span class="lnt">43
+</span><span class="lnt">44
+</span><span class="lnt">45
+</span><span class="lnt">46
+</span><span class="lnt">47
+</span><span class="lnt">48
+</span><span class="lnt">49
+</span><span class="lnt">50
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-java" data-lang="java"><span class="kn">package</span> <span class="nn">fluffy.test_update_rule</span><span class="o">;</span>
 
-<pre><code class="language-java">package fluffy.test_update_rule;
+<span class="kn">import</span> <span class="nn">org.drools.compiler.kie.builder.impl.AbstractKieScanner</span><span class="o">;</span>
+<span class="kn">import</span> <span class="nn">org.drools.compiler.kie.builder.impl.InternalKieModule</span><span class="o">;</span>
+<span class="kn">import</span> <span class="nn">org.drools.compiler.kie.builder.impl.KieContainerImpl</span><span class="o">;</span>
+<span class="kn">import</span> <span class="nn">org.drools.core.impl.InternalKieContainer</span><span class="o">;</span>
+<span class="kn">import</span> <span class="nn">org.kie.api.builder.KieScanner</span><span class="o">;</span>
+<span class="kn">import</span> <span class="nn">org.kie.api.runtime.KieContainer</span><span class="o">;</span>
 
-import org.drools.compiler.kie.builder.impl.AbstractKieScanner;
-import org.drools.compiler.kie.builder.impl.InternalKieModule;
-import org.drools.compiler.kie.builder.impl.KieContainerImpl;
-import org.drools.core.impl.InternalKieContainer;
-import org.kie.api.builder.KieScanner;
-import org.kie.api.runtime.KieContainer;
+<span class="kn">import</span> <span class="nn">java.io.File</span><span class="o">;</span>
 
-import java.io.File;
+<span class="kd">public</span> <span class="kd">class</span> <span class="nc">KieMyScannerImpl</span> <span class="kd">extends</span> <span class="n">AbstractKieScanner</span><span class="o">&lt;</span><span class="n">InternalKieModule</span><span class="o">&gt;</span> <span class="kd">implements</span> <span class="n">KieScanner</span> <span class="o">{</span>
+    <span class="kd">private</span> <span class="kd">final</span> <span class="n">File</span> <span class="n">repositoryFolder</span><span class="o">;</span>
+    <span class="kt">int</span> <span class="n">count</span> <span class="o">=</span> <span class="n">1</span><span class="o">;</span>
 
-public class KieMyScannerImpl extends AbstractKieScanner&lt;InternalKieModule&gt; implements KieScanner {
-    private final File repositoryFolder;
-    int count = 1;
+    <span class="kd">public</span> <span class="nf">KieMyScannerImpl</span><span class="o">(</span><span class="kd">final</span> <span class="n">KieContainer</span> <span class="n">kieContainer</span><span class="o">,</span> <span class="kd">final</span> <span class="n">String</span> <span class="n">repositoryFolder</span><span class="o">)</span> <span class="o">{</span>
+        <span class="k">this</span><span class="o">.</span><span class="na">kieContainer</span> <span class="o">=</span> <span class="o">(</span><span class="n">InternalKieContainer</span><span class="o">)</span> <span class="n">kieContainer</span><span class="o">;</span>
+        <span class="c1">// 查询当前的ArtifactId， 以确定文件夹下的新kjar以什么文件名开头
+</span><span class="c1"></span>        <span class="k">this</span><span class="o">.</span><span class="na">repositoryFolder</span> <span class="o">=</span> <span class="k">new</span> <span class="n">File</span><span class="o">(</span><span class="n">repositoryFolder</span><span class="o">)</span><span class="o">;</span>
+    <span class="o">}</span>
 
-    public KieMyScannerImpl(final KieContainer kieContainer, final String repositoryFolder) {
-        this.kieContainer = (InternalKieContainer) kieContainer;
-        // 查询当前的ArtifactId， 以确定文件夹下的新kjar以什么文件名开头
-        this.repositoryFolder = new File(repositoryFolder);
-    }
+    <span class="nd">@Override</span>
+    <span class="kd">protected</span> <span class="n">InternalKieModule</span> <span class="nf">internalScan</span><span class="o">(</span><span class="o">)</span> <span class="o">{</span>
+        <span class="c1">// 同 KieFileSystemScannerImpl 相同
+</span><span class="c1"></span>        <span class="kd">final</span> <span class="n">File</span> <span class="n">newKJar</span> <span class="o">=</span> <span class="n">findNewFile</span><span class="o">(</span><span class="o">)</span><span class="o">;</span>
+        <span class="k">return</span> <span class="n">newKJar</span> <span class="o">=</span><span class="o">=</span> <span class="kc">null</span> <span class="o">?</span> <span class="kc">null</span> <span class="o">:</span> <span class="n">InternalKieModule</span><span class="o">.</span><span class="na">createKieModule</span><span class="o">(</span><span class="n">kieContainer</span><span class="o">.</span><span class="na">getReleaseId</span><span class="o">(</span><span class="o">)</span><span class="o">,</span> <span class="n">newKJar</span><span class="o">)</span><span class="o">;</span>
+    <span class="o">}</span>
 
-    @Override
-    protected InternalKieModule internalScan() {
-        // 同 KieFileSystemScannerImpl 相同
-        final File newKJar = findNewFile();
-        return newKJar == null ? null : InternalKieModule.createKieModule(kieContainer.getReleaseId(), newKJar);
-    }
+    <span class="nd">@Override</span>
+    <span class="kd">protected</span> <span class="kt">void</span> <span class="nf">internalUpdate</span><span class="o">(</span><span class="kd">final</span> <span class="n">InternalKieModule</span> <span class="n">kmodule</span><span class="o">)</span> <span class="o">{</span>
+        <span class="c1">// 同 KieFileSystemScannerImpl 相同
+</span><span class="c1"></span>        <span class="o">(</span><span class="o">(</span><span class="n">KieContainerImpl</span><span class="o">)</span> <span class="n">kieContainer</span><span class="o">)</span><span class="o">.</span><span class="na">updateToKieModule</span><span class="o">(</span><span class="n">kmodule</span><span class="o">)</span><span class="o">;</span>
+    <span class="o">}</span>
 
-    @Override
-    protected void internalUpdate(final InternalKieModule kmodule) {
-        // 同 KieFileSystemScannerImpl 相同
-        ((KieContainerImpl) kieContainer).updateToKieModule(kmodule);
-    }
+    <span class="kd">private</span> <span class="n">File</span> <span class="nf">findNewFile</span><span class="o">(</span><span class="o">)</span> <span class="o">{</span>
+        <span class="c1">// 查找新文件的逻辑， 此处写死了
+</span><span class="c1"></span>        <span class="n">count</span><span class="o">+</span><span class="o">+</span><span class="o">;</span>
+        <span class="n">String</span> <span class="n">path</span> <span class="o">=</span> <span class="n">repositoryFolder</span><span class="o">.</span><span class="na">getAbsolutePath</span><span class="o">(</span><span class="o">)</span><span class="o">;</span>
+        <span class="n">File</span> <span class="n">f</span> <span class="o">=</span> <span class="kc">null</span><span class="o">;</span>
+        <span class="k">if</span> <span class="o">(</span><span class="n">count</span> <span class="o">=</span><span class="o">=</span> <span class="n">2</span><span class="o">)</span> <span class="o">{</span>
+            <span class="n">f</span> <span class="o">=</span> <span class="k">new</span> <span class="n">File</span><span class="o">(</span><span class="n">path</span> <span class="o">+</span> <span class="s">&#34;/kjarUpdate-0.0.2-SNAPSHOT.jar&#34;</span><span class="o">)</span><span class="o">;</span>
+        <span class="o">}</span> <span class="k">else</span> <span class="k">if</span> <span class="o">(</span><span class="n">3</span> <span class="o">=</span><span class="o">=</span> <span class="n">count</span><span class="o">)</span> <span class="o">{</span>
+            <span class="n">f</span> <span class="o">=</span> <span class="k">new</span> <span class="n">File</span><span class="o">(</span><span class="n">path</span> <span class="o">+</span> <span class="s">&#34;/kjarUpdate-0.0.3-SNAPSHOT.jar&#34;</span><span class="o">)</span><span class="o">;</span>
+        <span class="o">}</span>
+        <span class="k">if</span> <span class="o">(</span><span class="n">f</span> <span class="o">!</span><span class="o">=</span> <span class="kc">null</span><span class="o">)</span> <span class="o">{</span>
+            <span class="n">System</span><span class="o">.</span><span class="na">out</span><span class="o">.</span><span class="na">println</span><span class="o">(</span><span class="s">&#34;发现新规则--&#34;</span> <span class="o">+</span> <span class="n">f</span><span class="o">.</span><span class="na">getName</span><span class="o">(</span><span class="o">)</span><span class="o">)</span><span class="o">;</span>
+        <span class="o">}</span>
+        <span class="k">return</span> <span class="n">f</span><span class="o">;</span>
+    <span class="o">}</span>
+<span class="o">}</span>
+</code></pre></td></tr></table>
+</div>
+</div><h2 id="heading-3">运行自定义检测类的逻辑</h2>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span><span class="lnt">14
+</span><span class="lnt">15
+</span><span class="lnt">16
+</span><span class="lnt">17
+</span><span class="lnt">18
+</span><span class="lnt">19
+</span><span class="lnt">20
+</span><span class="lnt">21
+</span><span class="lnt">22
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-kotlin" data-lang="kotlin"><span class="k">fun</span> <span class="nf">mainV2</span><span class="p">(</span><span class="p">)</span> <span class="p">{</span>
+    <span class="k">val</span> <span class="py">ks</span> <span class="p">=</span> <span class="n">KieServices</span><span class="p">.</span><span class="n">Factory</span><span class="p">.</span><span class="k">get</span><span class="p">(</span><span class="p">)</span>
+    <span class="k">val</span> <span class="py">kModule</span> <span class="p">=</span> <span class="n">ks</span><span class="p">.</span><span class="n">repository</span><span class="p">.</span><span class="n">addKieModule</span><span class="p">(</span><span class="n">ks</span><span class="p">.</span><span class="n">resources</span><span class="p">.</span><span class="n">newFileSystemResource</span><span class="p">(</span><span class="n">kjar</span><span class="p">)</span><span class="p">)</span>
+    <span class="c1">// 创建container
+</span><span class="c1"></span>    <span class="k">val</span> <span class="py">kContainer</span> <span class="p">=</span> <span class="n">ks</span><span class="p">.</span><span class="n">newKieContainer</span><span class="p">(</span><span class="n">kModule</span><span class="p">.</span><span class="n">getReleaseId</span><span class="p">(</span><span class="p">)</span><span class="p">)</span>
 
-    private File findNewFile() {
-        // 查找新文件的逻辑， 此处写死了
-        count++;
-        String path = repositoryFolder.getAbsolutePath();
-        File f = null;
-        if (count == 2) {
-            f = new File(path + &quot;/kjarUpdate-0.0.2-SNAPSHOT.jar&quot;);
-        } else if (3 == count) {
-            f = new File(path + &quot;/kjarUpdate-0.0.3-SNAPSHOT.jar&quot;);
-        }
-        if (f != null) {
-            System.out.println(&quot;发现新规则--&quot; + f.getName());
-        }
-        return f;
-    }
-}
-</code></pre>
+    <span class="k">val</span> <span class="py">ksss</span> <span class="p">=</span> <span class="n">kContainer</span><span class="p">.</span><span class="n">newKieSession</span><span class="p">(</span><span class="s">&#34;ks-testUpdate&#34;</span><span class="p">)</span>
+    <span class="n">ksss</span><span class="p">.</span><span class="n">setGlobal</span><span class="p">(</span><span class="s">&#34;tag&#34;</span><span class="p">,</span> <span class="s">&#34;A&#34;</span><span class="p">)</span><span class="p">;</span>
+    <span class="n">runRule</span><span class="p">(</span><span class="n">ksss</span><span class="p">)</span>
 
-<h2 id="运行自定义检测类的逻辑">运行自定义检测类的逻辑</h2>
+    <span class="k">val</span> <span class="py">scanner</span> <span class="p">=</span> <span class="n">KieMyScannerImpl</span><span class="p">(</span><span class="n">kContainer</span><span class="p">,</span> <span class="n">pjRoot</span><span class="p">)</span>
+    <span class="n">scanner</span><span class="p">.</span><span class="n">start</span><span class="p">(</span><span class="n">TimeUnit</span><span class="p">.</span><span class="n">SECONDS</span><span class="p">.</span><span class="n">toMillis</span><span class="p">(</span><span class="m">3</span><span class="p">)</span><span class="p">)</span>
 
-<pre><code class="language-kotlin">fun mainV2() {
-    val ks = KieServices.Factory.get()
-    val kModule = ks.repository.addKieModule(ks.resources.newFileSystemResource(kjar))
-    // 创建container
-    val kContainer = ks.newKieContainer(kModule.getReleaseId())
+    <span class="n">println</span><span class="p">(</span><span class="s">&#34;此处不打断点--scanner写死了 两个新版本&#34;</span><span class="p">)</span>
+    <span class="n">TimeUnit</span><span class="p">.</span><span class="n">SECONDS</span><span class="p">.</span><span class="n">sleep</span><span class="p">(</span><span class="m">4</span><span class="p">)</span>
+    <span class="n">runRule</span><span class="p">(</span><span class="n">ksss</span><span class="p">)</span>
 
-    val ksss = kContainer.newKieSession(&quot;ks-testUpdate&quot;)
-    ksss.setGlobal(&quot;tag&quot;, &quot;A&quot;);
-    runRule(ksss)
+    <span class="n">TimeUnit</span><span class="p">.</span><span class="n">SECONDS</span><span class="p">.</span><span class="n">sleep</span><span class="p">(</span><span class="m">4</span><span class="p">)</span>
+    <span class="n">runRule</span><span class="p">(</span><span class="n">ksss</span><span class="p">)</span>
 
-    val scanner = KieMyScannerImpl(kContainer, pjRoot)
-    scanner.start(TimeUnit.SECONDS.toMillis(3))
-
-    println(&quot;此处不打断点--scanner写死了 两个新版本&quot;)
-    TimeUnit.SECONDS.sleep(4)
-    runRule(ksss)
-
-    TimeUnit.SECONDS.sleep(4)
-    runRule(ksss)
-
-    println(&quot;done&quot;)
-}
-</code></pre>
-
-<p>运行结果</p>
-
-<pre><code>v1--A--1.01
+    <span class="n">println</span><span class="p">(</span><span class="s">&#34;done&#34;</span><span class="p">)</span>
+<span class="p">}</span>
+</code></pre></td></tr></table>
+</div>
+</div><p>运行结果</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-fallback" data-lang="fallback">v1--A--1.01
 v1--A--2.0300000000000002
 v1--A--3.0600000000000005
 此处不打断点--scanner写死了 两个新版本
@@ -576,272 +819,107 @@ v3--A--7.130000000000001
 v3--A--8.15
 v3--A--9.18
 done
-</code></pre>
-
-<p>归根结底 还是调用的 <code>kieContainer.updateToKieModule( kmodule );</code> 来更新规则的</p>
-
-                        </div>
-
-                        
-
-
-                        
-
-<div class="post-archive">
-    <h2>See Also</h2>
-    <ul class="listing">
-        
-        <li><a href="/2019/10/13/download-m3u8-video-02.html">下载m3u8-aes128加密视频-02</a></li>
-        
-        <li><a href="/2019/10/13/download-m3u8-video-01.html">下载m3u8-aes128加密视频-01</a></li>
-        
-        <li><a href="/2019/10/09/scala-process.html">scala调用系统命令</a></li>
-        
-        <li><a href="/2019/10/03/k8s-cluster-setup-03.html">k8s的相关项目</a></li>
-        
-        <li><a href="/2019/09/12/doh.html">浏览器启用dns-over-https(DoH)</a></li>
-        
-    </ul>
+</code></pre></td></tr></table>
 </div>
+</div><p>归根结底 还是调用的 <code>kieContainer.updateToKieModule( kmodule );</code> 来更新规则的</p>
 
+    </div>
 
-                        <div class="post-meta meta-tags">
-                            
-                            <ul class="clearfix">
-                                
-                                <li><a href="https://duansheli.github.io/tags/drools">drools</a></li>
-                                
-                            </ul>
-                            
-                        </div>
-                    </article>
-                    
-    
-
-    
-    
-                </div>
-            </div>
-            <div id="secondary">
-    <section class="widget">
-        <form id="search" action="//www.google.com/search" method="get" accept-charset="utf-8" target="_blank" _lpchecked="1">
-      
-      <input type="text" name="q" maxlength="20" placeholder="Search">
-      <input type="hidden" name="sitesearch" value="https://duansheli.github.io">
-      <button type="submit" class="submit icon-search"></button>
-</form>
-    </section>
-    
-    <section class="widget">
-        <h3 class="widget-title">最近文章</h3>
-<ul class="widget-list">
-    
-    <li>
-        <a href="https://duansheli.github.io/2019/12/20/akka-demo-concurrent.html" title="akka-并发任务">akka-并发任务</a>
-    </li>
-    
-    <li>
-        <a href="https://duansheli.github.io/2019/12/15/HOCON-java.html" title="HOCON配置文件读取">HOCON配置文件读取</a>
-    </li>
-    
-    <li>
-        <a href="https://duansheli.github.io/2019/11/16/jmh-dynamic-run.html" title="JMH-测试动态执行代码效率">JMH-测试动态执行代码效率</a>
-    </li>
-    
-    <li>
-        <a href="https://duansheli.github.io/2019/11/12/doh.html" title="群晖两步验证的关闭">群晖两步验证的关闭</a>
-    </li>
-    
-    <li>
-        <a href="https://duansheli.github.io/2019/11/10/benchmark-java-jmh.html" title="基准测试工具JMH-示例">基准测试工具JMH-示例</a>
-    </li>
-    
-    <li>
-        <a href="https://duansheli.github.io/2019/10/28/update-rule-by-scanner.html" title="使用drools的规则管理平台-02">使用drools的规则管理平台-02</a>
-    </li>
-    
-    <li>
-        <a href="https://duansheli.github.io/2019/10/27/update-rule-by-scanner.html" title="使用drools的规则管理平台-01">使用drools的规则管理平台-01</a>
-    </li>
-    
-    <li>
-        <a href="https://duansheli.github.io/2019/10/26/update-rule-by-scanner.html" title="自定义动态更新drools规则">自定义动态更新drools规则</a>
-    </li>
-    
-    <li>
-        <a href="https://duansheli.github.io/2019/10/13/download-m3u8-video-02.html" title="下载m3u8-aes128加密视频-02">下载m3u8-aes128加密视频-02</a>
-    </li>
-    
-    <li>
-        <a href="https://duansheli.github.io/2019/10/13/download-m3u8-video-01.html" title="下载m3u8-aes128加密视频-01">下载m3u8-aes128加密视频-01</a>
-    </li>
-    
-</ul>
-    </section>
-
-    
-
-    <section class="widget">
-        <h3 class="widget-title">分类</h3>
-<ul class="widget-list">
-    
-    <li>
-        <a href="https://duansheli.github.io/categories/JHM/">JHM(1)</a>
-    </li>
-    
-    <li>
-        <a href="https://duansheli.github.io/categories/JMH/">JMH(1)</a>
-    </li>
-    
-    <li>
-        <a href="https://duansheli.github.io/categories/Java%E6%B7%B1%E5%85%A5/">Java深入(8)</a>
-    </li>
-    
-    <li>
-        <a href="https://duansheli.github.io/categories/k8s%E9%9B%86%E7%BE%A4/">k8s集群(5)</a>
-    </li>
-    
-    <li>
-        <a href="https://duansheli.github.io/categories/scala%E5%B9%B6%E5%8F%91%E7%BC%96%E7%A8%8B/">scala并发编程(8)</a>
-    </li>
-    
-</ul>
-    </section>
-
-    <section class="widget">
-        <h3 class="widget-title">标签</h3>
-<div class="tagcloud">
-    
-    <a href="https://duansheli.github.io/tags/JHM/">JHM</a>
-    
-    <a href="https://duansheli.github.io/tags/JMH/">JMH</a>
-    
-    <a href="https://duansheli.github.io/tags/Java/">Java</a>
-    
-    <a href="https://duansheli.github.io/tags/classloader/">classloader</a>
-    
-    <a href="https://duansheli.github.io/tags/docker/">docker</a>
-    
-    <a href="https://duansheli.github.io/tags/drone/">drone</a>
-    
-    <a href="https://duansheli.github.io/tags/drools/">drools</a>
-    
-    <a href="https://duansheli.github.io/tags/dubbo/">dubbo</a>
-    
-    <a href="https://duansheli.github.io/tags/elasticsearch/">elasticsearch</a>
-    
-    <a href="https://duansheli.github.io/tags/ffmpeg/">ffmpeg</a>
-    
-    <a href="https://duansheli.github.io/tags/gc/">gc</a>
-    
-    <a href="https://duansheli.github.io/tags/git/">git</a>
-    
-    <a href="https://duansheli.github.io/tags/gradle/">gradle</a>
-    
-    <a href="https://duansheli.github.io/tags/hashids/">hashids</a>
-    
-    <a href="https://duansheli.github.io/tags/id/">id</a>
-    
-    <a href="https://duansheli.github.io/tags/java/">java</a>
-    
-    <a href="https://duansheli.github.io/tags/jdk/">jdk</a>
-    
-    <a href="https://duansheli.github.io/tags/jvm/">jvm</a>
-    
-    <a href="https://duansheli.github.io/tags/k8s/">k8s</a>
-    
-    <a href="https://duansheli.github.io/tags/kotlin/">kotlin</a>
-    
-    <a href="https://duansheli.github.io/tags/life/">life</a>
-    
-    <a href="https://duansheli.github.io/tags/linux/">linux</a>
-    
-    <a href="https://duansheli.github.io/tags/mysql/">mysql</a>
-    
-    <a href="https://duansheli.github.io/tags/proxy/">proxy</a>
-    
-    <a href="https://duansheli.github.io/tags/redis/">redis</a>
-    
-    <a href="https://duansheli.github.io/tags/rocketmq/">rocketmq</a>
-    
-    <a href="https://duansheli.github.io/tags/route/">route</a>
-    
-    <a href="https://duansheli.github.io/tags/scala/">scala</a>
-    
-    <a href="https://duansheli.github.io/tags/session/">session</a>
-    
-    <a href="https://duansheli.github.io/tags/shell/">shell</a>
-    
-    <a href="https://duansheli.github.io/tags/spring-boot/">spring-boot</a>
-    
-    <a href="https://duansheli.github.io/tags/spring-security/">spring-security</a>
-    
-    <a href="https://duansheli.github.io/tags/springboot/">springboot</a>
-    
-    <a href="https://duansheli.github.io/tags/zipkin/">zipkin</a>
-    
-    <a href="https://duansheli.github.io/tags/%E5%88%86%E5%B8%83%E5%BC%8F%E4%BA%8B%E5%8A%A1/">分布式事务</a>
-    
-    <a href="https://duansheli.github.io/tags/%E6%8C%81%E7%BB%AD%E9%9B%86%E6%88%90/">持续集成</a>
-    
-    <a href="https://duansheli.github.io/tags/%E7%99%BB%E5%BD%95/">登录</a>
-    
+    <div class="post-copyright">
+  <p class="copyright-item">
+    <span class="item-title">文章作者</span>
+    <span class="item-content">duansheli</span>
+  </p>
+  <p class="copyright-item">
+    <span class="item-title">上次更新</span>
+    <span class="item-content">
+        2019-10-26
+        
+    </span>
+  </p>
+  
+  
 </div>
-    </section>
-
-    
-
-    <section class="widget">
-        <h3 class="widget-title">其它</h3>
-        <ul class="widget-list">
-            <li><a href="https://duansheli.github.io/index.xml">文章 RSS</a></li>
-        </ul>
-    </section>
-</div>
+<footer class="post-footer">
+      <div class="post-tags">
+          <a href="/www.awslop.com/tags/drools/">drools</a>
+          </div>
+      <nav class="post-nav">
+        <a class="prev" href="/www.awslop.com/2019/10/27/update-rule-by-scanner.html">
+            <i class="iconfont icon-left"></i>
+            <span class="prev-text nav-default">使用drools的规则管理平台-01</span>
+            <span class="prev-text nav-mobile">上一篇</span>
+          </a>
+        <a class="next" href="/www.awslop.com/2019/10/13/download-m3u8-video-02.html">
+            <span class="next-text nav-default">下载m3u8-aes128加密视频-02</span>
+            <span class="next-text nav-mobile">下一篇</span>
+            <i class="iconfont icon-right"></i>
+          </a>
+      </nav>
+    </footer>
+  </article>
         </div>
-    </div>
+        
+
+  
+
+  
+
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="social-links">
+      <a href="https://github.com/duansheli/" class="iconfont icon-github" title="github"></a>
+  <a href="/www.awslop.com/index.xml" type="application/rss+xml" class="iconfont icon-rss" title="rss"></a>
 </div>
-<footer id="footer">
-    <div class="container">
-        &copy; 2019 <a href="https://duansheli.github.io">断舍离的博客 By 断舍离</a>.
-        Powered by <a rel="nofollow noreferer noopener" href="https://gohugo.io" target="_blank">Hugo</a>.
-        <a href="https://www.flysnow.org/" target="_blank">Theme</a> based on <a href="https://github.com/rujews/maupassant-hugo" target="_blank">maupassant</a>.
-        
+
+<div class="copyright">
+  <span class="power-by">
+    由 <a class="hexo-link" href="https://gohugo.io">Hugo</a> 强力驱动
+  </span>
+  <span class="division">|</span>
+  <span class="theme-info">
+    主题 - 
+    <a class="theme-link" href="https://github.com/olOwOlo/hugo-theme-even">Even</a>
+  </span>
+
+  
+
+  <span class="copyright-year">
+    &copy; 
+    2017 - 
+    2019
+    <span class="heart">
+      <i class="iconfont icon-heart"></i>
+    </span>
+    <span class="author">duansheli</span>
+  </span>
+</div>
+    </footer>
+
+    <div class="back-to-top" id="back-to-top">
+      <i class="iconfont icon-up"></i>
     </div>
-</footer>
+  </div>
+  
+  <script src="https://cdn.jsdelivr.net/npm/jquery@3.2.1/dist/jquery.min.js" integrity="sha256-hwg4gsxgFZhOsEEamdOYGBf13FyQuiTwlAQgxVSNgt4=" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/slideout@1.0.1/dist/slideout.min.js" integrity="sha256-t+zJ/g8/KXIJMjSVQdnibt4dlaDxc9zXr/9oNPeWqdg=" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3.1.20/dist/jquery.fancybox.min.js" integrity="sha256-XVLffZaxoWfGUEbdzuLi7pwaUJv1cecsQJQqGLe7axY=" crossorigin="anonymous"></script>
+<script type="text/javascript" src="/www.awslop.com/dist/even.26188efa.min.js"></script>
 
-
-    
-    <script type="text/javascript">
-        
-        (function () {
-            $("pre code").parent().addClass("line-numbers")
-        }());
-
-        window.MathJax = {
-            tex2jax: {
-                inlineMath: [['$', '$']],
-                processEscapes: true
-                }
-            };
-    </script>
-    <script type="text/javascript" src="/js/prism.js" async="true"></script>
-    <script src='https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/MathJax.js?config=TeX-MML-AM_CHTML' async></script>
-
-
-<a id="rocket" href="#top"></a>
-<script type="text/javascript" src="/js/totop.js?v=0.0.0" async=""></script>
 
 <script type="application/javascript">
 var doNotTrack = false;
 if (!doNotTrack) {
 	window.ga=window.ga||function(){(ga.q=ga.q||[]).push(arguments)};ga.l=+new Date;
 	ga('create', 'GTM-NPJC8J2', 'auto');
-	
+	ga('set', 'anonymizeIp', true);
 	ga('send', 'pageview');
 }
 </script>
 <script async src='https://www.google-analytics.com/analytics.js'></script>
+
 
 
 

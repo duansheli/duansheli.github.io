@@ -2,22 +2,22 @@
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
     <title>springboot on 断舍离的博客</title>
-    <link>https://duansheli.github.io/tags/springboot/</link>
+    <link>/www.awslop.com/tags/springboot/</link>
     <description>Recent content in springboot on 断舍离的博客</description>
     <generator>Hugo -- gohugo.io</generator>
-    <language>zh-CN</language>
+    <language>zh-cn</language>
     <lastBuildDate>Sat, 02 Mar 2019 17:28:13 +0800</lastBuildDate>
     
-	<atom:link href="https://duansheli.github.io/tags/springboot/index.xml" rel="self" type="application/rss+xml" />
+	<atom:link href="/www.awslop.com/tags/springboot/index.xml" rel="self" type="application/rss+xml" />
     
     
     <item>
       <title>spring-session实现分布式会话</title>
-      <link>https://duansheli.github.io/2019/03/02/spring-session-in-action.html</link>
+      <link>/www.awslop.com/2019/03/02/spring-session-in-action.html</link>
       <pubDate>Sat, 02 Mar 2019 17:28:13 +0800</pubDate>
       
-      <guid>https://duansheli.github.io/2019/03/02/spring-session-in-action.html</guid>
-      <description>&lt;p&gt;通过spring session实现分布式会话&lt;br /&gt;
+      <guid>/www.awslop.com/2019/03/02/spring-session-in-action.html</guid>
+      <description>&lt;p&gt;通过spring session实现分布式会话&lt;br&gt;
 集群下不会丢失会话 集中管理session&lt;/p&gt;</description>
     </item>
     

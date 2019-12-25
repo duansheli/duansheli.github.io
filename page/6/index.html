@@ -1,581 +1,288 @@
-<!doctype html>
-<html lang="zh-CN">
+<!DOCTYPE html>
+<html lang="zh-cn">
 <head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+  <title>断舍离的博客</title>
+  <meta name="renderer" content="webkit" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
 
-    <meta charset="utf-8">
-    <meta name="generator" content="Hugo 0.59.0" />
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
 
-    <title>断舍离的博客 | java, scala, spark, kubernetes</title>
-    <meta property="og:title" content="断舍离的博客 | java, scala, spark, kubernetes">
-    <meta property="og:type" content="website">
-    <meta name="Keywords" content="java,scala,spark,kubernetes">
-    <meta name="description" content="专注于IT互联网，包括但不限于Go语言(golang)、Java、Android、Python、项目管理、抖音分析、软件架构等">
-    <meta property="og:url" content="https://duansheli.github.io/">
-    <link rel="shortcut icon" href="/favicon.ico" type="image/x-icon">
-
-    <link rel="stylesheet" href="/css/normalize.css">
-    
-    <link rel="stylesheet" href="/css/style.css">
-    <link rel="alternate" type="application/rss+xml+xml" href="https://duansheli.github.io/index.xml" title="断舍离的博客" />
-    <script type="text/javascript" src="//cdnjs.cloudflare.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
-
-    
+<meta name="theme-color" content="#f8f5ec" />
+<meta name="msapplication-navbutton-color" content="#f8f5ec">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="#f8f5ec">
 
 
-    
-    
+<meta name="author" content="duansheli" /><meta name="description" content="Hugo theme even example site." /><meta name="keywords" content="scala, java, even" />
+
+
+
+
+
+
+<meta name="generator" content="Hugo 0.62.0 with theme even" />
+
+
+<link rel="canonical" href="/www.awslop.com/" />
+  <link href="/www.awslop.com/index.xml" rel="alternate" type="application/rss+xml" title="断舍离的博客" />
+  <link href="/www.awslop.com/index.xml" rel="feed" type="application/rss+xml" title="断舍离的博客" />
+<link rel="apple-touch-icon" sizes="180x180" href="/www.awslop.com/apple-touch-icon.png">
+<link rel="icon" type="image/png" sizes="32x32" href="/www.awslop.com/favicon-32x32.png">
+<link rel="icon" type="image/png" sizes="16x16" href="/www.awslop.com/favicon-16x16.png">
+<link rel="manifest" href="/www.awslop.com/manifest.json">
+<link rel="mask-icon" href="/www.awslop.com/safari-pinned-tab.svg" color="#5bbad5">
+
+
+<link href="/www.awslop.com/dist/even.c2a46f00.min.css" rel="stylesheet">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3.1.20/dist/jquery.fancybox.min.css" integrity="sha256-7TyXnr2YU040zfSP+rEcz29ggW4j56/ujTPwjMzyqFY=" crossorigin="anonymous">
+
+
+<meta property="og:title" content="断舍离的博客" />
+<meta property="og:description" content="Hugo theme even example site." />
+<meta property="og:type" content="website" />
+<meta property="og:url" content="/www.awslop.com/" />
+<meta property="og:updated_time" content="2019-12-20T17:28:13+08:00" />
+<meta itemprop="name" content="断舍离的博客">
+<meta itemprop="description" content="Hugo theme even example site."><meta name="twitter:card" content="summary"/>
+<meta name="twitter:title" content="断舍离的博客"/>
+<meta name="twitter:description" content="Hugo theme even example site."/>
+
+<!--[if lte IE 9]>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/classlist/1.1.20170427/classList.min.js"></script>
+<![endif]-->
+
+<!--[if lt IE 9]>
+  <script src="https://cdn.jsdelivr.net/npm/html5shiv@3.7.3/dist/html5shiv.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/respond.js@1.4.2/dest/respond.min.js"></script>
+<![endif]-->
+
 </head>
-
-
 <body>
-<header id="header" class="clearfix">
-    <div class="container">
-        <div class="col-group">
-            <div class="site-name ">
-                
-                    <h1>
-                        <a id="logo" href="https://duansheli.github.io">
-                            断舍离的博客
-                        </a>
-                    </h1>
-                
-                <p class="description">java, scala, spark, kubernetes</p>
-            </div>
-            <div>
-                <nav id="nav-menu" class="clearfix">
-                    <a class="current" href="https://duansheli.github.io">首页</a>
-                    
-                    <a  href="https://duansheli.github.io/archives/" title="归档">归档</a>
-                    
-                </nav>
-            </div>
-        </div>
-    </div>
-</header>
+  <div id="mobile-navbar" class="mobile-navbar">
+  <div class="mobile-header-logo">
+    <a href="/www.awslop.com/" class="logo">Even</a>
+  </div>
+  <div class="mobile-navbar-icon">
+    <span></span>
+    <span></span>
+    <span></span>
+  </div>
+</div>
+<nav id="mobile-menu" class="mobile-menu slideout-menu">
+  <ul class="mobile-menu-list">
+    <a href="/www.awslop.com/">
+        <li class="mobile-menu-item">主页</li>
+      </a><a href="/www.awslop.com/post/">
+        <li class="mobile-menu-item">归档</li>
+      </a><a href="/www.awslop.com/tags/">
+        <li class="mobile-menu-item">标签</li>
+      </a><a href="/www.awslop.com/categories/">
+        <li class="mobile-menu-item">Categories</li>
+      </a>
+  </ul>
+</nav>
+  <div class="container" id="mobile-panel">
+    <header id="header" class="header">
+        <div class="logo-wrapper">
+  <a href="/www.awslop.com/" class="logo">Even</a>
+</div>
 
+<nav class="site-navbar">
+  <ul id="menu" class="menu">
+    <li class="menu-item">
+        <a class="menu-item-link" href="/www.awslop.com/">主页</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/www.awslop.com/post/">归档</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/www.awslop.com/tags/">标签</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/www.awslop.com/categories/">Categories</a>
+      </li>
+  </ul>
+</nav>
+    </header>
 
-<div id="body">
-    <div class="container">
-        <div class="col-group">
-
-            <div class="col-8" id="main">
-                <div class="res-cons">
-                    
-		    
-                        <article class="post">
-                            <header>
-                                <h1 class="post-title">
-                                    <a href="https://duansheli.github.io/2018/09/21/scala-concurrent-async.html" title="scala并发编程-async" >scala并发编程-async</a>
-                                </h1>
-                            </header>
-                            <date class="post-meta meta-date">
-                                2018年9月21日
-                            </date>
-                            
-                            <div class="post-meta">
-                                <span>|</span>
-                                
-                                <span class="meta-category"><a href="https://duansheli.github.io/categories/scala%E5%B9%B6%E5%8F%91%E7%BC%96%E7%A8%8B">scala并发编程</a></span>
-                                
-                            </div>
-                            
-                            <div class="post-content">
-                                描述 async是另一个jar包里的， 用来更简洁的处理 多个future之间的任务衔接
-原理是以宏的方式编译代码 可以说是个二道贩子
-相似的东西: java库的lombok
-由于是二次编译，如果需要调试的话，可能会有问题，慎用。
-简单上手 &lt;dependency&gt; &lt;groupId&gt;org.scala-lang.modules&lt;/groupId&gt; &lt;artifactId&gt;scala-async_2.12&lt;/artifactId&gt; &lt;version&gt;0.9.7&lt;/version&gt; &lt;/dependency&gt;  示例1 val f1 = async { val ff1 = async { println(11); true } val ff2 = async { println(22); 322 } if (await(ff1)) await(ff2) else 0 }  示例2 def slowCalcFuture: Future[Int] = Future { TimeUnit.……
-                            </div>
-                            <p class="readmore"><a href="https://duansheli.github.io/2018/09/21/scala-concurrent-async.html">阅读全文</a></p>
-                        </article>
-                    
-                    
-		    
-                        <article class="post">
-                            <header>
-                                <h1 class="post-title">
-                                    <a href="https://duansheli.github.io/2018/08/22/scala-concurrent-blocking.html" title="scala并发编程-blocking" >scala并发编程-blocking</a>
-                                </h1>
-                            </header>
-                            <date class="post-meta meta-date">
-                                2018年8月22日
-                            </date>
-                            
-                            <div class="post-meta">
-                                <span>|</span>
-                                
-                                <span class="meta-category"><a href="https://duansheli.github.io/categories/scala%E5%B9%B6%E5%8F%91%E7%BC%96%E7%A8%8B">scala并发编程</a></span>
-                                
-                            </div>
-                            
-                            <div class="post-content">
-                                blocking描述 blocking 中的代码块 与future不在同一线程中，是阻塞等待。 但是阻塞的方式调用在遇上线程池的线程不足时， 会创建新的线程
-测试效果 package com.fluffy.test_concurrent import java.util.concurrent.{CountDownLatch, TimeUnit} object Demo_blocking extends App { import scala.concurrent.{Future, blocking} import scala.……
-                            </div>
-                            <p class="readmore"><a href="https://duansheli.github.io/2018/08/22/scala-concurrent-blocking.html">阅读全文</a></p>
-                        </article>
-                    
-                    
-		    
-                        <article class="post">
-                            <header>
-                                <h1 class="post-title">
-                                    <a href="https://duansheli.github.io/2018/08/18/scala-concurrent-promise.html" title="scala并发编程-promise" >scala并发编程-promise</a>
-                                </h1>
-                            </header>
-                            <date class="post-meta meta-date">
-                                2018年8月18日
-                            </date>
-                            
-                            <div class="post-meta">
-                                <span>|</span>
-                                
-                                <span class="meta-category"><a href="https://duansheli.github.io/categories/scala%E5%B9%B6%E5%8F%91%E7%BC%96%E7%A8%8B">scala并发编程</a></span>
-                                
-                            </div>
-                            
-                            <div class="post-content">
-                                操作演示 生产者消费者模型
-一个Promise 只有一个future
-Promise只能给future确认一次结果
-简单上手 import scala.concurrent.ExecutionContext.Implicits.global val countDownLatch = new CountDownLatch(1) val p = Promise[Int]() val f1 = p.……
-                            </div>
-                            <p class="readmore"><a href="https://duansheli.github.io/2018/08/18/scala-concurrent-promise.html">阅读全文</a></p>
-                        </article>
-                    
-                    
-		    
-                        <article class="post">
-                            <header>
-                                <h1 class="post-title">
-                                    <a href="https://duansheli.github.io/2018/08/13/scala-concurrent-Duration.html" title="scala并发编程-Duration" >scala并发编程-Duration</a>
-                                </h1>
-                            </header>
-                            <date class="post-meta meta-date">
-                                2018年8月13日
-                            </date>
-                            
-                            <div class="post-meta">
-                                <span>|</span>
-                                
-                                <span class="meta-category"><a href="https://duansheli.github.io/categories/scala%E5%B9%B6%E5%8F%91%E7%BC%96%E7%A8%8B">scala并发编程</a></span>
-                                
-                            </div>
-                            
-                            <div class="post-content">
-                                操作步骤 Duration的几种创建方式
-可以进行 加减乘除 的操作
-java版Duration 与 Scala版Duration 互相转换
-简单上手 import scala.concurrent.duration._ import scala.concurrent.ExecutionContext.Implicits.global // FiniteDuration对象的创建 // 截至期限的创建 def main(args_q: Array[String]) { val d1: FiniteDuration = 1.……
-                            </div>
-                            <p class="readmore"><a href="https://duansheli.github.io/2018/08/13/scala-concurrent-Duration.html">阅读全文</a></p>
-                        </article>
-                    
-                    
-		    
-                        <article class="post">
-                            <header>
-                                <h1 class="post-title">
-                                    <a href="https://duansheli.github.io/2018/08/12/scala-concurrent-map.html" title="scala并发编程-future的map和flatmap" >scala并发编程-future的map和flatmap</a>
-                                </h1>
-                            </header>
-                            <date class="post-meta meta-date">
-                                2018年8月12日
-                            </date>
-                            
-                            <div class="post-meta">
-                                <span>|</span>
-                                
-                                <span class="meta-category"><a href="https://duansheli.github.io/categories/scala%E5%B9%B6%E5%8F%91%E7%BC%96%E7%A8%8B">scala并发编程</a></span>
-                                
-                            </div>
-                            
-                            <div class="post-content">
-                                操作演示 推演 在不使用 map flatmap的情况下 多个future 如果相互之间有依赖关系 则通常是嵌套调用 嵌套太多则维护性太差
-比如
-val f1 = Future { TimeUnit.SECONDS.sleep(1) &quot;f1&quot; } f1 onSuccess { case str =&gt; val f11 = Future { // 启动另一个future // Future{ 。。。 } // 再启动另一个future if (3 &gt; 2) println(str) else throw new Exception(&quot;出错了&quot;) } f11 onSuccess { case _ =&gt; println(s&quot;收到结果 ${str}&quot;) } }  map flatmap 示例 import scala.……
-                            </div>
-                            <p class="readmore"><a href="https://duansheli.github.io/2018/08/12/scala-concurrent-map.html">阅读全文</a></p>
-                        </article>
-                    
-                    
-		    
-                        <article class="post">
-                            <header>
-                                <h1 class="post-title">
-                                    <a href="https://duansheli.github.io/2018/08/11/scala-concurrent-future.html" title="scala并发编程-future" >scala并发编程-future</a>
-                                </h1>
-                            </header>
-                            <date class="post-meta meta-date">
-                                2018年8月11日
-                            </date>
-                            
-                            <div class="post-meta">
-                                <span>|</span>
-                                
-                                <span class="meta-category"><a href="https://duansheli.github.io/categories/scala%E5%B9%B6%E5%8F%91%E7%BC%96%E7%A8%8B">scala并发编程</a></span>
-                                
-                            </div>
-                            
-                            <div class="post-content">
-                                操作演示 简单上手 scala版Future 和java版是一个意思 将任务放在线程池中去执行
-import java.time.LocalTime import java.util.concurrent.TimeUnit import scala.concurrent.duration.Duration import scala.concurrent.{Await, Future} import scala.util.{Failure, Success} // @formatter:off object Demo01_future extends App{ import scala.……
-                            </div>
-                            <p class="readmore"><a href="https://duansheli.github.io/2018/08/11/scala-concurrent-future.html">阅读全文</a></p>
-                        </article>
-                    
-                    
-		    
-                        <article class="post">
-                            <header>
-                                <h1 class="post-title">
-                                    <a href="https://duansheli.github.io/2018/08/11/redis-lua.html" title="redis使用lua脚本" >redis使用lua脚本</a>
-                                </h1>
-                            </header>
-                            <date class="post-meta meta-date">
-                                2018年8月11日
-                            </date>
-                            
-                            <div class="post-content">
-                                脚本   hello lua cat &gt; test01.lua &lt;&lt;EOF local msg = &quot;Hello, lua&quot; return msg EOF redis-cli EVAL &quot;$(cat test01.……
-                            </div>
-                            <p class="readmore"><a href="https://duansheli.github.io/2018/08/11/redis-lua.html">阅读全文</a></p>
-                        </article>
-                    
-                    
-		    
-                        <article class="post">
-                            <header>
-                                <h1 class="post-title">
-                                    <a href="https://duansheli.github.io/2018/07/14/jvm-memory-gc.html" title="JVM的垃圾回收" >JVM的垃圾回收</a>
-                                </h1>
-                            </header>
-                            <date class="post-meta meta-date">
-                                2018年7月14日
-                            </date>
-                            
-                            <div class="post-meta">
-                                <span>|</span>
-                                
-                                <span class="meta-category"><a href="https://duansheli.github.io/categories/Java%E6%B7%B1%E5%85%A5">Java深入</a></span>
-                                
-                            </div>
-                            
-                            <div class="post-content">
-                                JVM内存结构 JVM是java代码的运行环境， 用来加载 .class和jar文件 , 运行代码。
-内存区域 +------------------------------------------------------+ | | | +-------------+ +---------------+ | | | xxxA.class | | | | | | xxxB.……
-                            </div>
-                            <p class="readmore"><a href="https://duansheli.github.io/2018/07/14/jvm-memory-gc.html">阅读全文</a></p>
-                        </article>
-                    
-                    
-		    
-                        <article class="post">
-                            <header>
-                                <h1 class="post-title">
-                                    <a href="https://duansheli.github.io/2018/07/08/classloader-modifiers-exception.html" title="类加载器加载的类不能创建对象" >类加载器加载的类不能创建对象</a>
-                                </h1>
-                            </header>
-                            <date class="post-meta meta-date">
-                                2018年7月8日
-                            </date>
-                            
-                            <div class="post-meta">
-                                <span>|</span>
-                                
-                                <span class="meta-category"><a href="https://duansheli.github.io/categories/Java%E6%B7%B1%E5%85%A5">Java深入</a></span>
-                                
-                            </div>
-                            
-                            <div class="post-content">
-                                IllegalAccessException 异常信息 Exception in thread &quot;main&quot; java.lang.IllegalAccessException: Class fluffy.mo.MyClassloader can not access a member of class fluffy.mo.Car with modifiers &quot;public&quot; at sun.……
-                            </div>
-                            <p class="readmore"><a href="https://duansheli.github.io/2018/07/08/classloader-modifiers-exception.html">阅读全文</a></p>
-                        </article>
-                    
-                    
-		    
-                        <article class="post">
-                            <header>
-                                <h1 class="post-title">
-                                    <a href="https://duansheli.github.io/2018/06/27/classloader-spi.html" title="SPI与contextclassloader" >SPI与contextclassloader</a>
-                                </h1>
-                            </header>
-                            <date class="post-meta meta-date">
-                                2018年6月27日
-                            </date>
-                            
-                            <div class="post-meta">
-                                <span>|</span>
-                                
-                                <span class="meta-category"><a href="https://duansheli.github.io/categories/Java%E6%B7%B1%E5%85%A5">Java深入</a></span>
-                                
-                            </div>
-                            
-                            <div class="post-content">
-                                目标 通过SPI学习setContextClassLoader，getContextClassLoader的用法
-SPI概念 SPI（Service Provider Interface）是JDK内置的一种提供服务发现的机制。 也可以看成是一种服务注册或者ioc
-自定义SPI方式
- 定义一个接口 fluffy.mo.CarPlugin 定义两个实现类 fluffy.mo.RedCar、 fluffy.mo.BlueCar 配置文件 【META-INF/services/文件名=接口全名】 &gt; META-INF/services/fluffy.mo.CarPlugin &gt;  &gt; fluffy.……
-                            </div>
-                            <p class="readmore"><a href="https://duansheli.github.io/2018/06/27/classloader-spi.html">阅读全文</a></p>
-                        </article>
-                    
-                    
-                    
-
-
-
-<ol class="page-navigator">
-    
-    <li class="prev">
-        <a href="https://duansheli.github.io/page/5/">上一页</a>
-    </li>
-    
-
-    
-    <li >
-        <a href="https://duansheli.github.io/">1</a>
-    </li>
-    
-    <li >
-        <a href="https://duansheli.github.io/page/2/">2</a>
-    </li>
-    
-    <li >
-        <a href="https://duansheli.github.io/page/3/">3</a>
-    </li>
-    
-    <li >
-        <a href="https://duansheli.github.io/page/4/">4</a>
-    </li>
-    
-    <li >
-        <a href="https://duansheli.github.io/page/5/">5</a>
-    </li>
-    
-    <li  class="current">
-        <a href="https://duansheli.github.io/page/6/">6</a>
-    </li>
-    
-    <li >
-        <a href="https://duansheli.github.io/page/7/">7</a>
-    </li>
-    
-
-    
-    <li class="next">
-        <a href="https://duansheli.github.io/page/7/">下一页</a>
-    </li>
-    
-</ol>
-
-
-
-                </div>
-            </div>
-
-            <div id="secondary">
-    <section class="widget">
-        <form id="search" action="//www.google.com/search" method="get" accept-charset="utf-8" target="_blank" _lpchecked="1">
+    <main id="main" class="main">
+      <div class="content-wrapper">
+        <div id="content" class="content">
+          <section id="posts" class="posts">
+    <article class="post">
+  <header class="post-header">
+    <h1 class="post-title"><a class="post-link" href="/www.awslop.com/2019/09/09/docker-cp.html">docker的复制文件操作</a></h1>
+    <div class="post-meta">
+      <span class="post-time"> 2019-06-02 </span>
       
-      <input type="text" name="q" maxlength="20" placeholder="Search">
-      <input type="hidden" name="sitesearch" value="https://duansheli.github.io">
-      <button type="submit" class="submit icon-search"></button>
-</form>
-    </section>
-    
-    <section class="widget">
-        <h3 class="widget-title">最近文章</h3>
-<ul class="widget-list">
-    
-    <li>
-        <a href="https://duansheli.github.io/2019/12/20/akka-demo-concurrent.html" title="akka-并发任务">akka-并发任务</a>
-    </li>
-    
-    <li>
-        <a href="https://duansheli.github.io/2019/12/15/HOCON-java.html" title="HOCON配置文件读取">HOCON配置文件读取</a>
-    </li>
-    
-    <li>
-        <a href="https://duansheli.github.io/2019/11/16/jmh-dynamic-run.html" title="JMH-测试动态执行代码效率">JMH-测试动态执行代码效率</a>
-    </li>
-    
-    <li>
-        <a href="https://duansheli.github.io/2019/11/12/doh.html" title="群晖两步验证的关闭">群晖两步验证的关闭</a>
-    </li>
-    
-    <li>
-        <a href="https://duansheli.github.io/2019/11/10/benchmark-java-jmh.html" title="基准测试工具JMH-示例">基准测试工具JMH-示例</a>
-    </li>
-    
-    <li>
-        <a href="https://duansheli.github.io/2019/10/28/update-rule-by-scanner.html" title="使用drools的规则管理平台-02">使用drools的规则管理平台-02</a>
-    </li>
-    
-    <li>
-        <a href="https://duansheli.github.io/2019/10/27/update-rule-by-scanner.html" title="使用drools的规则管理平台-01">使用drools的规则管理平台-01</a>
-    </li>
-    
-    <li>
-        <a href="https://duansheli.github.io/2019/10/26/update-rule-by-scanner.html" title="自定义动态更新drools规则">自定义动态更新drools规则</a>
-    </li>
-    
-    <li>
-        <a href="https://duansheli.github.io/2019/10/13/download-m3u8-video-02.html" title="下载m3u8-aes128加密视频-02">下载m3u8-aes128加密视频-02</a>
-    </li>
-    
-    <li>
-        <a href="https://duansheli.github.io/2019/10/13/download-m3u8-video-01.html" title="下载m3u8-aes128加密视频-01">下载m3u8-aes128加密视频-01</a>
-    </li>
-    
-</ul>
-    </section>
+        <span class="more-meta"> 约 440 字 </span>
+        <span class="more-meta"> 预计阅读 1 分钟 </span>
+    </div>
+  </header>
+  
+  <div class="post-content">
+    <div class="post-summary">
+      <p>容器与宿主机之间的文件复制示例</p>
+    </div>
+    <div class="read-more">
+      <a href="/www.awslop.com/2019/09/09/docker-cp.html" class="read-more-link">阅读更多</a>
+    </div>
+  </div>
+</article>
 
-    
+    <article class="post">
+  <header class="post-header">
+    <h1 class="post-title"><a class="post-link" href="/www.awslop.com/2019/06/05/relax.html">休闲娱乐</a></h1>
+    <div class="post-meta">
+      <span class="post-time"> 2019-05-30 </span>
+      
+        <span class="more-meta"> 约 108 字 </span>
+        <span class="more-meta"> 预计阅读 1 分钟 </span>
+    </div>
+  </header>
+  
+  <div class="post-content">
+    <div class="post-summary">
+      小河淌水-颅内高潮 1 2 3 4 5 6 7 8 9 10 https://weibo.com/tv/v/Hl5d8en8D?fid=1034:4350248915771690 https://dig.chouti.com/link/25184166 小河淌水-龚琳娜-歌手第三季-第10期：第76分钟开始 https://www.mgtv.com/b/327378/5314401.html https://www.mgtv.com/b/327378/5314351.html https://y.qq.com/n/yqq/song/002ogMAd2lR6sT.html 小河淌水-龚琳娜-全能星战-第二期第8
+    </div>
+    <div class="read-more">
+      <a href="/www.awslop.com/2019/06/05/relax.html" class="read-more-link">阅读更多</a>
+    </div>
+  </div>
+</article>
 
-    <section class="widget">
-        <h3 class="widget-title">分类</h3>
-<ul class="widget-list">
-    
-    <li>
-        <a href="https://duansheli.github.io/categories/JHM/">JHM(1)</a>
-    </li>
-    
-    <li>
-        <a href="https://duansheli.github.io/categories/JMH/">JMH(1)</a>
-    </li>
-    
-    <li>
-        <a href="https://duansheli.github.io/categories/Java%E6%B7%B1%E5%85%A5/">Java深入(8)</a>
-    </li>
-    
-    <li>
-        <a href="https://duansheli.github.io/categories/k8s%E9%9B%86%E7%BE%A4/">k8s集群(5)</a>
-    </li>
-    
-    <li>
-        <a href="https://duansheli.github.io/categories/scala%E5%B9%B6%E5%8F%91%E7%BC%96%E7%A8%8B/">scala并发编程(8)</a>
-    </li>
-    
-</ul>
+    <article class="post">
+  <header class="post-header">
+    <h1 class="post-title"><a class="post-link" href="/www.awslop.com/2019/05/25/download-openjdk.html">各类openjdk下载地址</a></h1>
+    <div class="post-meta">
+      <span class="post-time"> 2019-05-25 </span>
+      
+        <span class="more-meta"> 约 476 字 </span>
+        <span class="more-meta"> 预计阅读 1 分钟 </span>
+    </div>
+  </header>
+  
+  <div class="post-content">
+    <div class="post-summary">
+      openjdk oracle原版 jdk 之前在可通过命令从官网下载，现在行不通了，必须用oracle账号登录才能下载。 https://www.oracle.com/technetwork/java/javase/downloads/jdk11-downloads-5066655.html oracle的共享账号 http://bugmenot.com/view/oracle.com adobe网站下
+    </div>
+    <div class="read-more">
+      <a href="/www.awslop.com/2019/05/25/download-openjdk.html" class="read-more-link">阅读更多</a>
+    </div>
+  </div>
+</article>
+
+    <article class="post">
+  <header class="post-header">
+    <h1 class="post-title"><a class="post-link" href="/www.awslop.com/2019/05/18/dind-build-image-with-cache.html">DinD模式下通过容器构建镜像-方案</a></h1>
+    <div class="post-meta">
+      <span class="post-time"> 2019-05-18 </span>
+      
+        <span class="more-meta"> 约 1158 字 </span>
+        <span class="more-meta"> 预计阅读 3 分钟 </span>
+    </div>
+  </header>
+  
+  <div class="post-content">
+    <div class="post-summary">
+      <p>持续集成时，构建镜像后，通常会产生一些临时镜像<br>
+很不docker，一点也不绿色<br>
+使用DinD的方案可以解决该问题</p>
+    </div>
+    <div class="read-more">
+      <a href="/www.awslop.com/2019/05/18/dind-build-image-with-cache.html" class="read-more-link">阅读更多</a>
+    </div>
+  </div>
+</article>
+
+    <article class="post">
+  <header class="post-header">
+    <h1 class="post-title"><a class="post-link" href="/www.awslop.com/2019/05/17/thinking-autoboxing-implicit.html">自动装箱拆箱在scala中的表现</a></h1>
+    <div class="post-meta">
+      <span class="post-time"> 2019-05-17 </span>
+      
+        <span class="more-meta"> 约 1032 字 </span>
+        <span class="more-meta"> 预计阅读 3 分钟 </span>
+    </div>
+  </header>
+  
+  <div class="post-content">
+    <div class="post-summary">
+      <p>自动装箱拆箱是java中的概念<br>
+implicit是scala中的概念<br>
+都有变量包装的特性</p>
+    </div>
+    <div class="read-more">
+      <a href="/www.awslop.com/2019/05/17/thinking-autoboxing-implicit.html" class="read-more-link">阅读更多</a>
+    </div>
+  </div>
+</article>
+
     </section>
-
-    <section class="widget">
-        <h3 class="widget-title">标签</h3>
-<div class="tagcloud">
-    
-    <a href="https://duansheli.github.io/tags/JHM/">JHM</a>
-    
-    <a href="https://duansheli.github.io/tags/JMH/">JMH</a>
-    
-    <a href="https://duansheli.github.io/tags/Java/">Java</a>
-    
-    <a href="https://duansheli.github.io/tags/classloader/">classloader</a>
-    
-    <a href="https://duansheli.github.io/tags/docker/">docker</a>
-    
-    <a href="https://duansheli.github.io/tags/drone/">drone</a>
-    
-    <a href="https://duansheli.github.io/tags/drools/">drools</a>
-    
-    <a href="https://duansheli.github.io/tags/dubbo/">dubbo</a>
-    
-    <a href="https://duansheli.github.io/tags/elasticsearch/">elasticsearch</a>
-    
-    <a href="https://duansheli.github.io/tags/ffmpeg/">ffmpeg</a>
-    
-    <a href="https://duansheli.github.io/tags/gc/">gc</a>
-    
-    <a href="https://duansheli.github.io/tags/git/">git</a>
-    
-    <a href="https://duansheli.github.io/tags/gradle/">gradle</a>
-    
-    <a href="https://duansheli.github.io/tags/hashids/">hashids</a>
-    
-    <a href="https://duansheli.github.io/tags/id/">id</a>
-    
-    <a href="https://duansheli.github.io/tags/java/">java</a>
-    
-    <a href="https://duansheli.github.io/tags/jdk/">jdk</a>
-    
-    <a href="https://duansheli.github.io/tags/jvm/">jvm</a>
-    
-    <a href="https://duansheli.github.io/tags/k8s/">k8s</a>
-    
-    <a href="https://duansheli.github.io/tags/kotlin/">kotlin</a>
-    
-    <a href="https://duansheli.github.io/tags/life/">life</a>
-    
-    <a href="https://duansheli.github.io/tags/linux/">linux</a>
-    
-    <a href="https://duansheli.github.io/tags/mysql/">mysql</a>
-    
-    <a href="https://duansheli.github.io/tags/proxy/">proxy</a>
-    
-    <a href="https://duansheli.github.io/tags/redis/">redis</a>
-    
-    <a href="https://duansheli.github.io/tags/rocketmq/">rocketmq</a>
-    
-    <a href="https://duansheli.github.io/tags/route/">route</a>
-    
-    <a href="https://duansheli.github.io/tags/scala/">scala</a>
-    
-    <a href="https://duansheli.github.io/tags/session/">session</a>
-    
-    <a href="https://duansheli.github.io/tags/shell/">shell</a>
-    
-    <a href="https://duansheli.github.io/tags/spring-boot/">spring-boot</a>
-    
-    <a href="https://duansheli.github.io/tags/spring-security/">spring-security</a>
-    
-    <a href="https://duansheli.github.io/tags/springboot/">springboot</a>
-    
-    <a href="https://duansheli.github.io/tags/zipkin/">zipkin</a>
-    
-    <a href="https://duansheli.github.io/tags/%E5%88%86%E5%B8%83%E5%BC%8F%E4%BA%8B%E5%8A%A1/">分布式事务</a>
-    
-    <a href="https://duansheli.github.io/tags/%E6%8C%81%E7%BB%AD%E9%9B%86%E6%88%90/">持续集成</a>
-    
-    <a href="https://duansheli.github.io/tags/%E7%99%BB%E5%BD%95/">登录</a>
-    
-</div>
-    </section>
-
-    
-
-    <section class="widget">
-        <h3 class="widget-title">其它</h3>
-        <ul class="widget-list">
-            <li><a href="https://duansheli.github.io/index.xml">文章 RSS</a></li>
-        </ul>
-    </section>
-</div>
+  
+  <nav class="pagination">
+    <a class="prev" href="/www.awslop.com/page/5/">
+        <i class="iconfont icon-left"></i>
+        <span class="prev-text">上一页</span>
+      </a>
+    <a class="next" href="/www.awslop.com/page/7/">
+        <span class="next-text">下一页</span>
+        <i class="iconfont icon-right"></i>
+      </a>
+  </nav>
         </div>
-    </div>
-</div>
-<footer id="footer">
-    <div class="container">
-        &copy; 2019 <a href="https://duansheli.github.io">断舍离的博客 By 断舍离</a>.
-        Powered by <a rel="nofollow noreferer noopener" href="https://gohugo.io" target="_blank">Hugo</a>.
-        <a href="https://www.flysnow.org/" target="_blank">Theme</a> based on <a href="https://github.com/rujews/maupassant-hugo" target="_blank">maupassant</a>.
         
+
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="social-links">
+      <a href="https://github.com/duansheli/" class="iconfont icon-github" title="github"></a>
+  <a href="/www.awslop.com/index.xml" type="application/rss+xml" class="iconfont icon-rss" title="rss"></a>
+</div>
+
+<div class="copyright">
+  <span class="power-by">
+    由 <a class="hexo-link" href="https://gohugo.io">Hugo</a> 强力驱动
+  </span>
+  <span class="division">|</span>
+  <span class="theme-info">
+    主题 - 
+    <a class="theme-link" href="https://github.com/olOwOlo/hugo-theme-even">Even</a>
+  </span>
+
+  
+
+  <span class="copyright-year">
+    &copy; 
+    2017 - 
+    2019
+    <span class="heart">
+      <i class="iconfont icon-heart"></i>
+    </span>
+    <span class="author">duansheli</span>
+  </span>
+</div>
+    </footer>
+
+    <div class="back-to-top" id="back-to-top">
+      <i class="iconfont icon-up"></i>
     </div>
-</footer>
+  </div>
+  
+  <script src="https://cdn.jsdelivr.net/npm/jquery@3.2.1/dist/jquery.min.js" integrity="sha256-hwg4gsxgFZhOsEEamdOYGBf13FyQuiTwlAQgxVSNgt4=" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/slideout@1.0.1/dist/slideout.min.js" integrity="sha256-t+zJ/g8/KXIJMjSVQdnibt4dlaDxc9zXr/9oNPeWqdg=" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3.1.20/dist/jquery.fancybox.min.js" integrity="sha256-XVLffZaxoWfGUEbdzuLi7pwaUJv1cecsQJQqGLe7axY=" crossorigin="anonymous"></script>
+<script type="text/javascript" src="/www.awslop.com/dist/even.26188efa.min.js"></script>
 
-
-
-<a id="rocket" href="#top"></a>
-<script type="text/javascript" src="/js/totop.js?v=0.0.0" async=""></script>
 
 <script type="application/javascript">
 var doNotTrack = false;
 if (!doNotTrack) {
 	window.ga=window.ga||function(){(ga.q=ga.q||[]).push(arguments)};ga.l=+new Date;
 	ga('create', 'GTM-NPJC8J2', 'auto');
-	
+	ga('set', 'anonymizeIp', true);
 	ga('send', 'pageview');
 }
 </script>
