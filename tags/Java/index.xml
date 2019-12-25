@@ -13,10 +13,10 @@
     
     <item>
       <title>HOCON配置文件读取</title>
-      <link>https://www.awslop.com/2019/12/15/hocon-java.html</link>
+      <link>https://www.awslop.com/2019/12/15/hocon-java-read.html</link>
       <pubDate>Sun, 15 Dec 2019 17:28:13 +0800</pubDate>
       
-      <guid>https://www.awslop.com/2019/12/15/hocon-java.html</guid>
+      <guid>https://www.awslop.com/2019/12/15/hocon-java-read.html</guid>
       <description>简述 HOCON（Human-Optimized Config Object Notation）是一个易于使用的配置文件格式，具有面向对象风格。 akka的配置文件就是用</description>
     </item>
     
