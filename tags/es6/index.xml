@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>es6 on 断舍离的博客</title>
+    <link>https://www.awslop.com/tags/es6/</link>
+    <description>Recent content in es6 on 断舍离的博客</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>zh-cn</language>
+    <lastBuildDate>Fri, 13 Jul 2018 13:13:13 +0800</lastBuildDate>
+    
+	<atom:link href="https://www.awslop.com/tags/es6/index.xml" rel="self" type="application/rss+xml" />
+    
+    
+    <item>
+      <title>yield的参数</title>
+      <link>https://www.awslop.com/2018/07/18/es6-yield.html</link>
+      <pubDate>Fri, 13 Jul 2018 13:13:13 +0800</pubDate>
+      
+      <guid>https://www.awslop.com/2018/07/18/es6-yield.html</guid>
+      <description>yield的使用 参考 http://es6.ruanyifeng.com/#docs/generator#next-%E6%96%B9%E6%B3%95%E7%9A%84%E5%8F%82%E6%95%B0 逐条返回 1 2 3 4 5 6 7 8 9 10 11 12 13 let fun01 = function * () { console.log(&amp;#34;run-01&amp;#34;); yield &amp;#34;aa&amp;#34; console.log(&amp;#34;run-02&amp;#34;); yield &amp;#34;bb&amp;#34; console.log(&amp;#34;run-03&amp;#34;); return &amp;#34;cc&amp;#34;; } let g01 = fun01(); console.log(g01.next()); console.log(g01.next()); console.log(g01.next()); 执行结果 1 2 3 4 5 6 run-01 { value: &amp;#39;aa&amp;#39;, done: false } run-02</description>
+    </item>
+    
+    <item>
+      <title>export 和 export default 的区别</title>
+      <link>https://www.awslop.com/2018/07/11/es6-export-default.html</link>
+      <pubDate>Wed, 11 Jul 2018 13:13:13 +0800</pubDate>
+      
+      <guid>https://www.awslop.com/2018/07/11/es6-export-default.html</guid>
+      <description>区别 相同与差异 都可用来导出常量、函数、模块等 在一个模块中 export、import可以多次使用 export方式导出， 需要用{} export default 则不需要 导</description>
+    </item>
+    
+  </channel>
+</rss>

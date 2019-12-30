@@ -80,7 +80,7 @@
       </a><a href="/tags/">
         <li class="mobile-menu-item">标签</li>
       </a><a href="/categories/">
-        <li class="mobile-menu-item">Categories</li>
+        <li class="mobile-menu-item">分类</li>
       </a>
   </ul>
 </nav>
@@ -99,7 +99,7 @@
       </li><li class="menu-item">
         <a class="menu-item-link" href="/tags/">标签</a>
       </li><li class="menu-item">
-        <a class="menu-item-link" href="/categories/">Categories</a>
+        <a class="menu-item-link" href="/categories/">分类</a>
       </li>
   </ul>
 </nav>
@@ -109,6 +109,94 @@
       <div class="content-wrapper">
         <div id="content" class="content">
           <section id="posts" class="posts">
+    <article class="post">
+  <header class="post-header">
+    <h1 class="post-title"><a class="post-link" href="/2018/07/18/es6-yield.html">yield的参数</a></h1>
+    <div class="post-meta">
+      <span class="post-time"> 2018-07-13 </span>
+      
+        <span class="more-meta"> 约 630 字 </span>
+        <span class="more-meta"> 预计阅读 2 分钟 </span>
+    </div>
+  </header>
+  
+  <div class="post-content">
+    <div class="post-summary">
+      yield的使用 参考 http://es6.ruanyifeng.com/#docs/generator#next-%E6%96%B9%E6%B3%95%E7%9A%84%E5%8F%82%E6%95%B0 逐条返回 1 2 3 4 5 6 7 8 9 10 11 12 13 let fun01 = function * () { console.log(&#34;run-01&#34;); yield &#34;aa&#34; console.log(&#34;run-02&#34;); yield &#34;bb&#34; console.log(&#34;run-03&#34;); return &#34;cc&#34;; } let g01 = fun01(); console.log(g01.next()); console.log(g01.next()); console.log(g01.next()); 执行结果 1 2 3 4 5 6 run-01 { value: &#39;aa&#39;, done: false } run-02
+    </div>
+    <div class="read-more">
+      <a href="/2018/07/18/es6-yield.html" class="read-more-link">阅读更多</a>
+    </div>
+  </div>
+</article>
+
+    <article class="post">
+  <header class="post-header">
+    <h1 class="post-title"><a class="post-link" href="/2018/07/11/es6-export-default.html">export 和 export default 的区别</a></h1>
+    <div class="post-meta">
+      <span class="post-time"> 2018-07-11 </span>
+      
+        <span class="more-meta"> 约 296 字 </span>
+        <span class="more-meta"> 预计阅读 1 分钟 </span>
+    </div>
+  </header>
+  
+  <div class="post-content">
+    <div class="post-summary">
+      区别 相同与差异 都可用来导出常量、函数、模块等 在一个模块中 export、import可以多次使用 export方式导出， 需要用{} export default 则不需要 导
+    </div>
+    <div class="read-more">
+      <a href="/2018/07/11/es6-export-default.html" class="read-more-link">阅读更多</a>
+    </div>
+  </div>
+</article>
+
+    <article class="post">
+  <header class="post-header">
+    <h1 class="post-title"><a class="post-link" href="/2018/07/08/classloader-modifiers-exception.html">类加载器加载的类不能创建对象</a></h1>
+    <div class="post-meta">
+      <span class="post-time"> 2018-07-08 </span>
+      <div class="post-category">
+          <a href="/categories/java%E6%B7%B1%E5%85%A5/"> Java深入 </a>
+          </div>
+        <span class="more-meta"> 约 916 字 </span>
+        <span class="more-meta"> 预计阅读 2 分钟 </span>
+    </div>
+  </header>
+  
+  <div class="post-content">
+    <div class="post-summary">
+      IllegalAccessException 异常信息 1 2 3 4 5 6 7 Exception in thread &#34;main&#34; java.lang.IllegalAccessException: Class fluffy.mo.MyClassloader can not access a member of class fluffy.mo.Car with modifiers &#34;public&#34; at sun.reflect.Reflection.ensureMemberAccess(Reflection.java:102) at java.lang.reflect.AccessibleObject.slowCheckMemberAccess(AccessibleObject.java:296) at java.lang.reflect.AccessibleObject.checkAccess(AccessibleObject.java:288) at java.lang.reflect.Constructor.newInstance(Constructor.java:413) at fluffy.mo.MyClassloader.test4(MyClassloader.java:91) at fluffy.mo.MyClassloader.main(MyClassloader.java:68) 在使用反射创建对象时，被提示没权限 代码示例 1 2 3 package fluffy.mo; public class
+    </div>
+    <div class="read-more">
+      <a href="/2018/07/08/classloader-modifiers-exception.html" class="read-more-link">阅读更多</a>
+    </div>
+  </div>
+</article>
+
+    <article class="post">
+  <header class="post-header">
+    <h1 class="post-title"><a class="post-link" href="/2018/06/27/classloader-spi.html">SPI与contextclassloader</a></h1>
+    <div class="post-meta">
+      <span class="post-time"> 2018-06-27 </span>
+      <div class="post-category">
+          <a href="/categories/java%E6%B7%B1%E5%85%A5/"> Java深入 </a>
+          </div>
+        <span class="more-meta"> 约 1463 字 </span>
+        <span class="more-meta"> 预计阅读 3 分钟 </span>
+    </div>
+  </header>
+  
+  <div class="post-content">
+    <div class="post-summary">
+      目标 通过SPI学习setContextClassLoader，getContextClassLoader的用法 SPI概念 SPI（Servic
+    </div>
+    <div class="read-more">
+      <a href="/2018/06/27/classloader-spi.html" class="read-more-link">阅读更多</a>
+    </div>
+  </div>
+</article>
+
     <article class="post">
   <header class="post-header">
     <h1 class="post-title"><a class="post-link" href="/2018/06/21/classloader-start.html">类加载器使用</a></h1>
@@ -128,96 +216,6 @@
     </div>
     <div class="read-more">
       <a href="/2018/06/21/classloader-start.html" class="read-more-link">阅读更多</a>
-    </div>
-  </div>
-</article>
-
-    <article class="post">
-  <header class="post-header">
-    <h1 class="post-title"><a class="post-link" href="/2019/06/11/java-process-name.html">java程序显示名字修改</a></h1>
-    <div class="post-meta">
-      <span class="post-time"> 2018-06-11 </span>
-      
-        <span class="more-meta"> 约 164 字 </span>
-        <span class="more-meta"> 预计阅读 1 分钟 </span>
-    </div>
-  </header>
-  
-  <div class="post-content">
-    <div class="post-summary">
-      简述 当系统种运行多个Java程序时， 在系统种都显示为java.exe进程 ，不易区分。 修改进程名 比如原先是 java -jar aa.jar 通过 cp $JAVA_HOME\bin\java $JAVA_HOME\bin\jaaa 然后 jaaa -jar aa.jar 这样在系统
-    </div>
-    <div class="read-more">
-      <a href="/2019/06/11/java-process-name.html" class="read-more-link">阅读更多</a>
-    </div>
-  </div>
-</article>
-
-    <article class="post">
-  <header class="post-header">
-    <h1 class="post-title"><a class="post-link" href="/2018/06/05/proxy-rpc-01.html">动态代理-rpc示例-01</a></h1>
-    <div class="post-meta">
-      <span class="post-time"> 2018-06-05 </span>
-      <div class="post-category">
-          <a href="/categories/java%E6%B7%B1%E5%85%A5/"> Java深入 </a>
-          </div>
-        <span class="more-meta"> 约 1107 字 </span>
-        <span class="more-meta"> 预计阅读 3 分钟 </span>
-    </div>
-  </header>
-  
-  <div class="post-content">
-    <div class="post-summary">
-      目标 写个简单的rpc 调用 Rpc大致思路 定义一个接口HelloService 放在iface.jar中 应用P中引用iface.jar 实现接口He
-    </div>
-    <div class="read-more">
-      <a href="/2018/06/05/proxy-rpc-01.html" class="read-more-link">阅读更多</a>
-    </div>
-  </div>
-</article>
-
-    <article class="post">
-  <header class="post-header">
-    <h1 class="post-title"><a class="post-link" href="/2018/06/05/proxy-rpc-02.html">动态代理-rpc示例-02</a></h1>
-    <div class="post-meta">
-      <span class="post-time"> 2018-06-05 </span>
-      <div class="post-category">
-          <a href="/categories/java%E6%B7%B1%E5%85%A5/"> Java深入 </a>
-          </div>
-        <span class="more-meta"> 约 1242 字 </span>
-        <span class="more-meta"> 预计阅读 3 分钟 </span>
-    </div>
-  </header>
-  
-  <div class="post-content">
-    <div class="post-summary">
-      上个版本的代码看着比较生肉，与平时开发时的写法差别较大。 接下来这版，加入了动态代理后 动态代理-guava版 1 2 3 4 5 6 7 8 9 10 11 12 13 14 15 16 17
-    </div>
-    <div class="read-more">
-      <a href="/2018/06/05/proxy-rpc-02.html" class="read-more-link">阅读更多</a>
-    </div>
-  </div>
-</article>
-
-    <article class="post">
-  <header class="post-header">
-    <h1 class="post-title"><a class="post-link" href="/2018/06/02/proxy-start.html">动态代理</a></h1>
-    <div class="post-meta">
-      <span class="post-time"> 2018-06-02 </span>
-      <div class="post-category">
-          <a href="/categories/java%E6%B7%B1%E5%85%A5/"> Java深入 </a>
-          </div>
-        <span class="more-meta"> 约 588 字 </span>
-        <span class="more-meta"> 预计阅读 2 分钟 </span>
-    </div>
-  </header>
-  
-  <div class="post-content">
-    <div class="post-summary">
-      目标 通过代码示例了解动态代理语法 示例代码 1 2 3 4 5 6 7 8 9 10 11 12 13 14 15 16 17 18 19 20 21 22 23 24 25 26 27 28 29 30 31 32 33 34 35 36 37 38 39 40 41 import java.lang.reflect.InvocationHandler; import java.lang.reflect.Method; import java.lang.reflect.Proxy; public class Demo
-    </div>
-    <div class="read-more">
-      <a href="/2018/06/02/proxy-start.html" class="read-more-link">阅读更多</a>
     </div>
   </div>
 </article>

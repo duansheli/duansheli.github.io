@@ -1,0 +1,398 @@
+<!DOCTYPE html>
+<html lang="zh-cn">
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+  <title>export 和 export default 的区别 - 断舍离的博客</title>
+  <meta name="renderer" content="webkit" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+<meta name="theme-color" content="#f8f5ec" />
+<meta name="msapplication-navbutton-color" content="#f8f5ec">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="#f8f5ec">
+
+
+<meta name="author" content="duansheli" /><meta name="description" content="区别 相同与差异 都可用来导出常量、函数、模块等 在一个模块中 export、import可以多次使用 export方式导出， 需要用{} export default 则不需要 导" /><meta name="keywords" content="scala, java, even" />
+
+
+
+
+
+
+<meta name="generator" content="Hugo 0.62.0 with theme even" />
+
+
+<link rel="canonical" href="https://www.awslop.com/2018/07/11/es6-export-default.html" />
+<link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
+<link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
+<link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png">
+<link rel="manifest" href="/manifest.json">
+<link rel="mask-icon" href="/safari-pinned-tab.svg" color="#5bbad5">
+
+
+<link href="/dist/even.c2a46f00.min.css" rel="stylesheet">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3.1.20/dist/jquery.fancybox.min.css" integrity="sha256-7TyXnr2YU040zfSP+rEcz29ggW4j56/ujTPwjMzyqFY=" crossorigin="anonymous">
+
+
+<meta property="og:title" content="export 和 export default 的区别" />
+<meta property="og:description" content="区别 相同与差异 都可用来导出常量、函数、模块等 在一个模块中 export、import可以多次使用 export方式导出， 需要用{} export default 则不需要 导" />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="https://www.awslop.com/2018/07/11/es6-export-default.html" />
+<meta property="article:published_time" content="2018-07-11T13:13:13+08:00" />
+<meta property="article:modified_time" content="2018-07-11T13:13:13+08:00" />
+<meta itemprop="name" content="export 和 export default 的区别">
+<meta itemprop="description" content="区别 相同与差异 都可用来导出常量、函数、模块等 在一个模块中 export、import可以多次使用 export方式导出， 需要用{} export default 则不需要 导">
+<meta itemprop="datePublished" content="2018-07-11T13:13:13&#43;08:00" />
+<meta itemprop="dateModified" content="2018-07-11T13:13:13&#43;08:00" />
+<meta itemprop="wordCount" content="296">
+
+
+
+<meta itemprop="keywords" content="es6," /><meta name="twitter:card" content="summary"/>
+<meta name="twitter:title" content="export 和 export default 的区别"/>
+<meta name="twitter:description" content="区别 相同与差异 都可用来导出常量、函数、模块等 在一个模块中 export、import可以多次使用 export方式导出， 需要用{} export default 则不需要 导"/>
+
+<!--[if lte IE 9]>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/classlist/1.1.20170427/classList.min.js"></script>
+<![endif]-->
+
+<!--[if lt IE 9]>
+  <script src="https://cdn.jsdelivr.net/npm/html5shiv@3.7.3/dist/html5shiv.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/respond.js@1.4.2/dest/respond.min.js"></script>
+<![endif]-->
+
+</head>
+<body>
+  <div id="mobile-navbar" class="mobile-navbar">
+  <div class="mobile-header-logo">
+    <a href="/" class="logo">Even</a>
+  </div>
+  <div class="mobile-navbar-icon">
+    <span></span>
+    <span></span>
+    <span></span>
+  </div>
+</div>
+<nav id="mobile-menu" class="mobile-menu slideout-menu">
+  <ul class="mobile-menu-list">
+    <a href="/">
+        <li class="mobile-menu-item">主页</li>
+      </a><a href="/post/">
+        <li class="mobile-menu-item">归档</li>
+      </a><a href="/tags/">
+        <li class="mobile-menu-item">标签</li>
+      </a><a href="/categories/">
+        <li class="mobile-menu-item">分类</li>
+      </a>
+  </ul>
+</nav>
+  <div class="container" id="mobile-panel">
+    <header id="header" class="header">
+        <div class="logo-wrapper">
+  <a href="/" class="logo">Even</a>
+</div>
+
+<nav class="site-navbar">
+  <ul id="menu" class="menu">
+    <li class="menu-item">
+        <a class="menu-item-link" href="/">主页</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/post/">归档</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/tags/">标签</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/categories/">分类</a>
+      </li>
+  </ul>
+</nav>
+    </header>
+
+    <main id="main" class="main">
+      <div class="content-wrapper">
+        <div id="content" class="content">
+          <article class="post">
+    
+    <header class="post-header">
+      <h1 class="post-title">export 和 export default 的区别</h1>
+
+      <div class="post-meta">
+        <span class="post-time"> 2018-07-11 </span>
+        
+          <span class="more-meta"> 约 296 字 </span>
+          <span class="more-meta"> 预计阅读 1 分钟 </span>
+        
+      </div>
+    </header>
+
+    <div class="post-toc" id="post-toc">
+  <h2 class="post-toc-title">文章目录</h2>
+  <div class="post-toc-content always-active">
+    <nav id="TableOfContents">
+  <ul>
+    <li><a href="#heading-1">相同与差异</a></li>
+    <li><a href="#heading-2">案例演示</a>
+      <ul>
+        <li><a href="#heading-3">两个模块</a></li>
+        <li><a href="#heading-4">使用</a></li>
+        <li><a href="#heading-5">效果</a></li>
+      </ul>
+    </li>
+  </ul>
+</nav>
+  </div>
+</div>
+    <div class="post-content">
+      <h1 id="heading">区别</h1>
+<h2 id="heading-1">相同与差异</h2>
+<p>都可用来导出常量、函数、模块等<br>
+在一个模块中 export、import可以多次使用</p>
+<p>export方式导出， 需要用<code>{}</code> 
+export default 则不需要<br>
+导入模块时， 同理</p>
+<p>在同一个模块中只能用一次 export default</p>
+<h2 id="heading-2">案例演示</h2>
+<p>准备4个文件， 都在同一个目录下</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-fallback" data-lang="fallback">es01.js
+mod01.js
+mod02.js
+testes6.html
+</code></pre></td></tr></table>
+</div>
+</div><h3 id="heading-3">两个模块</h3>
+<p>mod01.js</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-fallback" data-lang="fallback">let aa = {name:&#34;mod01-aa&#34;}
+export {aa}
+</code></pre></td></tr></table>
+</div>
+</div><p>mod02.js</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span><span class="lnt">5
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-fallback" data-lang="fallback">let bb = {name: &#34;mod02-bb&#34;}
+let cc = {name: &#34;mod02-cc&#34;}
+let dd = {name: &#34;mod02-dd&#34;}
+export {bb, cc}
+export default dd
+</code></pre></td></tr></table>
+</div>
+</div><h3 id="heading-4">使用</h3>
+<p>es01.js</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span><span class="lnt">14
+</span><span class="lnt">15
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-fallback" data-lang="fallback">import {aa} from &#34;./mod01.js&#34;
+import {bb, cc as mc} from &#34;./mod02.js&#34;
+import dddd from &#34;./mod02.js&#34;
+// import dddd, {bb, cc as mc} from &#34;./mod02.js&#34;
+
+function sayHello() {
+    console.log(111)
+    console.log(JSON.stringify(aa))
+    console.log(JSON.stringify(bb))
+    console.log(JSON.stringify(mc))
+    console.log(JSON.stringify(dddd))
+    console.log(222)
+}
+
+sayHello()
+</code></pre></td></tr></table>
+</div>
+</div><p>testes6.html</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-fallback" data-lang="fallback">&lt;!DOCTYPE html&gt;
+&lt;html lang=&#34;en&#34;&gt;
+&lt;head&gt;
+    &lt;meta charset=&#34;UTF-8&#34;&gt;
+    &lt;title&gt;test-es6-export&lt;/title&gt;
+&lt;/head&gt;
+&lt;body&gt;
+&lt;h1&gt;test-es6-export&lt;/h1&gt;
+
+&lt;script type=&#34;module&#34; src=&#34;/sc/es01.js&#34;&gt;&lt;/script&gt;
+&lt;/body&gt;
+&lt;/html&gt;
+</code></pre></td></tr></table>
+</div>
+</div><h3 id="heading-5">效果</h3>
+<p>浏览器打开页面后 控制台的输出</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span><span class="lnt">5
+</span><span class="lnt">6
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-fallback" data-lang="fallback">111
+{&#34;name&#34;:&#34;mod01-aa&#34;}
+{&#34;name&#34;:&#34;mod02-bb&#34;}
+{&#34;name&#34;:&#34;mod02-cc&#34;}
+{&#34;name&#34;:&#34;mod02-dd&#34;}
+222
+</code></pre></td></tr></table>
+</div>
+</div><p>如果浏览器版本过老，可能会不支持es6的语法<br>
+导致演示失败</p>
+
+    </div>
+
+    <div class="post-copyright">
+  <p class="copyright-item">
+    <span class="item-title">文章作者</span>
+    <span class="item-content">duansheli</span>
+  </p>
+  <p class="copyright-item">
+    <span class="item-title">上次更新</span>
+    <span class="item-content">
+        2018-07-11
+        
+    </span>
+  </p>
+  
+  
+</div>
+<footer class="post-footer">
+      <div class="post-tags">
+          <a href="/tags/es6/">es6</a>
+          </div>
+      <nav class="post-nav">
+        <a class="prev" href="/2018/07/18/es6-yield.html">
+            <i class="iconfont icon-left"></i>
+            <span class="prev-text nav-default">yield的参数</span>
+            <span class="prev-text nav-mobile">上一篇</span>
+          </a>
+        <a class="next" href="/2018/07/08/classloader-modifiers-exception.html">
+            <span class="next-text nav-default">类加载器加载的类不能创建对象</span>
+            <span class="next-text nav-mobile">下一篇</span>
+            <i class="iconfont icon-right"></i>
+          </a>
+      </nav>
+    </footer>
+  </article>
+        </div>
+        
+
+  
+
+  
+
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="social-links">
+      <a href="https://github.com/duansheli/" class="iconfont icon-github" title="github"></a>
+  <a href="https://www.awslop.com/index.xml" type="application/rss+xml" class="iconfont icon-rss" title="rss"></a>
+</div>
+
+<div class="copyright">
+  <span class="power-by">
+    由 <a class="hexo-link" href="https://gohugo.io">Hugo</a> 强力驱动
+  </span>
+  <span class="division">|</span>
+  <span class="theme-info">
+    主题 - 
+    <a class="theme-link" href="https://github.com/olOwOlo/hugo-theme-even">Even</a>
+  </span>
+
+  
+
+  <span class="copyright-year">
+    &copy; 
+    2017 - 
+    2019
+    <span class="heart">
+      <i class="iconfont icon-heart"></i>
+    </span>
+    <span class="author">duansheli</span>
+  </span>
+</div>
+    </footer>
+
+    <div class="back-to-top" id="back-to-top">
+      <i class="iconfont icon-up"></i>
+    </div>
+  </div>
+  
+  <script src="https://cdn.jsdelivr.net/npm/jquery@3.2.1/dist/jquery.min.js" integrity="sha256-hwg4gsxgFZhOsEEamdOYGBf13FyQuiTwlAQgxVSNgt4=" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/slideout@1.0.1/dist/slideout.min.js" integrity="sha256-t+zJ/g8/KXIJMjSVQdnibt4dlaDxc9zXr/9oNPeWqdg=" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3.1.20/dist/jquery.fancybox.min.js" integrity="sha256-XVLffZaxoWfGUEbdzuLi7pwaUJv1cecsQJQqGLe7axY=" crossorigin="anonymous"></script>
+<script type="text/javascript" src="/dist/even.26188efa.min.js"></script>
+
+
+<script type="application/javascript">
+var doNotTrack = false;
+if (!doNotTrack) {
+	window.ga=window.ga||function(){(ga.q=ga.q||[]).push(arguments)};ga.l=+new Date;
+	ga('create', 'GTM-NPJC8J2', 'auto');
+	ga('set', 'anonymizeIp', true);
+	ga('send', 'pageview');
+}
+</script>
+<script async src='https://www.google-analytics.com/analytics.js'></script>
+
+
+
+
+
+
+
+</body>
+</html>

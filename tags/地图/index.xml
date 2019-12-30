@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>地图 on 断舍离的博客</title>
+    <link>https://www.awslop.com/tags/%E5%9C%B0%E5%9B%BE/</link>
+    <description>Recent content in 地图 on 断舍离的博客</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>zh-cn</language>
+    <lastBuildDate>Wed, 17 Oct 2018 13:13:13 +0800</lastBuildDate>
+    
+	<atom:link href="https://www.awslop.com/tags/%E5%9C%B0%E5%9B%BE/index.xml" rel="self" type="application/rss+xml" />
+    
+    
+    <item>
+      <title>地图数据可视化-地图数据搜索-思路</title>
+      <link>https://www.awslop.com/2018/10/17/map.html</link>
+      <pubDate>Wed, 17 Oct 2018 13:13:13 +0800</pubDate>
+      
+      <guid>https://www.awslop.com/2018/10/17/map.html</guid>
+      <description>实现思路 数据在地图上的可视化显示大致思路 后台db 查询出数据点 + 前端地图将一个个的点渲染出来 商家地理位置录入 可以通过地图选点的方式获得商家的坐</description>
+    </item>
+    
+  </channel>
+</rss>

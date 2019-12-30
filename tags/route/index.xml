@@ -30,6 +30,15 @@
     </item>
     
     <item>
+      <title>百度网盘 下载提速</title>
+      <link>https://www.awslop.com/2019/08/26/pan-baidu-high.html</link>
+      <pubDate>Mon, 26 Aug 2019 13:13:13 +0800</pubDate>
+      
+      <guid>https://www.awslop.com/2019/08/26/pan-baidu-high.html</guid>
+      <description>提速下载 方案1 浏览器 + 油猴脚本 在浏览器内访问网盘文件列表， 通过脚本得到下载链接 最后使用浏览器或三方工具下载文件 该方案下单文件可用， 文件夹支持</description>
+    </item>
+    
+    <item>
       <title>cloudflare设置ddns</title>
       <link>https://www.awslop.com/2019/08/22/cloudflare-ddns.html</link>
       <pubDate>Fri, 22 Feb 2019 13:13:13 +0800</pubDate>

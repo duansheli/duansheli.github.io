@@ -159,6 +159,15 @@
     </item>
     
     <item>
+      <title>百度网盘 下载提速</title>
+      <link>https://www.awslop.com/2019/08/26/pan-baidu-high.html</link>
+      <pubDate>Mon, 26 Aug 2019 13:13:13 +0800</pubDate>
+      
+      <guid>https://www.awslop.com/2019/08/26/pan-baidu-high.html</guid>
+      <description>提速下载 方案1 浏览器 + 油猴脚本 在浏览器内访问网盘文件列表， 通过脚本得到下载链接 最后使用浏览器或三方工具下载文件 该方案下单文件可用， 文件夹支持</description>
+    </item>
+    
+    <item>
       <title>激活码的生成</title>
       <link>https://www.awslop.com/2019/08/16/hashids-usage.html</link>
       <pubDate>Fri, 16 Aug 2019 17:28:13 +0800</pubDate>
@@ -460,6 +469,15 @@ dashboard helm helm的webui&lt;/p&gt;</description>
     </item>
     
     <item>
+      <title>地图数据可视化-地图数据搜索-思路</title>
+      <link>https://www.awslop.com/2018/10/17/map.html</link>
+      <pubDate>Wed, 17 Oct 2018 13:13:13 +0800</pubDate>
+      
+      <guid>https://www.awslop.com/2018/10/17/map.html</guid>
+      <description>实现思路 数据在地图上的可视化显示大致思路 后台db 查询出数据点 + 前端地图将一个个的点渲染出来 商家地理位置录入 可以通过地图选点的方式获得商家的坐</description>
+    </item>
+    
+    <item>
       <title>ipv4下的回环地址在ipv6下的表示</title>
       <link>https://www.awslop.com/2018/10/16/ipv6-ip.html</link>
       <pubDate>Tue, 16 Oct 2018 13:13:13 +0800</pubDate>
@@ -550,6 +568,24 @@ dashboard helm helm的webui&lt;/p&gt;</description>
     </item>
     
     <item>
+      <title>yield的参数</title>
+      <link>https://www.awslop.com/2018/07/18/es6-yield.html</link>
+      <pubDate>Fri, 13 Jul 2018 13:13:13 +0800</pubDate>
+      
+      <guid>https://www.awslop.com/2018/07/18/es6-yield.html</guid>
+      <description>yield的使用 参考 http://es6.ruanyifeng.com/#docs/generator#next-%E6%96%B9%E6%B3%95%E7%9A%84%E5%8F%82%E6%95%B0 逐条返回 1 2 3 4 5 6 7 8 9 10 11 12 13 let fun01 = function * () { console.log(&amp;#34;run-01&amp;#34;); yield &amp;#34;aa&amp;#34; console.log(&amp;#34;run-02&amp;#34;); yield &amp;#34;bb&amp;#34; console.log(&amp;#34;run-03&amp;#34;); return &amp;#34;cc&amp;#34;; } let g01 = fun01(); console.log(g01.next()); console.log(g01.next()); console.log(g01.next()); 执行结果 1 2 3 4 5 6 run-01 { value: &amp;#39;aa&amp;#39;, done: false } run-02</description>
+    </item>
+    
+    <item>
+      <title>export 和 export default 的区别</title>
+      <link>https://www.awslop.com/2018/07/11/es6-export-default.html</link>
+      <pubDate>Wed, 11 Jul 2018 13:13:13 +0800</pubDate>
+      
+      <guid>https://www.awslop.com/2018/07/11/es6-export-default.html</guid>
+      <description>区别 相同与差异 都可用来导出常量、函数、模块等 在一个模块中 export、import可以多次使用 export方式导出， 需要用{} export default 则不需要 导</description>
+    </item>
+    
+    <item>
       <title>类加载器加载的类不能创建对象</title>
       <link>https://www.awslop.com/2018/07/08/classloader-modifiers-exception.html</link>
       <pubDate>Sun, 08 Jul 2018 15:13:13 +0800</pubDate>
@@ -627,7 +663,7 @@ dashboard helm helm的webui&lt;/p&gt;</description>
       <pubDate>Sat, 17 Mar 2018 13:13:13 +0800</pubDate>
       
       <guid>https://www.awslop.com/2018/03/17/dev-browser.html</guid>
-      <description>平时主要用 firefox 和 chrome firefox 首选 http://download-origin.cdn.mozilla.net/pub/devedition/releases/ 选则版本-32或64位-语言 比如 http://download-origin.cdn.mozilla.net/pub/devedition/releases/58.0b1/win64/zh-CN/ 下载Firefox Setup 58.0b1.exe后， 修改后缀为zip后解压core文件夹 更</description>
+      <description>主力 平时主要用 firefox 和 chrome firefox 首选 http://download-origin.cdn.mozilla.net/pub/devedition/releases/ 选则版本-32或64位-语言 比如 http://download-origin.cdn.mozilla.net/pub/devedition/releases/58.0b1/win64/zh-CN/ 下载Firefox Setup 58.0b1.exe后， 修改后缀为zip后解压core文件</description>
     </item>
     
     <item>
