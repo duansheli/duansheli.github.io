@@ -53,7 +53,7 @@
       <pubDate>Sun, 10 Nov 2019 17:28:13 +0800</pubDate>
       
       <guid>https://www.awslop.com/2019/11/10/benchmark-java-jmh.html</guid>
-      <description>基准测试工具JHM junit用来测方法对不对 ab用来压测http服务 jhm是用测java方法性能的， 比如每秒能运行多少次，每次执行的耗时 jh</description>
+      <description>基准测试工具JMH junit用来测方法对不对 ab用来压测http服务 jhm是用测java方法性能的， 比如每秒能运行多少次，每次执行的耗时 jh</description>
     </item>
     
     <item>
